@@ -163,7 +163,9 @@ class _LoginPageState extends State<LoginPage> {
                           } else if (state is ErrorState) {
                             return Text(
                               (state).message,
-                              style: TextStyle(fontFamily: "Montserrat"),
+                              style: TextStyle(
+                                      color: Colors.red,
+                                      fontFamily: "Montserrat",fontWeight: FontWeight.w900),
                             );
                           } else if (state is SuccesState<Token>) {
                             print("Success State");

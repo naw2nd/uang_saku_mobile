@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:uang_saku/bloc/bloc.dart';
+import 'package:uang_saku/bloc/event/forgot_password_event.dart';
+import 'package:uang_saku/bloc/forgot_password_bloc.dart';
 
 import 'package:uang_saku/ui/verification.dart';
 
@@ -8,10 +12,27 @@ class EmailPage extends StatefulWidget {
 }
 
 class _EmailPageState extends State<EmailPage> {
+  final TextEditingController emailController = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       home: Scaffold(
+        backgroundColor: Colors.white,
+        appBar: AppBar(
+          backgroundColor: Colors.white,
+          title: Container(
+            height: MediaQuery.of(context).size.height / 2,
+            child: Center(
+              child: Text("Send Email",
+                  style: TextStyle(
+                    color: Color(0xFF555555),
+                    fontFamily: "montserrat",
+                    fontWeight: FontWeight.w900,
+                  )),
+            ),
+          ),
+        ),
         body: ListView(
           children: <Widget>[
             Center(
@@ -34,8 +55,9 @@ class _EmailPageState extends State<EmailPage> {
                     ),
                     Container(
                       margin: EdgeInsets.fromLTRB(0, 20, 0, 20),
-                      width: MediaQuery.of(context).size.width * 0.78,
+                      width: MediaQuery.of(context).size.width * 0.90,
                       child: TextField(
+                          controller: emailController,
                           decoration: InputDecoration(
                               labelText: "Email",
                               border: OutlineInputBorder(
@@ -50,10 +72,8 @@ class _EmailPageState extends State<EmailPage> {
                         padding: EdgeInsets.all(0),
                         elevation: 10,
                         onPressed: () {
-                          Navigator.pushReplacement(context,
-                              MaterialPageRoute(builder: (context) {
-                            return VerificationPage();
-                          }));
+                          BlocProvider.of<ForgotPasswordBloc>(context).add(
+                              ForgotpasswordEvent(email: emailController.text));
                         },
                         color: Colors.blue,
                         child: Container(
@@ -78,6 +98,36 @@ class _EmailPageState extends State<EmailPage> {
                             ),
                           ),
                         ),
+                      ),
+                    ),
+                    Container(
+                      margin: EdgeInsets.all(20),
+                      child: BlocConsumer<ForgotPasswordBloc, BaseState>(
+                        listener: (context, state) {
+                          if (state is SuccesState) {
+                            WidgetsBinding.instance.addPostFrameCallback((_) {
+                              Navigator.push(context,
+                                  MaterialPageRoute(builder: (context) {
+                                return VerificationPage(
+                                    email: emailController.text);
+                              }));
+                            });
+                            return Container();
+                          }
+                        },
+                        builder: (context, state) {
+                          if (state is EmptyState) {
+                            return Text("Email Belum diisi");
+                          } else if (state is ErrorState) {
+                            return Text((state).message, style: TextStyle(
+                                      color: Colors.red,
+                                      fontFamily: "Montserrat",fontWeight: FontWeight.w900));
+                          } else if (state is LoadingState) {
+                            return CircularProgressIndicator();
+                          } else {
+                            return Container();
+                          }
+                        },
                       ),
                     )
                   ],

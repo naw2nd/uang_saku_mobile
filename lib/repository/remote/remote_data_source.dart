@@ -19,7 +19,7 @@ class RemoteDataSource {
     return SingleResponse.fromJson(object);
   }
 
-  Future<SingleResponse<Token>> forgetPassword(String email) async {
+  Future<SingleResponse<String>> forgetPassword(String email) async {
     String url = "http://128.199.208.102/api/v1/forgot-password";
     var result = await httpClient.post(url, body: {"email": email});
     var object = json.decode(result.body);
@@ -27,7 +27,7 @@ class RemoteDataSource {
     return SingleResponse.fromJson(object);
   }
 
-  Future<SingleResponse<Token>> verifiyOTP(String email, String otp) async {
+  Future<SingleResponse<String>> verifiyOTP(String email, String otp) async {
     String url = "http://128.199.208.102/api/v1/verify-otp";
     var result = await httpClient.post(url, body: {"email": email, "otp": otp});
     var object = json.decode(result.body);
@@ -35,7 +35,7 @@ class RemoteDataSource {
     return SingleResponse.fromJson(object);
   }
 
-  Future<SingleResponse<Token>> resetPassword(
+  Future<SingleResponse<String>> resetPassword(
       String email, String otp, String password) async {
     String url = "http://128.199.208.102/api/v1/reset-password";
     var result = await httpClient

@@ -15,18 +15,18 @@ class ExpenseRepository implements ExpenseDataSource {
   }
 
   @override
-  Future<SingleResponse<Token>> forgetPassword(String email) async {
+  Future<SingleResponse<String>> forgetPassword(String email) async {
     return await remoteDataSource.forgetPassword(email);
   }
 
   @override
-  Future<SingleResponse<Token>> resetPassword(
+  Future<SingleResponse<String>> resetPassword(
       String email, String otp, String password) async {
     return await remoteDataSource.resetPassword(email, otp, password);
   }
 
   @override
-  Future<SingleResponse<Token>> verifyOtp(String email, String otp) async {
+  Future<SingleResponse<String>> verifyOtp(String email, String otp) async {
     return await remoteDataSource.verifiyOTP(email, otp);
   }
 }
