@@ -1,9 +1,9 @@
 import 'package:uang_saku/bloc/bloc.dart';
 
 class ResetPassEvent extends BaseEvent {
-  String email;
-  String otp;
-  String password;
+  final String email;
+  final String otp;
+  final String password;
 
   ResetPassEvent({this.email,this.otp,this.password});
 

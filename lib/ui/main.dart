@@ -2,9 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:uang_saku/bloc/bloc.dart';
 import 'package:uang_saku/bloc/forgot_password_bloc.dart';
+import 'package:uang_saku/bloc/reset_pass_bloc.dart';
 import 'package:uang_saku/bloc/verifiy_otp_bloc.dart';
 import 'package:uang_saku/repository/expense_repository.dart';
 import 'package:uang_saku/repository/remote/remote_data_source.dart';
+import 'package:uang_saku/ui/dashboard.dart';
 import 'package:uang_saku/ui/splash_screen.dart';
 import 'package:http/http.dart' as http;
 
@@ -30,10 +32,13 @@ class MyApp extends StatelessWidget {
           BlocProvider<VerifyOTPBloc>(
             create: (context) =>
                 VerifyOTPBloc(expenseRepository: expenseRepository),
-          )
+          ),
+          BlocProvider<ResetPassBloc>(
+              create: (context) =>
+                  ResetPassBloc(expenseRepository: expenseRepository))
         ],
         child: MaterialApp(
-          home: SplashScreen(),
+          home: DashboardPage(),
         ));
   }
 }

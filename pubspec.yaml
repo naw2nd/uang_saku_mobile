@@ -53,6 +53,11 @@ flutter:
     - images/logo.png
     - images/otp.png
     - images/resetpass.png
+    - images/uangsaku.png
+    - images/icon_dashboard.png
+    - images/kasbon.png
+    - images/reimburse.png
+    - images/jumlah_approval.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.
@@ -69,7 +74,7 @@ flutter:
     - family: Montserrat
       fonts:
         - asset: fonts/Montserrat-Regular.ttf
-    #       - asset: fonts/Schyler-Italic.ttf
+        - asset: fonts/Montserrat-Bold.ttf
     #         style: italic
     - family: Roboto
       fonts:

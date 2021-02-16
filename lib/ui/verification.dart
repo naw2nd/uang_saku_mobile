@@ -137,7 +137,7 @@ class _VerificationPageState extends State<VerificationPage> {
                                 setState(() {
                                   hasError = false;
                                   scaffoldKey.currentState.showSnackBar(
-                                      SnackBar(duration: Duration(seconds: 2)));
+                                      SnackBar(duration: Duration(seconds: 2), content: null,));
                                 });
                               } else {
                                 print("tes");
