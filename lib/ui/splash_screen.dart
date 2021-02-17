@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:uang_saku/ui/login_page.dart';
+import 'package:uang_saku/ui/profile_page.dart';
 
 class SplashScreen extends StatelessWidget {
   @override
@@ -10,7 +11,7 @@ class SplashScreen extends StatelessWidget {
         Duration(seconds: 2),
         () => Navigator.pushReplacement(context,
                 MaterialPageRoute(builder: (context) {
-              return LoginPage();
+              return ProfilePage();
             })));
     return MaterialApp(
       home: Scaffold(
