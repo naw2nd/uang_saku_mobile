@@ -6,11 +6,11 @@ import 'package:pin_code_fields/pin_code_fields.dart';
 import 'package:uang_saku/bloc/bloc.dart';
 import 'package:uang_saku/bloc/event/verify_otp_event.dart';
 import 'package:uang_saku/bloc/verifiy_otp_bloc.dart';
-import 'package:uang_saku/ui/login_page.dart';
+
 import 'package:uang_saku/ui/reset_password.dart';
 
 class VerificationPage extends StatefulWidget {
-  String email;
+  final String email;
   @override
   _VerificationPageState createState() => _VerificationPageState(email: email);
 
@@ -136,8 +136,11 @@ class _VerificationPageState extends State<VerificationPage> {
                                         otp: pinController.text, email: email));
                                 setState(() {
                                   hasError = false;
-                                  scaffoldKey.currentState.showSnackBar(
-                                      SnackBar(duration: Duration(seconds: 2)));
+                                  scaffoldKey.currentState
+                                      .showSnackBar(SnackBar(
+                                    duration: Duration(seconds: 2),
+                                    content: null,
+                                  ));
                                 });
                               } else {
                                 print("tes");
@@ -177,7 +180,10 @@ class _VerificationPageState extends State<VerificationPage> {
                                     .addPostFrameCallback((_) {
                                   Navigator.push(context,
                                       MaterialPageRoute(builder: (context) {
-                                    return ConfirmPassPage();
+                                    return ConfirmPassPage(
+                                      email: email,
+                                      otp: pinController.text,
+                                    );
                                   }));
                                   return Container();
                                 });
@@ -191,7 +197,8 @@ class _VerificationPageState extends State<VerificationPage> {
                                   (state).message,
                                   style: TextStyle(
                                       color: Colors.red,
-                                      fontFamily: "Montserrat",fontWeight: FontWeight.w900),
+                                      fontFamily: "Montserrat",
+                                      fontWeight: FontWeight.w900),
                                 );
                               } else if (state is LoadingState) {
                                 return CircularProgressIndicator();
