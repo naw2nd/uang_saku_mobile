@@ -20,6 +20,8 @@ class ResetPassBloc extends Bloc<ResetPassEvent,BaseState> {
         yield ErrorState(message: response.message);
       }
     }catch(e){
+      print(event);
+      print(e);
       yield ErrorState(message: "No Connection");
     }
   }

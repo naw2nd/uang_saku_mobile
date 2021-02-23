@@ -2,9 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:uang_saku/bloc/bloc.dart';
 import 'package:uang_saku/bloc/login_bloc.dart';
-import 'package:uang_saku/ui/dashboard.dart';
+
 import 'package:uang_saku/ui/email.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:uang_saku/ui/widgets/bottom_navbar.dart';
 
 import '../model/models.dart';
 import '../bloc/state/base_state.dart';
@@ -164,15 +165,16 @@ class _LoginPageState extends State<LoginPage> {
                             return Text(
                               (state).message,
                               style: TextStyle(
-                                      color: Colors.red,
-                                      fontFamily: "Montserrat",fontWeight: FontWeight.w900),
+                                  color: Colors.red,
+                                  fontFamily: "Montserrat",
+                                  fontWeight: FontWeight.w900),
                             );
                           } else if (state is SuccesState<Token>) {
                             print("Success State");
                             _saveToken(state.data.token).then((value) =>
                                 Navigator.pushReplacement(context,
                                     MaterialPageRoute(builder: (context) {
-                                  return DashboardPage();
+                                  return BottomNavbar();
                                 })));
                             return Container();
                           } else if (state is LoadingState) {

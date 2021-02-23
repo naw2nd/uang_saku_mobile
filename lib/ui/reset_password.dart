@@ -6,8 +6,8 @@ import 'package:uang_saku/bloc/reset_pass_bloc.dart';
 import 'package:uang_saku/ui/login_page.dart';
 
 class ConfirmPassPage extends StatefulWidget {
-  String email;
-  String otp;
+  final String email;
+  final String otp;
   @override
   _ConfirmPassPageState createState() =>
       _ConfirmPassPageState(email: email, otp: otp);
@@ -20,6 +20,8 @@ class _ConfirmPassPageState extends State<ConfirmPassPage> {
   TextEditingController fixpass = TextEditingController();
   final formKey = GlobalKey<FormState>();
   bool value = false;
+  bool _showPassNew = true;
+  bool _showPassFix = true;
   String email;
   String otp;
 
@@ -60,23 +62,39 @@ class _ConfirmPassPageState extends State<ConfirmPassPage> {
                         height: 300,
                       ),
                       Container(
+                        height: 70,
                         margin: EdgeInsets.fromLTRB(0, 10, 0, 10),
                         child: TextField(
                             controller: newPass,
-                            obscureText: true,
+                            obscureText: _showPassNew,
                             decoration: InputDecoration(
-                                suffix: Icon(Icons.remove_red_eye),
+                                suffix: IconButton(
+                                  icon: Icon(_showPassNew
+                                      ? Icons.visibility
+                                      : Icons.visibility_off),
+                                  onPressed: () {
+                                    _isPassNewVisibility();
+                                  },
+                                ),
                                 labelText: "Password Baru",
                                 border: OutlineInputBorder(
                                     borderRadius: BorderRadius.circular(10)))),
                       ),
                       Container(
+                        height: 70,
                         margin: EdgeInsets.fromLTRB(0, 0, 0, 30),
                         child: TextField(
                             controller: fixpass,
-                            obscureText: true,
+                            obscureText: _showPassFix,
                             decoration: InputDecoration(
-                                suffix: Icon(Icons.remove_red_eye),
+                                suffix: IconButton(
+                                  icon: Icon(_showPassFix
+                                      ? Icons.visibility
+                                      : Icons.visibility_off),
+                                  onPressed: () {
+                                    _isPassFixVisibility();
+                                  },
+                                ),
                                 labelText: "Konfirmasi Password",
                                 border: OutlineInputBorder(
                                     borderRadius: BorderRadius.circular(10)))),
@@ -90,14 +108,12 @@ class _ConfirmPassPageState extends State<ConfirmPassPage> {
                           padding: EdgeInsets.all(0),
                           elevation: 10,
                           onPressed: () {
-                            if (newPass == fixpass) {
+                            if (newPass.text == fixpass.text) {
                               BlocProvider.of<ResetPassBloc>(context).add(
                                   ResetPassEvent(
                                       password: newPass.text,
                                       email: email,
                                       otp: otp));
-                            } else {
-                              Text("Password Salah");
                             }
                           },
                           color: Colors.blue,
@@ -130,8 +146,7 @@ class _ConfirmPassPageState extends State<ConfirmPassPage> {
                         child: BlocConsumer<ResetPassBloc, BaseState>(
                           listener: (context, state) {
                             if (state is SuccesState) {
-                              WidgetsBinding.instance
-                                  .addTimingsCallback((_) {
+                              WidgetsBinding.instance.addPostFrameCallback((_) {
                                 Navigator.push(context,
                                     MaterialPageRoute(builder: (context) {
                                   return LoginPage();
@@ -168,5 +183,17 @@ class _ConfirmPassPageState extends State<ConfirmPassPage> {
         ),
       ),
     );
+  }
+
+  void _isPassNewVisibility() {
+    setState(() {
+      _showPassNew = !_showPassNew;
+    });
+  }
+
+  void _isPassFixVisibility() {
+    setState(() {
+      _showPassFix = !_showPassFix;
+    });
   }
 }

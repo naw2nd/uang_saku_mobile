@@ -6,9 +6,12 @@ import 'package:uang_saku/bloc/reset_pass_bloc.dart';
 import 'package:uang_saku/bloc/verifiy_otp_bloc.dart';
 import 'package:uang_saku/repository/expense_repository.dart';
 import 'package:uang_saku/repository/remote/remote_data_source.dart';
-import 'package:uang_saku/ui/dashboard.dart';
-import 'package:uang_saku/ui/splash_screen.dart';
 import 'package:http/http.dart' as http;
+import 'package:uang_saku/ui/create_kasbon.dart';
+import 'package:uang_saku/ui/list_reimburse.dart';
+import 'package:uang_saku/ui/widgets/filter_dialog.dart';
+import 'package:uang_saku/ui/list_kasbon.dart';
+import 'package:uang_saku/ui/widgets/bottom_navbar.dart';
 
 void main() {
   runApp(MyApp());
@@ -38,7 +41,7 @@ class MyApp extends StatelessWidget {
                   ResetPassBloc(expenseRepository: expenseRepository))
         ],
         child: MaterialApp(
-          home: DashboardPage(),
+          home: CreateKasbon(),
         ));
   }
 }
