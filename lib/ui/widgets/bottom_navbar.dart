@@ -1,6 +1,8 @@
 // import 'dart:html';
 
 import 'package:flutter/material.dart';
+import 'package:uang_saku/ui/create_kasbon.dart';
+import 'package:uang_saku/ui/create_reimburse.dart';
 import 'package:uang_saku/ui/notifikasi.dart';
 import 'package:uang_saku/ui/riwayat.dart';
 
@@ -116,7 +118,12 @@ class ShowModal extends StatelessWidget {
                         shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(18)),
                         color: Color(0xFF358BFC),
-                        onPressed: () {},
+                        onPressed: () {
+                          Navigator.push(context,
+                              MaterialPageRoute(builder: (context) {
+                            return CreateKasbon();
+                          }));
+                        },
                         child: Text("Kasbon",
                             style: TextStyle(
                                 color: Colors.white,
@@ -127,7 +134,12 @@ class ShowModal extends StatelessWidget {
                         shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(18)),
                         color: Color(0xFF3AE3CE),
-                        onPressed: () {},
+                        onPressed: () {
+                           Navigator.push(context,
+                              MaterialPageRoute(builder: (context) {
+                            return CreateReimburse();
+                          }));
+                        },
                         child: Text("Reimburse",
                             style: TextStyle(
                                 color: Colors.white,

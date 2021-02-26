@@ -8,10 +8,14 @@ import 'package:uang_saku/repository/expense_repository.dart';
 import 'package:uang_saku/repository/remote/remote_data_source.dart';
 import 'package:http/http.dart' as http;
 import 'package:uang_saku/ui/create_kasbon.dart';
+import 'package:uang_saku/ui/create_reimburse.dart';
 import 'package:uang_saku/ui/list_reimburse.dart';
+import 'package:uang_saku/ui/splash_screen.dart';
+import 'package:uang_saku/ui/widgets/details_pengajuan.dart';
 import 'package:uang_saku/ui/widgets/filter_dialog.dart';
 import 'package:uang_saku/ui/list_kasbon.dart';
 import 'package:uang_saku/ui/widgets/bottom_navbar.dart';
+import 'package:uang_saku/ui/widgets/rincian_biaya.dart';
 
 void main() {
   runApp(MyApp());
@@ -23,25 +27,20 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MultiBlocProvider(
-        providers: [
-          BlocProvider<LoginBloc>(
-            create: (context) =>
-                LoginBloc(expenseRepository: expenseRepository),
-          ),
-          BlocProvider<ForgotPasswordBloc>(
-              create: (context) =>
-                  ForgotPasswordBloc(expenseRepository: expenseRepository)),
-          BlocProvider<VerifyOTPBloc>(
-            create: (context) =>
-                VerifyOTPBloc(expenseRepository: expenseRepository),
-          ),
-          BlocProvider<ResetPassBloc>(
-              create: (context) =>
-                  ResetPassBloc(expenseRepository: expenseRepository))
-        ],
-        child: MaterialApp(
-          home: CreateKasbon(),
-        ));
+    return MultiBlocProvider(providers: [
+      BlocProvider<LoginBloc>(
+        create: (context) => LoginBloc(expenseRepository: expenseRepository),
+      ),
+      BlocProvider<ForgotPasswordBloc>(
+          create: (context) =>
+              ForgotPasswordBloc(expenseRepository: expenseRepository)),
+      BlocProvider<VerifyOTPBloc>(
+        create: (context) =>
+            VerifyOTPBloc(expenseRepository: expenseRepository),
+      ),
+      BlocProvider<ResetPassBloc>(
+          create: (context) =>
+              ResetPassBloc(expenseRepository: expenseRepository))
+    ], child: MaterialApp(home: SplashScreen()));
   }
 }
