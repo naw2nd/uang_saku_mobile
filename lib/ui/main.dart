@@ -5,6 +5,7 @@ import 'package:uang_saku/bloc/forgot_password_bloc.dart';
 import 'package:uang_saku/bloc/profile_bloc.dart';
 import 'package:uang_saku/bloc/verifiy_otp_bloc.dart';
 import 'package:uang_saku/repository/expense_repository.dart';
+import 'package:uang_saku/repository/remote/http_service.dart';
 import 'package:uang_saku/repository/remote/remote_data_source.dart';
 import 'package:uang_saku/ui/splash_screen.dart';
 import 'package:http/http.dart' as http;
@@ -15,7 +16,9 @@ void main() {
 
 class MyApp extends StatelessWidget {
   final ExpenseRepository expenseRepository = ExpenseRepository(
-      remoteDataSource: RemoteDataSource(httpClient: http.Client()));
+      remoteDataSource: HttpService());
+  // final ExpenseRepository expenseRepository = ExpenseRepository(
+  //     remoteDataSource: RemoteDataSource(httpClient: http.Client()));
 
   @override
   Widget build(BuildContext context) {
@@ -34,7 +37,7 @@ class MyApp extends StatelessWidget {
           ),
           BlocProvider<ProfileBloc>(
             create: (context) =>
-                ProfileBloc(),
+                ProfileBloc(expenseRepository: expenseRepository)..add(ProfileEvent()),
           ),
         ],
         child: MaterialApp(

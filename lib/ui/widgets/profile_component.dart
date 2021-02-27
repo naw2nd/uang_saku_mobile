@@ -1,30 +1,38 @@
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:uang_saku/model/user.dart';
+import 'package:uang_saku/repository/remote/http_service.dart';
 import 'package:uang_saku/ui/widgets/profile_property.dart';
+import 'package:intl/intl.dart';
 
 class ProfileComponent extends StatelessWidget {
+  final User user;
+
+  ProfileComponent({this.user});
+  
   @override
   Widget build(BuildContext context) {
     return Container(
         child: Column(
       children: [
         ProfileProperty(
-            iconData: Icons.contacts, label: "Nama", value: "Casey Affleck"),
+            iconData: Icons.contacts, label: "Nama", value: user.nama),
         ProfileProperty(
             iconData: Icons.markunread,
             label: "Email",
-            value: "mail@affleck.com"),
+            value: user.email),
         ProfileProperty(
             iconData: Icons.event,
             label: "Tempat, tanggal lahir",
-            value: "Surabaya, 25 Februari 1998"),
+            value: "${user.tempatLahir}. ${DateFormat.yMMMMd('en_US').format(user.tglLahir)}" ),
         ProfileProperty(
             iconData: Icons.place,
             label: "Alamat",
-            value: "Rogue Town, East Blue"),
+            value: user.alamat),
         ProfileProperty(
             iconData: Icons.local_phone,
             label: "No telepon",
-            value: "08209570353"),
+            value: user.noTelp),
       ],
     ));
   }

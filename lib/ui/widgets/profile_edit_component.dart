@@ -1,25 +1,32 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:uang_saku/model/user.dart';
 
 class ProfileEditComponent extends StatelessWidget {
-  TextEditingController _txtCtrlUsername =
-      TextEditingController(text: "BenAffleck");
-  TextEditingController _txtCtrlFullname =
-      TextEditingController(text: "Casey Affleck");
-  TextEditingController _txtCtrlEmail =
-      TextEditingController(text: "mail@affleck.com");
-  TextEditingController _txtCtrlTempatLahir =
-      TextEditingController(text: "Jakarta");
-  TextEditingController _txtCtrlAlamat =
-      TextEditingController(text: "Onigashima");
-  TextEditingController _txtCtrlPhone =
-      TextEditingController(text: "085940870012");
-  TextEditingController _txtCtrlTanggalLahir =
-      TextEditingController(text: "12/3/1994");
+  final User user;
+  TextEditingController _txtCtrlUsername;
+  TextEditingController _txtCtrlFullname;
+  TextEditingController _txtCtrlEmail;
+  TextEditingController _txtCtrlTempatLahir;
+  TextEditingController _txtCtrlAlamat;
+  TextEditingController _txtCtrlPhone;
+  TextEditingController _txtCtrlTanggalLahir;
   DateTime _selectedDate;
+  ProfileEditComponent({this.user}){
+    _txtCtrlUsername = TextEditingController(text:user.username);
+    _txtCtrlFullname = TextEditingController(text:user.nama);
+    _txtCtrlEmail = TextEditingController(text:user.email);
+    _txtCtrlTempatLahir = TextEditingController(text:user.tempatLahir);
+    _txtCtrlAlamat = TextEditingController(text:user.alamat);
+    _txtCtrlPhone = TextEditingController(text:user.noTelp);
+    _txtCtrlTanggalLahir = TextEditingController(text: DateFormat.yMMMMd('en_US').format(user.tglLahir));
+    _selectedDate = user.tglLahir;
+
+  }
 
   @override
   Widget build(BuildContext context) {
+
     return Container(
       child: Column(
         children: [
@@ -130,7 +137,7 @@ class ProfileEditComponent extends StatelessWidget {
     if (newSelectedDate != null) {
       _selectedDate = newSelectedDate;
       _txtCtrlTanggalLahir
-        ..text = DateFormat.yMd().format(_selectedDate)
+        ..text = DateFormat.yMMMMd('en_US').format(_selectedDate)
         ..selection = TextSelection.fromPosition(TextPosition(
             offset: _txtCtrlTanggalLahir.text.length,
             affinity: TextAffinity.upstream));

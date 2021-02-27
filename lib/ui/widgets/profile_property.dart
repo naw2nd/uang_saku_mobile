@@ -11,7 +11,7 @@ class ProfileProperty extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.only(bottom: 10),
+      margin: EdgeInsets.only(bottom: 10, top: 5),
       child: Row(
         children: [
           Container(

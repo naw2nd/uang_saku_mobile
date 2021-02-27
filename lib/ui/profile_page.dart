@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:uang_saku/bloc/bloc.dart';
 import 'package:uang_saku/bloc/profile_bloc.dart';
+import 'package:uang_saku/bloc/state/base_state.dart';
 import 'package:uang_saku/ui/widgets/custom_card.dart';
 import 'package:uang_saku/ui/widgets/profile_change_password.dart';
 import 'package:uang_saku/ui/widgets/profile_component.dart';
@@ -54,34 +56,64 @@ class ProfilePage extends StatelessWidget {
                             borderRadius: BorderRadius.only(
                                 topRight: Radius.circular(100),
                                 topLeft: Radius.circular(100))),
-                        padding: EdgeInsets.only(top: 160, left: 15, right: 15),
+                        padding: EdgeInsets.only(top: 100, left: 15, right: 15),
                         child: Column(
                           children: <Widget>[
+                            BlocBuilder<ProfileBloc, BaseState>(
+                              builder: (_, state) => (state is InitProfileState)
+                                  ? Column(children: [
+                                      Text(
+                                        state.user.username,
+                                        style: GoogleFonts.montserrat(
+                                            fontWeight: FontWeight.w700,
+                                            fontSize: 26,
+                                            color: Color(0xFF555555)),
+                                      ),
+                                      Text(
+                                        state.user.email,
+                                        style: GoogleFonts.montserrat(
+                                            fontWeight: FontWeight.w400,
+                                            fontSize: 20,
+                                            color: Color(0xFF555555)),
+                                      ),
+                                    ])
+                                  : (state is EditProfileState)
+                                      ? Text(
+                                          "Edit Profile",
+                                          style: GoogleFonts.montserrat(
+                                              fontWeight: FontWeight.w700,
+                                              fontSize: 26,
+                                              color: Color(0xFF555555)),
+                                        )
+                                      : (state is ChangePasswordState)
+                                          ? Text(
+                                              "Change Password",
+                                              style: GoogleFonts.montserrat(
+                                                  fontWeight: FontWeight.w700,
+                                                  fontSize: 26,
+                                                  color: Color(0xFF555555)),
+                                            )
+                                          : Text(""),
+                            ),
                             CustomCard(
                               container: Container(
                                 child: Column(children: [
                                   Container(
                                     height: 20,
                                     child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
+                                      mainAxisAlignment: MainAxisAlignment.end,
                                       children: [
-                                        BlocBuilder<ProfileBloc, ProfileState>(
-                                          builder: (_, state) => Text(
-                                            state.currentValue,
-                                            style: GoogleFonts.montserrat(
-                                              fontSize: 14,
-                                              color: Color(0xFF555555),
-                                              fontWeight: FontWeight.w600,
-                                            ),
-                                          ),
-                                        ),
-                                        BlocBuilder<ProfileBloc, ProfileState>(
+                                        BlocBuilder<ProfileBloc, BaseState>(
                                             builder: (_, state) => (FlatButton(
                                                   padding: EdgeInsets.all(0),
-                                                  height: 14,
+                                                  height: 17,
                                                   child: Text(
-                                                    state.nextValue,
+                                                    (state is InitProfileState)
+                                                        ? "Edit Profile"
+                                                        : (state
+                                                                is EditProfileState)
+                                                            ? "Change Password"
+                                                            : "",
                                                     style:
                                                         GoogleFonts.montserrat(
                                                       fontSize: 14,
@@ -91,7 +123,7 @@ class ProfilePage extends StatelessWidget {
                                                     ),
                                                   ),
                                                   onPressed: () {
-                                                    (state is ProfileInitial)
+                                                    (state is InitProfileState)
                                                         ? context
                                                             .read<ProfileBloc>()
                                                             .add(
@@ -105,18 +137,24 @@ class ProfilePage extends StatelessWidget {
                                       ],
                                     ),
                                   ),
-                                  BlocBuilder<ProfileBloc, ProfileState>(
+                                  BlocBuilder<ProfileBloc, BaseState>(
                                       builder: (_, state) {
-                                    if (state is EditProfileValue)
-                                      return ProfileEditComponent();
-                                    else if (state is ChangePasswordValue)
+                                    if (state is InitProfileState)
+                                      return ProfileComponent(user: state.user);
+                                    else if (state is EditProfileState)
+                                      return ProfileEditComponent(
+                                        user: state.user,
+                                      );
+                                    else if (state is ChangePasswordState)
                                       return ProfileChangePasswordComponent();
                                     else
-                                      return ProfileComponent();
+                                      return Center(
+                                          child: CircularProgressIndicator());
                                   }),
-                                  BlocBuilder<ProfileBloc, ProfileState>(
+                                  BlocBuilder<ProfileBloc, BaseState>(
                                     builder: (_, state) => (state
-                                            is! ProfileInitial)
+                                                is EditProfileState ||
+                                            state is ChangePasswordState)
                                         ? Container(
                                             margin: EdgeInsets.only(
                                                 top: 10, bottom: 10),
@@ -136,7 +174,7 @@ class ProfilePage extends StatelessWidget {
                                                               .read<
                                                                   ProfileBloc>()
                                                               .add(
-                                                                  ProfileDescriptionEvent());
+                                                                  ProfileEvent());
                                                         },
                                                         shape: RoundedRectangleBorder(
                                                             borderRadius:
@@ -231,8 +269,8 @@ class ProfilePage extends StatelessWidget {
                                 ]),
                               ),
                             ),
-                            BlocBuilder<ProfileBloc, ProfileState>(
-                                builder: (_, state) => (state is ProfileInitial)
+                            BlocBuilder<ProfileBloc, BaseState>(
+                                builder: (_, state) => (state is InitProfileState)
                                     ? Container(
                                         child: Column(children: [
                                           Text(
@@ -275,35 +313,19 @@ class ProfilePage extends StatelessWidget {
                   ),
                   Column(children: [
                     Center(
-                      child: Container(
-                        decoration: BoxDecoration(
-                            shape: BoxShape.circle,
-                            image: DecorationImage(
-                                fit: BoxFit.fill,
-                                image: AssetImage('images/avatar.png'))),
-                        height: 196,
-                        width: 196,
-                        margin: EdgeInsets.only(bottom: 5),
+                      child: BlocBuilder<ProfileBloc, BaseState>(
+                        builder: (_, state) => Container(
+                          decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                              image: DecorationImage(
+                                  fit: BoxFit.fill,
+                                  image: (state is ProfileState && state.user.gender == "Perempuan") ? AssetImage('images/woman.png') : AssetImage('images/man.png'))),
+                          height: 196,
+                          width: 196,
+                          margin: EdgeInsets.only(bottom: 5),
+                        ),
                       ),
                     ),
-                    Column(children: [
-                      Text(
-                        "BenAffleck",
-                        style: GoogleFonts.montserrat(
-                            fontWeight: FontWeight.w700,
-                            fontSize: 26,
-                            color: Color(0xFF555555)),
-                        textAlign: TextAlign.center,
-                      ),
-                      Text(
-                        "mail@affleck.com",
-                        style: GoogleFonts.montserrat(
-                            fontWeight: FontWeight.w400,
-                            fontSize: 20,
-                            color: Color(0xFF555555)),
-                        textAlign: TextAlign.center,
-                      ),
-                    ]),
                   ]),
                 ],
               ),

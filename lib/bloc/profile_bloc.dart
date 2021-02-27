@@ -1,23 +1,46 @@
-import 'dart:async';
-
 import 'package:bloc/bloc.dart';
-import 'package:equatable/equatable.dart';
+import 'package:uang_saku/bloc/bloc.dart';
+import 'package:uang_saku/model/models.dart';
+import 'package:uang_saku/repository/expense_repository.dart';
 
-part 'event/profile_event.dart';
-part 'state/profile_state.dart';
+class ProfileBloc extends Bloc<BaseEvent, BaseState> {
+  ExpenseRepository expenseRepository;
 
-class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
-  ProfileBloc() : super(ProfileInitial("","Edit Profil"));
+  ProfileBloc({this.expenseRepository}) : super(LoadingState());
 
   @override
-  Stream<ProfileState> mapEventToState(
-    ProfileEvent event,
+  Stream<BaseState> mapEventToState(
+    BaseEvent event,
   ) async* {
-    if (event is EditProfileEvent)
-      yield EditProfileValue("Edit Profile","Change Password");
-    else if (event is ChangePasswordEvent)
-      yield ChangePasswordValue("Change Password","");
-    else
-      yield ProfileInitial("","Edit Profile");
+    if (event is ProfileEvent) {
+      try {
+        final SingleResponse<User> singleResponse =
+            await expenseRepository.getProfile();
+        if (singleResponse.success) {
+          yield InitProfileState(user: singleResponse.data);
+        } else {
+          yield ErrorState(message: singleResponse.message);
+        }
+      } catch (e) {
+        print(e);
+        yield ErrorState(message: "Tidak Terhubung");
+      }
+    } else {
+      yield ErrorState(message: "Tidak ada event yang sesuai");
+    }
+    if (event is EditProfileEvent) {
+      try {
+        final SingleResponse<User> singleResponse =
+            await expenseRepository.getProfile();
+        if (singleResponse.success) {
+          yield EditProfileState(user: singleResponse.data);
+        } else {
+          yield ErrorState(message: singleResponse.message);
+        }
+      } catch (e) {
+        print(e);
+        yield ErrorState(message: "Tidak Terhubung");
+      }
+    } else if (event is ChangePasswordEvent) yield ChangePasswordState();
   }
 }

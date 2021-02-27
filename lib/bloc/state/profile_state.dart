@@ -1,25 +1,30 @@
-part of '../profile_bloc.dart';
+import 'package:uang_saku/bloc/bloc.dart';
+import 'package:uang_saku/model/models.dart';
 
-abstract class ProfileState extends Equatable {
-  final String currentValue;
-  final String nextValue;
-  const ProfileState(this.currentValue, this.nextValue);
+class ProfileState extends BaseState {
+  final User user;
+
+  ProfileState({this.user});
 
   @override
-  List<Object> get props => [currentValue, nextValue];
+  List<Object> get props => [user];
+}
+class InitProfileState extends ProfileState{
+  final User user;
+
+  InitProfileState({this.user}) : super(user: user);
+
+  @override
+  List<Object> get props => [user];
+}
+class EditProfileState extends ProfileState {
+  final User user;
+
+  EditProfileState({this.user}) : super(user: user);
+
+  @override
+  List<Object> get props => [user];
 }
 
-class ProfileInitial extends ProfileState {
-  ProfileInitial(String currentValue, String nextValue)
-      : super(currentValue, nextValue);
-}
-
-class EditProfileValue extends ProfileState {
-  EditProfileValue(String currentValue, String nextValue)
-      : super(currentValue, nextValue);
-}
-
-class ChangePasswordValue extends ProfileState {
-  ChangePasswordValue(String currentValue, String nextValue)
-      : super(currentValue, nextValue);
+class ChangePasswordState extends ProfileState {
 }
