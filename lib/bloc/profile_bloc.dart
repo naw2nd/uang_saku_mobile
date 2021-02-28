@@ -17,7 +17,12 @@ class ProfileBloc extends Bloc<BaseEvent, BaseState> {
         final SingleResponse<User> singleResponse =
             await expenseRepository.getProfile();
         if (singleResponse.success) {
-          yield InitProfileState(user: singleResponse.data);
+          if (event is EditProfileEvent)
+            yield EditProfileState(user: singleResponse.data);
+          else if (event is ChangePasswordEvent)
+            yield ChangePasswordState(user: singleResponse.data);
+          else
+            yield InitProfileState(user: singleResponse.data);
         } else {
           yield ErrorState(message: singleResponse.message);
         }
@@ -28,19 +33,19 @@ class ProfileBloc extends Bloc<BaseEvent, BaseState> {
     } else {
       yield ErrorState(message: "Tidak ada event yang sesuai");
     }
-    if (event is EditProfileEvent) {
-      try {
-        final SingleResponse<User> singleResponse =
-            await expenseRepository.getProfile();
-        if (singleResponse.success) {
-          yield EditProfileState(user: singleResponse.data);
-        } else {
-          yield ErrorState(message: singleResponse.message);
-        }
-      } catch (e) {
-        print(e);
-        yield ErrorState(message: "Tidak Terhubung");
-      }
-    } else if (event is ChangePasswordEvent) yield ChangePasswordState();
+    // if (event is EditProfileEvent) {
+    //   try {
+    //     final SingleResponse<User> singleResponse =
+    //         await expenseRepository.getProfile();
+    //     if (singleResponse.success) {
+    //       yield EditProfileState(user: singleResponse.data);
+    //     } else {
+    //       yield ErrorState(message: singleResponse.message);
+    //     }
+    //   } catch (e) {
+    //     print(e);
+    //     yield ErrorState(message: "Tidak Terhubung");
+    //   }
+    // } else if (event is ChangePasswordEvent) yield ChangePasswordState();
   }
 }

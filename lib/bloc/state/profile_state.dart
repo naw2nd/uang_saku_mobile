@@ -27,4 +27,10 @@ class EditProfileState extends ProfileState {
 }
 
 class ChangePasswordState extends ProfileState {
+  final User user;
+
+  ChangePasswordState({this.user}) : super(user: user);
+
+  @override
+  List<Object> get props => [user];
 }

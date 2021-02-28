@@ -4,12 +4,12 @@ class ProfileEvent extends BaseEvent {
   List<Object> get props => [];
 }
 
-class EditProfileEvent extends BaseEvent {
+class EditProfileEvent extends ProfileEvent {
   @override
   List<Object> get props => [];
 }
 
-class ChangePasswordEvent extends BaseEvent {
+class ChangePasswordEvent extends ProfileEvent {
   @override
   List<Object> get props => [];
 }
