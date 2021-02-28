@@ -33,19 +33,5 @@ class ProfileBloc extends Bloc<BaseEvent, BaseState> {
     } else {
       yield ErrorState(message: "Tidak ada event yang sesuai");
     }
-    // if (event is EditProfileEvent) {
-    //   try {
-    //     final SingleResponse<User> singleResponse =
-    //         await expenseRepository.getProfile();
-    //     if (singleResponse.success) {
-    //       yield EditProfileState(user: singleResponse.data);
-    //     } else {
-    //       yield ErrorState(message: singleResponse.message);
-    //     }
-    //   } catch (e) {
-    //     print(e);
-    //     yield ErrorState(message: "Tidak Terhubung");
-    //   }
-    // } else if (event is ChangePasswordEvent) yield ChangePasswordState();
   }
 }

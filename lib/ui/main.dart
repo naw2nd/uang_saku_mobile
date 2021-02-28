@@ -6,9 +6,7 @@ import 'package:uang_saku/bloc/profile_bloc.dart';
 import 'package:uang_saku/bloc/verifiy_otp_bloc.dart';
 import 'package:uang_saku/repository/expense_repository.dart';
 import 'package:uang_saku/repository/remote/http_service.dart';
-import 'package:uang_saku/repository/remote/remote_data_source.dart';
 import 'package:uang_saku/ui/splash_screen.dart';
-import 'package:http/http.dart' as http;
 
 void main() {
   runApp(MyApp());

@@ -5,6 +5,7 @@ import 'package:uang_saku/bloc/login_bloc.dart';
 import 'package:uang_saku/ui/dashboard.dart';
 import 'package:uang_saku/ui/email.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:uang_saku/ui/profile_page.dart';
 
 import '../model/models.dart';
 import '../bloc/state/base_state.dart';
@@ -172,7 +173,7 @@ class _LoginPageState extends State<LoginPage> {
                             _saveToken(state.data.token).then((value) =>
                                 Navigator.pushReplacement(context,
                                     MaterialPageRoute(builder: (context) {
-                                  return DashboardPage();
+                                  return ProfilePage();
                                 })));
                             return Container();
                           } else if (state is LoadingState) {
