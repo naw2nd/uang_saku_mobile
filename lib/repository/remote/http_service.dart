@@ -1,7 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:uang_saku/model/models.dart';
 import 'package:uang_saku/model/user.dart';
-
+import 'package:intl/intl.dart';
 class HttpService {
   Dio _dio1;
   Dio _dio;
@@ -106,14 +106,14 @@ class HttpService {
     String endPoint = "user";
     SingleResponse<String> singleResponse;
     try {
-      Response response = await _dio1.put(endPoint, data: {
+      Response response = await _dio.put(endPoint, data: {
         "username": user.username,
         "nama_pegawai": user.nama,
         "email": user.email,
         "alamat": user.alamat,
         "no_telp": user.noTelp,
         "tempat_lahir": user.tempatLahir,
-        "tgl_lahir": user.tglLahir,
+        "tgl_lahir": DateFormat('yyyy-MM-dd – kk:mm').format(user.tglLahir),
       });
       print(response);
       singleResponse = SingleResponse.fromJson(response.data);
@@ -130,7 +130,7 @@ class HttpService {
     SingleResponse singleResponse;
     try {
       Response response =
-          await _dio1.post(endPoint, data: {"password": password});
+          await _dio.post(endPoint, data: {"password": password});
       print(response);
       singleResponse = SingleResponse.fromJson(response.data);
     } on DioError catch (e) {
