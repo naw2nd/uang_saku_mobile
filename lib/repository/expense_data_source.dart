@@ -6,4 +6,6 @@ abstract class ExpenseDataSource {
   Future<SingleResponse<String>> verifyOtp(String email, String otp);
   Future<SingleResponse<String>> resetPassword(String email, String otp, String password);
   Future<SingleResponse<User>> getProfile();
+  Future<SingleResponse<String>> putUser(User user);
+  Future<SingleResponse> postPassword(String password);
 }

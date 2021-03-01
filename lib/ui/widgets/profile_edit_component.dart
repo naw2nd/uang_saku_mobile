@@ -12,21 +12,20 @@ class ProfileEditComponent extends StatelessWidget {
   TextEditingController _txtCtrlPhone;
   TextEditingController _txtCtrlTanggalLahir;
   DateTime _selectedDate;
-  ProfileEditComponent({this.user}){
-    _txtCtrlUsername = TextEditingController(text:user.username);
-    _txtCtrlFullname = TextEditingController(text:user.nama);
-    _txtCtrlEmail = TextEditingController(text:user.email);
-    _txtCtrlTempatLahir = TextEditingController(text:user.tempatLahir);
-    _txtCtrlAlamat = TextEditingController(text:user.alamat);
-    _txtCtrlPhone = TextEditingController(text:user.noTelp);
-    _txtCtrlTanggalLahir = TextEditingController(text: DateFormat.yMMMMd('en_US').format(user.tglLahir));
+  ProfileEditComponent({this.user}) {
+    _txtCtrlUsername = TextEditingController(text: user.username);
+    _txtCtrlFullname = TextEditingController(text: user.nama);
+    _txtCtrlEmail = TextEditingController(text: user.email);
+    _txtCtrlTempatLahir = TextEditingController(text: user.tempatLahir);
+    _txtCtrlAlamat = TextEditingController(text: user.alamat);
+    _txtCtrlPhone = TextEditingController(text: user.noTelp);
+    _txtCtrlTanggalLahir = TextEditingController(
+        text: DateFormat.yMMMMd('en_US').format(user.tglLahir));
     _selectedDate = user.tglLahir;
-
   }
 
   @override
   Widget build(BuildContext context) {
-
     return Container(
       child: Column(
         children: [

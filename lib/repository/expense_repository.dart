@@ -1,10 +1,8 @@
-import 'package:dio/dio.dart';
 import 'package:uang_saku/model/token.dart';
 import 'package:uang_saku/model/single_response.dart';
 import 'package:uang_saku/model/user.dart';
 import 'package:uang_saku/repository/expense_data_source.dart';
 import 'package:uang_saku/repository/remote/http_service.dart';
-import 'package:uang_saku/repository/remote/remote_data_source.dart';
 import 'package:uang_saku/repository/repositores.dart';
 
 class ExpenseRepository implements ExpenseDataSource {
@@ -36,5 +34,15 @@ class ExpenseRepository implements ExpenseDataSource {
   @override
   Future<SingleResponse<User>> getProfile() async {
     return await remoteDataSource.getProfile();
+  }
+
+  @override
+  Future<SingleResponse<String>> putUser(User user) async {
+    return await remoteDataSource.putUser(user);
+  }
+
+  @override
+  Future<SingleResponse> postPassword(String password) async {
+    return await remoteDataSource.postPassword(password);
   }
 }

@@ -1,7 +1,5 @@
-import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:uang_saku/model/user.dart';
-import 'package:uang_saku/repository/remote/http_service.dart';
 import 'package:uang_saku/ui/widgets/profile_property.dart';
 import 'package:intl/intl.dart';
 
