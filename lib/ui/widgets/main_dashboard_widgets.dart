@@ -51,7 +51,8 @@ class _DashboardWidgetsState extends State<DashboardWidgets> {
                 IconButton(
                     icon: Icon(iconback, color: Colors.white, size: 30),
                     onPressed: () {
-                      Navigator.push(context, MaterialPageRoute(builder: (context){
+                      Navigator.push(context,
+                          MaterialPageRoute(builder: (context) {
                         return BottomNavbar();
                       }));
                     }),
@@ -70,11 +71,13 @@ class _DashboardWidgetsState extends State<DashboardWidgets> {
                     size: 30,
                   ),
                   onPressed: () {
-                     showDialog(
-                          context: context,
-                          builder: (BuildContext context) {
-                            return FilterDialog(buttonSimpan: Color(0xFF3AE3CE),);
-                          });
+                    showDialog(
+                        context: context,
+                        builder: (BuildContext context) {
+                          return FilterDialog(
+                            buttonSimpan: Color(0xFF3AE3CE),
+                          );
+                        });
                   },
                 )
               ],
@@ -90,40 +93,6 @@ class _DashboardWidgetsState extends State<DashboardWidgets> {
                     topRight: Radius.circular(15))),
             child: child,
           ),
-          // Column(
-          //   mainAxisAlignment: MainAxisAlignment.end,
-          //   children: <Widget>[
-          //     BottomNavigationBar(
-          //       currentIndex: _currentTab,
-          //       items: [
-          //         BottomNavigationBarItem(
-          //             icon: Icon(
-          //               Icons.dashboard_outlined,
-          //               color: Color(0xFF358BFC),
-          //               size: 25,
-          //             ),
-          //             label: ""),
-          //         BottomNavigationBarItem(
-          //             icon: Icon(Icons.history,
-          //                 color: Color(0xFF358BFC), size: 25),
-          //             label: ""),
-          //         BottomNavigationBarItem(
-          //             icon: Icon(Icons.add_circle_outlined,
-          //                 color: Color(0xFF3AE3CE), size: 60),
-          //             label: ""),
-          //         BottomNavigationBarItem(
-          //             icon: Icon(Icons.notifications,
-          //                 color: Color(0xFF3AE3CE), size: 25),
-          //             label: ""),
-          //         BottomNavigationBarItem(
-          //             icon: Icon(Icons.person_outline_rounded,
-          //                 color: Color(0xFF3AE3CE), size: 25),
-          //             label: "")
-          //       ],
-          //       onTap: (index) {},
-          //     ),
-          //   ],
-          // )
         ],
       ),
     );

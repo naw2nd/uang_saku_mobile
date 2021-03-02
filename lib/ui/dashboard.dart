@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:uang_saku/ui/list_approval.dart';
 import 'package:uang_saku/ui/list_kasbon.dart';
 import 'package:uang_saku/ui/list_reimburse.dart';
 
@@ -73,80 +74,78 @@ class _DashboardPageState extends State<DashboardPage> {
                           children: <Widget>[
                             Flexible(
                               flex: 1,
-                              child: Container(
-                                  padding: EdgeInsets.all(10),
-                                  decoration: BoxDecoration(
-                                      color: Color(0xFF358BFC),
-                                      borderRadius: BorderRadius.circular(15)),
-                                  child: Column(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceAround,
-                                    children: <Widget>[
-                                      RaisedButton(
+                              child: GestureDetector(
+                                onTap: () {
+                                  Navigator.push(context,
+                                      MaterialPageRoute(builder: (context) {
+                                    return ListKasbon();
+                                  }));
+                                },
+                                child: Container(
+                                    padding: EdgeInsets.all(15),
+                                    decoration: BoxDecoration(
                                         color: Color(0xFF358BFC),
-                                        onPressed: () {
-                                          Navigator.push(context,
-                                              MaterialPageRoute(
-                                                  builder: (context) {
-                                            return ListKasbon();
-                                          }));
-                                        },
-                                        child: Image(
+                                        borderRadius:
+                                            BorderRadius.circular(15)),
+                                    child: Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceAround,
+                                      children: <Widget>[
+                                        Image(
                                             image: AssetImage(
                                           "images/kasbon.png",
                                         )),
-                                      ),
-                                      Container(
-                                        padding:
-                                            EdgeInsets.fromLTRB(0, 10, 0, 0),
-                                        child: Text(
-                                          "Kasbon",
-                                          style: TextStyle(
-                                              color: Colors.white,
-                                              fontFamily: "Montserrat",
-                                              fontWeight: FontWeight.w900,
-                                              fontSize: 20),
-                                        ),
-                                      )
-                                    ],
-                                  )),
+                                        Container(
+                                          padding:
+                                              EdgeInsets.fromLTRB(0, 10, 0, 0),
+                                          child: Text(
+                                            "Kasbon",
+                                            style: TextStyle(
+                                                color: Colors.white,
+                                                fontFamily: "Montserrat",
+                                                fontWeight: FontWeight.w900,
+                                                fontSize: 20),
+                                          ),
+                                        )
+                                      ],
+                                    )),
+                              ),
                             ),
                             Flexible(
                               flex: 1,
-                              child: Container(
-                                  padding: EdgeInsets.all(10),
-                                  decoration: BoxDecoration(
-                                      color: Color(0xFF3AE3CE),
-                                      borderRadius: BorderRadius.circular(15)),
-                                  child: Column(
-                                    children: <Widget>[
-                                      RaisedButton(
+                              child: GestureDetector(
+                                onTap: () {
+                                  Navigator.push(context,
+                                      MaterialPageRoute(builder: (context) {
+                                    return ListReimburse();
+                                  }));
+                                },
+                                child: Container(
+                                    padding: EdgeInsets.all(15),
+                                    decoration: BoxDecoration(
                                         color: Color(0xFF3AE3CE),
-                                        onPressed: () {
-                                          Navigator.push(context,
-                                              MaterialPageRoute(
-                                                  builder: (context) {
-                                            return ListReimburse();
-                                          }));
-                                        },
-                                        child: Image(
+                                        borderRadius:
+                                            BorderRadius.circular(15)),
+                                    child: Column(
+                                      children: <Widget>[
+                                        Image(
                                             image: AssetImage(
                                                 "images/reimburse.png")),
-                                      ),
-                                      Container(
-                                        padding:
-                                            EdgeInsets.fromLTRB(0, 10, 0, 0),
-                                        child: Text(
-                                          "Reimburse",
-                                          style: TextStyle(
-                                              color: Colors.white,
-                                              fontFamily: "Montserrat",
-                                              fontWeight: FontWeight.w900,
-                                              fontSize: 20),
-                                        ),
-                                      )
-                                    ],
-                                  )),
+                                        Container(
+                                          padding:
+                                              EdgeInsets.fromLTRB(0, 10, 0, 0),
+                                          child: Text(
+                                            "Reimburse",
+                                            style: TextStyle(
+                                                color: Colors.white,
+                                                fontFamily: "Montserrat",
+                                                fontWeight: FontWeight.w900,
+                                                fontSize: 20),
+                                          ),
+                                        )
+                                      ],
+                                    )),
+                              ),
                             )
                           ],
                         ),
@@ -161,69 +160,80 @@ class _DashboardPageState extends State<DashboardPage> {
                                 color: Color(0xFF555555)),
                           ),
                         ),
-                        Container(
-                          padding: EdgeInsets.fromLTRB(10, 0, 10, 0),
+                        GestureDetector(
+                          onTap: () {
+                            Navigator.push(context,
+                                MaterialPageRoute(builder: (context) {
+                              return ListApproval();
+                            }));
+                          },
                           child: Container(
-                            padding: EdgeInsets.fromLTRB(10, 0, 20, 0),
-                            height: MediaQuery.of(context).size.height * 0.20,
-                            decoration: BoxDecoration(
-                                color: Color(0xFF2B4D66),
-                                borderRadius: BorderRadius.circular(15)),
-                            child: Column(
-                              children: <Widget>[
-                                Row(
-                                  children: [
-                                    Text("20",
-                                        style: TextStyle(
-                                            color: Color(0xFFE1F9F2),
-                                            fontSize: 75,
-                                            fontFamily: "Montserrat",
-                                            fontWeight: FontWeight.w700)),
-                                    Container(
-                                      padding: EdgeInsets.fromLTRB(5, 20, 0, 0),
-                                      child: Image(
-                                          image: AssetImage(
-                                              "images/jumlah_approval.png")),
-                                    ),
-                                    Container(
-                                      padding:
-                                          EdgeInsets.fromLTRB(80, 10, 10, 10),
-                                      child: Image(
-                                        image: AssetImage("images/avatar.png"),
+                            padding: EdgeInsets.fromLTRB(10, 0, 10, 0),
+                            child: Container(
+                              padding: EdgeInsets.fromLTRB(10, 0, 20, 0),
+                              height: MediaQuery.of(context).size.height * 0.20,
+                              decoration: BoxDecoration(
+                                  color: Color(0xFF2B4D66),
+                                  borderRadius: BorderRadius.circular(15)),
+                              child: Column(
+                                children: <Widget>[
+                                  Row(
+                                    children: [
+                                      Text("20",
+                                          style: TextStyle(
+                                              color: Color(0xFFE1F9F2),
+                                              fontSize: 75,
+                                              fontFamily: "Montserrat",
+                                              fontWeight: FontWeight.w700)),
+                                      Container(
+                                        padding:
+                                            EdgeInsets.fromLTRB(5, 20, 0, 0),
+                                        child: Image(
+                                            image: AssetImage(
+                                                "images/jumlah_approval.png")),
                                       ),
-                                    ),
-                                  ],
-                                ),
-                                Row(
-                                  children: [
-                                    Container(
-                                      width: MediaQuery.of(context).size.width *
-                                          0.5,
-                                      child: Text(
-                                          "Pengajuan menunggu disetujui oleh :",
-                                          style: TextStyle(
-                                              color: Color(0xFFE1F9F2),
-                                              fontSize: 14,
-                                              fontFamily: "Montserrat",
-                                              fontWeight: FontWeight.w700),
-                                          textAlign: TextAlign.left,
-                                          overflow: TextOverflow.clip),
-                                    ),
-                                    Container(
-                                      padding:
-                                          EdgeInsets.fromLTRB(10, 10, 0, 0),
-                                      child: Text("Supervisor",
-                                          style: TextStyle(
-                                              color: Color(0xFFE1F9F2),
-                                              fontSize: 20,
-                                              fontFamily: "Montserrat",
-                                              fontWeight: FontWeight.w700),
-                                          textAlign: TextAlign.left,
-                                          overflow: TextOverflow.clip),
-                                    )
-                                  ],
-                                )
-                              ],
+                                      Container(
+                                        padding:
+                                            EdgeInsets.fromLTRB(80, 10, 10, 10),
+                                        child: Image(
+                                          image:
+                                              AssetImage("images/avatar.png"),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                  Row(
+                                    children: [
+                                      Container(
+                                        width:
+                                            MediaQuery.of(context).size.width *
+                                                0.5,
+                                        child: Text(
+                                            "Pengajuan menunggu disetujui oleh :",
+                                            style: TextStyle(
+                                                color: Color(0xFFE1F9F2),
+                                                fontSize: 14,
+                                                fontFamily: "Montserrat",
+                                                fontWeight: FontWeight.w700),
+                                            textAlign: TextAlign.left,
+                                            overflow: TextOverflow.clip),
+                                      ),
+                                      Container(
+                                        padding:
+                                            EdgeInsets.fromLTRB(10, 10, 0, 0),
+                                        child: Text("Supervisor",
+                                            style: TextStyle(
+                                                color: Color(0xFFE1F9F2),
+                                                fontSize: 20,
+                                                fontFamily: "Montserrat",
+                                                fontWeight: FontWeight.w700),
+                                            textAlign: TextAlign.left,
+                                            overflow: TextOverflow.clip),
+                                      )
+                                    ],
+                                  )
+                                ],
+                              ),
                             ),
                           ),
                         ),

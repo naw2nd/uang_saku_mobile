@@ -1,21 +1,17 @@
-//import 'dart:html';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 
-class RincianBiaya extends StatefulWidget {
-  var buttonColor = Color(0xFF358BFC);
-  String judul = "Rincian Biaya Kasbon";
-
-  RincianBiaya({this.buttonColor, this.judul});
-
+class RincianLaporan extends StatefulWidget {
   @override
-  _RincianBiayaState createState() =>
-      _RincianBiayaState(buttonColor: buttonColor, judul: judul);
+  _RincianLaporanState createState() => _RincianLaporanState();
 }
 
-class _RincianBiayaState extends State<RincianBiaya> {
+class _RincianLaporanState extends State<RincianLaporan> {
+  var buttonColor = Color(0xFF358BFC);
+  String showKategoriBiaya;
+  List kategoriBiaya = ["Pemeliharaan", "Entertain"];
   File _image;
   final picker = ImagePicker();
 
@@ -43,18 +39,6 @@ class _RincianBiayaState extends State<RincianBiaya> {
     });
   }
 
-  var buttonColor = Color(0xFF358BFC);
-  String judul = "Rincian Biaya Kasbon";
-  TextEditingController namaBiaya_tf = TextEditingController();
-  TextEditingController KategoriBiaya_tf = TextEditingController();
-  TextEditingController jumlah_tf = TextEditingController();
-  TextEditingController hargaSatuan_tf = TextEditingController();
-  TextEditingController catatan_tf = TextEditingController();
-  String showKategoriBiaya;
-  List kategoriBiaya = ["Pemeliharaan", "Entertain"];
-
-  _RincianBiayaState({this.buttonColor, this.judul});
-
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -71,7 +55,7 @@ class _RincianBiayaState extends State<RincianBiaya> {
                         Padding(
                           padding: EdgeInsets.fromLTRB(10, 0, 0, 0),
                           child: Text(
-                            judul,
+                            "Rincian Laporan",
                             style: TextStyle(
                                 fontFamily: "Montserrat",
                                 fontWeight: FontWeight.w600,
@@ -127,39 +111,18 @@ class _RincianBiayaState extends State<RincianBiaya> {
                       ),
                     ),
                   ),
-                  Row(
-                    children: <Widget>[
-                      Flexible(
-                        child: Container(
-                          padding: EdgeInsets.fromLTRB(20, 0, 20, 10),
-                          child: TextField(
-                            decoration: const InputDecoration(
-                              hintStyle: TextStyle(color: Colors.black45),
-                              errorStyle: TextStyle(color: Colors.redAccent),
-                              border: OutlineInputBorder(),
-                              labelText: 'Jumlah',
-                            ),
-                            onTap: () {},
-                            //controller: tanggalSelesai,
-                          ),
-                        ),
+                  Container(
+                    padding: EdgeInsets.fromLTRB(20, 0, 20, 10),
+                    child: TextField(
+                      decoration: const InputDecoration(
+                        hintStyle: TextStyle(color: Colors.black45),
+                        errorStyle: TextStyle(color: Colors.redAccent),
+                        border: OutlineInputBorder(),
+                        labelText: 'Harga Total',
                       ),
-                      Flexible(
-                        child: Container(
-                          padding: EdgeInsets.fromLTRB(20, 0, 20, 10),
-                          child: TextField(
-                            decoration: const InputDecoration(
-                              hintStyle: TextStyle(color: Colors.black45),
-                              errorStyle: TextStyle(color: Colors.redAccent),
-                              border: OutlineInputBorder(),
-                              labelText: 'Harga Satuan',
-                            ),
-                            onTap: () {},
-                            //controller: tanggalSelesai,
-                          ),
-                        ),
-                      ),
-                    ],
+                      onTap: () {},
+                      //controller: tanggalSelesai,
+                    ),
                   ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceAround,

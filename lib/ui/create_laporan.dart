@@ -1,22 +1,34 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:uang_saku/ui/rincian_approval.dart';
+import 'package:uang_saku/ui/widgets/rincian_biaya.dart';
 import 'package:percent_indicator/percent_indicator.dart';
+import 'package:uang_saku/ui/widgets/rincian_laporan.dart';
 
-class DetailsPengajuan extends StatefulWidget {
-  Color mainColor = Color(0xFF358BFC);
-
-  DetailsPengajuan({this.mainColor});
-
+class CreateLaporan extends StatefulWidget {
   @override
-  _DetailsPengajuanState createState() => _DetailsPengajuanState(mainColor: mainColor);
+  _CreateLaporanState createState() => _CreateLaporanState();
 }
 
-class _DetailsPengajuanState extends State<DetailsPengajuan> {
-  Color mainColor = Color(0xFF358BFC);
+class _CreateLaporanState extends State<CreateLaporan> {
+  RincianBiaya rincianBiaya = new RincianBiaya(
+    judul: "Rincian Kasbon",
+    buttonColor: Color(0xFF358BFC),
+  );
 
-  _DetailsPengajuanState({this.mainColor});
+  _showDialog() async {
+    await Future.delayed(Duration(milliseconds: 50));
+    showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return rincianBiaya;
+        });
+  }
 
   @override
   Widget build(BuildContext context) {
+    Color mainColor = Color(0xFF358BFC);
+
     return MaterialApp(
       home: Scaffold(
         appBar: AppBar(
@@ -469,7 +481,153 @@ class _DetailsPengajuanState extends State<DetailsPengajuan> {
                   ],
                 ),
               ),
-            )
+            ),
+            Card(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  Container(
+                    padding: EdgeInsets.fromLTRB(20, 10, 0, 10),
+                    child: Text(
+                      "Rincian Biaya",
+                      style: TextStyle(
+                          fontFamily: "Montserrat",
+                          fontWeight: FontWeight.w700,
+                          fontSize: 16,
+                          color: Color(0xFF555555)),
+                    ),
+                  ),
+                  Container(
+                    padding: EdgeInsets.fromLTRB(20, 0, 20, 10),
+                    child: Card(
+                      child: Column(
+                        children: <Widget>[
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: <Widget>[
+                              Text("Perawatan",
+                                  style: TextStyle(
+                                      fontFamily: "Montserrat",
+                                      fontWeight: FontWeight.w600)),
+                              IconButton(
+                                  icon: Icon(Icons.file_present),
+                                  onPressed: () {})
+                            ],
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: <Widget>[
+                              Text("Sisir kucing extra smooth",
+                                  maxLines: 3,
+                                  style: TextStyle(fontFamily: "Montserrat")),
+                              Text(
+                                "Rp 134.000,00",
+                                style: TextStyle(fontFamily: "Montserrat"),
+                              )
+                            ],
+                          )
+                        ],
+                      ),
+                    ),
+                  ),
+                  Center(
+                    child: Container(
+                      padding: EdgeInsets.fromLTRB(20, 0, 20, 10),
+                      child: RaisedButton(
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(11)),
+                        color: Color(0xFF358BFC),
+                        onPressed: () {
+                          Navigator.push(context,
+                              MaterialPageRoute(builder: (context) {
+                            return RincianLaporan();
+                          }));
+                        },
+                        child: Text("Tambahkan Rincian Biaya +",
+                            style: TextStyle(
+                                fontFamily: "Montserrat",
+                                color: Colors.white,
+                                fontWeight: FontWeight.w600)),
+                      ),
+                    ),
+                  ),
+                  Padding(
+                    padding: EdgeInsets.all(10),
+                    child: Card(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: <Widget>[
+                              Container(
+                                padding: EdgeInsets.fromLTRB(20, 10, 0, 10),
+                                child: Text(
+                                  "Total Biaya",
+                                  style: TextStyle(
+                                      fontFamily: "Montserrat",
+                                      fontWeight: FontWeight.w700,
+                                      fontSize: 16,
+                                      color: Color(0xFF555555)),
+                                ),
+                              ),
+                              Container(
+                                padding: EdgeInsets.fromLTRB(20, 10, 20, 10),
+                                child: Text(
+                                  "Rp 256.000,00",
+                                  style: TextStyle(
+                                      fontFamily: "Montserrat",
+                                      fontWeight: FontWeight.w700,
+                                      fontSize: 14,
+                                      color: Color(0xFF555555)),
+                                ),
+                              ),
+                            ],
+                          ),
+                          Container(
+                            padding: EdgeInsets.fromLTRB(20, 0, 20, 10),
+                            child: TextField(
+                              maxLines: 3,
+                              decoration: const InputDecoration(
+                                hintStyle: TextStyle(color: Colors.black45),
+                                errorStyle: TextStyle(color: Colors.redAccent),
+                                border: OutlineInputBorder(),
+                                labelText: 'Catatan',
+                              ),
+                              onTap: () {},
+                              //controller: tanggalSelesai,
+                            ),
+                          ),
+                          Center(
+                            child: Container(
+                              padding: EdgeInsets.fromLTRB(20, 0, 20, 10),
+                              child: Ink(
+                                decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(10),
+                                    color: Color(0xFF358BFC)),
+                                child: Container(
+                                  constraints: BoxConstraints(
+                                      maxWidth: 400, minHeight: 50),
+                                  alignment: Alignment.center,
+                                  child: Text(
+                                    "Kirim Laporan",
+                                    style: TextStyle(
+                                        color: Colors.white,
+                                        fontSize: 20,
+                                        fontWeight: FontWeight.w600,
+                                        fontFamily: "Montserrat"),
+                                  ),
+                                ),
+                              ),
+                            ),
+                          )
+                        ],
+                      ),
+                    ),
+                  )
+                ],
+              ),
+            ),
           ],
         ),
       ),

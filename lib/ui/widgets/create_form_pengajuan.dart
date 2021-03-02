@@ -152,7 +152,7 @@ class _CreatePengajuanState extends State<CreatePengajuan> {
                           width: MediaQuery.of(context).size.width * 0.8,
                           padding: EdgeInsets.fromLTRB(25, 0, 25, 10),
                           decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(10),
+                              borderRadius: BorderRadius.circular(5),
                               border: Border.all(color: Colors.blueGrey)),
                           child: DropdownButton(
                             hint: Text("Kategori"),
@@ -230,7 +230,7 @@ class _CreatePengajuanState extends State<CreatePengajuan> {
                         child: Container(
                           padding: EdgeInsets.fromLTRB(25, 0, 25, 10),
                           decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(10),
+                              borderRadius: BorderRadius.circular(5),
                               border: Border.all(color: Colors.blueGrey)),
                           child: DropdownButton(
                             hint: Text("Perusahaan"),
@@ -257,7 +257,7 @@ class _CreatePengajuanState extends State<CreatePengajuan> {
                           width: MediaQuery.of(context).size.width * 0.8,
                           padding: EdgeInsets.fromLTRB(25, 0, 25, 10),
                           decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(10),
+                              borderRadius: BorderRadius.circular(5),
                               border: Border.all(color: Colors.blueGrey)),
                           child: DropdownButton(
                             hint: Text("Cabang"),
@@ -284,7 +284,7 @@ class _CreatePengajuanState extends State<CreatePengajuan> {
                           width: MediaQuery.of(context).size.width * 0.8,
                           padding: EdgeInsets.fromLTRB(25, 0, 25, 10),
                           decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(10),
+                              borderRadius: BorderRadius.circular(5),
                               border: Border.all(color: Colors.blueGrey)),
                           child: DropdownButton(
                             hint: Text("Jenis Pencairan"),

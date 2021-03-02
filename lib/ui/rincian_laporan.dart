@@ -127,39 +127,18 @@ class _RincianBiayaState extends State<RincianBiaya> {
                       ),
                     ),
                   ),
-                  Row(
-                    children: <Widget>[
-                      Flexible(
-                        child: Container(
-                          padding: EdgeInsets.fromLTRB(20, 0, 20, 10),
-                          child: TextField(
-                            decoration: const InputDecoration(
-                              hintStyle: TextStyle(color: Colors.black45),
-                              errorStyle: TextStyle(color: Colors.redAccent),
-                              border: OutlineInputBorder(),
-                              labelText: 'Jumlah',
-                            ),
-                            onTap: () {},
-                            //controller: tanggalSelesai,
-                          ),
-                        ),
+                  Container(
+                    padding: EdgeInsets.fromLTRB(20, 0, 20, 10),
+                    child: TextField(
+                      decoration: const InputDecoration(
+                        hintStyle: TextStyle(color: Colors.black45),
+                        errorStyle: TextStyle(color: Colors.redAccent),
+                        border: OutlineInputBorder(),
+                        labelText: 'Harga Total',
                       ),
-                      Flexible(
-                        child: Container(
-                          padding: EdgeInsets.fromLTRB(20, 0, 20, 10),
-                          child: TextField(
-                            decoration: const InputDecoration(
-                              hintStyle: TextStyle(color: Colors.black45),
-                              errorStyle: TextStyle(color: Colors.redAccent),
-                              border: OutlineInputBorder(),
-                              labelText: 'Harga Satuan',
-                            ),
-                            onTap: () {},
-                            //controller: tanggalSelesai,
-                          ),
-                        ),
-                      ),
-                    ],
+                      onTap: () {},
+                      //controller: tanggalSelesai,
+                    ),
                   ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceAround,

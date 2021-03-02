@@ -1,17 +1,25 @@
 import 'dart:async';
-
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:uang_saku/ui/login_page.dart';
+import 'package:uang_saku/ui/widgets/bottom_navbar.dart';
 
 class SplashScreen extends StatelessWidget {
+  String token;
+
   @override
   Widget build(BuildContext context) {
     Timer(
         Duration(seconds: 2),
-        () => Navigator.pushReplacement(context,
+        () => saveToken(token) == null
+            ? Navigator.pushReplacement(context,
                 MaterialPageRoute(builder: (context) {
-              return LoginPage();
-            })));
+                return LoginPage();
+              }))
+            : Navigator.pushReplacement(context,
+                MaterialPageRoute(builder: (context) {
+                return BottomNavbar();
+              })));
     return MaterialApp(
       home: Scaffold(
           body: Center(
@@ -23,4 +31,10 @@ class SplashScreen extends StatelessWidget {
       )),
     );
   }
+}
+
+saveToken(String token) async {
+  WidgetsFlutterBinding.ensureInitialized();
+  SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+  sharedPreferences.setString("token", token);
 }
