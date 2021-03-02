@@ -22,7 +22,7 @@ class UpdateProfileEvent extends BaseEvent {
   @override
   List<Object> get props => [user];
 }
-class UpdatePasswordEvent extends ProfileEvent {
+class UpdatePasswordEvent extends BaseEvent {
   final String password;
   UpdatePasswordEvent({this.password});
   @override

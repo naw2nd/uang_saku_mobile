@@ -5,6 +5,8 @@ import 'package:uang_saku/bloc/bloc.dart';
 import 'package:uang_saku/bloc/profile_bloc.dart';
 import 'package:uang_saku/bloc/state/base_state.dart';
 import 'package:uang_saku/model/user.dart';
+import 'package:uang_saku/ui/login_page.dart';
+import 'package:uang_saku/ui/splash_screen.dart';
 import 'package:uang_saku/ui/widgets/custom_card.dart';
 import 'package:uang_saku/ui/widgets/profile_change_password.dart';
 import 'package:uang_saku/ui/widgets/profile_component.dart';
@@ -41,7 +43,13 @@ class ProfilePage extends StatelessWidget {
                           Icons.exit_to_app,
                           color: Colors.white,
                         ),
-                        onPressed: () {})
+                        onPressed: () {
+                          context.read<LoginBloc>().add(LogoutEvent());
+                          Navigator.pushReplacement(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => SplashScreen()));
+                        })
                   ],
                 ),
               ),
@@ -138,7 +146,6 @@ class ProfilePage extends StatelessWidget {
                                           : (childState is EditProfileState)
                                               ? ProfileEditComponent(user: user)
                                               : ProfileChangePasswordComponent(),
-                                      
                                     ]),
                                   ),
                                 ),

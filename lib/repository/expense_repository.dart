@@ -45,4 +45,15 @@ class ExpenseRepository implements ExpenseDataSource {
   Future<SingleResponse> postPassword(String password) async {
     return await remoteDataSource.postPassword(password);
   }
+
+  @override
+  setToken() {
+    remoteDataSource.setToken();
+  }
+
+  @override
+  logout() {
+    remoteDataSource.logout();
+  }
+
 }

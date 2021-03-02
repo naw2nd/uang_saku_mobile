@@ -53,7 +53,7 @@ class ProfileBloc extends Bloc<BaseEvent, BaseState> {
         print(e);
         yield ErrorState(message: "Tidak Terhubung");
       }
-    } else {
+    }else {
       yield ErrorState(message: "Tidak ada event yang sesuai");
     }
   }

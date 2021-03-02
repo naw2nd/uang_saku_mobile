@@ -8,4 +8,6 @@ abstract class ExpenseDataSource {
   Future<SingleResponse<User>> getProfile();
   Future<SingleResponse<String>> putUser(User user);
   Future<SingleResponse> postPassword(String password);
+  setToken();
+  logout();
 }

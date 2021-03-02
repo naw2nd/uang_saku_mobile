@@ -29,7 +29,13 @@ class LoginBloc extends Bloc<BaseEvent, BaseState> {
         yield ErrorState(message: "Tidak Terhubung");
       }
     } else if (event is LogoutEvent) {
-      yield EmptyState();
+      try {
+        await expenseRepository.logout();
+        yield EmptyState();
+      } catch (e) {
+        print(e);
+        yield ErrorState(message: "Tidak Terhubung");
+      }
     } else {
       yield ErrorState(message: "Tidak ada event yang sesuai");
     }

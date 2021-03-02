@@ -1,11 +1,13 @@
 import 'package:dio/dio.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:uang_saku/model/models.dart';
 import 'package:uang_saku/model/user.dart';
 import 'package:intl/intl.dart';
 class HttpService {
   Dio _dio1;
   Dio _dio;
-  String token = "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiIzIiwianRpIjoiMmRkMmQ2ODQ0NDNlM2M0NGQzOTdiN2JlNGMwYWRlODE2ZTlhZjRjOWExYTAyODEwYjY3MzdhMTBhOTVmOWZiMzAyMTYxNjAxMTFhNGRhNTMiLCJpYXQiOiIxNjE0NTMxODM1LjAwMjc5MiIsIm5iZiI6IjE2MTQ1MzE4MzUuMDAyNzk3IiwiZXhwIjoiMTY0NjA2NzgzNC4yNTEwOTIiLCJzdWIiOiIyIiwic2NvcGVzIjpbXX0.NQeDvNvq7SZ6cWcfgp-JiQh5CtuEru_cOj-x7XtxEUHYdln1SCT4Njb70RUJFpcuj6xqyz0fR3fCnDAO-fBw_PWFZOtmBTR-37w2MRc25z6PXWdIlRbQ_KessAI68XwofBDlCLcYZJhZ257-xflOyJq0c_Kd8Rj9avg7Q2c8nLseHYE7k-MiOhBb_6RlBv-6LtIayH1lgTobRjdD11qqARfJW-tBzDmw8qnhRIei1J-5VCD3v7Wd03hXJtxzlXpLdkXIYmmiDqJHRjNCB2zdXWftyXd0M9Bev7BMQ6nAP8N9K96j1-AoL7SL5BUZRxWylvyobsMuELCVzq-4kytZUiP1QMSUNWVLW8mLwpD19n7RyWM-wSyUud6ZuHrQdvKlwycK38eWl7cSqdeBMBvMidja6gFPbbhtEnP2hf5xJRdFn7igOonZNTOiA5XttBidScUGudVqV2jW6u27kJ2ztbTwEjG0QmAK4-XJxRzr-RVPY7fUbwu2BxiDCCHer7QC59aNoFdUnwAeFMXN9XNEglkvrS1ElsXXVWf9cmS4DCVxbgZUAkKluvf_mApJRgHh26OFZ25B7UogRSaz6M4YcmqNnwh6QADxQlKeEbI2uYoKxWL2leP_KL_Zc8FGLcMkk6K6WzcxT-cFCN0sjCTDBAyHVK5xGZXvI9ZZMWKcTG0";
+  SharedPreferences sharedPreferences;
+  String token = "";//"eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiIzIiwianRpIjoiMmRkMmQ2ODQ0NDNlM2M0NGQzOTdiN2JlNGMwYWRlODE2ZTlhZjRjOWExYTAyODEwYjY3MzdhMTBhOTVmOWZiMzAyMTYxNjAxMTFhNGRhNTMiLCJpYXQiOiIxNjE0NTMxODM1LjAwMjc5MiIsIm5iZiI6IjE2MTQ1MzE4MzUuMDAyNzk3IiwiZXhwIjoiMTY0NjA2NzgzNC4yNTEwOTIiLCJzdWIiOiIyIiwic2NvcGVzIjpbXX0.NQeDvNvq7SZ6cWcfgp-JiQh5CtuEru_cOj-x7XtxEUHYdln1SCT4Njb70RUJFpcuj6xqyz0fR3fCnDAO-fBw_PWFZOtmBTR-37w2MRc25z6PXWdIlRbQ_KessAI68XwofBDlCLcYZJhZ257-xflOyJq0c_Kd8Rj9avg7Q2c8nLseHYE7k-MiOhBb_6RlBv-6LtIayH1lgTobRjdD11qqARfJW-tBzDmw8qnhRIei1J-5VCD3v7Wd03hXJtxzlXpLdkXIYmmiDqJHRjNCB2zdXWftyXd0M9Bev7BMQ6nAP8N9K96j1-AoL7SL5BUZRxWylvyobsMuELCVzq-4kytZUiP1QMSUNWVLW8mLwpD19n7RyWM-wSyUud6ZuHrQdvKlwycK38eWl7cSqdeBMBvMidja6gFPbbhtEnP2hf5xJRdFn7igOonZNTOiA5XttBidScUGudVqV2jW6u27kJ2ztbTwEjG0QmAK4-XJxRzr-RVPY7fUbwu2BxiDCCHer7QC59aNoFdUnwAeFMXN9XNEglkvrS1ElsXXVWf9cmS4DCVxbgZUAkKluvf_mApJRgHh26OFZ25B7UogRSaz6M4YcmqNnwh6QADxQlKeEbI2uYoKxWL2leP_KL_Zc8FGLcMkk6K6WzcxT-cFCN0sjCTDBAyHVK5xGZXvI9ZZMWKcTG0";
 
   final baseURL = "http://192.168.100.5:8000/api/v1/";
   final baseURL1 = "http://128.199.208.102/api/v1/";
@@ -17,11 +19,17 @@ class HttpService {
     initalInterceptors();
   }
 
+  setToken() async {
+    sharedPreferences = await SharedPreferences.getInstance();
+    token = sharedPreferences.getString("token");
+    // print("Token = "+token);
+  }
+
   Future<SingleResponse<Token>> login(String email, String password) async {
     String endPoint = "login";
     SingleResponse<Token> singleResponseToken;
     try {
-      Response response = await _dio1
+      Response response = await _dio
           .post(endPoint, data: {"email": email, "password": password});
       print(response);
       SingleResponse singleResponse = SingleResponse.fromJson(response.data);
@@ -29,6 +37,7 @@ class HttpService {
           success: singleResponse.success,
           message: singleResponse.message,
           data: Token.fromJson(singleResponse.data));
+          setToken();
     } on DioError catch (e) {
       print(e.message);
       throw Exception(e.message);
@@ -141,6 +150,10 @@ class HttpService {
     return singleResponse;
   }
 
+  logout() async {
+    await sharedPreferences.clear();
+  }
+
   initalInterceptors() {
     _dio.interceptors.add(InterceptorsWrapper(
       onError: (error) {
@@ -149,7 +162,7 @@ class HttpService {
       request.headers["Authorization"] = "Bearer " + token;
       print("${request.method} ${request.path}");
     }, onResponse: (response) {
-      print(response.data);
+      // print(response.data);
     }));
   }
 }
