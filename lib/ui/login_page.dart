@@ -195,8 +195,8 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   _saveToken(String token) async {
-    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-    sharedPreferences.setString("token", token);
+    // SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+    // sharedPreferences.setString("token", token);
   }
 
   void _isPasswordVisibility() {

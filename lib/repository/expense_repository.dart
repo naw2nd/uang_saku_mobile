@@ -47,8 +47,13 @@ class ExpenseRepository implements ExpenseDataSource {
   }
 
   @override
-  setToken() {
-    remoteDataSource.setToken();
+  setToken(String token) {
+    remoteDataSource.setToken(token);
+  }
+
+  @override
+  getToken() {
+    remoteDataSource.getToken();
   }
 
   @override
