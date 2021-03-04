@@ -136,11 +136,8 @@ class _VerificationPageState extends State<VerificationPage> {
                                         otp: pinController.text, email: email));
                                 setState(() {
                                   hasError = false;
-                                  scaffoldKey.currentState
-                                      .showSnackBar(SnackBar(
-                                    duration: Duration(seconds: 2),
-                                    content: null,
-                                  ));
+                                  scaffoldKey.currentState.showSnackBar(
+                                      SnackBar(duration: Duration(seconds: 2), content: Text("Success"),));
                                 });
                               } else {
                                 print("tes");

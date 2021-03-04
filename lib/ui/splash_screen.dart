@@ -11,7 +11,7 @@ class SplashScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     Timer(
         Duration(seconds: 2),
-        () => saveToken(token) == null
+        () => getToken().then((value) => (value == null)
             ? Navigator.pushReplacement(context,
                 MaterialPageRoute(builder: (context) {
                 return LoginPage();
@@ -19,7 +19,7 @@ class SplashScreen extends StatelessWidget {
             : Navigator.pushReplacement(context,
                 MaterialPageRoute(builder: (context) {
                 return BottomNavbar();
-              })));
+              }))));
     return MaterialApp(
       home: Scaffold(
           body: Center(
@@ -33,8 +33,8 @@ class SplashScreen extends StatelessWidget {
   }
 }
 
-saveToken(String token) async {
+Future<String> getToken() async {
   WidgetsFlutterBinding.ensureInitialized();
   SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-  sharedPreferences.setString("token", token);
+  return sharedPreferences.getString("token");
 }
