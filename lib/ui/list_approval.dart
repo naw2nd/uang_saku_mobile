@@ -1,29 +1,23 @@
 import 'package:flutter/material.dart';
-import 'package:uang_saku/ui/create_laporan.dart';
 import 'package:uang_saku/ui/details_approval.dart';
-import 'package:uang_saku/ui/widgets/card_list.dart';
-import 'package:uang_saku/ui/widgets/details_pengajuan.dart';
+import 'package:uang_saku/ui/filter_approval.dart';
+import 'package:uang_saku/ui/kasbon_approval.dart';
 import 'package:uang_saku/ui/widgets/filter_dialog.dart';
-import 'package:uang_saku/ui/widgets/bottom_navbar.dart';
 import 'package:uang_saku/ui/widgets/kasbon_card.dart';
-import 'package:uang_saku/ui/widgets/laporan_card.dart';
-import 'package:uang_saku/ui/widgets/main_dashboard_widgets.dart';
+import 'package:uang_saku/ui/widgets/reimburse_card.dart';
 
-class ListKasbon extends StatefulWidget {
+class ListApproval extends StatefulWidget {
   @override
-  _ListKasbonState createState() => _ListKasbonState();
+  _ListApprovalState createState() => _ListApprovalState();
 }
 
-class _ListKasbonState extends State<ListKasbon> {
-  FilterDialog filterDialog = new FilterDialog(
-    buttonSimpan: Color(0xFF358BFC),
-  );
+class _ListApprovalState extends State<ListApproval> {
   TabBar myTabBar = TabBar(
     labelStyle: TextStyle(
         fontFamily: "Montserrat", fontWeight: FontWeight.w600, fontSize: 18),
-    tabs: <Widget>[Text("Kasbon"), Text("Laporan")],
-    indicatorColor: Color(0xFF358BFC),
-    labelColor: Colors.blue,
+    tabs: <Widget>[Text("Kasbon"), Text("Reimburse")],
+    indicatorColor: Color(0xFF2B4D66),
+    labelColor: Color(0xFF2B4D66),
   );
   @override
   Widget build(BuildContext context) {
@@ -32,9 +26,10 @@ class _ListKasbonState extends State<ListKasbon> {
           length: 2,
           child: Scaffold(
             appBar: AppBar(
+              backgroundColor: Color(0xFF2B4D66),
               centerTitle: true,
               title: Text(
-                "Kasbon",
+                "Approval ",
                 style: TextStyle(
                     fontFamily: "Montserrat",
                     fontWeight: FontWeight.w900,
@@ -53,9 +48,7 @@ class _ListKasbonState extends State<ListKasbon> {
                       showDialog(
                           context: context,
                           builder: (BuildContext context) {
-                            return FilterDialog(
-                              buttonSimpan: Color(0xFF358BFC),
-                            );
+                            return FilterApproval();
                           });
                     })
               ],
@@ -103,7 +96,6 @@ class _ListKasbonState extends State<ListKasbon> {
                         )
                       ],
                     ),
-                    KasbonCard(),
                     KasbonCard()
                   ],
                 ),
@@ -137,8 +129,7 @@ class _ListKasbonState extends State<ListKasbon> {
                       )
                     ],
                   ),
-                  LaporanCard(),
-                  LaporanCard()
+                  ReimburseCard()
                 ],
               ),
             ]),
@@ -147,5 +138,70 @@ class _ListKasbonState extends State<ListKasbon> {
   }
 }
 
-
-
+class NoteDialog extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Dialog(
+      child: Container(
+        height: MediaQuery.of(context).size.width * 0.6,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            Padding(
+                padding: EdgeInsets.all(10),
+                child: Text(
+                  "Catatan Dari Approval",
+                  style: TextStyle(
+                      fontFamily: "Montserrat", fontWeight: FontWeight.w600),
+                )),
+            Container(
+              padding: EdgeInsets.fromLTRB(20, 0, 20, 10),
+              child: TextField(
+                maxLines: 3,
+                decoration: const InputDecoration(
+                  hintStyle: TextStyle(color: Colors.black45),
+                  errorStyle: TextStyle(color: Colors.redAccent),
+                  border: OutlineInputBorder(),
+                  labelText: 'Catatan',
+                ),
+                onTap: () {},
+                //controller: tanggalSelesai,
+              ),
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: <Widget>[
+                RaisedButton(
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(15)),
+                  color: Colors.red,
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                  child: Text(
+                    "Batal",
+                    style: TextStyle(
+                        fontFamily: "Montserrat",
+                        fontWeight: FontWeight.w600,
+                        color: Colors.white),
+                  ),
+                ),
+                RaisedButton(
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(15)),
+                  color: Color(0xFF2B4D66),
+                  onPressed: () {},
+                  child: Text("Kirim",
+                      style: TextStyle(
+                          fontFamily: "Montserrat",
+                          fontWeight: FontWeight.w600,
+                          color: Colors.white)),
+                )
+              ],
+            )
+          ],
+        ),
+      ),
+    );
+  }
+}

@@ -10,6 +10,7 @@ class FilterDialog extends StatefulWidget {
 }
 
 class _FilterDialogState extends State<FilterDialog> {
+  
   DateTime currentDate = DateTime.now();
   DateTime endDate = DateTime.now();
 

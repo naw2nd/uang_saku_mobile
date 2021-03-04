@@ -2,11 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:uang_saku/bloc/bloc.dart';
 import 'package:uang_saku/bloc/login_bloc.dart';
-
 import 'package:uang_saku/ui/email.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:uang_saku/ui/widgets/bottom_navbar.dart';
-
 import '../model/models.dart';
 import '../bloc/state/base_state.dart';
 
@@ -171,10 +169,12 @@ class _LoginPageState extends State<LoginPage> {
                             );
                           } else if (state is SuccesState<Token>) {
                             print("Success State");
-                            _saveToken(state.data.token).then((value) =>
+                            saveToken(state.data.token).then((value) =>
                                 Navigator.pushReplacement(context,
                                     MaterialPageRoute(builder: (context) {
-                                  return BottomNavbar();
+                                  return state.data.token == null
+                                      ? LoginPage()
+                                      : BottomNavbar();
                                 })));
                             return Container();
                           } else if (state is LoadingState) {
@@ -195,7 +195,8 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 
-  _saveToken(String token) async {
+  saveToken(String token) async {
+    WidgetsFlutterBinding.ensureInitialized();  
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
     sharedPreferences.setString("token", token);
   }

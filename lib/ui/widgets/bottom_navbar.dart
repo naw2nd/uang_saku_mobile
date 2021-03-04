@@ -1,6 +1,10 @@
 // import 'dart:html';
 
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
+import 'package:uang_saku/ui/create_kasbon.dart';
+import 'package:uang_saku/ui/create_reimburse.dart';
 import 'package:uang_saku/ui/notifikasi.dart';
 import 'package:uang_saku/ui/riwayat.dart';
 
@@ -78,14 +82,12 @@ class ShowModal extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
               ClipRRect(
-                borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(10),
-                    topRight: Radius.circular(10)),
-                child: Image.network(
-                  "https://i.pinimg.com/originals/86/fa/f3/86faf30598360ff6e1c5e747689286ca.gif",
-                  fit: BoxFit.fitHeight,
-                ),
-              ),
+                  borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(10),
+                      topRight: Radius.circular(10)),
+                  child: Image(
+                    image: AssetImage("images/create.gif"),
+                  )),
               Container(
                 padding: EdgeInsets.fromLTRB(0, 15, 0, 0),
                 child: Text("Buat Pengajuan",
@@ -116,7 +118,12 @@ class ShowModal extends StatelessWidget {
                         shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(18)),
                         color: Color(0xFF358BFC),
-                        onPressed: () {},
+                        onPressed: () {
+                          Navigator.push(context,
+                              MaterialPageRoute(builder: (context) {
+                            return CreateKasbon();
+                          }));
+                        },
                         child: Text("Kasbon",
                             style: TextStyle(
                                 color: Colors.white,
@@ -127,7 +134,12 @@ class ShowModal extends StatelessWidget {
                         shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(18)),
                         color: Color(0xFF3AE3CE),
-                        onPressed: () {},
+                        onPressed: () {
+                          Navigator.push(context,
+                              MaterialPageRoute(builder: (context) {
+                            return CreateReimburse();
+                          }));
+                        },
                         child: Text("Reimburse",
                             style: TextStyle(
                                 color: Colors.white,
