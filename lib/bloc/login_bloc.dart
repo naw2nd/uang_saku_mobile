@@ -22,7 +22,7 @@ class LoginBloc extends Bloc<BaseEvent, BaseState> {
         if (response.success) {
           expenseRepository.setToken(response.data.token);
           yield SuccesState<Token>(data: response.data);
-          expenseRepository.getToken();
+          // expenseRepository.getToken();
         } else {
           yield ErrorState(message: response.message);
         }

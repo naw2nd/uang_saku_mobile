@@ -7,7 +7,7 @@ import 'package:intl/intl.dart';
 class HttpService {
   Dio _dio;
   SharedPreferences sharedPreferences;
-  String token= "";
+  String token = "";
 
   final baseURL = "http://192.168.137.18:8000/api/v1/";
 
@@ -39,6 +39,8 @@ class HttpService {
           success: singleResponse.success,
           message: singleResponse.message,
           data: Token.fromJson(singleResponse.data));
+      print(singleResponseToken.data.token);
+      // setToken(singleResponseToken.data.token);
     } on DioError catch (e) {
       print(e);
       // throw Exception(e.message);

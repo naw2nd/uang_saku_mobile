@@ -33,16 +33,19 @@ class ExpenseRepository implements ExpenseDataSource {
 
   @override
   Future<SingleResponse<User>> getProfile() async {
+    remoteDataSource.getToken();
     return await remoteDataSource.getProfile();
   }
 
   @override
   Future<SingleResponse<String>> putUser(User user) async {
+    remoteDataSource.getToken();
     return await remoteDataSource.putUser(user);
   }
 
   @override
   Future<SingleResponse> postPassword(String password) async {
+    remoteDataSource.getToken();
     return await remoteDataSource.postPassword(password);
   }
 

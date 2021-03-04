@@ -23,22 +23,30 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  bloc: ^6.1.1
+  equatable: ^0.6.0
+  date_field: ^1.0.4
+  date_range_picker: ^1.0.3
+  dotted_border: ^1.0.7
+  flutter_chips_input: ^1.9.5
+  percent_indicator: ^2.1.9+1
+  image_picker: ^0.6.7+22
   cupertino_icons: ^1.0.0
   dio: ^3.0.10
-  equatable: ^0.6.0
   fading_edge_scrollview: ^1.1.4
-  flutter_bloc: ^6.1.1
   google_fonts: ^1.1.2
   http: ^0.12.0+4
   pin_code_fields: null
   shared_preferences: ^0.5.7
-  json_serializable: ^3.5.1
+  bloc: ^6.1.1
+  flutter_bloc: ^6.1.1
   email_validator: ^1.0.6
+  
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
+  intl: ^0.15.7
+  
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
@@ -56,6 +64,15 @@ flutter:
     - images/woman.png
     - images/otp.png
     - images/resetpass.png
+    - images/uangsaku.png
+    - images/icon_dashboard.png
+    - images/kasbon.png
+    - images/reimburse.png
+    - images/jumlah_approval.png
+    - images/avatar.png
+    - images/nota.jpg
+    - images/create.gif
+    
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.
@@ -70,7 +87,7 @@ flutter:
     - family: Montserrat
       fonts:
         - asset: fonts/Montserrat-Regular.ttf
-    #       - asset: fonts/Schyler-Italic.ttf
+        - asset: fonts/Montserrat-Bold.ttf
     #         style: italic
     - family: Roboto
       fonts:
