@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:uang_saku/ui/create_kasbon.dart';
 import 'package:uang_saku/ui/create_reimburse.dart';
 import 'package:uang_saku/ui/notifikasi.dart';
+import 'package:uang_saku/ui/profile_page.dart';
 import 'package:uang_saku/ui/riwayat.dart';
 
 import '../dashboard.dart';
@@ -21,7 +22,8 @@ class _BottomNavbarState extends State<BottomNavbar> {
     DashboardPage(),
     RiwayatPage(),
     ShowModal(),
-    NotifikasiPage()
+    NotifikasiPage(),
+    ProfilePage()
   ];
 
   void onItemTap(int index) {

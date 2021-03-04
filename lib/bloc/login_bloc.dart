@@ -20,7 +20,9 @@ class LoginBloc extends Bloc<BaseEvent, BaseState> {
             await expenseRepository.login(event.email, event.password);
         print(response);
         if (response.success) {
+          expenseRepository.setToken(response.data.token);
           yield SuccesState<Token>(data: response.data);
+          // expenseRepository.getToken();
         } else {
           yield ErrorState(message: response.message);
         }
@@ -29,7 +31,13 @@ class LoginBloc extends Bloc<BaseEvent, BaseState> {
         yield ErrorState(message: "Tidak Terhubung");
       }
     } else if (event is LogoutEvent) {
-      yield EmptyState();
+      try {
+        await expenseRepository.logout();
+        yield EmptyState();
+      } catch (e) {
+        print(e);
+        yield ErrorState(message: "Tidak Terhubung");
+      }
     } else {
       yield ErrorState(message: "Tidak ada event yang sesuai");
     }

@@ -23,7 +23,6 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  pin_code_fields:
   equatable: ^0.6.0
   date_field: ^1.0.4
   date_range_picker: ^1.0.3
@@ -31,16 +30,16 @@ dependencies:
   flutter_chips_input: ^1.9.5
   percent_indicator: ^2.1.9+1
   image_picker: ^0.6.7+22
- 
-  
-
-  # The following adds the Cupertino Icons font to your application.
-  # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.0
+  dio: ^3.0.10
+  fading_edge_scrollview: ^1.1.4
+  google_fonts: ^1.1.2
   http: ^0.12.0+4
+  pin_code_fields: null
   shared_preferences: ^0.5.7
   bloc: ^6.1.1
   flutter_bloc: ^6.1.1
+  email_validator: ^1.0.6
   
 
 dev_dependencies:
@@ -51,7 +50,6 @@ dev_dependencies:
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
-
 # The following section is specific to Flutter.
 flutter:
   # The following line ensures that the Material Icons font is
@@ -62,6 +60,8 @@ flutter:
   # To add assets to your application, add an assets section, like this:
   assets:
     - images/logo.png
+    - images/man.png
+    - images/woman.png
     - images/otp.png
     - images/resetpass.png
     - images/uangsaku.png
@@ -76,10 +76,8 @@ flutter:
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.
-
   # For details regarding adding assets from package dependencies, see
   # https://flutter.dev/assets-and-images/#from-packages
-
   # To add custom fonts to your application, add a fonts section here,
   # in this "flutter" section. Each entry in this list should have a
   # "family" key with the font family name, and a "fonts" key with a
