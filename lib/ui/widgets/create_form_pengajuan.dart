@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:uang_saku/ui/widgets/detail_laporan.dart';
+import 'package:uang_saku/ui/widgets/details_pengajuan.dart';
 import 'package:uang_saku/ui/widgets/rincian_biaya.dart';
 
 class CreatePengajuan extends StatefulWidget {
   String judul = "Detail Pengajuan Kasbon";
   var buttonColor = Color(0xFF3AE3CE);
   var appBarColor = Color(0xFF3AE3CE);
+  TextEditingController tujuan = TextEditingController();
 
   RincianBiaya rincianBiaya = new RincianBiaya(
     judul: "Rincian Kasbon",
@@ -12,22 +15,24 @@ class CreatePengajuan extends StatefulWidget {
   );
 
   CreatePengajuan(
-      {this.judul, this.buttonColor, this.appBarColor, this.rincianBiaya});
+      {this.judul,
+      this.buttonColor,
+      this.appBarColor,
+      this.rincianBiaya,
+      this.tujuan});
   @override
   _CreatePengajuanState createState() => _CreatePengajuanState(
       judul: judul,
       buttonColor: buttonColor,
       rincianBiaya: rincianBiaya,
-      appBarColor: appBarColor);
+      appBarColor: appBarColor,
+      tujuan: tujuan);
 }
 
 class _CreatePengajuanState extends State<CreatePengajuan> {
   String judul = "Form Pengajuan Kasbon";
   var buttonColor = Color(0xFF3AE3CE);
   var appBarColor = Color(0xFF3AE3CE);
-
-  _CreatePengajuanState(
-      {this.judul, this.buttonColor, this.appBarColor, this.rincianBiaya});
 
   RincianBiaya rincianBiaya = new RincianBiaya(
     judul: "Rincian Kasbon",
@@ -92,6 +97,18 @@ class _CreatePengajuanState extends State<CreatePengajuan> {
       });
   }
 
+  _CreatePengajuanState(
+      {this.judul,
+      this.buttonColor,
+      this.appBarColor,
+      this.rincianBiaya,
+      this.tujuan});
+
+  sendData(BuildContext context) {
+    Navigator.push(
+        context, MaterialPageRoute(builder: (context) => DetailsPengajuan(tujuanHolder: tujuan.text,)));
+  }
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -142,7 +159,7 @@ class _CreatePengajuanState extends State<CreatePengajuan> {
                           labelText: 'Tujuan',
                         ),
                         onTap: () {},
-                        //controller: tanggalSelesai,
+                        controller: tujuan,
                       ),
                     ),
                     Padding(
@@ -573,29 +590,66 @@ class _CreatePengajuanState extends State<CreatePengajuan> {
                         //controller: tanggalSelesai,
                       ),
                     ),
-                    Center(
-                      child: Container(
-                        padding: EdgeInsets.fromLTRB(20, 0, 20, 10),
-                        child: Ink(
-                          decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(10),
-                              color: buttonColor),
-                          child: Container(
-                            constraints:
-                                BoxConstraints(maxWidth: 400, minHeight: 50),
-                            alignment: Alignment.center,
-                            child: Text(
-                              "Kirim kasbon",
-                              style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 20,
-                                  fontWeight: FontWeight.w600,
-                                  fontFamily: "Montserrat"),
+                    Container(
+                      margin: EdgeInsets.fromLTRB(0, 20, 0, 0),
+                      width: 400,
+                      height: 50,
+                      child: RaisedButton(
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10)),
+                        padding: EdgeInsets.all(0),
+                        elevation: 10,
+                        onPressed: () {
+                          sendData(context);
+                        },
+                        color: Colors.blue,
+                        child: Container(
+                          child: Ink(
+                            decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(10),
+                                gradient: LinearGradient(colors: [
+                                  Color(0xFF358BFC),
+                                  Color(0xFF3AE3CE)
+                                ])),
+                            child: Container(
+                              constraints:
+                                  BoxConstraints(maxWidth: 400, minHeight: 50),
+                              alignment: Alignment.center,
+                              child: Text(
+                                "Kirim Kasbon",
+                                style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 23,
+                                    fontFamily: "Montserrat"),
+                              ),
                             ),
                           ),
                         ),
                       ),
-                    )
+                    ),
+                    // Center(
+                    //   child: Container(
+                    //     padding: EdgeInsets.fromLTRB(20, 0, 20, 10),
+                    //     // child: Ink(
+                    //     //   decoration: BoxDecoration(
+                    //     //       borderRadius: BorderRadius.circular(10),
+                    //     //       color: buttonColor),
+                    //     //   child: Container(
+                    //     //     constraints:
+                    //     //         BoxConstraints(maxWidth: 400, minHeight: 50),
+                    //     //     alignment: Alignment.center,
+                    //     //     child: Text(
+                    //     //       "Kirim kasbon",
+                    //     //       style: TextStyle(
+                    //     //           color: Colors.white,
+                    //     //           fontSize: 20,
+                    //     //           fontWeight: FontWeight.w600,
+                    //     //           fontFamily: "Montserrat"),
+                    //     //     ),
+                    //     //   ),
+                    //     // ),
+                    //   ),
+                    // )
                   ],
                 ),
               ),

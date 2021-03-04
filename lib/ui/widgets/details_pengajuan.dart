@@ -4,18 +4,20 @@ import 'package:percent_indicator/percent_indicator.dart';
 class DetailsPengajuan extends StatefulWidget {
   Color mainColor = Color(0xFF358BFC);
    String judul = "Detail Pengajuan Kasbon";
+   final tujuanHolder;
 
-  DetailsPengajuan({this.mainColor,this.judul});
+  DetailsPengajuan({this.mainColor,this.judul,this.tujuanHolder});
 
   @override
-  _DetailsPengajuanState createState() => _DetailsPengajuanState(mainColor: mainColor,judul: judul);
+  _DetailsPengajuanState createState() => _DetailsPengajuanState(mainColor: mainColor,judul: judul,tujuanHolder: tujuanHolder);
 }
 
 class _DetailsPengajuanState extends State<DetailsPengajuan> {
+  final tujuanHolder;
   Color mainColor = Color(0xFF358BFC);
   String judul = "Detail Pengajuan Kasbon";
 
-  _DetailsPengajuanState({this.mainColor,this.judul});
+  _DetailsPengajuanState({this.mainColor,this.judul,this.tujuanHolder});
 
   @override
   Widget build(BuildContext context) {
@@ -90,12 +92,12 @@ class _DetailsPengajuanState extends State<DetailsPengajuan> {
                             fontWeight: FontWeight.w600)),
                     Padding(
                       padding: EdgeInsets.fromLTRB(0, 10, 0, 0),
-                      child: Text("Lokasi Tujuan",
+                      child: Text("Tujuan",
                           style: TextStyle(
                             fontFamily: "Montserrat",
                           )),
                     ),
-                    Text("Jakarta",
+                    Text(tujuanHolder,
                         style: TextStyle(
                             fontFamily: "Montserrat",
                             fontWeight: FontWeight.w600)),
