@@ -3,21 +3,60 @@ import 'package:percent_indicator/percent_indicator.dart';
 
 class DetailsPengajuan extends StatefulWidget {
   Color mainColor = Color(0xFF358BFC);
-   String judul = "Detail Pengajuan Kasbon";
-   final tujuanHolder;
+  String judul = "Detail Pengajuan Kasbon";
+  final tujuanHolder;
+  final kategoriHolder;
+  final tanggalMulaiHolder;
+  final tanggalSelesaiHolder;
+  final perusahaanHolder;
+  final cabangHolder;
+  final jenisPencairanHolder;
 
-  DetailsPengajuan({this.mainColor,this.judul,this.tujuanHolder});
+  DetailsPengajuan(
+      {this.mainColor,
+      this.judul,
+      this.tujuanHolder,
+      this.cabangHolder,
+      this.jenisPencairanHolder,
+      this.kategoriHolder,
+      this.perusahaanHolder,
+      this.tanggalMulaiHolder,
+      this.tanggalSelesaiHolder});
 
   @override
-  _DetailsPengajuanState createState() => _DetailsPengajuanState(mainColor: mainColor,judul: judul,tujuanHolder: tujuanHolder);
+  _DetailsPengajuanState createState() => _DetailsPengajuanState(
+      mainColor: mainColor,
+      judul: judul,
+      tujuanHolder: tujuanHolder,
+      cabangHolder: cabangHolder,
+      jenisPencairanHolder: jenisPencairanHolder,
+      kategoriHolder: kategoriHolder,
+      perusahaanHolder: perusahaanHolder,
+      tanggalMulaiHolder: tanggalMulaiHolder,
+      tanggalSelesaiHolder: tanggalSelesaiHolder);
 }
 
 class _DetailsPengajuanState extends State<DetailsPengajuan> {
-  final tujuanHolder;
   Color mainColor = Color(0xFF358BFC);
   String judul = "Detail Pengajuan Kasbon";
+  final tujuanHolder;
+  final kategoriHolder;
+  final tanggalMulaiHolder;
+  final tanggalSelesaiHolder;
+  final perusahaanHolder;
+  final cabangHolder;
+  final jenisPencairanHolder;
 
-  _DetailsPengajuanState({this.mainColor,this.judul,this.tujuanHolder});
+  _DetailsPengajuanState(
+      {this.mainColor,
+      this.judul,
+      this.tujuanHolder,
+      this.cabangHolder,
+      this.jenisPencairanHolder,
+      this.kategoriHolder,
+      this.perusahaanHolder,
+      this.tanggalMulaiHolder,
+      this.tanggalSelesaiHolder});
 
   @override
   Widget build(BuildContext context) {

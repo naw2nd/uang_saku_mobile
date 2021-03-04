@@ -7,7 +7,6 @@ class CreatePengajuan extends StatefulWidget {
   String judul = "Detail Pengajuan Kasbon";
   var buttonColor = Color(0xFF3AE3CE);
   var appBarColor = Color(0xFF3AE3CE);
-  TextEditingController tujuan = TextEditingController();
 
   RincianBiaya rincianBiaya = new RincianBiaya(
     judul: "Rincian Kasbon",
@@ -18,15 +17,13 @@ class CreatePengajuan extends StatefulWidget {
       {this.judul,
       this.buttonColor,
       this.appBarColor,
-      this.rincianBiaya,
-      this.tujuan});
+      this.rincianBiaya});
   @override
   _CreatePengajuanState createState() => _CreatePengajuanState(
       judul: judul,
       buttonColor: buttonColor,
       rincianBiaya: rincianBiaya,
-      appBarColor: appBarColor,
-      tujuan: tujuan);
+      appBarColor: appBarColor);
 }
 
 class _CreatePengajuanState extends State<CreatePengajuan> {
@@ -101,12 +98,20 @@ class _CreatePengajuanState extends State<CreatePengajuan> {
       {this.judul,
       this.buttonColor,
       this.appBarColor,
-      this.rincianBiaya,
-      this.tujuan});
+      this.rincianBiaya});
 
   sendData(BuildContext context) {
     Navigator.push(
-        context, MaterialPageRoute(builder: (context) => DetailsPengajuan(tujuanHolder: tujuan.text,)));
+        context,
+        MaterialPageRoute(
+            builder: (context) => DetailsPengajuan(mainColor: Colors.blue,judul: "Detail Pengajuan Kasbon",
+                  tujuanHolder: tujuan.text,
+                  cabangHolder: showCabang,
+                  jenisPencairanHolder: showMetodeBayar,
+                  kategoriHolder: showKategori,
+                  perusahaanHolder: showPerusahaan,
+                 
+                )));
   }
 
   @override
@@ -375,6 +380,7 @@ class _CreatePengajuanState extends State<CreatePengajuan> {
                       padding: EdgeInsets.fromLTRB(20, 0, 20, 10),
                       child: TextField(
                         maxLines: 3,
+                        
                         decoration: const InputDecoration(
                           hintStyle: TextStyle(color: Colors.black45),
                           errorStyle: TextStyle(color: Colors.redAccent),
@@ -630,24 +636,24 @@ class _CreatePengajuanState extends State<CreatePengajuan> {
                     // Center(
                     //   child: Container(
                     //     padding: EdgeInsets.fromLTRB(20, 0, 20, 10),
-                    //     // child: Ink(
-                    //     //   decoration: BoxDecoration(
-                    //     //       borderRadius: BorderRadius.circular(10),
-                    //     //       color: buttonColor),
-                    //     //   child: Container(
-                    //     //     constraints:
-                    //     //         BoxConstraints(maxWidth: 400, minHeight: 50),
-                    //     //     alignment: Alignment.center,
-                    //     //     child: Text(
-                    //     //       "Kirim kasbon",
-                    //     //       style: TextStyle(
-                    //     //           color: Colors.white,
-                    //     //           fontSize: 20,
-                    //     //           fontWeight: FontWeight.w600,
-                    //     //           fontFamily: "Montserrat"),
-                    //     //     ),
-                    //     //   ),
-                    //     // ),
+                    //     child: Ink(
+                    //       decoration: BoxDecoration(
+                    //           borderRadius: BorderRadius.circular(10),
+                    //           color: buttonColor),
+                    //       child: Container(
+                    //         constraints:
+                    //             BoxConstraints(maxWidth: 400, minHeight: 50),
+                    //         alignment: Alignment.center,
+                    //         child: Text(
+                    //           "Kirim kasbon",
+                    //           style: TextStyle(
+                    //               color: Colors.white,
+                    //               fontSize: 20,
+                    //               fontWeight: FontWeight.w600,
+                    //               fontFamily: "Montserrat"),
+                    //         ),
+                    //       ),
+                    //     ),
                     //   ),
                     // )
                   ],
