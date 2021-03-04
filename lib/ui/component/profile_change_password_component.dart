@@ -140,9 +140,6 @@ class _ProfileChangePasswordComponentState
                             elevation: 0.0,
                             onPressed: () {
                               if (_formKey.currentState.validate()) {
-                                // Scaffold.of(context).showSnackBar(SnackBar(
-                                //     content:
-                                //         Text('Password Minimal 6 Karakter')));
                                 context.read<ProfileBloc>().add(
                                     UpdatePasswordEvent(
                                         password: controller.text));

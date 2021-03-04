@@ -5,20 +5,29 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:uang_saku/bloc/bloc.dart';
 import 'package:uang_saku/bloc/profile_bloc.dart';
 import 'package:uang_saku/bloc/state/base_state.dart';
-import 'package:uang_saku/model/user.dart';
-import 'package:uang_saku/ui/login_page.dart';
 import 'package:uang_saku/ui/splash_screen.dart';
-import 'package:uang_saku/ui/widgets/custom_card.dart';
-import 'package:uang_saku/ui/widgets/profile_change_password.dart';
-import 'package:uang_saku/ui/widgets/profile_component.dart';
-import 'package:uang_saku/ui/widgets/profile_edit_component.dart';
-import 'package:uang_saku/ui/widgets/profile_property.dart';
+import 'package:uang_saku/ui/custom_widgets/custom_card.dart';
+import 'package:uang_saku/ui/component/profile_change_password_component.dart';
+import 'package:uang_saku/ui/component/profile_component.dart';
+import 'package:uang_saku/ui/component/profile_edit_component.dart';
+import 'package:uang_saku/ui/custom_widgets/profile_property.dart';
 
-class ProfilePage extends StatelessWidget {
+class ProfilePage extends StatefulWidget {
+  @override
+  _ProfilePageState createState() => _ProfilePageState();
+}
+
+class _ProfilePageState extends State<ProfilePage> {
   final _controller = ScrollController();
+
+  @override
+  void initState() {
+    context.read<ProfileBloc>().add(ProfileEvent());
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
-    User user = User();
     return MaterialApp(
       home: Scaffold(
         body: Container(
@@ -33,7 +42,6 @@ class ProfilePage extends StatelessWidget {
               child: ListView(controller: _controller, children: [
                 Container(
                   height: 40,
-                  // color: Colors.black,
                   padding: EdgeInsets.only(left: 15),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -78,21 +86,21 @@ class ProfilePage extends StatelessWidget {
                           padding:
                               EdgeInsets.only(top: 100, left: 15, right: 15),
                           child: BlocBuilder<ProfileBloc, BaseState>(
-                              builder: (_, childState) {
-                            if (childState is ProfileState) {
-                              user = childState.user;
+                              builder: (_, state) {
+                            if (state is ProfileState) {
+
                               return Column(
                                 children: <Widget>[
                                   Column(children: [
                                     Text(
-                                      user.username,
+                                      state.user.username,
                                       style: GoogleFonts.montserrat(
                                           fontWeight: FontWeight.w700,
                                           fontSize: 26,
                                           color: Color(0xFF555555)),
                                     ),
                                     Text(
-                                      user.email,
+                                      state.user.email,
                                       style: GoogleFonts.montserrat(
                                           fontWeight: FontWeight.w400,
                                           fontSize: 20,
@@ -103,13 +111,16 @@ class ProfilePage extends StatelessWidget {
                                     container: Container(
                                       child: Column(children: [
                                         Container(
-                                          height: (childState is ChangePasswordState)? 0 : 20,
+                                          height: (state
+                                                  is ChangePasswordState)
+                                              ? 0
+                                              : 20,
                                           child: Row(
                                             mainAxisAlignment:
                                                 MainAxisAlignment.spaceBetween,
                                             children: [
                                               Text(
-                                                (childState is EditProfileState)
+                                                (state is EditProfileState)
                                                     ? "Edit Profile"
                                                     : "",
                                                 style: GoogleFonts.montserrat(
@@ -122,10 +133,13 @@ class ProfilePage extends StatelessWidget {
                                                 padding: EdgeInsets.all(0),
                                                 height: 17,
                                                 child: Text(
-                                                  (childState
+                                                  (state
                                                           is InitProfileState)
-                                                      ? "Edit Profile" : (childState is EditProfileState)? "Change Password"
-                                                      : "",
+                                                      ? "Edit Profile"
+                                                      : (state
+                                                              is EditProfileState)
+                                                          ? "Change Password"
+                                                          : "",
                                                   style: GoogleFonts.montserrat(
                                                     fontSize: 14,
                                                     color: Color(0xFF358BFC),
@@ -133,7 +147,7 @@ class ProfilePage extends StatelessWidget {
                                                   ),
                                                 ),
                                                 onPressed: () {
-                                                  (childState
+                                                  (state
                                                           is InitProfileState)
                                                       ? context
                                                           .read<ProfileBloc>()
@@ -148,56 +162,48 @@ class ProfilePage extends StatelessWidget {
                                             ],
                                           ),
                                         ),
-                                        (childState is InitProfileState)
-                                            ? ProfileComponent(user: user)
-                                            : (childState is EditProfileState)
+                                        (state is InitProfileState)
+                                            ? ProfileComponent(user: state.user)
+                                            : (state is EditProfileState)
                                                 ? ProfileEditComponent(
-                                                    user: user)
+                                                    user: state.user)
                                                 : ProfileChangePasswordComponent(),
                                       ]),
                                     ),
                                   ),
-                                  BlocBuilder<ProfileBloc, BaseState>(
-                                      builder: (_, state) => (state
-                                              is InitProfileState)
-                                          ? Container(
-                                              child: Column(children: [
-                                                Text(
-                                                  "Perusahaan",
-                                                  style: GoogleFonts.montserrat(
-                                                      fontWeight:
-                                                          FontWeight.w700,
-                                                      fontSize: 24,
-                                                      color: Color(0xFF555555)),
-                                                  textAlign: TextAlign.center,
-                                                ),
-                                                CustomCard(
-                                                  container: Container(
-                                                      child: Column(
-                                                    crossAxisAlignment:
-                                                        CrossAxisAlignment
-                                                            .stretch,
-                                                    children: [
-                                                      ProfileProperty(
-                                                          iconData:
-                                                              Icons.business,
-                                                          label:
-                                                              "Wahana Meditek Indonesia, Surabaya",
-                                                          value:
-                                                              "Staff divisi HR"),
-                                                      ProfileProperty(
-                                                          iconData:
-                                                              Icons.business,
-                                                          label:
-                                                              "Wahana Rizky Gumilang, Malang",
-                                                          value:
-                                                              "Staff divisi IT"),
-                                                    ],
-                                                  )),
-                                                ),
-                                              ]),
-                                            )
-                                          : Container()),
+                                  (state is InitProfileState)
+                                      ? Container(
+                                          child: Column(children: [
+                                            Text(
+                                              "Perusahaan",
+                                              style: GoogleFonts.montserrat(
+                                                  fontWeight: FontWeight.w700,
+                                                  fontSize: 24,
+                                                  color: Color(0xFF555555)),
+                                              textAlign: TextAlign.center,
+                                            ),
+                                            CustomCard(
+                                              container: Container(
+                                                  child: Column(
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.stretch,
+                                                children: [
+                                                  ProfileProperty(
+                                                      iconData: Icons.business,
+                                                      label:
+                                                          "Wahana Meditek Indonesia, Surabaya",
+                                                      value: "Staff divisi HR"),
+                                                  ProfileProperty(
+                                                      iconData: Icons.business,
+                                                      label:
+                                                          "Wahana Rizky Gumilang, Malang",
+                                                      value: "Staff divisi IT"),
+                                                ],
+                                              )),
+                                            ),
+                                          ]),
+                                        )
+                                      : Container(),
                                   // SizedBox(
                                   //   height: 200,
                                   // ),
@@ -206,7 +212,6 @@ class ProfilePage extends StatelessWidget {
                             } else {
                               return Container(
                                   width: MediaQuery.of(context).size.width,
-                                  // height: Height.infinite,
                                   child: Center(
                                       child: CircularProgressIndicator()));
                             }
@@ -214,23 +219,24 @@ class ProfilePage extends StatelessWidget {
                         ),
                       ],
                     ),
-                    Column(children: [
-                      Center(
-                        child: Container(
+                    Center(
+                      child: BlocBuilder<ProfileBloc, BaseState>(
+                        builder: (_, state) => Container(
                           decoration: BoxDecoration(
                               shape: BoxShape.circle,
-                              image: DecorationImage(
-                                  fit: BoxFit.fill,
-                                  // image: AssetImage('images/woman.png'))),
-                                  image: (user.gender == "Perempuan")
-                                      ? AssetImage('images/woman.png')
-                                      : AssetImage('images/man.png'))),
+                              image: (state is ProfileState)
+                                  ? DecorationImage(
+                                      fit: BoxFit.fill,
+                                      image: (state.user.gender == "Perempuan")
+                                          ? AssetImage('images/woman.png')
+                                          : AssetImage('images/man.png'))
+                                  : null),
                           height: 196,
                           width: 196,
                           margin: EdgeInsets.only(bottom: 5),
                         ),
                       ),
-                    ]),
+                    ),
                   ],
                 ),
               ]),

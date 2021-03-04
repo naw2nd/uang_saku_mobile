@@ -35,7 +35,7 @@ class MyApp extends StatelessWidget {
           ),
           BlocProvider<ProfileBloc>(
             create: (context) =>
-                ProfileBloc(expenseRepository: expenseRepository)..add(ProfileEvent()),
+                ProfileBloc(expenseRepository: expenseRepository),
           ),
         ],
         child: MaterialApp(

@@ -6,7 +6,7 @@ import 'package:uang_saku/bloc/profile_bloc.dart';
 import 'package:uang_saku/bloc/state/base_state.dart';
 import 'package:uang_saku/bloc/event/profile_event.dart';
 import 'package:uang_saku/model/user.dart';
-import 'package:email_validator/email_validator.dart';
+import 'package:uang_saku/ui/custom_widgets/custom_text_form_field.dart';
 
 class ProfileEditComponent extends StatefulWidget {
   final User user;
@@ -63,7 +63,6 @@ class _ProfileEditComponentState extends State<ProfileEditComponent> {
               validation: ["required", "email"],
             ),
             Container(
-              // margin: EdgeInsets.only(top: 10, bottom: 10),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -230,36 +229,4 @@ class _ProfileEditComponentState extends State<ProfileEditComponent> {
 class AlwaysDisabledFocusNode extends FocusNode {
   @override
   bool get hasFocus => false;
-}
-
-class CustomTextFormField extends StatelessWidget {
-  final String label;
-  final TextEditingController controller;
-  final List<String> validation;
-  final int minimum;
-  CustomTextFormField(
-      {this.label, this.controller, this.validation, this.minimum});
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      margin: EdgeInsets.only(top: 10, bottom: 10),
-      child: TextFormField(
-          controller: controller,
-          validator: (value) {
-            if (validation.length == 1 && value == "")
-              return label + " Harus diisi";
-            if (minimum != null && value.length < minimum)
-              return label + " Minimal " + minimum.toString() + " karakter";
-            if (validation.length == 2 && !EmailValidator.validate(value))
-              return "Email tidak valid";
-
-            return null;
-          },
-          decoration: InputDecoration(
-              labelText: label,
-              isDense: true,
-              border:
-                  OutlineInputBorder(borderRadius: BorderRadius.circular(10)))),
-    );
-  }
 }

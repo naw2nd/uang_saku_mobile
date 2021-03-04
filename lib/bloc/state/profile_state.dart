@@ -34,7 +34,3 @@ class ChangePasswordState extends ProfileState {
   @override
   List<Object> get props => [user];
 }
-
-class LogoutState extends BaseState{
-  
-}

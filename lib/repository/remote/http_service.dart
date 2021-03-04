@@ -5,17 +5,13 @@ import 'package:uang_saku/model/user.dart';
 import 'package:intl/intl.dart';
 
 class HttpService {
-  Dio _dio1;
   Dio _dio;
   SharedPreferences sharedPreferences;
-  String token =
-      ""; //"eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiIzIiwianRpIjoiMmRkMmQ2ODQ0NDNlM2M0NGQzOTdiN2JlNGMwYWRlODE2ZTlhZjRjOWExYTAyODEwYjY3MzdhMTBhOTVmOWZiMzAyMTYxNjAxMTFhNGRhNTMiLCJpYXQiOiIxNjE0NTMxODM1LjAwMjc5MiIsIm5iZiI6IjE2MTQ1MzE4MzUuMDAyNzk3IiwiZXhwIjoiMTY0NjA2NzgzNC4yNTEwOTIiLCJzdWIiOiIyIiwic2NvcGVzIjpbXX0.NQeDvNvq7SZ6cWcfgp-JiQh5CtuEru_cOj-x7XtxEUHYdln1SCT4Njb70RUJFpcuj6xqyz0fR3fCnDAO-fBw_PWFZOtmBTR-37w2MRc25z6PXWdIlRbQ_KessAI68XwofBDlCLcYZJhZ257-xflOyJq0c_Kd8Rj9avg7Q2c8nLseHYE7k-MiOhBb_6RlBv-6LtIayH1lgTobRjdD11qqARfJW-tBzDmw8qnhRIei1J-5VCD3v7Wd03hXJtxzlXpLdkXIYmmiDqJHRjNCB2zdXWftyXd0M9Bev7BMQ6nAP8N9K96j1-AoL7SL5BUZRxWylvyobsMuELCVzq-4kytZUiP1QMSUNWVLW8mLwpD19n7RyWM-wSyUud6ZuHrQdvKlwycK38eWl7cSqdeBMBvMidja6gFPbbhtEnP2hf5xJRdFn7igOonZNTOiA5XttBidScUGudVqV2jW6u27kJ2ztbTwEjG0QmAK4-XJxRzr-RVPY7fUbwu2BxiDCCHer7QC59aNoFdUnwAeFMXN9XNEglkvrS1ElsXXVWf9cmS4DCVxbgZUAkKluvf_mApJRgHh26OFZ25B7UogRSaz6M4YcmqNnwh6QADxQlKeEbI2uYoKxWL2leP_KL_Zc8FGLcMkk6K6WzcxT-cFCN0sjCTDBAyHVK5xGZXvI9ZZMWKcTG0";
+  String token= "";
 
   final baseURL = "http://192.168.137.18:8000/api/v1/";
-  final baseURL1 = "http://128.199.208.102/api/v1/";
 
   HttpService() {
-    _dio1 = Dio(BaseOptions(baseUrl: baseURL1));
     _dio = Dio(BaseOptions(baseUrl: baseURL));
 
     initalInterceptors();
@@ -44,8 +40,8 @@ class HttpService {
           message: singleResponse.message,
           data: Token.fromJson(singleResponse.data));
     } on DioError catch (e) {
-      print(e.message);
-      throw Exception(e.message);
+      print(e);
+      // throw Exception(e.message);
     }
 
     return singleResponseToken;
@@ -55,7 +51,7 @@ class HttpService {
     String endPoint = "forgot-password";
     SingleResponse<String> singleResponse;
     try {
-      Response response = await _dio1.post(endPoint, data: {"email": email});
+      Response response = await _dio.post(endPoint, data: {"email": email});
       print(response);
       singleResponse = SingleResponse.fromJson(response.data);
     } on DioError catch (e) {
@@ -70,7 +66,7 @@ class HttpService {
     SingleResponse<String> singleResponse;
     try {
       Response response =
-          await _dio1.post(endPoint, data: {"email": email, "otp": otp});
+          await _dio.post(endPoint, data: {"email": email, "otp": otp});
       print(response);
       singleResponse = SingleResponse.fromJson(response.data);
     } on DioError catch (e) {
@@ -85,7 +81,7 @@ class HttpService {
     String endPoint = "reset-password";
     SingleResponse<String> singleResponse;
     try {
-      Response response = await _dio1.post(endPoint,
+      Response response = await _dio.post(endPoint,
           data: {"email": email, "otp": otp, "password": password});
       print(response);
       singleResponse = SingleResponse.fromJson(response.data);
@@ -163,11 +159,14 @@ class HttpService {
   initalInterceptors() {
     _dio.interceptors.add(InterceptorsWrapper(onError: (error) {
       print(error.message);
+      return error;
     }, onRequest: (request) {
       request.headers["Authorization"] = "Bearer " + token;
       print("${request.method} ${request.path}");
+      return request;
     }, onResponse: (response) {
       // print(response.data);
+      return response;
     }));
   }
 }

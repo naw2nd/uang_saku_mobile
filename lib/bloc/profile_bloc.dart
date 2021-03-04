@@ -13,6 +13,8 @@ class ProfileBloc extends Bloc<BaseEvent, BaseState> {
     BaseEvent event,
   ) async* {
     if (event is ProfileEvent) {
+      // yield LoadingState();
+
       try {
         final SingleResponse<User> singleResponse =
             await expenseRepository.getProfile();
@@ -34,12 +36,17 @@ class ProfileBloc extends Bloc<BaseEvent, BaseState> {
       try {
         final SingleResponse singleResponse =
             await expenseRepository.putUser(event.user);
-        if (singleResponse.success) yield InitProfileState(user: event.user);
+        if (singleResponse.success) {
+          final SingleResponse<User> singleResponseUser =
+              await expenseRepository.getProfile();
+          if (singleResponseUser.success)
+            yield InitProfileState(user: singleResponseUser.data);
+        }
       } catch (e) {
         print(e);
         yield ErrorState(message: "Tidak Terhubung");
       }
-    }else if (event is UpdatePasswordEvent) {
+    } else if (event is UpdatePasswordEvent) {
       try {
         final SingleResponse singleResponse =
             await expenseRepository.postPassword(event.password);
@@ -48,12 +55,12 @@ class ProfileBloc extends Bloc<BaseEvent, BaseState> {
               await expenseRepository.getProfile();
           if (singleResponseUser.success)
             yield InitProfileState(user: singleResponseUser.data);
-        };
+        }
       } catch (e) {
         print(e);
         yield ErrorState(message: "Tidak Terhubung");
       }
-    }else {
+    } else {
       yield ErrorState(message: "Tidak ada event yang sesuai");
     }
   }

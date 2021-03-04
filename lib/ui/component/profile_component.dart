@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:uang_saku/model/user.dart';
-import 'package:uang_saku/ui/widgets/profile_property.dart';
+import 'package:uang_saku/ui/custom_widgets/profile_property.dart';
 import 'package:intl/intl.dart';
 
 class ProfileComponent extends StatelessWidget {
