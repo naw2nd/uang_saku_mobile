@@ -1,11 +1,17 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:uang_saku/ui/detail_rincian_approval.dart';
+import 'package:uang_saku/ui/details_approval.dart';
 
-class RincianApproval extends StatelessWidget {
-  File _image;
+class DetailRincianLaporan extends StatefulWidget {
+  @override
+  _DetailRincianLaporanState createState() => _DetailRincianLaporanState();
+}
+
+class _DetailRincianLaporanState extends State<DetailRincianLaporan> {
+  File image;
   String judul = "Rincian Biaya kasbon";
-  var buttonColor = Color(0xFF358BFC);
 
   @override
   Widget build(BuildContext context) {
@@ -78,7 +84,7 @@ class RincianApproval extends StatelessWidget {
                           padding: EdgeInsets.fromLTRB(5, 0, 5, 0),
                           child: ClipRRect(
                             borderRadius: BorderRadius.circular(15),
-                            child: _image == null
+                            child: image == null
                                 ? Center(
                                     child: Text(
                                       "Tidak ada gambar",
@@ -87,7 +93,7 @@ class RincianApproval extends StatelessWidget {
                                       ),
                                     ),
                                   )
-                                : Image.file(_image),
+                                : Image.file(image),
                           ),
                         ),
                       ),
@@ -96,14 +102,14 @@ class RincianApproval extends StatelessWidget {
                           padding: EdgeInsets.fromLTRB(5, 0, 5, 0),
                           child: ClipRRect(
                             borderRadius: BorderRadius.circular(15),
-                            child: _image == null
+                            child: image == null
                                 ? Center(
                                     child: Text("Tidak ada gambar",
                                         style: TextStyle(
                                           fontFamily: "Montserrat",
                                         )),
                                   )
-                                : Image.file(_image),
+                                : Image.file(image),
                           ),
                         ),
                       )
@@ -152,33 +158,6 @@ class RincianApproval extends StatelessWidget {
             ),
           ],
         ),
-      ),
-    );
-  }
-}
-
-class TitleRincian extends StatelessWidget {
-  String title = "Nama Biaya";
-  TitleRincian({this.title});
-  @override
-  Widget build(BuildContext context) {
-    return Text(
-      title,
-      style: TextStyle(fontFamily: "Montserrat"),
-    );
-  }
-}
-
-class KeteranganRincian extends StatelessWidget {
-  String keterangan = "Sisir kucing";
-  KeteranganRincian({this.keterangan});
-  @override
-  Widget build(BuildContext context) {
-    return Text(
-      keterangan,
-      style: TextStyle(
-        fontFamily: "Montserrat",
-        fontWeight: FontWeight.w600,
       ),
     );
   }

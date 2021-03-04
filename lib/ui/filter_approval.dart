@@ -332,7 +332,7 @@ class _ChipFilterState extends State<ChipFilter> {
             _chipBackground = !_chipBackground;
           });
         },
-        selectedColor: Colors.blue,
+        selectedColor: Color(0xFF2B4D66),
         checkmarkColor: Colors.white,
       ),
     );
