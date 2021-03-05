@@ -2,10 +2,11 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:uang_saku/ui/login_page.dart';
+import 'package:uang_saku/ui/main_page.dart';
 import 'package:uang_saku/ui/widgets/bottom_navbar.dart';
 
 class SplashScreen extends StatelessWidget {
-  String token;
+  // String token;
 
   @override
   Widget build(BuildContext context) {
@@ -14,7 +15,7 @@ class SplashScreen extends StatelessWidget {
         () => getToken().then((value) => (value == null)
             ? Navigator.pushReplacement(context,
                 MaterialPageRoute(builder: (context) {
-                return LoginPage();
+                return MainPage();
               }))
             : Navigator.pushReplacement(context,
                 MaterialPageRoute(builder: (context) {

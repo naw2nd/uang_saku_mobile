@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:uang_saku/bloc/bloc.dart';
 import 'package:uang_saku/bloc/login_bloc.dart';
+import 'package:uang_saku/ui/custom_widgets/custom_text_form_field.dart';
 import 'package:uang_saku/ui/email.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:uang_saku/ui/widgets/bottom_navbar.dart';
 import '../model/models.dart';
 import '../bloc/state/base_state.dart';
@@ -14,196 +15,146 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
-  bool _showPassword = true;
   final _formKey = GlobalKey<FormState>();
-  TextEditingController emailController = new TextEditingController();
-  TextEditingController passwordController = new TextEditingController();
-  bool value = false;
+  TextEditingController emailController = TextEditingController();
+  TextEditingController passwordController = TextEditingController();
+  bool remember = false;
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       home: Scaffold(
-        body: Form(
-          key: _formKey,
-          child: ListView(
-            children: <Widget>[
-              Center(
-                child: Container(
-                  margin: EdgeInsets.all(20),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: <Widget>[
-                      Image(
-                        image: AssetImage('images/logo.png'),
-                        width: 250,
-                        height: 250,
-                      ),
-                      Container(
-                        margin: EdgeInsets.fromLTRB(0, 20, 0, 20),
-                        child: TextField(
-                            controller: emailController,
-                            decoration: InputDecoration(
-                                labelText: "Email",
-                                border: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(10)))),
-                      ),
-                      TextField(
-                          controller: passwordController,
-                          obscureText: _showPassword,
-                          decoration: InputDecoration(
-                            labelText: "Password",
-                            border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(10)),
-                            suffixIcon: IconButton(
-                              icon: Icon(_showPassword
-                                  ? Icons.visibility
-                                  : Icons.visibility_off),
-                              onPressed: () {
-                                _isPasswordVisibility();
-                              },
-                            ),
-                          )),
-                      Container(
-                        margin: EdgeInsets.fromLTRB(0, 20, 0, 0),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: <Widget>[
+          body: Center(
+        child: Wrap(
+          alignment: WrapAlignment.center,
+          children: <Widget>[
+            Image(
+              image: AssetImage('images/logo.png'),
+              width: 250,
+              height: 250,
+            ),
+            Container(
+              padding: EdgeInsets.all(20),
+              child: Form(
+                key: _formKey,
+                child: Column(
+                  children: [
+                    CustomTextFormField(
+                      controller: emailController,
+                      label: "Email",
+                      validation: ["email"],
+                    ),
+                    CustomTextFormField(
+                      controller: passwordController,
+                      label: "Password",
+                      minimum: 6,
+                      validation: ["password"],
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: <Widget>[
+                        Row(
+                          children: [
                             Container(
-                              child: Row(
-                                children: <Widget>[
-                                  Checkbox(
-                                    value: value,
-                                    onChanged: (bool e) {
-                                      print(e);
-                                      setState(() {
-                                        value = e;
-                                      });
-                                    },
-                                  ),
-                                  Text(
-                                    "Remember Me",
-                                    style: TextStyle(fontFamily: "Montserrat"),
-                                  )
-                                ],
+                              height: 30,
+                              width: 30,
+                              child: Checkbox(
+                                value: remember,
+                                onChanged: (value) {
+                                  setState(() {
+                                    remember = value;
+                                  });
+                                },
                               ),
                             ),
-                            TextButton(
-                                onPressed: () {
-                                  Navigator.pushReplacement(context,
-                                      MaterialPageRoute(builder: (context) {
-                                    return EmailPage();
-                                  }));
-                                },
-                                child: Text(
-                                  "Lupa Password?",
-                                  style: TextStyle(
-                                      fontSize: 14,
-                                      color: Colors.blue,
-                                      fontFamily: "Roboto",
-                                      fontWeight: FontWeight.w700),
-                                ))
+                            Text(
+                              "Remember Me",
+                              style: TextStyle(
+                                  fontFamily: "Montserrat",
+                                  fontWeight: (!remember)
+                                      ? FontWeight.w500
+                                      : FontWeight.w600),
+                            ),
                           ],
                         ),
-                      ),
-                      Container(
-                        margin: EdgeInsets.fromLTRB(0, 20, 0, 0),
-                        width: 400,
-                        height: 50,
-                        child: RaisedButton(
-                          shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(10)),
-                          padding: EdgeInsets.all(0),
-                          elevation: 10,
-                          onPressed: () {
-                            if (_formKey.currentState.validate()) {
-                              BlocProvider.of<LoginBloc>(context).add(
-                                  LoginEvent(
-                                      email: emailController.text,
-                                      password: passwordController.text));
-                            }
-                          },
-                          color: Colors.blue,
-                          child: Container(
-                            child: Ink(
-                              decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(10),
-                                  gradient: LinearGradient(colors: [
-                                    Color(0xFF358BFC),
-                                    Color(0xFF3AE3CE)
-                                  ])),
+                        TextButton(
+                            child: Text(
+                              "Lupa Password?",
+                              style: GoogleFonts.roboto(
+                                  color: Colors.blue,
+                                  fontWeight: FontWeight.w700),
+                            ),
+                            onPressed: () {
+                              Navigator.pushReplacement(context,
+                                  MaterialPageRoute(builder: (context) {
+                                return EmailPage();
+                              }));
+                            })
+                      ],
+                    ),
+                    BlocBuilder<LoginBloc, BaseState>(builder: (_, state) {
+                      if (state is LoadingState)
+                        return Container(
+                            alignment: Alignment.center,
+                            margin: EdgeInsets.only(top: 20),
+                            child: CircularProgressIndicator());
+
+                      return Wrap(
+                        children: [
+                          Container(
+                            margin: EdgeInsets.only(top: 20, bottom: 20),
+                            height: 50,
+                            child: RaisedButton(
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(10)),
+                              padding: EdgeInsets.all(0),
+                              elevation: 0,
+                              onPressed: () {
+                                if (_formKey.currentState.validate()) {
+                                  BlocProvider.of<LoginBloc>(context).add(
+                                      LoginEvent(
+                                          email: emailController.text,
+                                          password: passwordController.text));
+                                }
+                              },
                               child: Container(
-                                constraints: BoxConstraints(
-                                    maxWidth: 400, minHeight: 50),
-                                alignment: Alignment.center,
-                                child: Text(
-                                  "Login",
-                                  style: TextStyle(
-                                      color: Colors.white,
-                                      fontSize: 23,
-                                      fontFamily: "Montserrat"),
+                                child: Ink(
+                                  decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(10),
+                                      gradient: LinearGradient(colors: [
+                                        Color(0xFF358BFC),
+                                        Color(0xFF3AE3CE)
+                                      ])),
+                                  child: Container(
+                                    alignment: Alignment.center,
+                                    child: Text("Login",
+                                        style: GoogleFonts.montserrat(
+                                            color: Colors.white,
+                                            fontSize: 25,
+                                            fontWeight: FontWeight.w400)),
+                                  ),
                                 ),
                               ),
                             ),
                           ),
-                        ),
-                      ),
-                      Container(
-                        decoration: BoxDecoration(color: Color(0xFAFAFA)),
-                        padding: EdgeInsets.all(20),
-                        margin: EdgeInsets.all(20),
-                        child: BlocBuilder<LoginBloc, BaseState>(
-                            builder: (context, state) {
-                          if (state is EmptyState) {
-                            return Text(
-                              "Belum Login",
-                              style: TextStyle(fontFamily: "Montserrat"),
-                            );
-                          } else if (state is ErrorState) {
-                            return Text(
-                              (state).message,
-                              style: TextStyle(
-                                  color: Colors.red,
-                                  fontFamily: "Montserrat",
-                                  fontWeight: FontWeight.w900),
-                            );
-                          } else if (state is SuccesState<Token>) {
-                            print("Success State");
-                            saveToken(state.data.token).then((value) =>
-                                Navigator.pushReplacement(context,
-                                    MaterialPageRoute(builder: (context) {
-                                  return state.data.token == null
-                                      ? LoginPage()
-                                      : BottomNavbar();
-                                })));
-                            return Container();
-                          } else if (state is LoadingState) {
-                            return CircularProgressIndicator();
-                          } else {
-                            return Container();
-                          }
-                        }),
-                      )
-                    ],
-                  ),
+                          (state is ErrorState)
+                              ? Center(
+                                  child: Text(state.message,
+                                      style: GoogleFonts.montserrat(
+                                          color: Colors.redAccent,
+                                          fontWeight: FontWeight.w500)),
+                                )
+                              : Container()
+                        ],
+                      );
+                    }),
+                  ],
                 ),
               ),
-            ],
-          ),
+            ),
+          ],
         ),
-      ),
+      )),
     );
-  }
-
-  saveToken(String token) async {
-    WidgetsFlutterBinding.ensureInitialized();  
-    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-    sharedPreferences.setString("token", token);
-  }
-
-  void _isPasswordVisibility() {
-    setState(() {
-      _showPassword = !_showPassword;
-    });
   }
 }

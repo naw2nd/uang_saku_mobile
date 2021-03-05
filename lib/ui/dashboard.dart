@@ -199,7 +199,7 @@ class _DashboardPageState extends State<DashboardPage> {
                                             EdgeInsets.fromLTRB(80, 10, 10, 10),
                                         child: Image(
                                           image:
-                                              AssetImage("images/avatar.png"),
+                                              AssetImage("images/man.png"),
                                         ),
                                       ),
                                     ],
