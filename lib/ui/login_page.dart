@@ -85,10 +85,10 @@ class _LoginPageState extends State<LoginPage> {
                                   fontWeight: FontWeight.w700),
                             ),
                             onPressed: () {
-                              Navigator.pushReplacement(context,
-                                  MaterialPageRoute(builder: (context) {
-                                return EmailPage();
-                              }));
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => EmailPage()));
                             })
                       ],
                     ),
