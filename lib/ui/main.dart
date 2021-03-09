@@ -8,14 +8,16 @@ import 'package:uang_saku/repository/expense_repository.dart';
 import 'package:uang_saku/repository/remote/http_service.dart';
 import 'package:uang_saku/ui/splash_screen.dart';
 import 'package:uang_saku/bloc/reset_pass_bloc.dart';
+import 'package:uang_saku/bloc/kasbon_bloc.dart';
+import 'package:uang_saku/ui/widgets/details_pengajuan.dart';
 
 void main() {
   runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
-  final ExpenseRepository expenseRepository = ExpenseRepository(
-      remoteDataSource: HttpService());
+  final ExpenseRepository expenseRepository =
+      ExpenseRepository(remoteDataSource: HttpService());
   // final ExpenseRepository expenseRepository = ExpenseRepository(
   //     remoteDataSource: RemoteDataSource(httpClient: http.Client()));
 
@@ -33,16 +35,20 @@ class MyApp extends StatelessWidget {
           BlocProvider<VerifyOTPBloc>(
             create: (context) =>
                 VerifyOTPBloc(expenseRepository: expenseRepository),
-          ),BlocProvider<ResetPassBloc>(
-          create: (context) =>
-              ResetPassBloc(expenseRepository: expenseRepository)),
+          ),
+          BlocProvider<ResetPassBloc>(
+              create: (context) =>
+                  ResetPassBloc(expenseRepository: expenseRepository)),
           BlocProvider<ProfileBloc>(
             create: (context) =>
                 ProfileBloc(expenseRepository: expenseRepository),
           ),
+          BlocProvider<KasbonBloc>(
+              create: (context) =>
+                  KasbonBloc(expenseRepository: expenseRepository))
         ],
         child: MaterialApp(
-          home: SplashScreen(),
+          home: DetailsPengajuan(),
         ));
   }
 }

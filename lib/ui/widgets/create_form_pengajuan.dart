@@ -14,10 +14,7 @@ class CreatePengajuan extends StatefulWidget {
   );
 
   CreatePengajuan(
-      {this.judul,
-      this.buttonColor,
-      this.appBarColor,
-      this.rincianBiaya});
+      {this.judul, this.buttonColor, this.appBarColor, this.rincianBiaya});
   @override
   _CreatePengajuanState createState() => _CreatePengajuanState(
       judul: judul,
@@ -95,22 +92,21 @@ class _CreatePengajuanState extends State<CreatePengajuan> {
   }
 
   _CreatePengajuanState(
-      {this.judul,
-      this.buttonColor,
-      this.appBarColor,
-      this.rincianBiaya});
+      {this.judul, this.buttonColor, this.appBarColor, this.rincianBiaya});
 
   sendData(BuildContext context) {
     Navigator.push(
         context,
         MaterialPageRoute(
-            builder: (context) => DetailsPengajuan(mainColor: Colors.blue,judul: "Detail Pengajuan Kasbon",
-                  tujuanHolder: tujuan.text,
-                  cabangHolder: showCabang,
-                  jenisPencairanHolder: showMetodeBayar,
-                  kategoriHolder: showKategori,
-                  perusahaanHolder: showPerusahaan,
-                 
+            builder: (context) => DetailsPengajuan(
+                  mainColor: Colors.blue, judul: "Detail Pengajuan Kasbon",
+                  // tujuanHolder: tujuan.text,
+                  // cabangHolder: showCabang,
+                  // jenisPencairanHolder: showMetodeBayar,
+                  // kategoriHolder: showKategori,
+                  // perusahaanHolder: showPerusahaan,
+                  // tanggalMulaiHolder: tanggalMulai.text,
+                  // tanggalSelesaiHolder: tanggalSelesai.text,
                 )));
   }
 
@@ -380,7 +376,7 @@ class _CreatePengajuanState extends State<CreatePengajuan> {
                       padding: EdgeInsets.fromLTRB(20, 0, 20, 10),
                       child: TextField(
                         maxLines: 3,
-                        
+
                         decoration: const InputDecoration(
                           hintStyle: TextStyle(color: Colors.black45),
                           errorStyle: TextStyle(color: Colors.redAccent),

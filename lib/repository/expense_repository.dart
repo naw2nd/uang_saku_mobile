@@ -1,3 +1,5 @@
+import 'package:uang_saku/model/kasbon.dart';
+import 'package:uang_saku/model/multi_response.dart';
 import 'package:uang_saku/model/token.dart';
 import 'package:uang_saku/model/single_response.dart';
 import 'package:uang_saku/model/user.dart';
@@ -48,6 +50,7 @@ class ExpenseRepository implements ExpenseDataSource {
     remoteDataSource.getToken();
     return await remoteDataSource.postPassword(password);
   }
+  
 
   @override
   setToken(String token) {
@@ -62,6 +65,18 @@ class ExpenseRepository implements ExpenseDataSource {
   @override
   logout() {
     remoteDataSource.logout();
+  }
+
+  @override
+  Future<SingleResponse<Kasbon>> getKasbon() async {
+   remoteDataSource.getToken();
+   return await remoteDataSource.getKasbon();
+  }
+
+  @override
+  Future<MultiResponse<Kasbon>> getListKasbon() async{
+    remoteDataSource.getToken();
+    return await remoteDataSource.getListKasbon();
   }
 
 }
