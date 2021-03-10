@@ -30,12 +30,12 @@ class MyApp extends StatelessWidget {
           BlocProvider<ForgotPasswordBloc>(
               create: (context) =>
                   ForgotPasswordBloc(expenseRepository: expenseRepository)),
-          BlocProvider<VerifyOTPBloc>(
-            create: (context) =>
-                VerifyOTPBloc(expenseRepository: expenseRepository),
-          ),BlocProvider<ResetPassBloc>(
-          create: (context) =>
-              ResetPassBloc(expenseRepository: expenseRepository)),
+          // BlocProvider<VerifyOTPBloc>(
+          //   create: (context) =>
+          //       VerifyOTPBloc(expenseRepository: expenseRepository),
+          // ),BlocProvider<ResetPassBloc>(
+          // create: (context) =>
+          //     ResetPassBloc(expenseRepository: expenseRepository)),
           BlocProvider<ProfileBloc>(
             create: (context) =>
                 ProfileBloc(expenseRepository: expenseRepository),

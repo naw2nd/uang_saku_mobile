@@ -4,7 +4,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:uang_saku/bloc/bloc.dart';
 import 'package:uang_saku/bloc/login_bloc.dart';
 import 'package:uang_saku/ui/custom_widgets/custom_text_form_field.dart';
-import 'package:uang_saku/ui/email.dart';
+import 'package:uang_saku/ui/forgot_password_page.dart';
 import 'package:uang_saku/ui/widgets/bottom_navbar.dart';
 import '../model/models.dart';
 import '../bloc/state/base_state.dart';

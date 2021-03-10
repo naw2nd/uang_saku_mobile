@@ -7,6 +7,7 @@ import 'package:pin_code_fields/pin_code_fields.dart';
 import 'package:uang_saku/bloc/bloc.dart';
 import 'package:uang_saku/bloc/event/forgot_password_event.dart';
 import 'package:uang_saku/bloc/forgot_password_bloc.dart';
+import 'package:uang_saku/bloc/reset_pass_bloc.dart';
 import 'package:uang_saku/bloc/state/forgot_password_state.dart';
 import 'custom_widgets/custom_text_form_field.dart';
 
@@ -36,14 +37,19 @@ class _EmailPageState extends State<EmailPage> {
               centerTitle: true,
               leading: IconButton(
                 icon: Icon(Icons.arrow_back, color: Color(0xFF555555)),
-                onPressed: () => Navigator.of(context).pop(),
+                onPressed: () {
+                  BlocProvider.of<ForgotPasswordBloc>(context).close();
+                  return Navigator.of(context).pop();
+                },
               ),
               elevation: 0,
               backgroundColor: Colors.white,
               title: Text(
                   (state is OTPVerifiedState || state is SuccesState<String>)
                       ? "Reset Password"
-                      : "Verifikasi Email",
+                      : (state is LoadingState)
+                          ? ""
+                          : "Verifikasi Email",
                   style: GoogleFonts.montserrat(
                     color: Color(0xFF555555),
                     fontWeight: FontWeight.w500,
@@ -53,13 +59,15 @@ class _EmailPageState extends State<EmailPage> {
             children: [
               Container(
                 margin: EdgeInsets.only(top: 30),
-                child: Image(
-                  image: (state is OTPVerifiedState || state is SuccesState<String>)
-                      ? AssetImage('images/resetpass.png')
-                      : AssetImage('images/otp.png'),
-                ),
+                child: (state is LoadingState)
+                    ? Container()
+                    : Image(
+                        image: (state is OTPVerifiedState ||
+                                state is SuccesState<String>)
+                            ? AssetImage('images/resetpass.png')
+                            : AssetImage('images/otp.png'),
+                      ),
               ),
-              // Text("AAAAA"),
               Form(
                 key: _formKey,
                 child: Container(
@@ -67,13 +75,17 @@ class _EmailPageState extends State<EmailPage> {
                   child: Column(
                     children: [
                       Container(
-                        margin: (state is OTPVerifiedState) ? EdgeInsets.all(0) : EdgeInsets.only(top: 10, bottom: 10),
+                        margin: (state is OTPVerifiedState)
+                            ? EdgeInsets.all(0)
+                            : EdgeInsets.only(top: 10, bottom: 10),
                         child: Text(
                           (state is EmptyState)
                               ? "Masukkan email untuk mendapatkan kode OTP"
                               : (state is EmailVerifiedState)
                                   ? "Masukkan kode OTP yang telah diterima melalui email anda"
-                                  : (state is SuccesState<String>)? state.data :"",
+                                  : (state is SuccesState<String>)
+                                      ? state.data
+                                      : "",
                           textAlign: TextAlign.center,
                           style: GoogleFonts.montserrat(fontSize: 17),
                         ),
@@ -187,7 +199,10 @@ class _EmailPageState extends State<EmailPage> {
                                         ),
                                       ],
                                     )
-                                  : (state is LoadingState) ? Center(child: CircularProgressIndicator()): Container(),
+                                  : (state is LoadingState)
+                                      ? Center(
+                                          child: CircularProgressIndicator())
+                                      : Container(),
                       (state is! LoadingState)
                           ? Container(
                               margin: EdgeInsets.only(top: 10),
@@ -238,7 +253,9 @@ class _EmailPageState extends State<EmailPage> {
                                               ? "Kirim Email"
                                               : (state is EmailVerifiedState)
                                                   ? "Verifikasi Kode"
-                                                  : (state is OTPVerifiedState) ? "Reset Password" : "Kembali",
+                                                  : (state is OTPVerifiedState)
+                                                      ? "Reset Password"
+                                                      : "Kembali",
                                           style: GoogleFonts.montserrat(
                                               color: Colors.white,
                                               fontSize: 25,
@@ -259,4 +276,7 @@ class _EmailPageState extends State<EmailPage> {
       ),
     );
   }
+  // void dispose(){
+
+  // }
 }
