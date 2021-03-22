@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:percent_indicator/percent_indicator.dart';
@@ -5,80 +7,28 @@ import 'package:uang_saku/bloc/bloc.dart';
 import 'package:uang_saku/bloc/event/kasbon_event.dart';
 import 'package:uang_saku/model/models.dart';
 import 'package:uang_saku/ui/component/profile_component.dart';
+import 'package:intl/intl.dart';
+import 'package:uang_saku/ui/detail_rincian_approval.dart';
 
 class DetailsPengajuan extends StatefulWidget {
-  Color mainColor = Color(0xFF358BFC);
-  String judul = "Detail Pengajuan Kasbon";
-  // final tujuanHolder;
-  // final kategoriHolder;
-  // final tanggalMulaiHolder;
-  // final tanggalSelesaiHolder;
-  // final perusahaanHolder;
-  // final cabangHolder;
-  // final jenisPencairanHolder;
-  // final Kasbon kasbon;
-
-  DetailsPengajuan({
-    this.mainColor,
-    this.judul,
-    // this.tujuanHolder,
-    // this.cabangHolder,
-    // this.jenisPencairanHolder,
-    // this.kategoriHolder,
-    // this.perusahaanHolder,
-    // this.tanggalMulaiHolder,
-    // this.tanggalSelesaiHolder,
-    // this.kasbon
-  });
-  
-
   @override
-  _DetailsPengajuanState createState() => _DetailsPengajuanState(
-        mainColor: mainColor,
-        judul: judul,
-        // tujuanHolder: tujuanHolder,
-        // cabangHolder: cabangHolder,
-        // jenisPencairanHolder: jenisPencairanHolder,
-        // kategoriHolder: kategoriHolder,
-        // perusahaanHolder: perusahaanHolder,
-        // tanggalMulaiHolder: tanggalMulaiHolder,
-        // tanggalSelesaiHolder: tanggalSelesaiHolder
-      );
+  _DetailsPengajuanState createState() => _DetailsPengajuanState();
 }
 
 class _DetailsPengajuanState extends State<DetailsPengajuan> {
   Color mainColor = Color(0xFF358BFC);
   String judul = "Detail Pengajuan Kasbon";
-  // final tujuanHolder;
-  // final kategoriHolder;
-  // final tanggalMulaiHolder;
-  // final tanggalSelesaiHolder;
-  // final perusahaanHolder;
-  // final cabangHolder;
-  // final jenisPencairanHolder;
-  // final Kasbon kasbon;
 
-  _DetailsPengajuanState({
-    this.mainColor,
-    this.judul,
-    // this.tujuanHolder,
-    // this.cabangHolder,
-    // this.jenisPencairanHolder,
-    // this.kategoriHolder,
-    // this.perusahaanHolder,
-    // this.tanggalMulaiHolder,
-    // this.tanggalSelesaiHolder,
-    // this.kasbon
-  });
-
-@override
-void initState() {
-  context.read()<KasbonBloc>().add(KasbonEvent());
-  super.initState();
-}
+  @override
+  void initState() {
+    print("init event");
+    context.read<KasbonBloc>().add(KasbonEvent());
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
+    // print(list.);
     return MaterialApp(
       home: Scaffold(
         appBar: AppBar(
@@ -99,8 +49,35 @@ void initState() {
           ],
         ),
         body: BlocBuilder<KasbonBloc, BaseState>(
-          builder: (context, state) {
+          builder: (_, state) {
             if (state is KasbonState) {
+              // String percent = state.kasbon.approval.approved.toString();
+              // String barApproved() {
+              //   if (percent == null) {
+              //     Padding(
+              //       padding: EdgeInsets.all(10),
+              //       child: LinearPercentIndicator(
+              //         width: MediaQuery.of(context).size.width * 0.8,
+              //         animation: true,
+              //         lineHeight: 20.0,
+              //         animationDuration: 2000,
+              //         percent: 0.0,
+              //         center: Text(
+              //           "0.0%",
+              //           style: TextStyle(
+              //               fontFamily: "Montserrat",
+              //               fontWeight: FontWeight.w600,
+              //               color: Colors.white),
+              //         ),
+              //         linearStrokeCap: LinearStrokeCap.roundAll,
+              //         progressColor: mainColor,
+              //       ),
+              //     );
+              //   } else {
+              //     Text("hehe");
+              //   }
+              // }
+
               return ListView(
                 children: <Widget>[
                   Card(
@@ -117,21 +94,29 @@ void initState() {
                                 fontWeight: FontWeight.w600,
                                 color: Color(0xFF555555)),
                           ),
-
+                          Padding(
+                            padding: EdgeInsets.fromLTRB(0, 10, 0, 0),
+                            child: Text("Nomor Pengajuan",
+                                style: TextStyle(
+                                  fontFamily: "Montserrat",
+                                )),
+                          ),
                           Text(state.kasbon.nomorPengajuan,
                               style: TextStyle(
-                                fontFamily: "Montserrat",
-                              )),
-
-                          //                     child: Container(
-                          //   padding: EdgeInsets.fromLTRB(0, 10, 0, 0),
-                          //   child: Text("Nomor Pengajuan",
-                          //       style: TextStyle(
-                          //         fontFamily: "Montserrat",
-                          //       )),
-                          // ),
-
-                          Text(state.kasbon.tglPengajuan.toString(),
+                                  fontFamily: "Montserrat",
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w600,
+                                  color: Color(0xFF555555))),
+                          Padding(
+                            padding: EdgeInsets.fromLTRB(0, 10, 0, 0),
+                            child: Text("Tanggal Pengajuan",
+                                style: TextStyle(
+                                  fontFamily: "Montserrat",
+                                )),
+                          ),
+                          Text(
+                              DateFormat.yMMMMd('en_US')
+                                  .format(state.kasbon.tglMulai),
                               style: TextStyle(
                                   fontFamily: "Montserrat",
                                   fontWeight: FontWeight.w600)),
@@ -142,7 +127,7 @@ void initState() {
                                   fontFamily: "Montserrat",
                                 )),
                           ),
-                          Text("Kresna",
+                          Text(state.kasbon.pegawai.namaPegawai,
                               style: TextStyle(
                                   fontFamily: "Montserrat",
                                   fontWeight: FontWeight.w600)),
@@ -164,7 +149,8 @@ void initState() {
                                   fontFamily: "Montserrat",
                                 )),
                           ),
-                          Text(state.kasbon.idPerusahaan.toString(),
+                          Text(
+                              state.kasbon.perusahaan.namaPerusahaan.toString(),
                               style: TextStyle(
                                   fontFamily: "Montserrat",
                                   fontWeight: FontWeight.w600)),
@@ -176,9 +162,10 @@ void initState() {
                                 )),
                           ),
                           Text(
-                              state.kasbon.idDepartment.toString() +
+                              state.kasbon.department.namaDepartment
+                                      .toString() +
                                   "," +
-                                  state.kasbon.idCabang.toString(),
+                                  state.kasbon.cabang.namaCabang.toString(),
                               style: TextStyle(
                                   fontFamily: "Montserrat",
                                   fontWeight: FontWeight.w600)),
@@ -190,10 +177,6 @@ void initState() {
                                 )),
                           ),
                           Text(state.kasbon.pelaksana.toString(),
-                              style: TextStyle(
-                                  fontFamily: "Montserrat",
-                                  fontWeight: FontWeight.w600)),
-                          Text("Aditya Indra",
                               style: TextStyle(
                                   fontFamily: "Montserrat",
                                   fontWeight: FontWeight.w600)),
@@ -211,7 +194,10 @@ void initState() {
                                             style: TextStyle(
                                               fontFamily: "Montserrat",
                                             )),
-                                        Text(state.kasbon.tglMulai.toString(),
+                                        Text(
+                                            DateFormat.yMMMMd('en_US')
+                                                .format(state.kasbon.tglMulai)
+                                                .toString(),
                                             style: TextStyle(
                                                 fontFamily: "Montserrat",
                                                 fontWeight: FontWeight.w600,
@@ -232,7 +218,10 @@ void initState() {
                                             style: TextStyle(
                                               fontFamily: "Montserrat",
                                             )),
-                                        Text(state.kasbon.tglSelesai.toString(),
+                                        Text(
+                                            DateFormat.yMMMMd('en_US')
+                                                .format(state.kasbon.tglSelesai)
+                                                .toString(),
                                             style: TextStyle(
                                                 fontFamily: "Montserrat",
                                                 fontWeight: FontWeight.w600,
@@ -295,57 +284,58 @@ void initState() {
                                   fontFamily: "Montserrat",
                                   fontSize: 15,
                                   fontWeight: FontWeight.w600)),
-                          Padding(
-                            padding: EdgeInsets.all(10),
-                            child: LinearPercentIndicator(
-                              width: MediaQuery.of(context).size.width * 0.8,
-                              animation: true,
-                              lineHeight: 20.0,
-                              animationDuration: 2000,
-                              percent: 0.5,
-                              center: Text(
-                                "50.0%",
-                                style: TextStyle(
-                                    fontFamily: "Montserrat",
-                                    fontWeight: FontWeight.w600,
-                                    color: Colors.white),
-                              ),
-                              linearStrokeCap: LinearStrokeCap.roundAll,
-                              progressColor: mainColor,
-                            ),
-                          ),
+                          //barApproved(),
+                          // Padding(
+                          //   padding: EdgeInsets.all(10),
+                          //   child: LinearPercentIndicator(
+                          //     width: MediaQuery.of(context).size.width * 0.8,
+                          //     animation: true,
+                          //     lineHeight: 20.0,
+                          //     animationDuration: 2000,
+                          //     percent: 0.5,
+                          //     center: Text(
+                          //       "50.0%",
+                          //       style: TextStyle(
+                          //           fontFamily: "Montserrat",
+                          //           fontWeight: FontWeight.w600,
+                          //           color: Colors.white),
+                          //     ),
+                          //     linearStrokeCap: LinearStrokeCap.roundAll,
+                          //     progressColor: mainColor,
+                          //   ),
+                          // ),
                           Container(
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: <Widget>[
-                                Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: <Widget>[
-                                    Text(
-                                      "Approval Korcab",
-                                      style: TextStyle(
-                                          fontFamily: "Montserrat",
-                                          fontWeight: FontWeight.w600),
-                                    ),
-                                    Text(
-                                      "Tidak ada catatan",
-                                      style:
-                                          TextStyle(fontFamily: "Montserrat"),
-                                    )
-                                  ],
-                                ),
-                                Chip(
-                                    backgroundColor: mainColor,
-                                    label: Text(
-                                      "Selesai",
-                                      style: TextStyle(
-                                          fontFamily: "Montserrat",
-                                          fontWeight: FontWeight.w600,
-                                          color: Colors.white),
-                                    ))
-                              ],
-                            ),
-                          ),
+                              // child: Row(
+                              //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              //   children: <Widget>[
+                              //     Column(
+                              //       crossAxisAlignment: CrossAxisAlignment.start,
+                              //       children: <Widget>[
+                              //         Text(
+                              //           "Approval Korcab",
+                              //           style: TextStyle(
+                              //               fontFamily: "Montserrat",
+                              //               fontWeight: FontWeight.w600),
+                              //         ),
+                              //         Text(
+                              //           "Tidak ada catatan",
+                              //           style:
+                              //               TextStyle(fontFamily: "Montserrat"),
+                              //         )
+                              //       ],
+                              //     ),
+                              //     Chip(
+                              //         backgroundColor: mainColor,
+                              //         label: Text(
+                              //           "Selesai",
+                              //           style: TextStyle(
+                              //               fontFamily: "Montserrat",
+                              //               fontWeight: FontWeight.w600,
+                              //               color: Colors.white),
+                              //         ))
+                              //   ],
+                              // ),
+                              ),
                           Container(
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -366,15 +356,25 @@ void initState() {
                                     )
                                   ],
                                 ),
-                                Chip(
-                                    backgroundColor: mainColor,
-                                    label: Text(
-                                      "Selesai",
-                                      style: TextStyle(
-                                          fontFamily: "Montserrat",
-                                          fontWeight: FontWeight.w600,
-                                          color: Colors.white),
-                                    ))
+                                state.kasbon.approval.approved == 2
+                                    ? Chip(
+                                        backgroundColor: mainColor,
+                                        label: Text(
+                                          "Selesai",
+                                          style: TextStyle(
+                                              fontFamily: "Montserrat",
+                                              fontWeight: FontWeight.w600,
+                                              color: Colors.white),
+                                        ))
+                                    : Chip(
+                                        backgroundColor: Color(0xFF82A5BF),
+                                        label: Text(
+                                          "Menunggu",
+                                          style: TextStyle(
+                                              fontFamily: "Montserrat",
+                                              fontWeight: FontWeight.w600,
+                                              color: Colors.white),
+                                        ))
                               ],
                             ),
                           ),
@@ -398,15 +398,26 @@ void initState() {
                                     )
                                   ],
                                 ),
-                                Chip(
-                                    backgroundColor: Color(0xFF82A5BF),
-                                    label: Text(
-                                      "Menunggu",
-                                      style: TextStyle(
-                                          fontFamily: "Montserrat",
-                                          fontWeight: FontWeight.w600,
-                                          color: Colors.white),
-                                    ))
+                                state.kasbon.approval.approved == 3 &&
+                                        state.kasbon.approval.approved == 2
+                                    ? Chip(
+                                        backgroundColor: mainColor,
+                                        label: Text(
+                                          "Selesai",
+                                          style: TextStyle(
+                                              fontFamily: "Montserrat",
+                                              fontWeight: FontWeight.w600,
+                                              color: Colors.white),
+                                        ))
+                                    : Chip(
+                                        backgroundColor: Color(0xFF82A5BF),
+                                        label: Text(
+                                          "Menunggu",
+                                          style: TextStyle(
+                                              fontFamily: "Montserrat",
+                                              fontWeight: FontWeight.w600,
+                                              color: Colors.white),
+                                        ))
                               ],
                             ),
                           ),
@@ -430,15 +441,27 @@ void initState() {
                                     )
                                   ],
                                 ),
-                                Chip(
-                                    backgroundColor: Color(0xFF82A5BF),
-                                    label: Text(
-                                      "Menunggu",
-                                      style: TextStyle(
-                                          fontFamily: "Montserrat",
-                                          fontWeight: FontWeight.w600,
-                                          color: Colors.white),
-                                    ))
+                                state.kasbon.approval.approved == 4 &&
+                                        state.kasbon.approval.approved == 3 &&
+                                        state.kasbon.approval.approved == 2
+                                    ? Chip(
+                                        backgroundColor: mainColor,
+                                        label: Text(
+                                          "Selesai",
+                                          style: TextStyle(
+                                              fontFamily: "Montserrat",
+                                              fontWeight: FontWeight.w600,
+                                              color: Colors.white),
+                                        ))
+                                    : Chip(
+                                        backgroundColor: Color(0xFF82A5BF),
+                                        label: Text(
+                                          "Menunggu",
+                                          style: TextStyle(
+                                              fontFamily: "Montserrat",
+                                              fontWeight: FontWeight.w600,
+                                              color: Colors.white),
+                                        ))
                               ],
                             ),
                           )
@@ -467,42 +490,81 @@ void initState() {
                                   ))
                             ],
                           ),
-                          Container(
-                            padding: EdgeInsets.fromLTRB(0, 0, 0, 20),
-                            child: Card(
-                              child: Column(
-                                children: <Widget>[
-                                  Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: <Widget>[
-                                      Text("Perawatan",
-                                          style: TextStyle(
-                                              fontFamily: "Montserrat",
-                                              fontWeight: FontWeight.w600)),
-                                      IconButton(
-                                          icon: Icon(Icons.file_present),
-                                          onPressed: () {})
-                                    ],
+                          ListView.builder(
+                            itemCount: state.kasbon.rincianPengajuan == null
+                                ? 0
+                                : state.kasbon.rincianPengajuan.length,
+                            shrinkWrap: true,
+                            physics: ClampingScrollPhysics(),
+                            itemBuilder: (context, i) {
+                              final x = state.kasbon.rincianPengajuan[i];
+                              return Container(
+                                padding: EdgeInsets.fromLTRB(0, 0, 0, 20),
+                                child: GestureDetector(
+                                  onTap: () {
+                                    showDialog(
+                                        context: context,
+                                        builder: (BuildContext context) {
+                                          return RincianApproval(
+                                            judul: "Rincian Biaya Kasbon",
+                                            namaHolder: x.namaItem,
+                                            keteranganHolder: x.keterangan,
+                                            jumlahHolder: x.jumlahUnit.toString(),
+                                            hargaHolder: x.hargaSatuan.toString(),
+                                            kategoriHolder: x.kategoriBiaya.namaKategoriBiaya,
+                                            totalHolder: x.total.toString(),
+                                          );
+                                        });
+                                  },
+                                  child: Card(
+                                    child: Column(
+                                      children: <Widget>[
+                                        Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
+                                          children: <Widget>[
+                                            x.namaItem != null
+                                                ? Text(x.namaItem.toString(),
+                                                    style: TextStyle(
+                                                        fontFamily:
+                                                            "Montserrat",
+                                                        fontWeight:
+                                                            FontWeight.w600))
+                                                : Text(""),
+                                            IconButton(
+                                                icon: Icon(Icons.file_present),
+                                                onPressed: () {})
+                                          ],
+                                        ),
+                                        Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
+                                          children: <Widget>[
+                                            x.keterangan != null
+                                                ? Text(x.keterangan,
+                                                    maxLines: 3,
+                                                    style: TextStyle(
+                                                        fontFamily:
+                                                            "Montserrat"))
+                                                : Text(""),
+                                            x.total != null
+                                                ? Text(
+                                                    "Rp" +
+                                                        " " +
+                                                        x.total.toString(),
+                                                    style: TextStyle(
+                                                        fontFamily:
+                                                            "Montserrat"),
+                                                  )
+                                                : Text("")
+                                          ],
+                                        )
+                                      ],
+                                    ),
                                   ),
-                                  Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: <Widget>[
-                                      Text("Sisir kucing extra smooth",
-                                          maxLines: 3,
-                                          style: TextStyle(
-                                              fontFamily: "Montserrat")),
-                                      Text(
-                                        "Rp 134.000,00",
-                                        style:
-                                            TextStyle(fontFamily: "Montserrat"),
-                                      )
-                                    ],
-                                  )
-                                ],
-                              ),
-                            ),
+                                ),
+                              );
+                            },
                           ),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -544,6 +606,9 @@ void initState() {
                   )
                 ],
               );
+            } else {
+              print(state.toString() + "kjesdjvk ");
+              return Text("sbsjabf");
             }
           },
         ),

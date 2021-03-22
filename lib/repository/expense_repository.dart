@@ -1,4 +1,5 @@
 import 'package:uang_saku/model/kasbon.dart';
+import 'package:uang_saku/model/list_kasbon.dart';
 import 'package:uang_saku/model/multi_response.dart';
 import 'package:uang_saku/model/token.dart';
 import 'package:uang_saku/model/single_response.dart';
@@ -73,8 +74,9 @@ class ExpenseRepository implements ExpenseDataSource {
    return await remoteDataSource.getKasbon();
   }
 
+ 
   @override
-  Future<MultiResponse<Kasbon>> getListKasbon() async{
+  Future<MultiResponse<ListKasbon>> getListKasbon() async {
     remoteDataSource.getToken();
     return await remoteDataSource.getListKasbon();
   }

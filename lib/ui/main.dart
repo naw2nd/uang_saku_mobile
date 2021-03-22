@@ -48,7 +48,7 @@ class MyApp extends StatelessWidget {
                   KasbonBloc(expenseRepository: expenseRepository))
         ],
         child: MaterialApp(
-          home: DetailsPengajuan(),
+          home: SplashScreen(),
         ));
   }
 }

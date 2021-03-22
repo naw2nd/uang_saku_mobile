@@ -4,14 +4,41 @@
 
 import 'dart:convert';
 
-import 'package:uang_saku/model/models.dart';
+ListKasbon listKasbonFromJson(String str) =>
+    ListKasbon.fromJson(json.decode(str));
 
- Kasbon kasbonFromJson(String str) => Kasbon.fromJson(json.decode(str));
+String listKasbonToJson(ListKasbon data) => json.encode(data.toJson());
 
- String kasbonToJson(Kasbon data) => json.encode(data.toJson());
+// class ListKasbon {
+//   ListKasbon({
+//     this.success,
+//     this.message,
+//     this.properties,
+//     this.data,
+//   });
 
-class Kasbon {
-  Kasbon({
+//   bool success;
+//   String message;
+//   Properties properties;
+//   List<Datum> data;
+
+//   factory ListKasbon.fromJson(Map<String, dynamic> json) => ListKasbon(
+//         success: json["success"],
+//         message: json["message"],
+//         properties: Properties.fromJson(json["properties"]),
+//         data: List<Datum>.from(json["data"].map((x) => Datum.fromJson(x))),
+//       );
+
+//   Map<String, dynamic> toJson() => {
+//         "success": success,
+//         "message": message,
+//         "properties": properties.toJson(),
+//         "data": List<dynamic>.from(data.map((x) => x.toJson())),
+//       };
+// }
+
+class ListKasbon {
+  ListKasbon({
     this.idPengajuanKasbon,
     this.idPegawai,
     this.idDepartment,
@@ -44,8 +71,6 @@ class Kasbon {
     this.department,
     this.cabang,
     this.kategoriPengajuan,
-    this.rincianPengajuan,
-    this.rincianRealisasi,
   });
 
   int idPengajuanKasbon;
@@ -80,10 +105,8 @@ class Kasbon {
   Department department;
   Cabang cabang;
   KategoriPengajuan kategoriPengajuan;
-  List<RincianPengajuan> rincianPengajuan;
-  List<dynamic> rincianRealisasi;
 
-  factory Kasbon.fromJson(Map<String, dynamic> json) => Kasbon(
+  factory ListKasbon.fromJson(Map<String, dynamic> json) => ListKasbon(
         idPengajuanKasbon: json["id_pengajuan_kasbon"],
         idPegawai: json["id_pegawai"],
         idDepartment: json["id_department"],
@@ -118,10 +141,6 @@ class Kasbon {
         cabang: Cabang.fromJson(json["cabang"]),
         kategoriPengajuan:
             KategoriPengajuan.fromJson(json["kategori_pengajuan"]),
-        rincianPengajuan: List<RincianPengajuan>.from(
-            json["rincian_pengajuan"].map((x) => RincianPengajuan.fromJson(x))),
-        rincianRealisasi:
-            List<dynamic>.from(json["rincian_realisasi"].map((x) => x)),
       );
 
   Map<String, dynamic> toJson() => {
@@ -162,9 +181,6 @@ class Kasbon {
         "department": department.toJson(),
         "cabang": cabang.toJson(),
         "kategori_pengajuan": kategoriPengajuan.toJson(),
-        "rincian_pengajuan":
-            List<dynamic>.from(rincianPengajuan.map((x) => x.toJson())),
-        "rincian_realisasi": List<dynamic>.from(rincianRealisasi.map((x) => x)),
       };
 }
 
@@ -317,87 +333,34 @@ class Perusahaan {
       };
 }
 
-// List<RincianPengajuan> convertFromJson(String str) =>
-//     List<RincianPengajuan>.from(
-//         json.decode(str).map((x) => RincianPengajuan.fromJson(x)));
-
-// String convertToJson(List<RincianPengajuan> data) =>
-//     json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
-
-class RincianPengajuan {
-  RincianPengajuan({
-    this.idRincianPengajuanKasbon,
-    this.idPengajuanKasbon,
-    this.idKategoriBiaya,
-    this.namaItem,
-    this.jumlahUnit,
-    this.hargaSatuan,
+class Properties {
+  Properties({
+    this.page,
     this.total,
-    this.keterangan,
-    this.images,
-    this.kategoriBiaya,
+    this.totalPage,
+    this.pageSize,
+    this.hasMorePages,
   });
 
-  int idRincianPengajuanKasbon;
-  int idPengajuanKasbon;
-  int idKategoriBiaya;
-  String namaItem;
-  int jumlahUnit;
-  int hargaSatuan;
+  int page;
   int total;
-  dynamic keterangan;
-  List<dynamic> images;
-  KategoriBiaya kategoriBiaya;
+  int totalPage;
+  int pageSize;
+  bool hasMorePages;
 
-  factory RincianPengajuan.fromJson(Map<String, dynamic> json) =>
-      RincianPengajuan(
-        idRincianPengajuanKasbon: json["id_rincian_pengajuan_kasbon"] as int,
-        idPengajuanKasbon: json["id_pengajuan_kasbon"] as int,
-        idKategoriBiaya: json["id_kategori_biaya"] as int,
-        namaItem: json["nama_item"] as String,
-        jumlahUnit: json["jumlah_unit"] as int,
-        hargaSatuan: json["harga_satuan"] as int,
-        total: json["total"] as int,
-        keterangan: json["keterangan"] as String,
-        images: List<dynamic>.from(json["images"].map((x) => x)),
-        kategoriBiaya: KategoriBiaya.fromJson(json["kategori_biaya"]),
+  factory Properties.fromJson(Map<String, dynamic> json) => Properties(
+        page: json["page"],
+        total: json["total"],
+        totalPage: json["total_page"],
+        pageSize: json["page_size"],
+        hasMorePages: json["has_more_pages"],
       );
 
   Map<String, dynamic> toJson() => {
-        "id_rincian_pengajuan_kasbon": idRincianPengajuanKasbon,
-        "id_pengajuan_kasbon": idPengajuanKasbon,
-        "id_kategori_biaya": idKategoriBiaya,
-        "nama_item": namaItem,
-        "jumlah_unit": jumlahUnit,
-        "harga_satuan": hargaSatuan,
+        "page": page,
         "total": total,
-        "keterangan": keterangan,
-        "images": List<dynamic>.from(images.map((x) => x)),
-        "kategori_biaya": kategoriBiaya.toJson(),
-      };
-
-  @override
-  String toString() {
-    return '{ ${this.namaItem}, ${this.total} }';
-  }
-}
-
-class KategoriBiaya {
-  KategoriBiaya({
-    this.idKategoriBiaya,
-    this.namaKategoriBiaya,
-  });
-
-  int idKategoriBiaya;
-  String namaKategoriBiaya;
-
-  factory KategoriBiaya.fromJson(Map<String, dynamic> json) => KategoriBiaya(
-        idKategoriBiaya: json["id_kategori_biaya"],
-        namaKategoriBiaya: json["nama_kategori_biaya"],
-      );
-
-  Map<String, dynamic> toJson() => {
-        "id_kategori_biaya": idKategoriBiaya,
-        "nama_kategori_biaya": namaKategoriBiaya,
+        "total_page": totalPage,
+        "page_size": pageSize,
+        "has_more_pages": hasMorePages,
       };
 }

@@ -99,7 +99,7 @@ class _CreatePengajuanState extends State<CreatePengajuan> {
         context,
         MaterialPageRoute(
             builder: (context) => DetailsPengajuan(
-                  mainColor: Colors.blue, judul: "Detail Pengajuan Kasbon",
+                  // mainColor: Colors.blue, judul: "Detail Pengajuan Kasbon",
                   // tujuanHolder: tujuan.text,
                   // cabangHolder: showCabang,
                   // jenisPencairanHolder: showMetodeBayar,

@@ -15,8 +15,8 @@ class _KasbonCardState extends State<KasbonCard> {
         onTap: () {
           Navigator.push(context, MaterialPageRoute(builder: (context) {
             return DetailsPengajuan(
-              mainColor: Colors.blue,
-              judul: "Detail Pengajuan Kasbon",
+              // mainColor: Colors.blue,
+              // judul: "Detail Pengajuan Kasbon",
               // tujuanHolder: "",
               // cabangHolder: "",
               // jenisPencairanHolder: "",
