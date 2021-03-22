@@ -9,7 +9,7 @@ class HttpService {
   SharedPreferences sharedPreferences;
   String token = "";
 
-  final baseURL = "http://192.168.137.18:8000/api/v1/";
+  final baseURL = "http://192.168.1.8:8000/api/v1/";
 
   HttpService() {
     _dio = Dio(BaseOptions(baseUrl: baseURL));
@@ -34,13 +34,19 @@ class HttpService {
       Response response = await _dio
           .post(endPoint, data: {"email": email, "password": password});
       print(response);
-      SingleResponse singleResponse = SingleResponse.fromJson(response.data);
-      singleResponseToken = SingleResponse<Token>(
-          success: singleResponse.success,
-          message: singleResponse.message,
-          data: Token.fromJson(singleResponse.data));
-      print(singleResponseToken.data.token);
-      // setToken(singleResponseToken.data.token);
+        print("kene");
+        SingleResponse singleResponse = SingleResponse.fromJson(response.data);
+      if (singleResponse.success) {
+        singleResponseToken = SingleResponse<Token>(
+            success: singleResponse.success,
+            message: singleResponse.message,
+            data: Token.fromJson(singleResponse.data));
+        print(singleResponseToken.data.token);
+      } else {
+        singleResponseToken = SingleResponse<Token>(
+            success: singleResponse.success,
+            message: singleResponse.message);
+      }
     } on DioError catch (e) {
       print(e);
       // throw Exception(e.message);
@@ -101,6 +107,7 @@ class HttpService {
     try {
       Response response = await _dio.get(endPoint);
       print(response);
+      
       SingleResponse singleResponse = SingleResponse.fromJson(response.data);
       singleResponseUser = SingleResponse<User>(
           success: singleResponse.success,
@@ -121,7 +128,7 @@ class HttpService {
     try {
       Response response = await _dio.put(endPoint, data: {
         "username": user.username,
-        "nama_pegawai": user.nama,
+        "nama_pegawai": user.namaPegawai,
         "email": user.email,
         "alamat": user.alamat,
         "no_telp": user.noTelp,

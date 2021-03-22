@@ -29,7 +29,7 @@ class _ProfileEditComponentState extends State<ProfileEditComponent> {
   @override
   void initState() {
     _txtCtrlUsername = TextEditingController(text: widget.user.username);
-    _txtCtrlFullname = TextEditingController(text: widget.user.nama);
+    _txtCtrlFullname = TextEditingController(text: widget.user.namaPegawai);
     _txtCtrlEmail = TextEditingController(text: widget.user.email);
     _txtCtrlTempatLahir = TextEditingController(text: widget.user.tempatLahir);
     _txtCtrlAlamat = TextEditingController(text: widget.user.alamat);
@@ -155,7 +155,7 @@ class _ProfileEditComponentState extends State<ProfileEditComponent> {
                                 User user = User(
                                     alamat: _txtCtrlAlamat.text,
                                     email: _txtCtrlEmail.text,
-                                    nama: _txtCtrlFullname.text,
+                                    namaPegawai: _txtCtrlFullname.text,
                                     noTelp: _txtCtrlPhone.text,
                                     tempatLahir: _txtCtrlTempatLahir.text,
                                     username: _txtCtrlUsername.text,

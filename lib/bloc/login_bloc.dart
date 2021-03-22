@@ -19,11 +19,14 @@ class LoginBloc extends Bloc<BaseEvent, BaseState> {
         final SingleResponse<Token> response =
             await expenseRepository.login(event.email, event.password);
         print(response);
+          print(response.message.toString());
+
         if (response.success) {
           expenseRepository.setToken(response.data.token);
           yield SuccesState<Token>(data: response.data);
           // expenseRepository.getToken();
         } else {
+          // print(response.message);
           yield ErrorState(message: response.message);
         }
       } catch (e) {
