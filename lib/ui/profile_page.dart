@@ -227,7 +227,7 @@ class _ProfilePageState extends State<ProfilePage> {
                               image: (state is ProfileState)
                                   ? DecorationImage(
                                       fit: BoxFit.fill,
-                                      image: (state.user.gender == "Perempuan")
+                                      image: (state.user.jenisKelamin == "Perempuan")
                                           ? AssetImage('images/woman.png')
                                           : AssetImage('images/man.png'))
                                   : null),

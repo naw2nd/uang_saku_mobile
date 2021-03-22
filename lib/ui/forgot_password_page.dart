@@ -7,7 +7,6 @@ import 'package:pin_code_fields/pin_code_fields.dart';
 import 'package:uang_saku/bloc/bloc.dart';
 import 'package:uang_saku/bloc/event/forgot_password_event.dart';
 import 'package:uang_saku/bloc/forgot_password_bloc.dart';
-import 'package:uang_saku/bloc/reset_pass_bloc.dart';
 import 'package:uang_saku/bloc/state/forgot_password_state.dart';
 import 'custom_widgets/custom_text_form_field.dart';
 
@@ -26,6 +25,7 @@ class _EmailPageState extends State<EmailPage> {
   final _formKey = GlobalKey<FormState>();
   bool _hidePassword = true;
   String currentText = "";
+  String selectedImage = "images/otp.png";
 
   @override
   Widget build(BuildContext context) {
@@ -38,7 +38,8 @@ class _EmailPageState extends State<EmailPage> {
               leading: IconButton(
                 icon: Icon(Icons.arrow_back, color: Color(0xFF555555)),
                 onPressed: () {
-                  BlocProvider.of<ForgotPasswordBloc>(context).close();
+                  BlocProvider.of<ForgotPasswordBloc>(context)
+                      .add(ForgotPasswordEvent());
                   return Navigator.of(context).pop();
                 },
               ),
@@ -59,14 +60,17 @@ class _EmailPageState extends State<EmailPage> {
             children: [
               Container(
                 margin: EdgeInsets.only(top: 30),
-                child: (state is LoadingState)
-                    ? Container()
-                    : Image(
-                        image: (state is OTPVerifiedState ||
-                                state is SuccesState<String>)
-                            ? AssetImage('images/resetpass.png')
-                            : AssetImage('images/otp.png'),
-                      ),
+                // child: (state is LoadingState)
+                //     ? Container()
+                //     : Image(
+                //         image: (state is OTPVerifiedState ||
+                //                 state is SuccesState<String>)
+                //             ? AssetImage('images/resetpass.png')
+                //             : AssetImage('images/otp.png'),
+                //       ),
+                child: Image(
+                  image: AssetImage(selectedImage),
+                ),
               ),
               Form(
                 key: _formKey,
@@ -85,7 +89,9 @@ class _EmailPageState extends State<EmailPage> {
                                   ? "Masukkan kode OTP yang telah diterima melalui email anda"
                                   : (state is SuccesState<String>)
                                       ? state.data
-                                      : "",
+                                      : (state is ErrorState)
+                                          ? state.message
+                                          : "",
                           textAlign: TextAlign.center,
                           style: GoogleFonts.montserrat(fontSize: 17),
                         ),
@@ -225,6 +231,9 @@ class _EmailPageState extends State<EmailPage> {
                                           .add(VerifyOTPEvent(
                                               email: state.email,
                                               otp: pinController.text));
+                                      setState(() {
+                                        selectedImage = "images/resetpass.png";
+                                      });
                                     } else if (state is OTPVerifiedState) {
                                       BlocProvider.of<ForgotPasswordBloc>(
                                               context)
@@ -234,6 +243,9 @@ class _EmailPageState extends State<EmailPage> {
                                               password:
                                                   passwordController1.text));
                                     } else {
+                                      BlocProvider.of<ForgotPasswordBloc>(
+                                              context)
+                                          .add(ForgotPasswordEvent());
                                       Navigator.pop(context);
                                     }
                                   }

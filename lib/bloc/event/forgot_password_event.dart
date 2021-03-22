@@ -30,3 +30,8 @@ class ResetPasswordEvent extends ForgotPasswordEvent {
   @override
   List<Object> get props => [email,otp,password];
 }
+
+class CloseEvent extends ForgotPasswordEvent{
+  @override
+  List<Object> get props => [];
+}

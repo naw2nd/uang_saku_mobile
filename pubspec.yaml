@@ -71,6 +71,10 @@ flutter:
     - images/jumlah_approval.png
     - images/nota.jpg
     - images/create.gif
+    - images/Direktur.png
+    - images/Supervisor.png
+    - images/Korcab.png
+    - images/Keuangan.png
     
 
   # An image asset can refer to one or more resolution-specific "variants", see
