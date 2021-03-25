@@ -165,6 +165,23 @@ class HttpService {
     await sharedPreferences.clear();
   }
 
+  postReimburse(Reimburse reimburse) async {
+    String endPoint = "reimburse";
+    SingleResponse singleResponse;
+    try {
+      print("sini");
+      Response response =
+          await _dio.post(endPoint, data: {"tujuan": reimburse.tujuan});
+      print(response);
+      singleResponse = SingleResponse.fromJson(response.data);
+    } on DioError catch (e) {
+      print(e.message);
+      throw Exception(e.message);
+    }
+
+    return singleResponse;
+  }
+
   initalInterceptors() {
     _dio.interceptors.add(InterceptorsWrapper(onError: (error) {
       print(error.message);

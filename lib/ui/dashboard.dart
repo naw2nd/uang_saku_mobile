@@ -62,7 +62,7 @@ class _DashboardPageState extends State<DashboardPage> {
                   ),
                 ),
                 Container(
-                  height: MediaQuery.of(context).size.height - 150,
+                  height: MediaQuery.of(context).size.height - 120,
                   padding: EdgeInsets.all(15),
                   decoration: BoxDecoration(
                       color: Color(0xFFF5F5F5),

@@ -1,3 +1,4 @@
+import 'package:uang_saku/model/reimburse.dart';
 import 'package:uang_saku/model/token.dart';
 import 'package:uang_saku/model/single_response.dart';
 import 'package:uang_saku/model/user.dart';
@@ -62,6 +63,12 @@ class ExpenseRepository implements ExpenseDataSource {
   @override
   logout() {
     remoteDataSource.logout();
+  }
+
+  @override
+  Future<SingleResponse> postReimburse(Reimburse reimburse) async {
+    remoteDataSource.getToken();
+    return await remoteDataSource.postReimburse(reimburse);
   }
 
 }

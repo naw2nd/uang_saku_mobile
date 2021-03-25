@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:uang_saku/bloc/bloc.dart';
+import 'package:uang_saku/bloc/create_reimburse_bloc.dart';
 import 'package:uang_saku/bloc/forgot_password_bloc.dart';
 import 'package:uang_saku/bloc/profile_bloc.dart';
 import 'package:uang_saku/repository/expense_repository.dart';
@@ -14,8 +15,6 @@ void main() {
 class MyApp extends StatelessWidget {
   final ExpenseRepository expenseRepository = ExpenseRepository(
       remoteDataSource: HttpService());
-  // final ExpenseRepository expenseRepository = ExpenseRepository(
-  //     remoteDataSource: RemoteDataSource(httpClient: http.Client()));
 
   @override
   Widget build(BuildContext context) {
@@ -28,15 +27,13 @@ class MyApp extends StatelessWidget {
           BlocProvider<ForgotPasswordBloc>(
               create: (context) =>
                   ForgotPasswordBloc(expenseRepository: expenseRepository)),
-          // BlocProvider<VerifyOTPBloc>(
-          //   create: (context) =>
-          //       VerifyOTPBloc(expenseRepository: expenseRepository),
-          // ),BlocProvider<ResetPassBloc>(
-          // create: (context) =>
-          //     ResetPassBloc(expenseRepository: expenseRepository)),
           BlocProvider<ProfileBloc>(
             create: (context) =>
                 ProfileBloc(expenseRepository: expenseRepository),
+          ),
+          BlocProvider<CreateReimburseBloc>(
+            create: (context) =>
+                CreateReimburseBloc(expenseRepository: expenseRepository),
           ),
         ],
         child: MaterialApp(
