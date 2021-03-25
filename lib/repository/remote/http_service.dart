@@ -11,7 +11,7 @@ class HttpService {
   SharedPreferences sharedPreferences;
   String token = "";
 
-  final baseURL = "http://192.168.0.110 :8000/api/v1/";
+  final baseURL = "http://192.168.137.1:8000/api/v1/";
 
   HttpService() {
     _dio = Dio(BaseOptions(baseUrl: baseURL));
@@ -175,13 +175,14 @@ class HttpService {
     return singleResponseKasbon;
   }
 
-  Future<MultiResponse<ListKasbon>> getListKasbon() async {
+  Future<MultiResponse<Kasbon>> getListKasbon() async {
     String endpoint = "kasbon";
-    MultiResponse<ListKasbon> multiResponseKasbon;
+    MultiResponse<Kasbon> multiResponseKasbon;
     try {
       Response response = await _dio.get(endpoint);
+      print(response);
       MultiResponse multiResponse = MultiResponse.fromJson(response.data);
-      multiResponseKasbon = MultiResponse<ListKasbon>(
+      multiResponseKasbon = MultiResponse<Kasbon>(
           success: multiResponse.success,
           message: multiResponse.message,
           properties: multiResponse.properties,

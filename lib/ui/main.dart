@@ -45,7 +45,10 @@ class MyApp extends StatelessWidget {
           ),
           BlocProvider<KasbonBloc>(
               create: (context) =>
-                  KasbonBloc(expenseRepository: expenseRepository))
+                  KasbonBloc(expenseRepository: expenseRepository)),
+           BlocProvider<ListKasbonBloc>(
+              create: (context) =>
+                  ListKasbonBloc(expenseRepository: expenseRepository))
         ],
         child: MaterialApp(
           home: SplashScreen(),

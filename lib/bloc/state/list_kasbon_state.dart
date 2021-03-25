@@ -1,12 +1,13 @@
 import 'package:uang_saku/bloc/bloc.dart';
+import 'package:uang_saku/model/kasbon.dart';
 import 'package:uang_saku/ui/list_kasbon.dart';
 
 class ListKasbonState extends BaseState {
-  final ListKasbon listKasbon;
+  final List<Kasbon> kasbon;
 
-  ListKasbonState({this.listKasbon});
+  ListKasbonState({this.kasbon});
 
   @override
-  List<Object> get props => [listKasbon];
+  List<Object> get props => [kasbon];
 
 }

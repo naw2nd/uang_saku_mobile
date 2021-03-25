@@ -6,9 +6,79 @@ import 'dart:convert';
 
 import 'package:uang_saku/model/models.dart';
 
- Kasbon kasbonFromJson(String str) => Kasbon.fromJson(json.decode(str));
+// Kasbon kasbonFromJson(String str) => Kasbon.fromJson(json.decode(str));
+// String kasbonToJson(Kasbon data) => json.encode(data.toJson());
 
- String kasbonToJson(Kasbon data) => json.encode(data.toJson());
+// class ListKasbon {
+//   ListKasbon({
+//     this.success,
+//     this.message,
+//     // this.properties,
+//     this.data,
+//   });
+
+//   bool success;
+//   String message;
+//   //Properties properties;
+//   List<Kasbon> data;
+
+//   factory ListKasbon.fromJson(Map<String, dynamic> json) => ListKasbon(
+//         success: json["success"],
+//         message: json["message"],
+//         //properties: Properties.fromJson(json["properties"]),
+//         data: List<Kasbon>.from(json["data"].map((x) => Kasbon.fromJson(x))),
+//       );
+
+//   Map<String, dynamic> toJson() => {
+//         "success": success,
+//         "message": message,
+//         //"properties": properties.toJson(),
+//         "data": List<dynamic>.from(data.map((x) => x.toJson())),
+//       };
+
+//   @override
+//   String toString() {
+//     return '{ ${this.data} }';
+//   }
+// }
+
+class Properties {
+  Properties({
+    this.page,
+    this.total,
+    this.totalPage,
+    this.pageSize,
+    this.hasMorePages,
+  });
+
+  int page;
+  int total;
+  int totalPage;
+  int pageSize;
+  bool hasMorePages;
+
+  factory Properties.fromJson(Map<String, dynamic> json) => Properties(
+        page: json["page"],
+        total: json["total"],
+        totalPage: json["total_page"],
+        pageSize: json["page_size"],
+        hasMorePages: json["has_more_pages"],
+      );
+
+  Map<String, dynamic> toJson() => {
+        "page": page,
+        "total": total,
+        "total_page": totalPage,
+        "page_size": pageSize,
+        "has_more_pages": hasMorePages,
+      };
+}
+
+List<Kasbon> modelUserFromJson(String str) =>
+    List<Kasbon>.from(json.decode(str).map((x) => User.fromJson(x)));
+
+String modelUserToJson(List<Kasbon> data) =>
+    json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
 
 class Kasbon {
   Kasbon({
@@ -91,18 +161,18 @@ class Kasbon {
         idKategoriPengajuan: json["id_kategori_pengajuan"],
         pelaksana: List<String>.from(json["pelaksana"].map((x) => x)),
         approval: Approval.fromJson(json["approval"]),
-        tglPengajuan: DateTime.parse(json["tgl_pengajuan"]),
+        tglPengajuan: DateTime.parse(json["tgl_pengajuan"]) as DateTime,
         tglPencairan: json["tgl_pencairan"],
         tglTotalan: DateTime.parse(json["tgl_totalan"]),
         tglMulai: DateTime.parse(json["tgl_mulai"]),
         tglSelesai: DateTime.parse(json["tgl_selesai"]),
         nomorPengajuan: json["nomor_pengajuan"],
-        statusApproval: json["status_approval"],
+        statusApproval: json["status_approval"] as String,
         statusPengajuan: json["status_pengajuan"],
         statusPertanggungjawaban: json["status_pertanggungjawaban"],
         statusPencairan: json["status_pencairan"],
         jenisPencairan: json["jenis_pencairan"],
-        tujuan: json["tujuan"],
+        tujuan: json["tujuan"] as String,
         catatanPengajuan: json["catatan_pengajuan"],
         catatanLaporan: json["catatan_laporan"],
         catatanPencairan: json["catatan_pencairan"],
@@ -166,6 +236,11 @@ class Kasbon {
             List<dynamic>.from(rincianPengajuan.map((x) => x.toJson())),
         "rincian_realisasi": List<dynamic>.from(rincianRealisasi.map((x) => x)),
       };
+
+  @override
+  String toString() {
+    return '{ ${this.tujuan},${this.tglPengajuan},${this.statusApproval} }';
+  }
 }
 
 class AdditionalInfo {

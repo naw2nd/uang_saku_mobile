@@ -14,17 +14,7 @@ class _KasbonCardState extends State<KasbonCard> {
     return GestureDetector(
         onTap: () {
           Navigator.push(context, MaterialPageRoute(builder: (context) {
-            return DetailsPengajuan(
-              // mainColor: Colors.blue,
-              // judul: "Detail Pengajuan Kasbon",
-              // tujuanHolder: "",
-              // cabangHolder: "",
-              // jenisPencairanHolder: "",
-              // kategoriHolder: "",
-              // perusahaanHolder: "",
-              // tanggalMulaiHolder: "",
-              // tanggalSelesaiHolder: "",
-            );
+            return DetailsPengajuan();
           }));
         },
         child: CardList(
