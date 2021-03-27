@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:dio/dio.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:uang_saku/model/list_kasbon.dart';
@@ -11,7 +13,7 @@ class HttpService {
   SharedPreferences sharedPreferences;
   String token = "";
 
-  final baseURL = "http://192.168.137.1:8000/api/v1/";
+  final baseURL = "http://192.168.10.21:8000/api/v1/";
 
   HttpService() {
     _dio = Dio(BaseOptions(baseUrl: baseURL));
@@ -180,16 +182,32 @@ class HttpService {
     MultiResponse<Kasbon> multiResponseKasbon;
     try {
       Response response = await _dio.get(endpoint);
-      print(response);
+      print(response.data["data"]);
+
       MultiResponse multiResponse = MultiResponse.fromJson(response.data);
+      print("puasa");
+      print(multiResponse.data);
+    //List<Kasbon> kasbon = (response.data["data"]).map((x) => Kasbon.fromJson(json.decode(x)));
+     // print(kasbon);
       multiResponseKasbon = MultiResponse<Kasbon>(
           success: multiResponse.success,
           message: multiResponse.message,
-          properties: multiResponse.properties,
-          data: multiResponse.data);
-      print(multiResponse.message);
+          
+          //data: 
+         // data: 
+          //properties: multiResponse.properties,
+         // data:  List<Kasbon>.from(multiResponse.data).map((x) => Kasbon.fromJson(x)))
+         //data: List<Kasbon>.from(json.decode(response.data["data"] as List).map((x) => Kasbon.fromJson(x)))
+         );
+      
+
+      print("indra" + multiResponseKasbon.message);
     } on DioError catch (e) {
+      print(e);
       throw Exception(e.message);
+    } catch(e){
+      print("error");
+      print(e);
     }
     return multiResponseKasbon;
   }

@@ -74,10 +74,10 @@ class Properties {
       };
 }
 
-List<Kasbon> modelUserFromJson(String str) =>
-    List<Kasbon>.from(json.decode(str).map((x) => User.fromJson(x)));
+List<Kasbon> modelKasbonFromJson(String str) =>
+    List<Kasbon>.from(json.decode(str).map((x) => Kasbon.fromJson(x)));
 
-String modelUserToJson(List<Kasbon> data) =>
+String modelKasbonToJson(List<Kasbon> data) =>
     json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
 
 class Kasbon {
@@ -188,10 +188,10 @@ class Kasbon {
         cabang: Cabang.fromJson(json["cabang"]),
         kategoriPengajuan:
             KategoriPengajuan.fromJson(json["kategori_pengajuan"]),
-        rincianPengajuan: List<RincianPengajuan>.from(
-            json["rincian_pengajuan"].map((x) => RincianPengajuan.fromJson(x))),
-        rincianRealisasi:
-            List<dynamic>.from(json["rincian_realisasi"].map((x) => x)),
+        // rincianPengajuan: List<RincianPengajuan>.from(
+        //     json["rincian_pengajuan"].map((x) => RincianPengajuan.fromJson(x))),
+        // rincianRealisasi:
+        //     List<dynamic>.from(json["rincian_realisasi"].map((x) => x)),
       );
 
   Map<String, dynamic> toJson() => {
