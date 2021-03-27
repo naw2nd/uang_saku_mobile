@@ -509,57 +509,66 @@ class _DetailsPengajuanState extends State<DetailsPengajuan> {
                                             judul: "Rincian Biaya Kasbon",
                                             namaHolder: x.namaItem,
                                             keteranganHolder: x.keterangan,
-                                            jumlahHolder: x.jumlahUnit.toString(),
-                                            hargaHolder: x.hargaSatuan.toString(),
-                                            kategoriHolder: x.kategoriBiaya.namaKategoriBiaya,
+                                            jumlahHolder:
+                                                x.jumlahUnit.toString(),
+                                            hargaHolder:
+                                                x.hargaSatuan.toString(),
+                                            kategoriHolder: x.kategoriBiaya
+                                                .namaKategoriBiaya,
                                             totalHolder: x.total.toString(),
                                           );
                                         });
                                   },
                                   child: Card(
-                                    child: Column(
-                                      children: <Widget>[
-                                        Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceBetween,
-                                          children: <Widget>[
-                                            x.namaItem != null
-                                                ? Text(x.namaItem.toString(),
-                                                    style: TextStyle(
-                                                        fontFamily:
-                                                            "Montserrat",
-                                                        fontWeight:
-                                                            FontWeight.w600))
-                                                : Text(""),
-                                            IconButton(
-                                                icon: Icon(Icons.file_present),
-                                                onPressed: () {})
-                                          ],
-                                        ),
-                                        Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceBetween,
-                                          children: <Widget>[
-                                            x.keterangan != null
-                                                ? Text(x.keterangan,
-                                                    maxLines: 3,
-                                                    style: TextStyle(
-                                                        fontFamily:
-                                                            "Montserrat"))
-                                                : Text(""),
-                                            x.total != null
-                                                ? Text(
-                                                    "Rp" +
-                                                        " " +
-                                                        x.total.toString(),
-                                                    style: TextStyle(
-                                                        fontFamily:
-                                                            "Montserrat"),
-                                                  )
-                                                : Text("")
-                                          ],
-                                        )
-                                      ],
+                                    elevation: 3,
+                                    child: Padding(
+                                      padding:
+                                          EdgeInsets.fromLTRB(10, 5, 10, 5),
+                                      child: Column(
+                                        children: <Widget>[
+                                          Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceBetween,
+                                            children: <Widget>[
+                                              x.namaItem != null
+                                                  ? Text(x.namaItem.toString(),
+                                                      style: TextStyle(
+                                                          fontFamily:
+                                                              "Montserrat",
+                                                          fontWeight:
+                                                              FontWeight.w600))
+                                                  : Text(""),
+                                              IconButton(
+                                                  icon:
+                                                      Icon(Icons.file_present),
+                                                  onPressed: () {})
+                                            ],
+                                          ),
+                                          Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceBetween,
+                                            children: <Widget>[
+                                              x.keterangan != null
+                                                  ? Text(x.keterangan,
+                                                      maxLines: 3,
+                                                      style: TextStyle(
+                                                          fontFamily:
+                                                              "Montserrat"))
+                                                  : Text(""),
+                                              x.total != null
+                                                  ? Text(
+                                                      "Rp" +
+                                                          " " +
+                                                          x.total.toString(),
+                                                      style: TextStyle(
+                                                          fontFamily:
+                                                              "Montserrat"),
+                                                    )
+                                                  : Text("")
+                                            ],
+                                          )
+                                        ],
+                                      ),
                                     ),
                                   ),
                                 ),

@@ -188,10 +188,10 @@ class Kasbon {
         cabang: Cabang.fromJson(json["cabang"]),
         kategoriPengajuan:
             KategoriPengajuan.fromJson(json["kategori_pengajuan"]),
-        // rincianPengajuan: List<RincianPengajuan>.from(
-        //     json["rincian_pengajuan"].map((x) => RincianPengajuan.fromJson(x))),
-        // rincianRealisasi:
-        //     List<dynamic>.from(json["rincian_realisasi"].map((x) => x)),
+        rincianPengajuan: (json["rincian_pengajuan"] != null) ? List<RincianPengajuan>.from(
+            json["rincian_pengajuan"].map((x) => RincianPengajuan.fromJson(x))) : [],
+        rincianRealisasi: (json["rincian_realisasi"] != null) ?
+            List<dynamic>.from(json["rincian_realisasi"].map((x) => x)) : [],
       );
 
   Map<String, dynamic> toJson() => {

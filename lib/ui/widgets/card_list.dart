@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:uang_saku/bloc/bloc.dart';
 import 'package:uang_saku/ui/list_kasbon.dart';
 import 'package:uang_saku/ui/widgets/details_pengajuan.dart';
+import 'package:intl/intl.dart';
 
 class CardList extends StatefulWidget {
   String judul = "Kasbon disetujui korcab";
@@ -26,8 +27,7 @@ class _CardListState extends State<CardList> {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(home: Scaffold(
-        body: BlocBuilder<ListKasbonBloc, BaseState>(builder: (_, state) {
+    return BlocBuilder<ListKasbonBloc, BaseState>(builder: (_, state) {
       print("Bloc panggil");
       print(state);
       if (state is ListKasbonState) {
@@ -39,6 +39,7 @@ class _CardListState extends State<CardList> {
               final x = state.kasbon[i];
               return Card(
                 child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: <Widget>[
                     Icon(
                       Icons.file_present,
@@ -47,11 +48,25 @@ class _CardListState extends State<CardList> {
                     ),
                     Column(
                       children: <Widget>[
-                        Text(x.statusApproval),
-                        Text(x.tujuan)
+                        Text(x.statusApproval,
+                            style: TextStyle(
+                                fontFamily: "Montserrat",
+                                fontSize: 12,
+                                fontWeight: FontWeight.w600)),
+                        Text(x.tujuan,
+                            style: TextStyle(
+                                fontFamily: "Montserrat",
+                                fontWeight: FontWeight.w600,
+                                color: Colors.grey[500],
+                                fontSize: 12))
                       ],
                     ),
-                    Text(x.tglPengajuan.toString())
+                    Text(DateFormat.yMMMMd('en_US').format(x.tglPengajuan),
+                        style: TextStyle(
+                            fontFamily: "Montserrat",
+                            fontWeight: FontWeight.w600,
+                            color: Colors.grey[500],
+                            fontSize: 12))
                   ],
                 ),
               );
@@ -60,7 +75,7 @@ class _CardListState extends State<CardList> {
         print("gagal");
         return Container();
       }
-    })));
+    });
     // return Container(
     //   padding: EdgeInsets.fromLTRB(10, 0, 10, 5),
     //   child: Card(

@@ -187,25 +187,20 @@ class HttpService {
       MultiResponse multiResponse = MultiResponse.fromJson(response.data);
       print("puasa");
       print(multiResponse.data);
-    //List<Kasbon> kasbon = (response.data["data"]).map((x) => Kasbon.fromJson(json.decode(x)));
-     // print(kasbon);
+      //List<Kasbon> kasbon = (response.data["data"]).map((x) => Kasbon.fromJson(json.decode(x)));
+      // print(kasbon);
       multiResponseKasbon = MultiResponse<Kasbon>(
           success: multiResponse.success,
           message: multiResponse.message,
-          
-          //data: 
-         // data: 
           //properties: multiResponse.properties,
-         // data:  List<Kasbon>.from(multiResponse.data).map((x) => Kasbon.fromJson(x)))
-         //data: List<Kasbon>.from(json.decode(response.data["data"] as List).map((x) => Kasbon.fromJson(x)))
-         );
-      
+          data: List<Kasbon>.from(
+              (response.data["data"] as List).map((x) => Kasbon.fromJson(x))));
 
       print("indra" + multiResponseKasbon.message);
     } on DioError catch (e) {
       print(e);
       throw Exception(e.message);
-    } catch(e){
+    } catch (e) {
       print("error");
       print(e);
     }
