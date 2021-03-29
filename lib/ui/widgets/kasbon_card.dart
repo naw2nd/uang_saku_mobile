@@ -18,7 +18,7 @@ class _KasbonCardState extends State<KasbonCard> {
           }));
         },
         child: CardList(
-          judul: "Kasbon telah disetujui",
+          //judul: "Kasbon telah disetujui",
         ));
   }
 }

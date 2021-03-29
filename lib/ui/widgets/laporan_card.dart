@@ -16,6 +16,6 @@ class _LaporanCardState extends State<LaporanCard> {
             return CreateLaporan();
           }));
         },
-        child: CardList(judul: "Kasbon telah selesai",));
+        child: CardList());
   }
 }

@@ -1,10 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:uang_saku/bloc/bloc.dart';
+import 'package:uang_saku/bloc/event/list_kasbon_event.dart';
+import 'package:uang_saku/bloc/list_kasbon_bloc.dart';
+import 'package:uang_saku/bloc/state/base_state.dart';
 import 'package:uang_saku/ui/details_approval.dart';
 import 'package:uang_saku/ui/filter_approval.dart';
 import 'package:uang_saku/ui/kasbon_approval.dart';
 import 'package:uang_saku/ui/widgets/filter_dialog.dart';
 import 'package:uang_saku/ui/widgets/kasbon_card.dart';
 import 'package:uang_saku/ui/widgets/reimburse_card.dart';
+import 'package:badges/badges.dart';
 
 class ListApproval extends StatefulWidget {
   @override
@@ -12,13 +18,14 @@ class ListApproval extends StatefulWidget {
 }
 
 class _ListApprovalState extends State<ListApproval> {
-  TabBar myTabBar = TabBar(
-    labelStyle: TextStyle(
-        fontFamily: "Montserrat", fontWeight: FontWeight.w600, fontSize: 18),
-    tabs: <Widget>[Text("Kasbon"), Text("Reimburse")],
-    indicatorColor: Color(0xFF2B4D66),
-    labelColor: Color(0xFF2B4D66),
-  );
+  @override
+  void initState() {
+    print("init event");
+    context.read<ListKasbonBloc>().add(ListKasbonEvent());
+    super.initState();
+  }
+
+  
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -62,7 +69,34 @@ class _ListApprovalState extends State<ListApproval> {
                         padding: EdgeInsets.fromLTRB(10, 0, 10, 0),
                         color: Colors.white,
                         height: 50,
-                        child: myTabBar),
+                        child: BlocBuilder<ListKasbonBloc, BaseState>(
+                            builder: (_, state) {
+                          if (state is ListKasbonState) {
+                            return TabBar(
+                              labelStyle: TextStyle(
+                                  fontFamily: "Montserrat",
+                                  fontWeight: FontWeight.w600,
+                                  fontSize: 18),
+                              tabs: <Widget>[
+                                Badge(
+                                  badgeContent:
+                                      Text(state.kasbon.length.toString()),
+                                  child: Text("Kasbon"),
+                                ),
+                                Badge(
+                                  badgeContent:
+                                      Text(state.kasbon.length.toString()),
+                                  child: Text("Reimburse"),
+                                )
+                              ],
+                              indicatorColor: Color(0xFF2B4D66),
+                              labelColor: Color(0xFF2B4D66),
+                            );
+                          } else {
+                            print("badge nya gagal ngab");
+                            Container();
+                          }
+                        })),
                   )),
             ),
             body: TabBarView(children: <Widget>[
@@ -96,7 +130,7 @@ class _ListApprovalState extends State<ListApproval> {
                         )
                       ],
                     ),
-                    KasbonCard()
+                    KasbonCard(),
                   ],
                 ),
               ),
@@ -205,3 +239,25 @@ class NoteDialog extends StatelessWidget {
     );
   }
 }
+
+// TabBar myTabBar = TabBar(
+  //   labelStyle: TextStyle(
+  //       fontFamily: "Montserrat", fontWeight: FontWeight.w600, fontSize: 18),
+  //   tabs: <Widget>[
+  //     BlocBuilder<ListKasbonBloc, BaseState>(builder: (_, state) {
+  //       if (state is ListKasbonState) {
+  //         Badge(
+  //           badgeContent: Text(state.kasbon.length.toString()),
+  //           child: Text("Kasbon"),
+  //         );
+  //       }
+  //       ;
+  //     }),
+  //     // Badge(
+  //     //   badgeContent: Text("1"),
+  //     //   child: Text("Reimburse"),
+  //     // )
+  //   ],
+  //   indicatorColor: Color(0xFF2B4D66),
+  //   labelColor: Color(0xFF2B4D66),
+  // );
