@@ -18,7 +18,7 @@ class _CustomTextFormFieldState extends State<CustomTextFormField> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.only(top: 10, bottom: 10),
+      margin: EdgeInsets.only(top: 7, bottom: 7),
       child: TextFormField(
           keyboardType: (widget.lines == null)
               ? TextInputType.text

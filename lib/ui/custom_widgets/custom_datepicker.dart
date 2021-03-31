@@ -15,7 +15,7 @@ class _CustomDatepickerState extends State<CustomDatepicker> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.only(top: 10, bottom: 10),
+      margin: EdgeInsets.only(top: 7, bottom: 7),
       child: TextFormField(
           focusNode: AlwaysDisabledFocusNode(),
           controller: widget.controller,

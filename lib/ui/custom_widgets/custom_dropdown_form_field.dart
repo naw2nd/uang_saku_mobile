@@ -16,7 +16,7 @@ class _CustomDropdownFormFieldState extends State<CustomDropdownFormField> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.only(top: 10, bottom: 10),
+      margin: EdgeInsets.only(top: 7, bottom: 7),
       child: FormField(
         
         builder: (FormFieldState<String> state) {

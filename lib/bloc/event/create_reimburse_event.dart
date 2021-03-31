@@ -7,3 +7,9 @@ class CreateReimburseEvent extends BaseEvent {
   @override
   List<Object> get props => [this.reimburse];
 }
+
+class GetMenuItemsEvent extends BaseEvent{
+
+  @override
+  List<Object> get props => [];
+}

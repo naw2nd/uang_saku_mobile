@@ -12,8 +12,8 @@ class CreateLaporan extends StatefulWidget {
 
 class _CreateLaporanState extends State<CreateLaporan> {
   RincianBiaya rincianBiaya = new RincianBiaya(
-    judul: "Rincian Kasbon",
-    buttonColor: Color(0xFF358BFC),
+    // judul: "Rincian Kasbon",
+    // buttonColor: Color(0xFF358BFC),
   );
 
   _showDialog() async {

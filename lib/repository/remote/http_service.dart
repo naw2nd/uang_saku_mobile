@@ -9,7 +9,7 @@ class HttpService {
   SharedPreferences sharedPreferences;
   String token = "";
 
-  final baseURL = "http://192.168.1.8:8000/api/v1/";
+  final baseURL = "http://192.168.1.4:8000/api/v1/";
 
   HttpService() {
     _dio = Dio(BaseOptions(baseUrl: baseURL));

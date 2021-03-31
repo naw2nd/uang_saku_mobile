@@ -4,13 +4,20 @@ import 'package:uang_saku/bloc/event/create_reimburse_event.dart';
 import 'package:uang_saku/model/single_response.dart';
 import 'package:uang_saku/repository/expense_repository.dart';
 
-class CreateReimburseBloc extends Bloc<CreateReimburseEvent, BaseState> {
+class CreateReimburseBloc extends Bloc<BaseEvent, BaseState> {
   ExpenseRepository expenseRepository;
 
   CreateReimburseBloc({this.expenseRepository}) : super(EmptyState());
 
   @override
-  Stream<BaseState> mapEventToState(CreateReimburseEvent event) async* {
+  Stream<BaseState> mapEventToState(BaseEvent event) async* {
+    if(event is GetMenuItemsEvent){
+      try{
+        // final SingleResponse
+      } catch (e) {
+        yield ErrorState(message: "No Connection");
+      }
+    }
     if(event is CreateReimburseEvent){
       try {
         final SingleResponse<String> response =
