@@ -3,6 +3,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:uang_saku/bloc/create_reimburse_bloc.dart';
 import 'package:uang_saku/bloc/event/create_reimburse_event.dart';
+import 'package:uang_saku/bloc/state/base_state.dart';
+import 'package:uang_saku/bloc/state/create_pengajuan_state.dart';
 import 'package:uang_saku/model/models.dart';
 import 'package:uang_saku/ui/custom_widgets/custom_card.dart';
 import 'package:uang_saku/ui/custom_widgets/custom_datepicker.dart';
@@ -11,6 +13,7 @@ import 'package:uang_saku/ui/custom_widgets/custom_text_form_field.dart';
 import 'package:uang_saku/ui/widgets/details_pengajuan.dart';
 import 'package:uang_saku/ui/widgets/rincian_biaya.dart';
 import 'package:dotted_border/dotted_border.dart';
+import 'package:intl/intl.dart';
 
 class CreatePengajuan extends StatefulWidget {
   final String jenisPengajuan;
@@ -21,19 +24,27 @@ class CreatePengajuan extends StatefulWidget {
 
 class _CreatePengajuanState extends State<CreatePengajuan> {
   var colorTheme;
-  List<String> perusahaan = [
+  List<String> listPerusahaan = [
     "PT Wahana Rizky Gumilang",
     "PT Wahana Meditek Indonesia"
   ];
-  List<String> cabang = ["Surabaya", "Malang"];
-  List<String> jenisPencairan = ["Cash", "Tunai"];
-  List<String> kategori = ["Entertain", "Rapat", "Teknis"];
+  List<String> listCabang = ["Surabaya", "Wano"];
+  List<String> listJenisPencairan = ["Cash", "Tunai"];
+  List<String> listKategori = ["Entertain", "Rapat", "Teknis"];
+  List<Widget> listPelakasana = List<Widget>();
+  TextEditingController tujuanCtrl = TextEditingController();
+  TextEditingController agendaCtrl = TextEditingController();
+  TextEditingController catatanCtrl = TextEditingController();
+  TextEditingController tanggalMulaiCtrl = TextEditingController();
+  TextEditingController tanggalSelesaiCtrl = TextEditingController();
+  List<TextEditingController> pelaksana = List<TextEditingController>();
+  TextEditingController lokasiCtrl = TextEditingController();
+  TextEditingController infoCtrl = TextEditingController();
   final _formKey = GlobalKey<FormState>();
 
   @override
   void initState() {
     context.read<CreateReimburseBloc>().add(GetMenuItemsEvent());
-
 
     if (widget.jenisPengajuan == "Reimburse")
       colorTheme = Color(0xFF3AE3CE);
@@ -46,16 +57,6 @@ class _CreatePengajuanState extends State<CreatePengajuan> {
     listPelakasana = _generateListFormPelaksana();
     super.initState();
   }
-
-  TextEditingController tujuan = TextEditingController();
-  TextEditingController lokasi = TextEditingController();
-  TextEditingController info = TextEditingController();
-  TextEditingController agenda = TextEditingController();
-  TextEditingController catatan = TextEditingController();
-  TextEditingController tanggalMulai = TextEditingController();
-  TextEditingController tanggalSelesai = TextEditingController();
-  List<TextEditingController> pelaksana = List<TextEditingController>();
-  List<Widget> listPelakasana = List<Widget>();
 
   @override
   Widget build(BuildContext context) {
@@ -79,9 +80,28 @@ class _CreatePengajuanState extends State<CreatePengajuan> {
           ],
         ),
         body: SingleChildScrollView(
-          child: Form(
-            key: _formKey,
-            child: Column(
+            child: Form(
+          key: _formKey,
+          child:
+              BlocBuilder<CreateReimburseBloc, BaseState>(builder: (_, state) {
+            if (state is CreatePengajuanState) {
+              listKategori.clear();
+              state.listKategori.forEach((element) {
+                listKategori.add(element.namaKategoriPengajuan);
+              });
+
+              listCabang.clear();
+              state.listCabang.forEach((element) {
+                listCabang.add(element.namaCabang);
+              });
+
+              listPerusahaan.clear();
+              state.listPerusahaan.forEach((element) {
+                listPerusahaan.add(element.namaPerusahaan);
+              });
+            }
+
+            return Column(
               children: [
                 CustomCard(
                   container: Container(
@@ -98,33 +118,39 @@ class _CreatePengajuanState extends State<CreatePengajuan> {
                         CustomTextFormField(
                           label: "Tujuan",
                           validation: ["required"],
-                          controller: tujuan,
+                          controller: tujuanCtrl,
                         ),
                         CustomDropdownFormField(
-                            label: "Kategori Pengajuan", items: kategori),
+                            label: "Kategori Pengajuan", items: listKategori),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: <Widget>[
                             Flexible(
                                 flex: 15,
                                 child: CustomDatepicker(
-                                  controller: tanggalMulai,
+                                  controller: tanggalMulaiCtrl,
                                   label: "Tanggal Mulai",
                                 )),
                             Flexible(flex: 1, child: Container()),
                             Flexible(
                                 flex: 15,
                                 child: CustomDatepicker(
-                                  controller: tanggalSelesai,
+                                  controller: tanggalSelesaiCtrl,
                                   label: "Tanggal Selesai",
+                                  // start: (tanggalMulaiCtrl.text != "")
+                                  //     ? DateFormat('MMMM d, yyyy', 'en_US')
+                                  //         .parse(tanggalMulaiCtrl.text)
+                                  //     : null,
                                 ))
                           ],
                         ),
                         CustomDropdownFormField(
-                            label: "Perusahaan", items: perusahaan),
-                        CustomDropdownFormField(label: "Cabang", items: cabang),
+                            label: "Perusahaan", items: listPerusahaan),
                         CustomDropdownFormField(
-                            label: "Jenis Pencairan", items: jenisPencairan),
+                            label: "Cabang", items: listCabang),
+                        CustomDropdownFormField(
+                            label: "Jenis Pencairan",
+                            items: listJenisPencairan),
                       ],
                     ),
                   ),
@@ -158,12 +184,12 @@ class _CreatePengajuanState extends State<CreatePengajuan> {
                         ),
                         CustomTextFormField(
                           label: "Lokasi Tujuan",
-                          controller: lokasi,
+                          controller: lokasiCtrl,
                           validation: ["required"],
                         ),
                         CustomTextFormField(
                           label: "Agenda",
-                          controller: agenda,
+                          controller: agendaCtrl,
                           validation: ["required"],
                           lines: 3,
                         ),
@@ -213,7 +239,7 @@ class _CreatePengajuanState extends State<CreatePengajuan> {
                                     if (empty) {
                                       Scaffold.of(context).showSnackBar(SnackBar(
                                           content: Text(
-                                              "Harap diisi form pelaksana yang masih kosong")));
+                                              "Harap mengisi form pelaksana yang masih kosong")));
                                     } else {
                                       pelaksana.add(TextEditingController());
                                       setState(() {
@@ -416,7 +442,7 @@ class _CreatePengajuanState extends State<CreatePengajuan> {
                         ),
                         CustomTextFormField(
                           label: "Catatan",
-                          controller: catatan,
+                          controller: catatanCtrl,
                           validation: [],
                           lines: 3,
                         ),
@@ -438,39 +464,54 @@ class _CreatePengajuanState extends State<CreatePengajuan> {
                   ),
                   margin: EdgeInsets.fromLTRB(10, 0, 10, 20),
                   height: 50,
-                  child: RaisedButton(
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10)),
-                    padding: EdgeInsets.all(0),
-                    elevation: 0,
-                    onPressed: () {
-                      if (_formKey.currentState.validate()) {
-                        print("validated");
-                        BlocProvider.of<CreateReimburseBloc>(context).add(
-                            CreateReimburseEvent(reimburse: dummyReimburse()));
-                      }
-                    },
-                    child: Container(
-                      child: Ink(
-                        decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(10),
-                            color: colorTheme),
-                        child: Container(
-                          alignment: Alignment.center,
-                          child: Text("Kirim " + widget.jenisPengajuan,
-                              style: GoogleFonts.montserrat(
-                                  color: Colors.white,
-                                  fontSize: 25,
-                                  fontWeight: FontWeight.w500)),
+                  child: Builder(
+                    builder: (context) => RaisedButton(
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10)),
+                      padding: EdgeInsets.all(0),
+                      elevation: 0,
+                      onPressed: () {
+                        if (_formKey.currentState.validate()) {
+                          if (DateFormat('MMMM d, yyyy', 'en_US')
+                              .parse(tanggalSelesaiCtrl.text)
+                              .isBefore(DateFormat('MMMM d, yyyy', 'en_US')
+                                  .parse(tanggalMulaiCtrl.text))) {
+                            Scaffold.of(context).showSnackBar(SnackBar(
+                                content:
+                                    Text("Harap masukkan tanggal yang benar")));
+                          }
+                          print("validated");
+                          BlocProvider.of<CreateReimburseBloc>(context).add(
+                              CreateReimburseEvent(
+                                  reimburse: dummyReimburse()));
+                        } else {
+                          Scaffold.of(context).showSnackBar(SnackBar(
+                              content: Text(
+                                  "Harap lengkapi form yang masih kosong")));
+                        }
+                      },
+                      child: Container(
+                        child: Ink(
+                          decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(10),
+                              color: colorTheme),
+                          child: Container(
+                            alignment: Alignment.center,
+                            child: Text("Kirim " + widget.jenisPengajuan,
+                                style: GoogleFonts.montserrat(
+                                    color: Colors.white,
+                                    fontSize: 25,
+                                    fontWeight: FontWeight.w500)),
+                          ),
                         ),
                       ),
                     ),
                   ),
                 ),
               ],
-            ),
-          ),
-        ),
+            );
+          }),
+        )),
       ),
     );
   }
@@ -480,9 +521,7 @@ class _CreatePengajuanState extends State<CreatePengajuan> {
     for (int i = 0; i < pelaksana.length; i++) {
       list.add(Container(
         margin: EdgeInsets.only(top: 7, bottom: 7),
-        child: Stack(
-          
-          alignment: Alignment.topRight, children: [
+        child: Stack(alignment: Alignment.topRight, children: [
           TextFormField(
               validator: (value) {
                 if (value.isEmpty) {
@@ -503,7 +542,6 @@ class _CreatePengajuanState extends State<CreatePengajuan> {
                       borderRadius: BorderRadius.circular(10)))),
           (i != 0)
               ? IconButton(
-                  autofocus: false,
                   icon: Icon(
                     Icons.remove_circle_outline,
                     color: Colors.grey,
