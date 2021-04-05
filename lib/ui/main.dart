@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:uang_saku/bloc/bloc.dart';
-import 'package:uang_saku/bloc/create_reimburse_bloc.dart';
+import 'package:uang_saku/bloc/create_pengajuan_bloc.dart';
+import 'package:uang_saku/bloc/create_rincian_biaya_bloc.dart';
 import 'package:uang_saku/bloc/forgot_password_bloc.dart';
 import 'package:uang_saku/bloc/profile_bloc.dart';
+import 'package:uang_saku/bloc/state/create_pengajuan_state.dart';
 import 'package:uang_saku/repository/expense_repository.dart';
 import 'package:uang_saku/repository/remote/http_service.dart';
 import 'package:uang_saku/ui/splash_screen.dart';
@@ -31,9 +33,13 @@ class MyApp extends StatelessWidget {
             create: (context) =>
                 ProfileBloc(expenseRepository: expenseRepository),
           ),
-          BlocProvider<CreateReimburseBloc>(
+          BlocProvider<CreatePengajuanBloc>(
             create: (context) =>
-                CreateReimburseBloc(expenseRepository: expenseRepository),
+                CreatePengajuanBloc(expenseRepository: expenseRepository),
+          ),
+          BlocProvider<CreateRincianBiayaBloc>(
+            create: (context) =>
+                CreateRincianBiayaBloc(expenseRepository: expenseRepository),
           ),
         ],
         child: MaterialApp(

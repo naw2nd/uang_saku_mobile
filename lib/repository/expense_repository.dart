@@ -87,6 +87,12 @@ class ExpenseRepository implements ExpenseDataSource {
   }
 
   @override
+  Future<MultiResponse<KategoriBiaya>> getKategoriBiaya() async {
+    remoteDataSource.getToken();
+    return await remoteDataSource.getKategoriBiaya();
+  }
+
+  @override
   Future<SingleResponse> postReimburse(Reimburse reimburse) async {
     remoteDataSource.getToken();
     return await remoteDataSource.postReimburse(reimburse);

@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:uang_saku/ui/detail_rincian_approval.dart';
-import 'package:uang_saku/ui/widgets/rincian_biaya.dart';
+import 'package:uang_saku/ui/widgets/form_rincian_biaya.dart';
 import 'package:percent_indicator/percent_indicator.dart';
 import 'package:uang_saku/ui/widgets/rincian_laporan.dart';
 
@@ -11,19 +11,19 @@ class CreateLaporan extends StatefulWidget {
 }
 
 class _CreateLaporanState extends State<CreateLaporan> {
-  RincianBiaya rincianBiaya = new RincianBiaya(
-    // judul: "Rincian Kasbon",
-    // buttonColor: Color(0xFF358BFC),
-  );
+  // RincianBiaya rincianBiaya = new RincianBiaya(
+  //   // judul: "Rincian Kasbon",
+  //   // buttonColor: Color(0xFF358BFC),
+  // );
 
-  _showDialog() async {
-    await Future.delayed(Duration(milliseconds: 50));
-    showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          return rincianBiaya;
-        });
-  }
+  // _showDialog() async {
+  //   await Future.delayed(Duration(milliseconds: 50));
+  //   showDialog(
+  //       context: context,
+  //       builder: (BuildContext context) {
+  //         return rincianBiaya;
+  //       });
+  // }
 
   @override
   Widget build(BuildContext context) {

@@ -10,7 +10,7 @@ class HttpService {
   SharedPreferences sharedPreferences;
   String token = "";
 
-  final baseURL = "http://192.168.1.4:8000/api/v1/";
+  final baseURL = "http://192.168.1.8:8000/api/v1/";
 
   HttpService() {
     _dio = Dio(BaseOptions(baseUrl: baseURL));
@@ -212,13 +212,29 @@ class HttpService {
     }
   }
 
+  Future<MultiResponse<KategoriBiaya>> getKategoriBiaya() async {
+    String endPoint = "kategori-biaya";
+    try {
+      Response response = await _dio.get(endPoint);
+      response.data["data"] = List<KategoriBiaya>.from(
+          response.data["data"].map((x) => KategoriBiaya.fromJson(x)));
+      MultiResponse<KategoriBiaya> multiResponse =
+          MultiResponse.fromJson(response.data);
+      print(multiResponse.data);
+      return multiResponse;
+    } on DioError catch (e) {
+      print(e.message);
+      throw Exception(e.message);
+    }
+  }
+
   Future<SingleResponse> postReimburse(Reimburse reimburse) async {
     String endPoint = "reimburse";
     SingleResponse singleResponse;
     try {
       print("sini");
       Response response =
-          await _dio.post(endPoint, data: {"tujuan": reimburse.tujuan});
+          await _dio.post(endPoint, data: reimburse.toJson());
       print(response);
       singleResponse = SingleResponse.fromJson(response.data);
     } on DioError catch (e) {
