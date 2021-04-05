@@ -5,7 +5,16 @@ class KasbonState extends BaseState {
   final Kasbon kasbon;
 
   KasbonState({this.kasbon});
-  
+
+  @override
+  List<Object> get props => [kasbon];
+}
+
+class CancelKasbonState extends KasbonState {
+  final Kasbon kasbon;
+
+  CancelKasbonState({this.kasbon});
+
   @override
   List<Object> get props => [kasbon];
 }

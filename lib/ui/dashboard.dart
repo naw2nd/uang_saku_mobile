@@ -198,8 +198,7 @@ class _DashboardPageState extends State<DashboardPage> {
                                         padding:
                                             EdgeInsets.fromLTRB(80, 10, 10, 10),
                                         child: Image(
-                                          image:
-                                              AssetImage("images/man.png"),
+                                          image: AssetImage("images/man.png"),
                                         ),
                                       ),
                                     ],
@@ -486,47 +485,7 @@ class _DashboardPageState extends State<DashboardPage> {
                           ],
                         ),
                         KasbonCard(),
-                        ReimburseCard()
-                        // Container(
-                        //   padding: EdgeInsets.fromLTRB(10, 0, 10, 10),
-                        //   child: Card(
-                        //     color: Colors.white,
-                        //     elevation: 5,
-                        //     child: Container(
-                        //       padding: EdgeInsets.all(10),
-                        //       child: Row(
-                        //         mainAxisAlignment:
-                        //             MainAxisAlignment.spaceBetween,
-                        //         children: <Widget>[
-                        //           Icon(Icons.file_present,
-                        //               color: Colors.teal[400], size: 50),
-                        //           Column(
-                        //             crossAxisAlignment:
-                        //                 CrossAxisAlignment.start,
-                        //             children: <Widget>[
-                        //               Text("Laporan kasbon selesai",
-                        //                   style: TextStyle(
-                        //                       fontFamily: "Montserrat",
-                        //                       fontWeight: FontWeight.w600)),
-                        //               Text("Perjalanan dengan client",
-                        //                   style: TextStyle(
-                        //                       fontFamily: "Montserrat",
-                        //                       fontWeight: FontWeight.w600,
-                        //                       color: Colors.grey[500],
-                        //                       fontSize: 12))
-                        //             ],
-                        //           ),
-                        //           Text("Senin, 12 April",
-                        //               style: TextStyle(
-                        //                   fontFamily: "Montserrat",
-                        //                   fontWeight: FontWeight.w600,
-                        //                   fontSize: 10,
-                        //                   color: Colors.blue[800]))
-                        //         ],
-                        //       ),
-                        //     ),
-                        //   ),
-                        // ),
+                        //ReimburseCard()
                       ],
                     )
                   ],

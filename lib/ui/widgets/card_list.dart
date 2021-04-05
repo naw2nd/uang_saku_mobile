@@ -38,36 +38,41 @@ class _CardListState extends State<CardList> {
             itemBuilder: (context, i) {
               final x = state.kasbon[i];
               return Card(
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: <Widget>[
-                    Icon(
-                      Icons.file_present,
-                      color: Colors.blue,
-                      size: 40,
-                    ),
-                    Column(
-                      children: <Widget>[
-                        Text(x.statusApproval,
-                            style: TextStyle(
-                                fontFamily: "Montserrat",
-                                fontSize: 12,
-                                fontWeight: FontWeight.w600)),
-                        Text(x.tujuan,
-                            style: TextStyle(
-                                fontFamily: "Montserrat",
-                                fontWeight: FontWeight.w600,
-                                color: Colors.grey[500],
-                                fontSize: 12))
-                      ],
-                    ),
-                    Text(DateFormat.yMMMMd('en_US').format(x.tglPengajuan),
-                        style: TextStyle(
-                            fontFamily: "Montserrat",
-                            fontWeight: FontWeight.w600,
-                            color: Colors.grey[500],
-                            fontSize: 12))
-                  ],
+                margin: EdgeInsets.fromLTRB(10, 5, 10, 10),
+                child: Padding(
+                  padding: EdgeInsets.all(5),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: <Widget>[
+                      Icon(
+                        Icons.file_present,
+                        color: Colors.blue,
+                        size: 40,
+                      ),
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          Text(x.statusApproval,
+                              style: TextStyle(
+                                  fontFamily: "Montserrat",
+                                  fontSize: 12,
+                                  fontWeight: FontWeight.w600)),
+                          Text(x.tujuan,
+                              style: TextStyle(
+                                  fontFamily: "Montserrat",
+                                  fontWeight: FontWeight.w600,
+                                  color: Colors.grey[500],
+                                  fontSize: 12))
+                        ],
+                      ),
+                      Text(DateFormat.yMMMMd('en_US').format(x.tglPengajuan),
+                          style: TextStyle(
+                              fontFamily: "Montserrat",
+                              fontWeight: FontWeight.w600,
+                              color: Colors.grey[500],
+                              fontSize: 12))
+                    ],
+                  ),
                 ),
               );
             });

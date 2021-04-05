@@ -12,6 +12,7 @@ abstract class ExpenseDataSource {
   Future<SingleResponse> postPassword(String password);
   Future<SingleResponse<Kasbon>> getKasbon();
   Future<MultiResponse<Kasbon>> getListKasbon();
+  Future<SingleResponse<Kasbon>> deleteKasbon(int id,String catatan);
   setToken(String token);
   getToken();
   logout();

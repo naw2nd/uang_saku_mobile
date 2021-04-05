@@ -108,6 +108,7 @@ class _RincianApprovalState extends State<RincianApproval> {
                       )
                     : Text("")),
             Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
                 Flexible(
                   child: Column(

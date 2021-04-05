@@ -104,7 +104,6 @@ class _ListKasbonState extends State<ListKasbon> {
                       ],
                     ),
                     KasbonCard(),
-                    KasbonCard()
                   ],
                 ),
               ),
@@ -138,7 +137,6 @@ class _ListKasbonState extends State<ListKasbon> {
                     ],
                   ),
                   LaporanCard(),
-                  LaporanCard()
                 ],
               ),
             ]),
@@ -146,6 +144,3 @@ class _ListKasbonState extends State<ListKasbon> {
     );
   }
 }
-
-
-

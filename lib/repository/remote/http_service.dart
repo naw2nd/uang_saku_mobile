@@ -211,6 +211,44 @@ class HttpService {
     await sharedPreferences.clear();
   }
 
+  Future<SingleResponse<Kasbon>> deleteKasbon(int id, String catatan) async {
+    String endpoint = "kasbon/1/cancel";
+    SingleResponse<Kasbon> singleResponseKasbon;
+
+    try {
+      Response response =
+          await _dio.post(endpoint, data: {"catatan": "sembarang", "id": 2});
+      print(response.data);
+      SingleResponse singleResponse = SingleResponse.fromJson(response.data);
+
+      singleResponseKasbon = SingleResponse<Kasbon>(
+          success: singleResponse.success,
+          message: singleResponse.message,
+          data: Kasbon.fromJson(singleResponse.data));
+    } on DioError catch (e) {
+      print(e);
+      throw Exception(e);
+    } catch (e) {
+      print(e);
+    }
+
+    Future<SingleResponse<String>> putKasbon(Kasbon kasbon) async {
+      String endPoint = "update";
+      SingleResponse<String> singleResponse;
+
+      try {
+        Response response = await _dio.put(endPoint, data: {});
+        print(response);
+        singleResponse = SingleResponse.fromJson(response.data);
+      } on DioError catch (e) {
+        print(e.message);
+        throw Exception(e.message);
+      }
+    }
+
+    return singleResponseKasbon;
+  }
+
   initalInterceptors() {
     _dio.interceptors.add(InterceptorsWrapper(onError: (error) {
       print(error.message);

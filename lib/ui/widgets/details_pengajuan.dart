@@ -5,10 +5,12 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:percent_indicator/percent_indicator.dart';
 import 'package:uang_saku/bloc/bloc.dart';
 import 'package:uang_saku/bloc/event/kasbon_event.dart';
+import 'package:uang_saku/bloc/profile_bloc.dart';
 import 'package:uang_saku/model/models.dart';
 import 'package:uang_saku/ui/component/profile_component.dart';
 import 'package:intl/intl.dart';
 import 'package:uang_saku/ui/detail_rincian_approval.dart';
+import 'package:uang_saku/ui/list_kasbon.dart';
 
 class DetailsPengajuan extends StatefulWidget {
   @override
@@ -612,6 +614,103 @@ class _DetailsPengajuanState extends State<DetailsPengajuan> {
                         ],
                       ),
                     ),
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: <Widget>[
+                      RaisedButton(
+                        onPressed: () {
+                          showDialog(
+                              context: context,
+                              builder: (BuildContext context) {
+                                return AlertDialog(
+                                  title: Text("Tinggalkan Catatan"),
+                                  content: TextField(
+                                    maxLines: 3,
+                                    decoration: const InputDecoration(
+                                      hintStyle:
+                                          TextStyle(color: Colors.black45),
+                                      errorStyle:
+                                          TextStyle(color: Colors.redAccent),
+                                      border: OutlineInputBorder(),
+                                      labelText: 'Catatan',
+                                    ),
+                                    onTap: () {},
+                                    //controller: tanggalSelesai,
+                                  ),
+                                  actions: <Widget>[
+                                    FlatButton(
+                                      child: Text("Cancel"),
+                                      onPressed: () {
+                                        Navigator.pop(context);
+                                      },
+                                    ),
+                                    FlatButton(
+                                      child: Text("Upload"),
+                                      onPressed: () {
+                                        showDialog(
+                                            context: context,
+                                            builder: (BuildContext context) {
+                                              return AlertDialog(
+                                                content: Text(
+                                                    "Apakah anda yakin ingin membatalkan pengajaun ini?"),
+                                                actions: <Widget>[
+                                                  FlatButton(
+                                                    child: Text("Tidak"),
+                                                    onPressed: () {
+                                                      Navigator.pop(context);
+                                                    },
+                                                  ),
+                                                  FlatButton(
+                                                    child: Text("Ya"),
+                                                    onPressed: () {
+                                                      (state
+                                                          is CancelKasbonState);
+                                                      context
+                                                          .read<KasbonBloc>()
+                                                          .add(
+                                                              CancelKasbonEvent());
+                                                      return Navigator.push(
+                                                          context,
+                                                          MaterialPageRoute(
+                                                              builder:
+                                                                  (context) {
+                                                        return DetailsPengajuan();
+                                                      }));
+                                                    },
+                                                  )
+                                                ],
+                                              );
+                                            });
+                                      },
+                                    )
+                                  ],
+                                );
+                              });
+                        },
+                        child: Text(
+                          "Batal",
+                          style: TextStyle(
+                              color: Colors.white,
+                              fontFamily: "Montserrat",
+                              fontSize: 20,
+                              fontWeight: FontWeight.w600),
+                        ),
+                        color: Colors.red,
+                      ),
+                      RaisedButton(
+                        onPressed: () {},
+                        child: Text(
+                          "Update",
+                          style: TextStyle(
+                              color: Colors.white,
+                              fontFamily: "Montserrat",
+                              fontSize: 20,
+                              fontWeight: FontWeight.w600),
+                        ),
+                        color: Colors.blue,
+                      ),
+                    ],
                   )
                 ],
               );

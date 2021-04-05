@@ -18,16 +18,33 @@ class KasbonBloc extends Bloc<BaseEvent, BaseState> {
             await expenseRepository.getKasbon();
         print("bisa");
         if (singleResponse.success) {
-          print(singleResponse.message);
-          print(singleResponse.data);
-          print(singleResponse.data.rincianPengajuan.toString());
-          yield KasbonState(kasbon: singleResponse.data);
+          if (event is CancelKasbonEvent) {
+            yield CancelKasbonState(kasbon: singleResponse.data);
+          } else {
+            yield KasbonState(kasbon: singleResponse.data);
+          }
         } else {
           yield ErrorState(message: singleResponse.message);
         }
       } catch (e) {
         print(e);
         yield ErrorState(message: "Tidak Terhubung");
+      }
+    } else if (event is CancelKasbonEvent) {
+      try {
+        print("cancel kasbon bloc");
+        final SingleResponse<Kasbon> singleResponse =
+            await expenseRepository.deleteKasbon(event.id,event.catatan);
+        if (singleResponse.success) {
+          final SingleResponse singleResponseKasbon =
+              await expenseRepository.getKasbon();
+          if (singleResponseKasbon.success) {
+            yield KasbonState(kasbon: singleResponseKasbon.data);
+          }
+        }
+      } catch (e) {
+        print(e);
+        yield ErrorState(message: "Pembatalan Tidak berhasil");
       }
     } else {
       yield ErrorState(message: "Tidak ada event yang sesuai");
