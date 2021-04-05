@@ -1,3 +1,6 @@
+import 'package:uang_saku/model/kasbon.dart';
+import 'package:uang_saku/model/list_kasbon.dart';
+import 'package:uang_saku/model/multi_response.dart';
 import 'package:uang_saku/model/kategori_pengajuan.dart';
 import 'package:uang_saku/model/models.dart';
 import 'package:uang_saku/model/multi_response.dart';
@@ -54,6 +57,13 @@ class ExpenseRepository implements ExpenseDataSource {
   }
 
   @override
+  Future<SingleResponse<Kasbon>> deleteKasbon(int id,String catatan) async {
+    remoteDataSource.getToken();
+    return await remoteDataSource.deleteKasbon(id,catatan);
+  }
+  
+
+  @override
   setToken(String token) {
     remoteDataSource.setToken(token);
   }
@@ -69,6 +79,18 @@ class ExpenseRepository implements ExpenseDataSource {
   }
 
   @override
+  Future<SingleResponse<Kasbon>> getKasbon() async {
+   remoteDataSource.getToken();
+   return await remoteDataSource.getKasbon();
+  }
+
+ 
+  @override
+  Future<MultiResponse<Kasbon>> getListKasbon() async {
+    remoteDataSource.getToken();
+    return await remoteDataSource.getListKasbon();
+  }
+
   Future<MultiResponse<KategoriPengajuan>> getKategori() async {
     remoteDataSource.getToken();
     return await remoteDataSource.getKategori();

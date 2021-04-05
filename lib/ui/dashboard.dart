@@ -444,7 +444,7 @@ class _DashboardPageState extends State<DashboardPage> {
 }
 
 class ListMenuApproval extends StatelessWidget {
-  final List<Approval> approvals;
+  final List<UserApproval> approvals;
   ListMenuApproval(this.approvals);
   final _controller = ScrollController();
 
@@ -475,7 +475,7 @@ class ListMenuApproval extends StatelessWidget {
 }
 
 class MenuApproval extends StatelessWidget {
-  final Approval approval;
+  final UserApproval approval;
   final bool last;
   MenuApproval(this.approval, this.last);
 

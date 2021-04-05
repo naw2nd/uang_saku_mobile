@@ -1,6 +1,7 @@
 export 'single_response.dart';
 export 'token.dart';
 export 'user.dart';
+export 'kasbon.dart';
 export 'reimburse.dart';
 export 'additional_info.dart';
 export 'cabang.dart';

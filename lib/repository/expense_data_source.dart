@@ -1,3 +1,4 @@
+import 'package:uang_saku/model/list_kasbon.dart';
 import 'package:uang_saku/model/models.dart';
 import 'package:uang_saku/model/multi_response.dart';
 
@@ -9,6 +10,9 @@ abstract class ExpenseDataSource {
   Future<SingleResponse<User>> getProfile();
   Future<SingleResponse<String>> putUser(User user);
   Future<SingleResponse> postPassword(String password);
+  Future<SingleResponse<Kasbon>> getKasbon();
+  Future<MultiResponse<Kasbon>> getListKasbon();
+  Future<SingleResponse<Kasbon>> deleteKasbon(int id,String catatan);
   setToken(String token);
   getToken();
   logout();

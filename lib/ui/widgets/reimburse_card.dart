@@ -14,12 +14,9 @@ class _ReimburseCardState extends State<ReimburseCard> {
     return GestureDetector(
         onTap: () {
           Navigator.push(context, MaterialPageRoute(builder: (context) {
-            return ReimburseApproval
-            ();
+            return ReimburseApproval();
           }));
         },
-        child: CardList(
-          judul: "Reimburse disetjui korcab",
-        ));
+        child: CardList());
   }
 }

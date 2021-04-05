@@ -5,9 +5,8 @@ import 'package:intl/intl.dart';
 
 class ProfileComponent extends StatelessWidget {
   final User user;
-
   ProfileComponent({this.user});
-  
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -16,17 +15,14 @@ class ProfileComponent extends StatelessWidget {
         ProfileProperty(
             iconData: Icons.contacts, label: "Nama", value: user.namaPegawai),
         ProfileProperty(
-            iconData: Icons.markunread,
-            label: "Email",
-            value: user.email),
+            iconData: Icons.markunread, label: "Email", value: user.email),
         ProfileProperty(
             iconData: Icons.event,
             label: "Tempat, tanggal lahir",
-            value: "${user.tempatLahir}. ${DateFormat.yMMMMd('en_US').format(user.tglLahir)}" ),
+            value:
+                "${user.tempatLahir}. ${DateFormat.yMMMMd('en_US').format(user.tglLahir)}"),
         ProfileProperty(
-            iconData: Icons.place,
-            label: "Alamat",
-            value: user.alamat),
+            iconData: Icons.place, label: "Alamat", value: user.alamat),
         ProfileProperty(
             iconData: Icons.local_phone,
             label: "No telepon",

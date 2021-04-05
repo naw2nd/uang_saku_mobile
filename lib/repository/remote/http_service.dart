@@ -1,5 +1,8 @@
+import 'dart:convert';
+
 import 'package:dio/dio.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:uang_saku/model/list_kasbon.dart';
 import 'package:uang_saku/model/models.dart';
 import 'package:uang_saku/model/multi_response.dart';
 import 'package:uang_saku/model/user.dart';
@@ -161,8 +164,81 @@ class HttpService {
     return singleResponse;
   }
 
+  Future<SingleResponse<Kasbon>> getKasbon() async {
+    String endPoint = "kasbon/1";
+    SingleResponse<Kasbon> singleResponseKasbon;
+    try {
+      Response response = await _dio.get(endPoint);
+      print(response);
+      SingleResponse singleResponse = SingleResponse.fromJson(response.data);
+      singleResponseKasbon = SingleResponse<Kasbon>(
+          success: singleResponse.success,
+          message: singleResponse.message,
+          data: Kasbon.fromJson(singleResponse.data));
+      print(singleResponseKasbon.message);
+    } on DioError catch (e) {
+      print(e.message);
+      throw Exception(e.message);
+    }
+    return singleResponseKasbon;
+  }
+
+  Future<MultiResponse<Kasbon>> getListKasbon() async {
+    String endpoint = "kasbon";
+    MultiResponse<Kasbon> multiResponseKasbon;
+    try {
+      Response response = await _dio.get(endpoint);
+      print(response.data["data"]);
+
+      MultiResponse multiResponse = MultiResponse.fromJson(response.data);
+      print("puasa");
+      print(multiResponse.data);
+      //List<Kasbon> kasbon = (response.data["data"]).map((x) => Kasbon.fromJson(json.decode(x)));
+      // print(kasbon);
+      multiResponseKasbon = MultiResponse<Kasbon>(
+          success: multiResponse.success,
+          message: multiResponse.message,
+          //properties: multiResponse.properties,
+          data: List<Kasbon>.from(
+              (response.data["data"] as List).map((x) => Kasbon.fromJson(x))));
+
+      print("indra" + multiResponseKasbon.message);
+    } on DioError catch (e) {
+      print(e);
+      throw Exception(e.message);
+    } catch (e) {
+      print("error");
+      print(e);
+    }
+    return multiResponseKasbon;
+  }
+
   logout() async {
     await sharedPreferences.clear();
+  }
+
+  Future<SingleResponse<Kasbon>> deleteKasbon(int id, String catatan) async {
+    String endpoint = "kasbon/1/cancel";
+    SingleResponse<Kasbon> singleResponseKasbon;
+
+    try {
+      Response response =
+          await _dio.post(endpoint, data: {"catatan": "sembarang", "id": 2});
+      print(response.data);
+      SingleResponse singleResponse = SingleResponse.fromJson(response.data);
+
+      singleResponseKasbon = SingleResponse<Kasbon>(
+          success: singleResponse.success,
+          message: singleResponse.message,
+          data: Kasbon.fromJson(singleResponse.data));
+    } on DioError catch (e) {
+      print(e);
+      throw Exception(e);
+    } catch (e) {
+      print(e);
+    }
+
+    return singleResponseKasbon;
   }
 
   Future<MultiResponse<KategoriPengajuan>> getKategori() async {
@@ -233,8 +309,7 @@ class HttpService {
     SingleResponse singleResponse;
     try {
       print("sini");
-      Response response =
-          await _dio.post(endPoint, data: reimburse.toJson());
+      Response response = await _dio.post(endPoint, data: reimburse.toJson());
       print(response);
       singleResponse = SingleResponse.fromJson(response.data);
     } on DioError catch (e) {

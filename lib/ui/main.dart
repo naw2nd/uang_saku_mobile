@@ -9,6 +9,8 @@ import 'package:uang_saku/bloc/state/create_pengajuan_state.dart';
 import 'package:uang_saku/repository/expense_repository.dart';
 import 'package:uang_saku/repository/remote/http_service.dart';
 import 'package:uang_saku/ui/splash_screen.dart';
+import 'package:uang_saku/bloc/kasbon_bloc.dart';
+import 'package:uang_saku/ui/widgets/details_pengajuan.dart';
 
 void main() {
   runApp(MyApp());
@@ -33,6 +35,12 @@ class MyApp extends StatelessWidget {
             create: (context) =>
                 ProfileBloc(expenseRepository: expenseRepository),
           ),
+          BlocProvider<KasbonBloc>(
+              create: (context) =>
+                  KasbonBloc(expenseRepository: expenseRepository)),
+           BlocProvider<ListKasbonBloc>(
+              create: (context) =>
+                  ListKasbonBloc(expenseRepository: expenseRepository)),
           BlocProvider<CreatePengajuanBloc>(
             create: (context) =>
                 CreatePengajuanBloc(expenseRepository: expenseRepository),

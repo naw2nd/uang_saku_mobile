@@ -17,8 +17,8 @@ class _ReimburseApprovalState extends State<ReimburseApproval> {
           Flexible(
             flex: 1,
             child: DetailsPengajuan(
-              judul: "Detail Pengajuan Reimburse",
-              mainColor: Color(0xFF3AE3CE),
+              // judul: "Detail Pengajuan Reimburse",
+              // mainColor: Color(0xFF3AE3CE),
             ),
           ),
           Row(

@@ -18,8 +18,8 @@ class _KasbonApprovalState extends State<KasbonApproval> {
           Flexible(
             flex: 1,
             child: DetailsPengajuan(
-              judul: "Detail Pengajuan Kasbon",
-              mainColor: Colors.blue,
+              // judul: "Detail Pengajuan Kasbon",
+              // mainColor: Colors.blue,
             ),
           ),
           Row(
