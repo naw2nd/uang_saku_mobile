@@ -84,7 +84,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                   topRight: Radius.circular(100),
                                   topLeft: Radius.circular(100))),
                           padding:
-                              EdgeInsets.only(top: 100, left: 15, right: 15),
+                              EdgeInsets.only(top: 100),
                           child: BlocBuilder<ProfileBloc, BaseState>(
                               builder: (_, state) {
                             if (state is ProfileState) {

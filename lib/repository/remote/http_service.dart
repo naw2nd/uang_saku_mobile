@@ -1,6 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:uang_saku/model/models.dart';
+import 'package:uang_saku/model/multi_response.dart';
 import 'package:uang_saku/model/user.dart';
 import 'package:intl/intl.dart';
 
@@ -34,8 +35,8 @@ class HttpService {
       Response response = await _dio
           .post(endPoint, data: {"email": email, "password": password});
       print(response);
-        print("kene");
-        SingleResponse singleResponse = SingleResponse.fromJson(response.data);
+      print("kene");
+      SingleResponse singleResponse = SingleResponse.fromJson(response.data);
       if (singleResponse.success) {
         singleResponseToken = SingleResponse<Token>(
             success: singleResponse.success,
@@ -44,8 +45,7 @@ class HttpService {
         print(singleResponseToken.data.token);
       } else {
         singleResponseToken = SingleResponse<Token>(
-            success: singleResponse.success,
-            message: singleResponse.message);
+            success: singleResponse.success, message: singleResponse.message);
       }
     } on DioError catch (e) {
       print(e);
@@ -107,7 +107,7 @@ class HttpService {
     try {
       Response response = await _dio.get(endPoint);
       print(response);
-      
+
       SingleResponse singleResponse = SingleResponse.fromJson(response.data);
       singleResponseUser = SingleResponse<User>(
           success: singleResponse.success,
@@ -163,6 +163,86 @@ class HttpService {
 
   logout() async {
     await sharedPreferences.clear();
+  }
+
+  Future<MultiResponse<KategoriPengajuan>> getKategori() async {
+    String endPoint = "kategori-pengajuan";
+    try {
+      Response response = await _dio.get(endPoint);
+      response.data["data"] = List<KategoriPengajuan>.from(
+          response.data["data"].map((x) => KategoriPengajuan.fromJson(x)));
+      MultiResponse<KategoriPengajuan> multiResponse =
+          MultiResponse.fromJson(response.data);
+      return multiResponse;
+    } on DioError catch (e) {
+      print(e.message);
+      throw Exception(e.message);
+    }
+  }
+
+  Future<MultiResponse<Perusahaan>> getPerusahaan() async {
+    String endPoint = "perusahaan";
+    try {
+      Response response = await _dio.get(endPoint);
+      response.data["data"] = List<Perusahaan>.from(
+          response.data["data"].map((x) => Perusahaan.fromJson(x)));
+      MultiResponse<Perusahaan> multiResponse =
+          MultiResponse.fromJson(response.data);
+      print(multiResponse.data);
+      return multiResponse;
+    } on DioError catch (e) {
+      print(e.message);
+      throw Exception(e.message);
+    }
+  }
+
+  Future<MultiResponse<Cabang>> getCabang() async {
+    String endPoint = "cabang";
+    try {
+      Response response = await _dio.get(endPoint);
+      response.data["data"] = List<Cabang>.from(
+          response.data["data"].map((x) => Cabang.fromJson(x)));
+      MultiResponse<Cabang> multiResponse =
+          MultiResponse.fromJson(response.data);
+      print(multiResponse.data);
+      return multiResponse;
+    } on DioError catch (e) {
+      print(e.message);
+      throw Exception(e.message);
+    }
+  }
+
+  Future<MultiResponse<KategoriBiaya>> getKategoriBiaya() async {
+    String endPoint = "kategori-biaya";
+    try {
+      Response response = await _dio.get(endPoint);
+      response.data["data"] = List<KategoriBiaya>.from(
+          response.data["data"].map((x) => KategoriBiaya.fromJson(x)));
+      MultiResponse<KategoriBiaya> multiResponse =
+          MultiResponse.fromJson(response.data);
+      print(multiResponse.data);
+      return multiResponse;
+    } on DioError catch (e) {
+      print(e.message);
+      throw Exception(e.message);
+    }
+  }
+
+  Future<SingleResponse> postReimburse(Reimburse reimburse) async {
+    String endPoint = "reimburse";
+    SingleResponse singleResponse;
+    try {
+      print("sini");
+      Response response =
+          await _dio.post(endPoint, data: reimburse.toJson());
+      print(response);
+      singleResponse = SingleResponse.fromJson(response.data);
+    } on DioError catch (e) {
+      print(e.message);
+      throw Exception(e.message);
+    }
+
+    return singleResponse;
   }
 
   initalInterceptors() {

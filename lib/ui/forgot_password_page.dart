@@ -60,14 +60,6 @@ class _EmailPageState extends State<EmailPage> {
             children: [
               Container(
                 margin: EdgeInsets.only(top: 30),
-                // child: (state is LoadingState)
-                //     ? Container()
-                //     : Image(
-                //         image: (state is OTPVerifiedState ||
-                //                 state is SuccesState<String>)
-                //             ? AssetImage('images/resetpass.png')
-                //             : AssetImage('images/otp.png'),
-                //       ),
                 child: Image(
                   image: AssetImage(selectedImage),
                 ),

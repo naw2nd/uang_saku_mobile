@@ -35,6 +35,7 @@ class _DetailsPengajuanState extends State<DetailsPengajuan> {
           actions: <Widget>[
             IconButton(
                 icon: Icon(Icons.cancel_outlined),
+                padding: EdgeInsets.zero,
                 onPressed: () {
                   Navigator.pop(context);
                 })

@@ -6,8 +6,9 @@ class CustomTextFormField extends StatefulWidget {
   final TextEditingController controller;
   final List<String> validation;
   final int minimum;
+  final int lines;
   CustomTextFormField(
-      {this.label, this.controller, this.validation, this.minimum});
+      {this.label, this.controller, this.validation, this.minimum, this.lines});
   @override
   _CustomTextFormFieldState createState() => _CustomTextFormFieldState();
 }
@@ -17,10 +18,16 @@ class _CustomTextFormFieldState extends State<CustomTextFormField> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.only(top: 10, bottom: 10),
+      margin: EdgeInsets.only(top: 7, bottom: 7),
       child: TextFormField(
+          keyboardType: (widget.lines == null)
+              ? TextInputType.text
+              : TextInputType.multiline,
+          maxLines: widget.lines,
           controller: widget.controller,
-          obscureText: (widget.validation.contains("password") && hidePassword) ? true : false,
+          obscureText: (widget.validation.contains("password") && hidePassword)
+              ? true
+              : false,
           validator: (value) {
             if (widget.validation.contains("required") && value == "")
               return widget.label + " Harus diisi";
@@ -40,9 +47,8 @@ class _CustomTextFormFieldState extends State<CustomTextFormField> {
             border: OutlineInputBorder(borderRadius: BorderRadius.circular(10)),
             suffixIcon: (widget.validation.contains("password"))
                 ? IconButton(
-                    icon: Icon(hidePassword
-                        ? Icons.visibility
-                        : Icons.visibility_off),
+                    icon: Icon(
+                        hidePassword ? Icons.visibility : Icons.visibility_off),
                     onPressed: () {
                       setState(() {
                         hidePassword = !hidePassword;

@@ -1,14 +1,11 @@
-// import 'dart:html';
-
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:uang_saku/ui/create_kasbon.dart';
-import 'package:uang_saku/ui/create_reimburse.dart';
 import 'package:uang_saku/ui/notifikasi.dart';
 import 'package:uang_saku/ui/profile_page.dart';
 import 'package:uang_saku/ui/riwayat.dart';
+import 'package:uang_saku/ui/widgets/create_pengajuan.dart';
 
 import '../dashboard.dart';
 
@@ -163,7 +160,7 @@ class _BottomNavbarState extends State<BottomNavbar> {
                               Navigator.of(context, rootNavigator: true).pop();
                               Navigator.push(context,
                                   MaterialPageRoute(builder: (context) {
-                                return CreateKasbon();
+                                return CreatePengajuan(jenisPengajuan: "Kasbon");
                               }));
                             },
                             shape: RoundedRectangleBorder(
@@ -205,7 +202,7 @@ class _BottomNavbarState extends State<BottomNavbar> {
                               Navigator.of(context, rootNavigator: true).pop();
                               Navigator.push(context,
                                   MaterialPageRoute(builder: (context) {
-                                return CreateReimburse();
+                                return CreatePengajuan(jenisPengajuan: "Reimburse");
                               }));
                             },
                             shape: RoundedRectangleBorder(
