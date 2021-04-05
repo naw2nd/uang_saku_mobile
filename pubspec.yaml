@@ -30,6 +30,7 @@ dependencies:
   flutter_chips_input: ^1.9.5
   percent_indicator: ^2.1.9+1
   image_picker: ^0.6.7+22
+  # image_picker: ^0.7.4
   cupertino_icons: ^1.0.0
   dio: ^3.0.10
   fading_edge_scrollview: ^1.1.4
@@ -48,7 +49,6 @@ dev_dependencies:
   flutter_test:
     sdk: flutter
   intl: ^0.15.7
-  
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
@@ -73,7 +73,10 @@ flutter:
     - images/jumlah_approval.png
     - images/nota.jpg
     - images/create.gif
-    
+    - images/Direktur.png
+    - images/Supervisor.png
+    - images/Korcab.png
+    - images/Keuangan.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.

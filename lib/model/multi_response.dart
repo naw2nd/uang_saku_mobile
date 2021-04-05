@@ -1,9 +1,5 @@
-import 'dart:convert';
 
 import 'package:equatable/equatable.dart';
-import 'package:uang_saku/model/list_kasbon.dart';
-
-import 'kasbon.dart';
 
 class MultiResponse<T> extends Equatable {
   final bool success;

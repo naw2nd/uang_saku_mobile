@@ -13,7 +13,7 @@ class ProfileComponent extends StatelessWidget {
         child: Column(
       children: [
         ProfileProperty(
-            iconData: Icons.contacts, label: "Nama", value: user.nama),
+            iconData: Icons.contacts, label: "Nama", value: user.namaPegawai),
         ProfileProperty(
             iconData: Icons.markunread, label: "Email", value: user.email),
         ProfileProperty(

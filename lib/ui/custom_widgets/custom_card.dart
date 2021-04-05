@@ -8,7 +8,7 @@ class CustomCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.only(top: 10, bottom: 20),
+      margin: EdgeInsets.fromLTRB(10,10,10,20),
       padding: EdgeInsets.all(15),
       decoration: BoxDecoration(
           boxShadow: [

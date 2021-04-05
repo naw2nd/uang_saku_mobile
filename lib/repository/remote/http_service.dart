@@ -13,7 +13,7 @@ class HttpService {
   SharedPreferences sharedPreferences;
   String token = "";
 
-  final baseURL = "http://192.168.0.110:8000/api/v1/";
+  final baseURL = "http://192.168.1.8:8000/api/v1/";
 
   HttpService() {
     _dio = Dio(BaseOptions(baseUrl: baseURL));
@@ -38,13 +38,18 @@ class HttpService {
       Response response = await _dio
           .post(endPoint, data: {"email": email, "password": password});
       print(response);
+      print("kene");
       SingleResponse singleResponse = SingleResponse.fromJson(response.data);
-      singleResponseToken = SingleResponse<Token>(
-          success: singleResponse.success,
-          message: singleResponse.message,
-          data: Token.fromJson(singleResponse.data));
-      print(singleResponseToken.data.token);
-      // setToken(singleResponseToken.data.token);
+      if (singleResponse.success) {
+        singleResponseToken = SingleResponse<Token>(
+            success: singleResponse.success,
+            message: singleResponse.message,
+            data: Token.fromJson(singleResponse.data));
+        print(singleResponseToken.data.token);
+      } else {
+        singleResponseToken = SingleResponse<Token>(
+            success: singleResponse.success, message: singleResponse.message);
+      }
     } on DioError catch (e) {
       print(e);
       // throw Exception(e.message);
@@ -105,6 +110,7 @@ class HttpService {
     try {
       Response response = await _dio.get(endPoint);
       print(response);
+
       SingleResponse singleResponse = SingleResponse.fromJson(response.data);
       singleResponseUser = SingleResponse<User>(
           success: singleResponse.success,
@@ -125,7 +131,7 @@ class HttpService {
     try {
       Response response = await _dio.put(endPoint, data: {
         "username": user.username,
-        "nama_pegawai": user.nama,
+        "nama_pegawai": user.namaPegawai,
         "email": user.email,
         "alamat": user.alamat,
         "no_telp": user.noTelp,
@@ -232,21 +238,86 @@ class HttpService {
       print(e);
     }
 
-    Future<SingleResponse<String>> putKasbon(Kasbon kasbon) async {
-      String endPoint = "update";
-      SingleResponse<String> singleResponse;
+    return singleResponseKasbon;
+  }
 
-      try {
-        Response response = await _dio.put(endPoint, data: {});
-        print(response);
-        singleResponse = SingleResponse.fromJson(response.data);
-      } on DioError catch (e) {
-        print(e.message);
-        throw Exception(e.message);
-      }
+  Future<MultiResponse<KategoriPengajuan>> getKategori() async {
+    String endPoint = "kategori-pengajuan";
+    try {
+      Response response = await _dio.get(endPoint);
+      response.data["data"] = List<KategoriPengajuan>.from(
+          response.data["data"].map((x) => KategoriPengajuan.fromJson(x)));
+      MultiResponse<KategoriPengajuan> multiResponse =
+          MultiResponse.fromJson(response.data);
+      return multiResponse;
+    } on DioError catch (e) {
+      print(e.message);
+      throw Exception(e.message);
+    }
+  }
+
+  Future<MultiResponse<Perusahaan>> getPerusahaan() async {
+    String endPoint = "perusahaan";
+    try {
+      Response response = await _dio.get(endPoint);
+      response.data["data"] = List<Perusahaan>.from(
+          response.data["data"].map((x) => Perusahaan.fromJson(x)));
+      MultiResponse<Perusahaan> multiResponse =
+          MultiResponse.fromJson(response.data);
+      print(multiResponse.data);
+      return multiResponse;
+    } on DioError catch (e) {
+      print(e.message);
+      throw Exception(e.message);
+    }
+  }
+
+  Future<MultiResponse<Cabang>> getCabang() async {
+    String endPoint = "cabang";
+    try {
+      Response response = await _dio.get(endPoint);
+      response.data["data"] = List<Cabang>.from(
+          response.data["data"].map((x) => Cabang.fromJson(x)));
+      MultiResponse<Cabang> multiResponse =
+          MultiResponse.fromJson(response.data);
+      print(multiResponse.data);
+      return multiResponse;
+    } on DioError catch (e) {
+      print(e.message);
+      throw Exception(e.message);
+    }
+  }
+
+  Future<MultiResponse<KategoriBiaya>> getKategoriBiaya() async {
+    String endPoint = "kategori-biaya";
+    try {
+      Response response = await _dio.get(endPoint);
+      response.data["data"] = List<KategoriBiaya>.from(
+          response.data["data"].map((x) => KategoriBiaya.fromJson(x)));
+      MultiResponse<KategoriBiaya> multiResponse =
+          MultiResponse.fromJson(response.data);
+      print(multiResponse.data);
+      return multiResponse;
+    } on DioError catch (e) {
+      print(e.message);
+      throw Exception(e.message);
+    }
+  }
+
+  Future<SingleResponse> postReimburse(Reimburse reimburse) async {
+    String endPoint = "reimburse";
+    SingleResponse singleResponse;
+    try {
+      print("sini");
+      Response response = await _dio.post(endPoint, data: reimburse.toJson());
+      print(response);
+      singleResponse = SingleResponse.fromJson(response.data);
+    } on DioError catch (e) {
+      print(e.message);
+      throw Exception(e.message);
     }
 
-    return singleResponseKasbon;
+    return singleResponse;
   }
 
   initalInterceptors() {

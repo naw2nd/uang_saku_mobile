@@ -1,4 +1,11 @@
+import 'package:fading_edge_scrollview/fading_edge_scrollview.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:uang_saku/bloc/bloc.dart';
+import 'package:uang_saku/bloc/profile_bloc.dart';
+import 'package:uang_saku/bloc/state/base_state.dart';
+import 'package:uang_saku/model/models.dart';
 import 'package:uang_saku/ui/list_approval.dart';
 import 'package:uang_saku/ui/list_kasbon.dart';
 import 'package:uang_saku/ui/list_reimburse.dart';
@@ -17,65 +24,70 @@ class _DashboardPageState extends State<DashboardPage> {
   bool _laporanText = true;
   bool _kasbonBackground = true;
   bool _kasbonText = true;
+  final _controller = ScrollController();
+
+  @override
+  void initState() {
+    context.read<ProfileBloc>().add(ProfileEvent());
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       home: Scaffold(
         body: Container(
-          height: MediaQuery.of(context).size.height * 1,
           decoration: BoxDecoration(
               gradient: LinearGradient(
                   colors: [Color(0xFF358BFC), Color(0xFF3AE3CE)])),
-          child: Stack(
-            children: <Widget>[
-              Container(
-                padding: EdgeInsets.fromLTRB(20, 20, 20, 20),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: <Widget>[
-                    Image(
-                      image: AssetImage("images/uangsaku.png"),
-                      width: 150,
-                      height: 50,
-                    ),
-                    Image(
-                      image: AssetImage("images/icon_dashboard.png"),
-                      width: 30,
-                      height: 30,
-                    )
-                  ],
+          child: SafeArea(
+            child: Wrap(
+              children: [
+                Container(
+                  padding: EdgeInsets.fromLTRB(10, 2, 10, 2),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Image(
+                        image: AssetImage("images/uangsaku.png"),
+                        width: 150,
+                        height: 50,
+                      ),
+                      Image(
+                        image: AssetImage("images/icon_dashboard.png"),
+                        width: 30,
+                        height: 30,
+                      )
+                    ],
+                  ),
                 ),
-              ),
-              Container(
-                width: MediaQuery.of(context).size.width * 1,
-                margin: EdgeInsets.fromLTRB(0, 80, 0, 0),
-                decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.only(
-                        topLeft: Radius.circular(15),
-                        topRight: Radius.circular(15))),
-                child: ListView(
-                  children: <Widget>[
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        Container(
-                          padding: EdgeInsets.fromLTRB(20, 0, 0, 20),
+                Container(
+                  height: MediaQuery.of(context).size.height - 120,
+                  padding: EdgeInsets.all(15),
+                  decoration: BoxDecoration(
+                      color: Color(0xFFF5F5F5),
+                      borderRadius: BorderRadius.only(
+                          topLeft: Radius.circular(15),
+                          topRight: Radius.circular(15))),
+                  child: FadingEdgeScrollView.fromScrollView(
+                    child: ListView(
+                      controller: _controller,
+                      children: [
+                        Padding(
+                          padding: EdgeInsets.only(bottom: 5),
                           child: Text(
                             "Pengajuan",
-                            style: TextStyle(
-                                fontFamily: "Montserrat",
+                            style: GoogleFonts.montserrat(
                                 fontWeight: FontWeight.w700,
                                 fontSize: 18,
                                 color: Color(0xFF555555)),
                           ),
                         ),
                         Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          children: <Widget>[
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
                             Flexible(
-                              flex: 1,
+                              flex: 20,
                               child: GestureDetector(
                                 onTap: () {
                                   Navigator.push(context,
@@ -84,7 +96,9 @@ class _DashboardPageState extends State<DashboardPage> {
                                   }));
                                 },
                                 child: Container(
-                                    padding: EdgeInsets.all(15),
+                                    width: double.infinity,
+                                    padding:
+                                        EdgeInsets.only(top: 30, bottom: 30),
                                     decoration: BoxDecoration(
                                         color: Color(0xFF358BFC),
                                         borderRadius:
@@ -92,19 +106,17 @@ class _DashboardPageState extends State<DashboardPage> {
                                     child: Column(
                                       mainAxisAlignment:
                                           MainAxisAlignment.spaceAround,
-                                      children: <Widget>[
+                                      children: [
                                         Image(
                                             image: AssetImage(
                                           "images/kasbon.png",
                                         )),
                                         Container(
-                                          padding:
-                                              EdgeInsets.fromLTRB(0, 10, 0, 0),
+                                          padding: EdgeInsets.only(top: 15),
                                           child: Text(
                                             "Kasbon",
-                                            style: TextStyle(
+                                            style: GoogleFonts.montserrat(
                                                 color: Colors.white,
-                                                fontFamily: "Montserrat",
                                                 fontWeight: FontWeight.w900,
                                                 fontSize: 20),
                                           ),
@@ -114,7 +126,11 @@ class _DashboardPageState extends State<DashboardPage> {
                               ),
                             ),
                             Flexible(
-                              flex: 1,
+                              flex: 2,
+                              child: Container(),
+                            ),
+                            Flexible(
+                              flex: 20,
                               child: GestureDetector(
                                 onTap: () {
                                   Navigator.push(context,
@@ -123,24 +139,24 @@ class _DashboardPageState extends State<DashboardPage> {
                                   }));
                                 },
                                 child: Container(
-                                    padding: EdgeInsets.all(15),
+                                    width: double.infinity,
+                                    padding:
+                                        EdgeInsets.only(top: 30, bottom: 30),
                                     decoration: BoxDecoration(
                                         color: Color(0xFF3AE3CE),
                                         borderRadius:
                                             BorderRadius.circular(15)),
                                     child: Column(
-                                      children: <Widget>[
+                                      children: [
                                         Image(
                                             image: AssetImage(
                                                 "images/reimburse.png")),
                                         Container(
-                                          padding:
-                                              EdgeInsets.fromLTRB(0, 10, 0, 0),
+                                          padding: EdgeInsets.only(top: 15),
                                           child: Text(
                                             "Reimburse",
-                                            style: TextStyle(
+                                            style: GoogleFonts.montserrat(
                                                 color: Colors.white,
-                                                fontFamily: "Montserrat",
                                                 fontWeight: FontWeight.w900,
                                                 fontSize: 20),
                                           ),
@@ -151,310 +167,238 @@ class _DashboardPageState extends State<DashboardPage> {
                             )
                           ],
                         ),
-                        Container(
-                          padding: EdgeInsets.fromLTRB(20, 20, 0, 20),
-                          child: Text(
-                            "Approval",
-                            style: TextStyle(
-                                fontFamily: "Montserrat",
-                                fontWeight: FontWeight.w700,
-                                fontSize: 18,
-                                color: Color(0xFF555555)),
-                          ),
-                        ),
-                        GestureDetector(
-                          onTap: () {
-                            Navigator.push(context,
-                                MaterialPageRoute(builder: (context) {
-                              return ListApproval();
-                            }));
-                          },
-                          child: Container(
-                            padding: EdgeInsets.fromLTRB(10, 0, 10, 0),
-                            child: Container(
-                              padding: EdgeInsets.fromLTRB(10, 0, 20, 0),
-                              height: MediaQuery.of(context).size.height * 0.20,
-                              decoration: BoxDecoration(
-                                  color: Color(0xFF2B4D66),
-                                  borderRadius: BorderRadius.circular(15)),
-                              child: Column(
-                                children: <Widget>[
-                                  Row(
+                        BlocBuilder<ProfileBloc, BaseState>(
+                          builder: (_, state) => Container(
+                            padding: EdgeInsets.only(top: 10),
+                            child: (state is ProfileState &&
+                                    state.user.isApproval())
+                                ? Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
                                     children: [
-                                      Text("20",
-                                          style: TextStyle(
-                                              color: Color(0xFFE1F9F2),
-                                              fontSize: 75,
-                                              fontFamily: "Montserrat",
-                                              fontWeight: FontWeight.w700)),
-                                      Container(
-                                        padding:
-                                            EdgeInsets.fromLTRB(5, 20, 0, 0),
-                                        child: Image(
-                                            image: AssetImage(
-                                                "images/jumlah_approval.png")),
-                                      ),
-                                      Container(
-                                        padding:
-                                            EdgeInsets.fromLTRB(80, 10, 10, 10),
-                                        child: Image(
-                                          image: AssetImage("images/man.png"),
+                                        Text(
+                                          "Approval",
+                                          style: GoogleFonts.montserrat(
+                                              fontWeight: FontWeight.w700,
+                                              fontSize: 18,
+                                              color: Color(0xFF555555)),
                                         ),
-                                      ),
-                                    ],
-                                  ),
-                                  Row(
-                                    children: [
-                                      Container(
-                                        width:
-                                            MediaQuery.of(context).size.width *
-                                                0.5,
-                                        child: Text(
-                                            "Pengajuan menunggu disetujui oleh :",
-                                            style: TextStyle(
-                                                color: Color(0xFFE1F9F2),
-                                                fontSize: 14,
-                                                fontFamily: "Montserrat",
-                                                fontWeight: FontWeight.w700),
-                                            textAlign: TextAlign.left,
-                                            overflow: TextOverflow.clip),
-                                      ),
-                                      Container(
-                                        padding:
-                                            EdgeInsets.fromLTRB(10, 10, 0, 0),
-                                        child: Text("Supervisor",
-                                            style: TextStyle(
-                                                color: Color(0xFFE1F9F2),
-                                                fontSize: 20,
-                                                fontFamily: "Montserrat",
-                                                fontWeight: FontWeight.w700),
-                                            textAlign: TextAlign.left,
-                                            overflow: TextOverflow.clip),
-                                      )
-                                    ],
-                                  )
-                                ],
-                              ),
-                            ),
+                                        Container(
+                                            height: 150,
+                                            padding: EdgeInsets.only(top: 5),
+                                            child: ListMenuApproval(
+                                                state.user.approval))
+                                      ])
+                                : Container(),
                           ),
                         ),
                         Container(
-                          padding: EdgeInsets.fromLTRB(20, 20, 0, 20),
+                          padding: EdgeInsets.only(top: 10, bottom: 5),
                           child: Text(
                             "Progres Pengajuan",
-                            style: TextStyle(
-                                fontFamily: "Montserrat",
+                            style: GoogleFonts.montserrat(
                                 fontWeight: FontWeight.w700,
                                 fontSize: 18,
                                 color: Color(0xFF555555)),
                           ),
                         ),
                         Container(
-                          padding: EdgeInsets.fromLTRB(10, 0, 10, 10),
-                          child: Container(
-                            height: MediaQuery.of(context).size.height * 0.20,
-                            decoration: BoxDecoration(
-                                color: Color(0xFFF6F6F6),
-                                borderRadius: BorderRadius.circular(15)),
-                            child: Container(
-                              padding: EdgeInsets.fromLTRB(10, 0, 10, 0),
-                              child: Column(
-                                children: <Widget>[
-                                  Container(
-                                    padding: EdgeInsets.all(10),
-                                    child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      children: <Widget>[
-                                        RaisedButton(
-                                          shape: RoundedRectangleBorder(
-                                              borderRadius:
-                                                  BorderRadius.circular(15)),
-                                          color: _hasbeenPressed
-                                              ? Colors.white
-                                              : Color(0xFF358BFC),
-                                          onPressed: () {
-                                            setState(() {
-                                              _hasbeenPressed =
-                                                  !_hasbeenPressed;
-                                              _textHasBeenPressed =
-                                                  !_textHasBeenPressed;
-                                            });
-                                            // Color(0xFF358BFC);
-                                          },
-                                          child: Text(
-                                            "Kasbon",
-                                            style: TextStyle(
-                                                fontFamily: "Montserrat",
-                                                fontWeight: FontWeight.w700,
-                                                color: _textHasBeenPressed
-                                                    ? Color(0xFF9E9E9E)
-                                                    : Colors.white),
-                                          ),
-                                        ),
-                                        RaisedButton(
-                                          shape: RoundedRectangleBorder(
-                                              borderRadius:
-                                                  BorderRadius.circular(15)),
-                                          color: _laporanBackground
-                                              ? Colors.white
-                                              : Color(0xFF358BFC),
-                                          onPressed: () {
-                                            setState(() {
-                                              _laporanBackground =
-                                                  !_laporanBackground;
-                                              _laporanText = !_laporanText;
-                                            });
-                                            // Color(0xFF358BFC);
-                                          },
-                                          child: Text(
-                                            "Laporan",
-                                            style: TextStyle(
-                                                fontFamily: "Montserrat",
-                                                fontWeight: FontWeight.w700,
-                                                color: _laporanText
-                                                    ? Color(0xFF9E9E9E)
-                                                    : Colors.white),
-                                          ),
-                                        ),
-                                        RaisedButton(
-                                          shape: RoundedRectangleBorder(
-                                              borderRadius:
-                                                  BorderRadius.circular(15)),
-                                          color: _kasbonBackground
-                                              ? Colors.white
-                                              : Color(0xFF358BFC),
-                                          onPressed: () {
-                                            setState(() {
-                                              _kasbonBackground =
-                                                  !_kasbonBackground;
-                                              _kasbonText = !_kasbonText;
-                                            });
-                                            // Color(0xFF358BFC);
-                                          },
-                                          child: Text(
-                                            "Reimburse",
-                                            style: TextStyle(
-                                                fontFamily: "Montserrat",
-                                                fontWeight: FontWeight.w700,
-                                                color: _kasbonText
-                                                    ? Color(0xFF9E9E9E)
-                                                    : Colors.white),
-                                          ),
-                                        )
-                                      ],
+                          height: 150,
+                          padding: EdgeInsets.only(right: 10, left: 10, top: 10),
+                          decoration: BoxDecoration(
+                              color: Colors.grey,
+                              borderRadius: BorderRadius.circular(15)),
+                          child: Column(
+                            children: <Widget>[
+                              Container(
+                                child: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: <Widget>[
+                                    RaisedButton(
+                                      shape: RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(15)),
+                                      color: _hasbeenPressed
+                                          ? Colors.white
+                                          : Color(0xFF358BFC),
+                                      onPressed: () {
+                                        setState(() {
+                                          _hasbeenPressed = !_hasbeenPressed;
+                                          _textHasBeenPressed =
+                                              !_textHasBeenPressed;
+                                        });
+                                        // Color(0xFF358BFC);
+                                      },
+                                      child: Text(
+                                        "Kasbon",
+                                        style: TextStyle(
+                                            fontFamily: "Montserrat",
+                                            fontWeight: FontWeight.w700,
+                                            color: _textHasBeenPressed
+                                                ? Color(0xFF9E9E9E)
+                                                : Colors.white),
+                                      ),
                                     ),
-                                  ),
-                                  Flexible(
-                                    flex: 1,
-                                    child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      children: <Widget>[
-                                        Column(
-                                          children: <Widget>[
-                                            ClipRRect(
-                                              borderRadius:
-                                                  BorderRadius.circular(15),
-                                              child: Container(
-                                                  color: Colors.white,
-                                                  width: 50,
-                                                  height: 50,
-                                                  child: IconButton(
-                                                      icon: Icon(
-                                                        Icons
-                                                            .arrow_right_alt_rounded,
-                                                        size: 35,
-                                                        color: Colors.green,
-                                                      ),
-                                                      onPressed: () {})),
-                                            ),
-                                            Text("Diajukan",
-                                                style: TextStyle(
-                                                  color: Color(0xFF2B4D66),
-                                                  fontFamily: "Montserrat",
-                                                ))
-                                          ],
-                                        ),
-                                        Column(
-                                          children: <Widget>[
-                                            ClipRRect(
-                                              borderRadius:
-                                                  BorderRadius.circular(15),
-                                              child: Container(
-                                                  color: Colors.white,
-                                                  width: 50,
-                                                  height: 50,
-                                                  child: IconButton(
-                                                      icon: Icon(
-                                                        Icons.check_rounded,
-                                                        size: 35,
-                                                        color: Colors.blue,
-                                                      ),
-                                                      onPressed: () {})),
-                                            ),
-                                            Text("Disetujui",
-                                                style: TextStyle(
-                                                  color: Color(0xFF2B4D66),
-                                                  fontFamily: "Montserrat",
-                                                ))
-                                          ],
-                                        ),
-                                        Column(
-                                          children: <Widget>[
-                                            ClipRRect(
-                                              borderRadius:
-                                                  BorderRadius.circular(15),
-                                              child: Container(
-                                                  color: Colors.white,
-                                                  width: 50,
-                                                  height: 50,
-                                                  child: IconButton(
-                                                      icon: Icon(
-                                                        Icons.cancel_outlined,
-                                                        size: 35,
-                                                        color: Colors.red,
-                                                      ),
-                                                      onPressed: () {})),
-                                            ),
-                                            Text("Ditolak",
-                                                style: TextStyle(
-                                                  color: Color(0xFF2B4D66),
-                                                  fontFamily: "Montserrat",
-                                                ))
-                                          ],
-                                        ),
-                                        Column(
-                                          children: <Widget>[
-                                            ClipRRect(
-                                              borderRadius:
-                                                  BorderRadius.circular(15),
-                                              child: Container(
-                                                  color: Colors.white,
-                                                  width: 50,
-                                                  height: 50,
-                                                  child: IconButton(
-                                                      icon: Icon(
-                                                        Icons
-                                                            .attach_money_rounded,
-                                                        size: 35,
-                                                        color: Colors.orange,
-                                                      ),
-                                                      onPressed: () {})),
-                                            ),
-                                            Text("Dicairkan",
-                                                style: TextStyle(
-                                                  color: Color(0xFF2B4D66),
-                                                  fontFamily: "Montserrat",
-                                                ))
-                                          ],
-                                        )
-                                      ],
+                                    RaisedButton(
+                                      shape: RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(15)),
+                                      color: _laporanBackground
+                                          ? Colors.white
+                                          : Color(0xFF358BFC),
+                                      onPressed: () {
+                                        setState(() {
+                                          _laporanBackground =
+                                              !_laporanBackground;
+                                          _laporanText = !_laporanText;
+                                        });
+                                        // Color(0xFF358BFC);
+                                      },
+                                      child: Text(
+                                        "Laporan",
+                                        style: TextStyle(
+                                            fontFamily: "Montserrat",
+                                            fontWeight: FontWeight.w700,
+                                            color: _laporanText
+                                                ? Color(0xFF9E9E9E)
+                                                : Colors.white),
+                                      ),
                                     ),
-                                  ),
-                                ],
+                                    RaisedButton(
+                                      shape: RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(15)),
+                                      color: _kasbonBackground
+                                          ? Colors.white
+                                          : Color(0xFF358BFC),
+                                      onPressed: () {
+                                        setState(() {
+                                          _kasbonBackground =
+                                              !_kasbonBackground;
+                                          _kasbonText = !_kasbonText;
+                                        });
+                                        // Color(0xFF358BFC);
+                                      },
+                                      child: Text(
+                                        "Reimburse",
+                                        style: TextStyle(
+                                            fontFamily: "Montserrat",
+                                            fontWeight: FontWeight.w700,
+                                            color: _kasbonText
+                                                ? Color(0xFF9E9E9E)
+                                                : Colors.white),
+                                      ),
+                                    )
+                                  ],
+                                ),
                               ),
-                            ),
+                              Flexible(
+                                flex: 1,
+                                child: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: <Widget>[
+                                    Column(
+                                      children: <Widget>[
+                                        ClipRRect(
+                                          borderRadius:
+                                              BorderRadius.circular(15),
+                                          child: Container(
+                                              color: Colors.white,
+                                              width: 50,
+                                              height: 50,
+                                              child: IconButton(
+                                                  icon: Icon(
+                                                    Icons
+                                                        .arrow_right_alt_rounded,
+                                                    size: 35,
+                                                    color: Colors.green,
+                                                  ),
+                                                  onPressed: () {})),
+                                        ),
+                                        Text("Diajukan",
+                                            style: GoogleFonts.montserrat(
+                                              color: Color(0xFF2B4D66),
+                                            ))
+                                      ],
+                                    ),
+                                    Column(
+                                      children: <Widget>[
+                                        ClipRRect(
+                                          borderRadius:
+                                              BorderRadius.circular(15),
+                                          child: Container(
+                                              color: Colors.white,
+                                              width: 50,
+                                              height: 50,
+                                              child: IconButton(
+                                                  icon: Icon(
+                                                    Icons.check_rounded,
+                                                    size: 35,
+                                                    color: Colors.blue,
+                                                  ),
+                                                  onPressed: () {})),
+                                        ),
+                                        Text("Disetujui",
+                                            style: TextStyle(
+                                              color: Color(0xFF2B4D66),
+                                              fontFamily: "Montserrat",
+                                            ))
+                                      ],
+                                    ),
+                                    Column(
+                                      children: <Widget>[
+                                        ClipRRect(
+                                          borderRadius:
+                                              BorderRadius.circular(15),
+                                          child: Container(
+                                              color: Colors.white,
+                                              width: 50,
+                                              height: 50,
+                                              child: IconButton(
+                                                  icon: Icon(
+                                                    Icons.cancel_outlined,
+                                                    size: 35,
+                                                    color: Colors.red,
+                                                  ),
+                                                  onPressed: () {})),
+                                        ),
+                                        Text("Ditolak",
+                                            style: TextStyle(
+                                              color: Color(0xFF2B4D66),
+                                              fontFamily: "Montserrat",
+                                            ))
+                                      ],
+                                    ),
+                                    Column(
+                                      children: <Widget>[
+                                        ClipRRect(
+                                          borderRadius:
+                                              BorderRadius.circular(15),
+                                          child: Container(
+                                              color: Colors.white,
+                                              width: 50,
+                                              height: 50,
+                                              child: IconButton(
+                                                  icon: Icon(
+                                                    Icons.attach_money_rounded,
+                                                    size: 35,
+                                                    color: Colors.orange,
+                                                  ),
+                                                  onPressed: () {})),
+                                        ),
+                                        Text("Dicairkan",
+                                            style: TextStyle(
+                                              color: Color(0xFF2B4D66),
+                                              fontFamily: "Montserrat",
+                                            ))
+                                      ],
+                                    )
+                                  ],
+                                ),
+                              ),
+                            ],
                           ),
                         ),
                         Row(
@@ -485,12 +429,125 @@ class _DashboardPageState extends State<DashboardPage> {
                           ],
                         ),
                         KasbonCard(),
-                        //ReimburseCard()
+                        ReimburseCard()
                       ],
-                    )
-                  ],
+                    ),
+                  ),
                 ),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class ListMenuApproval extends StatelessWidget {
+  final List<UserApproval> approvals;
+  ListMenuApproval(this.approvals);
+  final _controller = ScrollController();
+
+  @override
+  Widget build(BuildContext context) {
+    List<Widget> list = new List<Widget>();
+    int index = 0;
+    approvals.forEach((element) {
+      index++;
+      bool last = false;
+      if (index == approvals.length) last = true;
+      list.add(MenuApproval(element, last));
+    });
+    // return FadingEdgeScrollView.fromScrollView(
+    // gradientFractionOnEnd: 0.07,
+    // gradientFractionOnStart: 0.07,
+    if (approvals.length == 1)
+      return Container(
+        child: MenuApproval(approvals.first, true),
+      );
+    else
+      return ListView(
+        controller: _controller,
+        scrollDirection: Axis.horizontal,
+        children: list,
+      );
+  }
+}
+
+class MenuApproval extends StatelessWidget {
+  final UserApproval approval;
+  final bool last;
+  MenuApproval(this.approval, this.last);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      child: GestureDetector(
+        onTap: () {
+          Navigator.push(context, MaterialPageRoute(builder: (context) {
+            return ListApproval();
+          }));
+        },
+        child: Container(
+          margin: EdgeInsets.only(right: (last) ? 0 : 15),
+          padding: EdgeInsets.only(left: 15, right: 15),
+          decoration: BoxDecoration(
+              color: Color(0xFF2B4D66),
+              borderRadius: BorderRadius.circular(15)),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: <Widget>[
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    children: [
+                      Text("20",
+                          style: GoogleFonts.montserrat(
+                              color: Color(0xFFE1F9F2),
+                              fontSize: 75,
+                              fontWeight: FontWeight.w700)),
+                      Container(
+                        padding: EdgeInsets.fromLTRB(5, 20, 0, 0),
+                        child: Image(
+                            image: AssetImage("images/jumlah_approval.png")),
+                      ),
+                    ],
+                  ),
+                  Container(
+                    width: MediaQuery.of(context).size.width * 0.5,
+                    child: Text("Pengajuan menunggu disetujui oleh :",
+                        style: GoogleFonts.montserrat(
+                            color: Color(0xFFE1F9F2),
+                            fontSize: 14,
+                            fontWeight: FontWeight.w700),
+                        textAlign: TextAlign.left,
+                        overflow: TextOverflow.clip),
+                  ),
+                ],
               ),
+              Column(
+                children: [
+                  Container(
+                    padding: EdgeInsets.only(top: 15, bottom: 2),
+                    child: Image(
+                      image: AssetImage(
+                          "images/" + approval.namaApproval + ".png"),
+                      width: 80,
+                      height: 80,
+                    ),
+                  ),
+                  Container(
+                    child: Text(approval.namaApproval,
+                        style: GoogleFonts.montserrat(
+                            color: Color(0xFFE1F9F2),
+                            fontSize: 20,
+                            fontWeight: FontWeight.w700),
+                        textAlign: TextAlign.left,
+                        overflow: TextOverflow.clip),
+                  )
+                ],
+              )
             ],
           ),
         ),

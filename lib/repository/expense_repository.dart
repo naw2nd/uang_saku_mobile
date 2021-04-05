@@ -1,6 +1,10 @@
 import 'package:uang_saku/model/kasbon.dart';
 import 'package:uang_saku/model/list_kasbon.dart';
 import 'package:uang_saku/model/multi_response.dart';
+import 'package:uang_saku/model/kategori_pengajuan.dart';
+import 'package:uang_saku/model/models.dart';
+import 'package:uang_saku/model/multi_response.dart';
+import 'package:uang_saku/model/reimburse.dart';
 import 'package:uang_saku/model/token.dart';
 import 'package:uang_saku/model/single_response.dart';
 import 'package:uang_saku/model/user.dart';
@@ -87,4 +91,32 @@ class ExpenseRepository implements ExpenseDataSource {
     return await remoteDataSource.getListKasbon();
   }
 
+  Future<MultiResponse<KategoriPengajuan>> getKategori() async {
+    remoteDataSource.getToken();
+    return await remoteDataSource.getKategori();
+  }
+
+  @override
+  Future<MultiResponse<Perusahaan>> getPerusahaan() async {
+    remoteDataSource.getToken();
+    return await remoteDataSource.getPerusahaan();
+  }
+
+  @override
+  Future<MultiResponse<Cabang>> getCabang() async {
+    remoteDataSource.getToken();
+    return await remoteDataSource.getCabang();
+  }
+
+  @override
+  Future<MultiResponse<KategoriBiaya>> getKategoriBiaya() async {
+    remoteDataSource.getToken();
+    return await remoteDataSource.getKategoriBiaya();
+  }
+
+  @override
+  Future<SingleResponse> postReimburse(Reimburse reimburse) async {
+    remoteDataSource.getToken();
+    return await remoteDataSource.postReimburse(reimburse);
+  }
 }
