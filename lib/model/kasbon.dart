@@ -243,25 +243,25 @@ class Kasbon {
   }
 }
 
-class AdditionalInfo {
-  AdditionalInfo({
-    this.label,
-    this.value,
-  });
+// class AdditionalInfo {
+//   AdditionalInfo({
+//     this.label,
+//     this.value,
+//   });
 
-  String label;
-  String value;
+//   String label;
+//   String value;
 
-  factory AdditionalInfo.fromJson(Map<String, dynamic> json) => AdditionalInfo(
-        label: json["label"],
-        value: json["value"],
-      );
+//   factory AdditionalInfo.fromJson(Map<String, dynamic> json) => AdditionalInfo(
+//         label: json["label"],
+//         value: json["value"],
+//       );
 
-  Map<String, dynamic> toJson() => {
-        "label": label,
-        "value": value,
-      };
-}
+//   Map<String, dynamic> toJson() => {
+//         "label": label,
+//         "value": value,
+//       };
+// }
 
 class Approval {
   Approval({
@@ -291,106 +291,106 @@ class Approval {
       };
 }
 
-class Cabang {
-  Cabang({
-    this.idCabang,
-    this.namaCabang,
-  });
+// class Cabang {
+//   Cabang({
+//     this.idCabang,
+//     this.namaCabang,
+//   });
 
-  int idCabang;
-  String namaCabang;
+//   int idCabang;
+//   String namaCabang;
 
-  factory Cabang.fromJson(Map<String, dynamic> json) => Cabang(
-        idCabang: json["id_cabang"],
-        namaCabang: json["nama_cabang"],
-      );
+//   factory Cabang.fromJson(Map<String, dynamic> json) => Cabang(
+//         idCabang: json["id_cabang"],
+//         namaCabang: json["nama_cabang"],
+//       );
 
-  Map<String, dynamic> toJson() => {
-        "id_cabang": idCabang,
-        "nama_cabang": namaCabang,
-      };
-}
+//   Map<String, dynamic> toJson() => {
+//         "id_cabang": idCabang,
+//         "nama_cabang": namaCabang,
+//       };
+// }
 
-class Department {
-  Department({
-    this.idDepartment,
-    this.namaDepartment,
-  });
+// class Department {
+//   Department({
+//     this.idDepartment,
+//     this.namaDepartment,
+//   });
 
-  int idDepartment;
-  String namaDepartment;
+//   int idDepartment;
+//   String namaDepartment;
 
-  factory Department.fromJson(Map<String, dynamic> json) => Department(
-        idDepartment: json["id_department"],
-        namaDepartment: json["nama_department"],
-      );
+//   factory Department.fromJson(Map<String, dynamic> json) => Department(
+//         idDepartment: json["id_department"],
+//         namaDepartment: json["nama_department"],
+//       );
 
-  Map<String, dynamic> toJson() => {
-        "id_department": idDepartment,
-        "nama_department": namaDepartment,
-      };
-}
+//   Map<String, dynamic> toJson() => {
+//         "id_department": idDepartment,
+//         "nama_department": namaDepartment,
+//       };
+// }
 
-class KategoriPengajuan {
-  KategoriPengajuan({
-    this.idKategoriPengajuan,
-    this.namaKategoriPengajuan,
-  });
+// class KategoriPengajuan {
+//   KategoriPengajuan({
+//     this.idKategoriPengajuan,
+//     this.namaKategoriPengajuan,
+//   });
 
-  int idKategoriPengajuan;
-  String namaKategoriPengajuan;
+//   int idKategoriPengajuan;
+//   String namaKategoriPengajuan;
 
-  factory KategoriPengajuan.fromJson(Map<String, dynamic> json) =>
-      KategoriPengajuan(
-        idKategoriPengajuan: json["id_kategori_pengajuan"],
-        namaKategoriPengajuan: json["nama_kategori_pengajuan"],
-      );
+//   factory KategoriPengajuan.fromJson(Map<String, dynamic> json) =>
+//       KategoriPengajuan(
+//         idKategoriPengajuan: json["id_kategori_pengajuan"],
+//         namaKategoriPengajuan: json["nama_kategori_pengajuan"],
+//       );
 
-  Map<String, dynamic> toJson() => {
-        "id_kategori_pengajuan": idKategoriPengajuan,
-        "nama_kategori_pengajuan": namaKategoriPengajuan,
-      };
-}
+//   Map<String, dynamic> toJson() => {
+//         "id_kategori_pengajuan": idKategoriPengajuan,
+//         "nama_kategori_pengajuan": namaKategoriPengajuan,
+//       };
+// }
 
-class Pegawai {
-  Pegawai({
-    this.idPegawai,
-    this.namaPegawai,
-  });
+// class Pegawai {
+//   Pegawai({
+//     this.idPegawai,
+//     this.namaPegawai,
+//   });
 
-  int idPegawai;
-  String namaPegawai;
+//   int idPegawai;
+//   String namaPegawai;
 
-  factory Pegawai.fromJson(Map<String, dynamic> json) => Pegawai(
-        idPegawai: json["id_pegawai"],
-        namaPegawai: json["nama_pegawai"],
-      );
+//   factory Pegawai.fromJson(Map<String, dynamic> json) => Pegawai(
+//         idPegawai: json["id_pegawai"],
+//         namaPegawai: json["nama_pegawai"],
+//       );
 
-  Map<String, dynamic> toJson() => {
-        "id_pegawai": idPegawai,
-        "nama_pegawai": namaPegawai,
-      };
-}
+//   Map<String, dynamic> toJson() => {
+//         "id_pegawai": idPegawai,
+//         "nama_pegawai": namaPegawai,
+//       };
+// }
 
-class Perusahaan {
-  Perusahaan({
-    this.idPerusahaan,
-    this.namaPerusahaan,
-  });
+// class Perusahaan {
+//   Perusahaan({
+//     this.idPerusahaan,
+//     this.namaPerusahaan,
+//   });
 
-  int idPerusahaan;
-  String namaPerusahaan;
+//   int idPerusahaan;
+//   String namaPerusahaan;
 
-  factory Perusahaan.fromJson(Map<String, dynamic> json) => Perusahaan(
-        idPerusahaan: json["id_perusahaan"],
-        namaPerusahaan: json["nama_perusahaan"],
-      );
+//   factory Perusahaan.fromJson(Map<String, dynamic> json) => Perusahaan(
+//         idPerusahaan: json["id_perusahaan"],
+//         namaPerusahaan: json["nama_perusahaan"],
+//       );
 
-  Map<String, dynamic> toJson() => {
-        "id_perusahaan": idPerusahaan,
-        "nama_perusahaan": namaPerusahaan,
-      };
-}
+//   Map<String, dynamic> toJson() => {
+//         "id_perusahaan": idPerusahaan,
+//         "nama_perusahaan": namaPerusahaan,
+//       };
+// }
 
 // List<RincianPengajuan> convertFromJson(String str) =>
 //     List<RincianPengajuan>.from(
@@ -457,22 +457,22 @@ class RincianPengajuan {
   }
 }
 
-class KategoriBiaya {
-  KategoriBiaya({
-    this.idKategoriBiaya,
-    this.namaKategoriBiaya,
-  });
+// class KategoriBiaya {
+//   KategoriBiaya({
+//     this.idKategoriBiaya,
+//     this.namaKategoriBiaya,
+//   });
 
-  int idKategoriBiaya;
-  String namaKategoriBiaya;
+//   int idKategoriBiaya;
+//   String namaKategoriBiaya;
 
-  factory KategoriBiaya.fromJson(Map<String, dynamic> json) => KategoriBiaya(
-        idKategoriBiaya: json["id_kategori_biaya"],
-        namaKategoriBiaya: json["nama_kategori_biaya"],
-      );
+//   factory KategoriBiaya.fromJson(Map<String, dynamic> json) => KategoriBiaya(
+//         idKategoriBiaya: json["id_kategori_biaya"],
+//         namaKategoriBiaya: json["nama_kategori_biaya"],
+//       );
 
-  Map<String, dynamic> toJson() => {
-        "id_kategori_biaya": idKategoriBiaya,
-        "nama_kategori_biaya": namaKategoriBiaya,
-      };
-}
+//   Map<String, dynamic> toJson() => {
+//         "id_kategori_biaya": idKategoriBiaya,
+//         "nama_kategori_biaya": namaKategoriBiaya,
+//       };
+// }

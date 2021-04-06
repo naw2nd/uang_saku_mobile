@@ -34,7 +34,7 @@ class User extends Equatable {
   DateTime tglLahir;
   String jenisKelamin;
   List<Role> roles;
-  List<Approval> approval;
+  List<UserApproval> approval;
 
   factory User.fromJson(Map<String, dynamic> json) => User(
         idPegawai: json["id_pegawai"],
@@ -47,8 +47,8 @@ class User extends Equatable {
         tglLahir: DateTime.parse(json["tgl_lahir"]),
         jenisKelamin: json["jenis_kelamin"],
         roles: List<Role>.from(json["roles"].map((x) => Role.fromJson(x))),
-        approval: List<Approval>.from(
-            json["approval"].map((x) => Approval.fromJson(x))),
+        approval: List<UserApproval>.from(
+            json["approval"].map((x) => UserApproval.fromJson(x))),
       );
 
   Map<String, dynamic> toJson() => {
@@ -91,8 +91,8 @@ class User extends Equatable {
       ];
 }
 
-class Approval {
-  Approval({
+class UserApproval {
+  UserApproval({
     this.idApproval,
     this.namaApproval,
     this.status,
@@ -102,7 +102,7 @@ class Approval {
   String namaApproval;
   int status;
 
-  factory Approval.fromJson(Map<String, dynamic> json) => Approval(
+  factory UserApproval.fromJson(Map<String, dynamic> json) => UserApproval(
         idApproval: json["id_approval"],
         namaApproval: json["nama_approval"],
         status: json["status"],
