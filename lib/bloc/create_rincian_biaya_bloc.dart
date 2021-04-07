@@ -27,6 +27,9 @@ class CreateRincianBiayaBloc extends Bloc<BaseEvent, BaseState> {
     } else if (event is AddRincianBiayaEvent) {
       print("state add rincian biaya");
       yield (RincianBiayaState(rincianBiaya: event.rincianBiaya));
+    } else if (event is DeleteRincianBiayaEvent) {
+      print("state delete rincian biaya");
+      yield (DeleteRincianBiayaState(rincianBiaya: event.rincianBiaya));
     } else {
       print("empty state");
       yield (EmptyState());

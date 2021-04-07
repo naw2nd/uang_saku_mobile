@@ -126,8 +126,8 @@ class Kasbon {
         idKategoriPengajuan: json["id_kategori_pengajuan"],
         pelaksana: List<String>.from(json["pelaksana"].map((x) => x)),
         approval: StatusApproval.fromJson(json["approval"]),
-        tglPengajuan: DateTime.parse(json["tgl_pengajuan"]) as DateTime,
-        tglPencairan: json["tgl_pencairan"],
+        tglPengajuan: DateFormat('d MMM yyyy').parse(json["tgl_pengajuan"]),
+        tglPencairan: DateFormat('d MMM yyyy').parse(json["tgl_pencairan"]),
         tglTotalan: DateTime.parse(json["tgl_totalan"]),
         tglMulai: DateTime.parse(json["tgl_mulai"]),
         tglSelesai: DateTime.parse(json["tgl_selesai"]),
@@ -144,8 +144,8 @@ class Kasbon {
         nominalPencairan: json["nominal_pencairan"],
         nominalRealisasi: json["nominal_realisasi"],
         nominalSelisih: json["nominal_selisih"],
-        additionalInfo: List<AdditionalInfo>.from(
-            json["additional_info"].map((x) => AdditionalInfo.fromJson(x))),
+        // additionalInfo: List<AdditionalInfo>.from(
+        //     json["additional_info"].map((x) => AdditionalInfo.fromJson(x))),
         idPerusahaan: json["id_perusahaan"],
         pegawai: Pegawai.fromJson(json["pegawai"]),
         perusahaan: Perusahaan.fromJson(json["perusahaan"]),

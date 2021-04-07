@@ -185,32 +185,17 @@ class HttpService {
 
   Future<MultiResponse<Kasbon>> getListKasbon() async {
     String endpoint = "kasbon";
-    MultiResponse<Kasbon> multiResponseKasbon;
     try {
       Response response = await _dio.get(endpoint);
-      print(response.data["data"]);
-
-      MultiResponse multiResponse = MultiResponse.fromJson(response.data);
-      print("puasa");
-      print(multiResponse.data);
-      //List<Kasbon> kasbon = (response.data["data"]).map((x) => Kasbon.fromJson(json.decode(x)));
-      // print(kasbon);
-      multiResponseKasbon = MultiResponse<Kasbon>(
-          success: multiResponse.success,
-          message: multiResponse.message,
-          //properties: multiResponse.properties,
-          data: List<Kasbon>.from(
-              (response.data["data"] as List).map((x) => Kasbon.fromJson(x))));
-
-      print("indra" + multiResponseKasbon.message);
+      response.data["data"] = List<Kasbon>.from(
+          response.data["data"].map((x) => Kasbon.fromJson(x)));
+      MultiResponse<Kasbon> multiResponse =
+          MultiResponse.fromJson(response.data);
+      return multiResponse;
     } on DioError catch (e) {
       print(e);
       throw Exception(e.message);
-    } catch (e) {
-      print("error");
-      print(e);
     }
-    return multiResponseKasbon;
   }
 
   logout() async {
@@ -303,30 +288,26 @@ class HttpService {
 
   Future<SingleResponse> postReimburse(Reimburse reimburse) async {
     String endPoint = "reimburse";
-    SingleResponse singleResponse;
     try {
       Response response = await _dio.post(endPoint, data: reimburse.toJson());
-      singleResponse = SingleResponse.fromJson(response.data);
+      print(response);
+      print(response.data);
+      return SingleResponse.fromJson(response.data);
     } on DioError catch (e) {
       print(e.message);
       throw Exception(e.message);
     }
-
-    return singleResponse;
   }
-  
+
   Future<SingleResponse> postKasbon(Kasbon kasbon) async {
     String endPoint = "kasbon";
-    SingleResponse singleResponse;
     try {
       Response response = await _dio.post(endPoint, data: kasbon.toJson());
-      singleResponse = SingleResponse.fromJson(response.data);
+      return SingleResponse.fromJson(response.data);
     } on DioError catch (e) {
       print(e.message);
       throw Exception(e.message);
     }
-
-    return singleResponse;
   }
 
   initalInterceptors() {

@@ -1,7 +1,10 @@
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:uang_saku/bloc/create_rincian_biaya_bloc.dart';
+import 'package:uang_saku/bloc/event/create_pengajuan_event.dart';
 
 class DetailRincianBiaya extends StatefulWidget {
   final String jenisPengajuan;
@@ -60,14 +63,67 @@ class _DetailRincianBiayaState extends State<DetailRincianBiaya> {
                       color: Color(0xFF555555)),
                 ),
                 Container(
-                  width: 25,
-                  height: 25,
+                  width: 20,
+                  height: 20,
                   child: IconButton(
                       padding: EdgeInsets.zero,
                       icon:
-                          Icon(Icons.cancel_outlined, color: Color(0xFF555555)),
+                          Icon(Icons.delete_rounded, color: Color(0xFF555555)),
                       onPressed: () {
-                        Navigator.pop(context);
+                        showDialog(
+                            context: context,
+                            builder: (BuildContext context) {
+                              return Dialog(
+                                  insetPadding:
+                                      EdgeInsets.symmetric(horizontal: 90),
+                                  shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(10)),
+                                  child: Container(
+                                    padding:
+                                        EdgeInsets.fromLTRB(15, 10, 15, 10),
+                                    child: Wrap(
+                                      children: [
+                                        Container(
+                                          padding:
+                                              EdgeInsets.symmetric(vertical: 7),
+                                          child: Text(
+                                              "Apakah anda yakin untuk menghapus Rincian Biaya " +
+                                                  widget.jenisPengajuan +
+                                                  " ini ?",
+                                              textAlign: TextAlign.center,
+                                              style: GoogleFonts.montserrat()),
+                                        ),
+                                        Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceEvenly,
+                                          children: [
+                                            TextButton(
+                                                onPressed: () {
+                                                  BlocProvider.of<
+                                                              CreateRincianBiayaBloc>(
+                                                          context)
+                                                      .add(DeleteRincianBiayaEvent(
+                                                          rincianBiaya: widget
+                                                              .rincianBiaya));
+                                                  Navigator.pop(context);
+                                                  Navigator.pop(context);
+                                                },
+                                                child: Text("Ya",
+                                                    style: GoogleFonts
+                                                        .montserrat())),
+                                            TextButton(
+                                                onPressed: () {
+                                                  Navigator.pop(context);
+                                                },
+                                                child: Text("Tidak",
+                                                    style: GoogleFonts
+                                                        .montserrat()))
+                                          ],
+                                        ),
+                                      ],
+                                    ),
+                                  ));
+                            });
                       }),
                 )
               ],
@@ -104,25 +160,35 @@ class _DetailRincianBiayaState extends State<DetailRincianBiaya> {
                   Text("Harga Total", style: GoogleFonts.montserrat()),
                   Text(
                       ((widget.jenisPengajuan == "Kasbon")
-                          ? "Rp" +
-                              NumberFormat.currency(locale: "eu", symbol: "")
-                                  .format(widget.rincianBiaya.hargaSatuan) +
-                              "x @" +
-                              widget.rincianBiaya.jumlahUnit.toString() +" = "
-                          : "" )+
-                              "Rp" +
-                              NumberFormat.currency(locale: "eu", symbol: "")
-                                  .format(widget.rincianBiaya.total),
+                              ? "Rp" +
+                                  NumberFormat.currency(
+                                          locale: "eu", symbol: "")
+                                      .format(widget.rincianBiaya.hargaSatuan) +
+                                  "x @" +
+                                  widget.rincianBiaya.jumlahUnit.toString() +
+                                  " = "
+                              : "") +
+                          "Rp" +
+                          NumberFormat.currency(locale: "eu", symbol: "")
+                              .format(widget.rincianBiaya.total),
                       style:
                           GoogleFonts.montserrat(fontWeight: FontWeight.w500))
                 ],
               ),
             ),
-            Wrap(
-              spacing: 10,
-              runSpacing: 10,
-              children: list,
-            ),
+            Container(
+                margin: EdgeInsets.only(bottom: 5),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text("Lampiran", style: GoogleFonts.montserrat()),
+                    Wrap(
+                      spacing: 10,
+                      runSpacing: 10,
+                      children: list,
+                    ),
+                  ],
+                )),
             Container(
               margin: EdgeInsets.only(bottom: 5),
               child: Column(

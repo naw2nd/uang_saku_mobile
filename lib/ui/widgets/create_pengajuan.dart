@@ -45,8 +45,9 @@ class _CreatePengajuanState extends State<CreatePengajuan> {
 
   @override
   void initState() {
+    print("INIT STATE");
     BlocProvider.of<CreatePengajuanBloc>(context).add(InitEvent());
-    // BlocProvider.of<CreateRincianBiayaBloc>(context).add(EmptyEvent());
+    BlocProvider.of<CreateRincianBiayaBloc>(context).add(EmptyEvent());
 
     if (widget.jenisPengajuan == "Reimburse")
       _colorTheme = Color(0xFF3AE3CE);
@@ -55,8 +56,6 @@ class _CreatePengajuanState extends State<CreatePengajuan> {
     else
       _colorTheme = Color(0xFF2B4D66);
 
-    _listRincianBiaya.clear();
-    _listItemRincian.clear();
     _listPelaksanaCtrl.add(TextEditingController());
     _listPelakasana = _generateListFormPelaksana();
     super.initState();
@@ -64,8 +63,6 @@ class _CreatePengajuanState extends State<CreatePengajuan> {
 
   @override
   Widget build(BuildContext context) {
-    BlocProvider.of<CreateRincianBiayaBloc>(context).add(EmptyEvent());
-
     return MaterialApp(
       home: Scaffold(
         appBar: AppBar(
@@ -367,13 +364,19 @@ class _CreatePengajuanState extends State<CreatePengajuan> {
                         _listRincianBiaya.add(stateRincian.rincianBiaya);
                         _totalBiaya += stateRincian.rincianBiaya.total;
                       }
-                      _listRincianBiaya.forEach((element) {
-                        _listItemRincian.add(ItemRincian(
-                          jenisPengajuan: widget.jenisPengajuan,
-                          rincianBiaya: element,
-                        ));
-                      });
+                    } else if (stateRincian is EmptyState) {
+                      _listRincianBiaya.clear();
+                      _totalBiaya = 0;
+                    } else if (stateRincian is DeleteRincianBiayaState) {
+                      _totalBiaya -= stateRincian.rincianBiaya.total;
+                      _listRincianBiaya.remove(stateRincian.rincianBiaya);
                     }
+                    _listRincianBiaya.forEach((element) {
+                      _listItemRincian.add(ItemRincian(
+                        jenisPengajuan: widget.jenisPengajuan,
+                        rincianBiaya: element,
+                      ));
+                    });
                     return Column(
                       children: [
                         CustomCard(
@@ -486,7 +489,7 @@ class _CreatePengajuanState extends State<CreatePengajuan> {
                                                 .format(_totalBiaya),
                                         style: GoogleFonts.montserrat(
                                             fontWeight: FontWeight.w700,
-                                            fontSize: 13,
+                                            fontSize: 15,
                                             color: Color(0xFF555555)),
                                       ),
                                     ],
@@ -534,6 +537,11 @@ class _CreatePengajuanState extends State<CreatePengajuan> {
                         elevation: 0,
                         onPressed: () {
                           if (_formKey.currentState.validate()) {
+                            if (_listRincianBiaya.isEmpty)
+                              Scaffold.of(context).showSnackBar(SnackBar(
+                                  content: Text(
+                                      "Harap lengkapi Rincian Biaya " +
+                                          widget.jenisPengajuan)));
                             _listPelaksanaCtrl.forEach((element) {
                               pelaksana.add(element.text);
                             });

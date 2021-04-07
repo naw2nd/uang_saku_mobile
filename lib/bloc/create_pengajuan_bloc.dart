@@ -16,6 +16,7 @@ class CreatePengajuanBloc extends Bloc<BaseEvent, BaseState> {
   @override
   Stream<BaseState> mapEventToState(BaseEvent event) async* {
     if (event is InitEvent) {
+      yield (LoadingState());
       try {
         final MultiResponse<KategoriPengajuan> responseKategori =
             await expenseRepository.getKategori();
@@ -35,12 +36,14 @@ class CreatePengajuanBloc extends Bloc<BaseEvent, BaseState> {
       }
     }
     if (event is CreateReimburseEvent) {
+      yield (LoadingState());
       try {
-        final SingleResponse<String> response =
+        final SingleResponse response =
             await expenseRepository.postReimburse(event.reimburse);
         print(response.message);
         if (response.success) {
-          yield SuccesState<String>(data: response.data);
+          yield SuccesState(data: response.data);
+          print("berhasil");
         } else {
           yield ErrorState(message: response.message);
         }
