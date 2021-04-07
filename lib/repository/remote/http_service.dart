@@ -5,6 +5,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:uang_saku/model/list_kasbon.dart';
 import 'package:uang_saku/model/models.dart';
 import 'package:uang_saku/model/multi_response.dart';
+import 'package:uang_saku/model/role_approval.dart';
 import 'package:uang_saku/model/user.dart';
 import 'package:intl/intl.dart';
 
@@ -304,6 +305,21 @@ class HttpService {
     try {
       Response response = await _dio.post(endPoint, data: kasbon.toJson());
       return SingleResponse.fromJson(response.data);
+    } on DioError catch (e) {
+      print(e.message);
+      throw Exception(e.message);
+    }
+  }
+
+  Future<MultiResponse<RoleApproval>> getRoleApproval() async {
+    String endPoint = "approval";
+    try {
+      Response response = await _dio.get(endPoint);
+      response.data["data"] = List<RoleApproval>.from(
+          response.data["data"].map((x) => RoleApproval.fromJson(x)));
+      MultiResponse<RoleApproval> multiResponse =
+          MultiResponse.fromJson(response.data);
+      return multiResponse;
     } on DioError catch (e) {
       print(e.message);
       throw Exception(e.message);

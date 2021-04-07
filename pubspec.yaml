@@ -30,7 +30,7 @@ dependencies:
   flutter_chips_input: ^1.9.5
   percent_indicator: ^2.1.9+1
   image_picker: ^0.6.7+22
-  # image_picker: ^0.7.4
+  carousel_slider: ^3.0.0
   cupertino_icons: ^1.0.0
   dio: ^3.0.10
   fading_edge_scrollview: ^1.1.4

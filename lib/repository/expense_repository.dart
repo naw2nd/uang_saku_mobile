@@ -5,6 +5,7 @@ import 'package:uang_saku/model/kategori_pengajuan.dart';
 import 'package:uang_saku/model/models.dart';
 import 'package:uang_saku/model/multi_response.dart';
 import 'package:uang_saku/model/reimburse.dart';
+import 'package:uang_saku/model/role_approval.dart';
 import 'package:uang_saku/model/token.dart';
 import 'package:uang_saku/model/single_response.dart';
 import 'package:uang_saku/model/user.dart';
@@ -57,11 +58,10 @@ class ExpenseRepository implements ExpenseDataSource {
   }
 
   @override
-  Future<SingleResponse<Kasbon>> deleteKasbon(int id,String catatan) async {
+  Future<SingleResponse<Kasbon>> deleteKasbon(int id, String catatan) async {
     remoteDataSource.getToken();
-    return await remoteDataSource.deleteKasbon(id,catatan);
+    return await remoteDataSource.deleteKasbon(id, catatan);
   }
-  
 
   @override
   setToken(String token) {
@@ -80,11 +80,10 @@ class ExpenseRepository implements ExpenseDataSource {
 
   @override
   Future<SingleResponse<Kasbon>> getKasbon() async {
-   remoteDataSource.getToken();
-   return await remoteDataSource.getKasbon();
+    remoteDataSource.getToken();
+    return await remoteDataSource.getKasbon();
   }
 
- 
   @override
   Future<MultiResponse<Kasbon>> getListKasbon() async {
     remoteDataSource.getToken();
@@ -124,5 +123,11 @@ class ExpenseRepository implements ExpenseDataSource {
   Future<SingleResponse> postKasbon(Kasbon kasbon) async {
     remoteDataSource.getToken();
     return await remoteDataSource.postKasbon(kasbon);
+  }
+
+  @override
+  Future<MultiResponse<RoleApproval>> getRoleApproval() async {
+    remoteDataSource.getToken();
+    return await remoteDataSource.getRoleApproval();
   }
 }
