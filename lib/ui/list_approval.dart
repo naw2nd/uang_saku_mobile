@@ -1,18 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:uang_saku/bloc/bloc.dart';
-import 'package:uang_saku/bloc/event/list_kasbon_event.dart';
+import 'package:uang_saku/bloc/event/approval_event.dart';
+import 'package:uang_saku/bloc/list_approval._bloc.dart';
 import 'package:uang_saku/bloc/list_kasbon_bloc.dart';
 import 'package:uang_saku/bloc/state/base_state.dart';
-import 'package:uang_saku/ui/details_approval.dart';
+import 'package:uang_saku/model/models.dart';
 import 'package:uang_saku/ui/filter_approval.dart';
-import 'package:uang_saku/ui/kasbon_approval.dart';
-import 'package:uang_saku/ui/widgets/filter_dialog.dart';
 import 'package:uang_saku/ui/widgets/kasbon_card.dart';
 import 'package:uang_saku/ui/widgets/reimburse_card.dart';
 import 'package:badges/badges.dart';
 
 class ListApproval extends StatefulWidget {
+  final int idRoleApproval;
+  ListApproval({this.idRoleApproval});
   @override
   _ListApprovalState createState() => _ListApprovalState();
 }
@@ -21,11 +22,13 @@ class _ListApprovalState extends State<ListApproval> {
   @override
   void initState() {
     print("init event");
-    context.read<ListKasbonBloc>().add(ListKasbonEvent());
+    BlocProvider.of<ListApprovalBloc>(context).add(GetApprovalReimbruseEvent(
+        idRoleApproval: widget.idRoleApproval,
+        bodyApproval: BodyApproval(status: "aktif", tipe: "pengajuan")));
+
     super.initState();
   }
 
-  
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -241,23 +244,23 @@ class NoteDialog extends StatelessWidget {
 }
 
 // TabBar myTabBar = TabBar(
-  //   labelStyle: TextStyle(
-  //       fontFamily: "Montserrat", fontWeight: FontWeight.w600, fontSize: 18),
-  //   tabs: <Widget>[
-  //     BlocBuilder<ListKasbonBloc, BaseState>(builder: (_, state) {
-  //       if (state is ListKasbonState) {
-  //         Badge(
-  //           badgeContent: Text(state.kasbon.length.toString()),
-  //           child: Text("Kasbon"),
-  //         );
-  //       }
-  //       ;
-  //     }),
-  //     // Badge(
-  //     //   badgeContent: Text("1"),
-  //     //   child: Text("Reimburse"),
-  //     // )
-  //   ],
-  //   indicatorColor: Color(0xFF2B4D66),
-  //   labelColor: Color(0xFF2B4D66),
-  // );
+//   labelStyle: TextStyle(
+//       fontFamily: "Montserrat", fontWeight: FontWeight.w600, fontSize: 18),
+//   tabs: <Widget>[
+//     BlocBuilder<ListKasbonBloc, BaseState>(builder: (_, state) {
+//       if (state is ListKasbonState) {
+//         Badge(
+//           badgeContent: Text(state.kasbon.length.toString()),
+//           child: Text("Kasbon"),
+//         );
+//       }
+//       ;
+//     }),
+//     // Badge(
+//     //   badgeContent: Text("1"),
+//     //   child: Text("Reimburse"),
+//     // )
+//   ],
+//   indicatorColor: Color(0xFF2B4D66),
+//   labelColor: Color(0xFF2B4D66),
+// );

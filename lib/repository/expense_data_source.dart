@@ -25,4 +25,5 @@ abstract class ExpenseDataSource {
   Future<SingleResponse> postReimburse(Reimburse reimburse);
   Future<SingleResponse> postKasbon(Kasbon kasbon);
   Future<MultiResponse<RoleApproval>> getRoleApproval();
+  Future<MultiResponse<Reimburse>> getApprovalReimburse(int idRoleApproval, BodyApproval bodyApproval);
 }

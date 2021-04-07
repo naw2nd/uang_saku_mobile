@@ -13,3 +13,5 @@ export 'pegawai.dart';
 export 'perusahaan.dart';
 export 'rincian_realisasi.dart';
 export 'rincian_pengajuan.dart';
+export 'properties.dart';
+export 'body_approval.dart';

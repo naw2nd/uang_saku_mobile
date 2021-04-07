@@ -491,7 +491,10 @@ class ListMenuApproval extends StatelessWidget {
               ]);
         }
       } else
-        return Container();
+        return Container(
+            padding: EdgeInsets.only(top: 100),
+            alignment: Alignment.center,
+            child: CircularProgressIndicator());
     });
   }
 }
@@ -506,7 +509,7 @@ class MenuApproval extends StatelessWidget {
       child: GestureDetector(
         onTap: () {
           Navigator.push(context, MaterialPageRoute(builder: (context) {
-            return ListApproval();
+            return ListApproval(idRoleApproval: roleApproval.idApproval);
           }));
         },
         child: Container(

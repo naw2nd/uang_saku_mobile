@@ -77,9 +77,9 @@ class Reimburse extends Equatable {
         idCabang: json["id_cabang"],
         idKategoriPengajuan: json["id_kategori_pengajuan"],
         pelaksana: List<String>.from(json["pelaksana"].map((x) => x)),
-        statusApproval: json["approval"],
-        tglPengajuan: DateTime.parse(json["tgl_pengajuan"]),
-        tglPencairan: json["tgl_pencairan"],
+        statusApproval: json["status_approval"],
+        tglPengajuan: DateFormat('d MMM yyyy').parse(json["tgl_pengajuan"]),
+        tglPencairan: DateFormat('d MMM yyyy').parse(json["tgl_pencairan"]),
         tglMulai: DateTime.parse(json["tgl_mulai"]),
         tglSelesai: DateTime.parse(json["tgl_selesai"]),
         nomorPengajuan: json["nomor_pengajuan"],
@@ -93,14 +93,22 @@ class Reimburse extends Equatable {
         additionalInfo: List<AdditionalInfo>.from(
             json["additional_info"].map((x) => AdditionalInfo.fromJson(x))),
         idPerusahaan: json["id_perusahaan"],
-        pegawai: Pegawai.fromJson(json["pegawai"]),
-        perusahaan: Perusahaan.fromJson(json["perusahaan"]),
-        department: Department.fromJson(json["department"]),
-        cabang: Cabang.fromJson(json["cabang"]),
-        kategoriPengajuan:
-            KategoriPengajuan.fromJson(json["kategori_pengajuan"]),
-        rincianRealisasi: List<RincianRealisasi>.from(
-            json["rincian_realisasi"].map((x) => RincianRealisasi.fromJson(x))),
+        pegawai:
+            json["pegawai"] == null ? null : Pegawai.fromJson(json["pegawai"]),
+        perusahaan: json["perusahaan"] == null
+            ? null
+            : Perusahaan.fromJson(json["perusahaan"]),
+        department: json["department"] == null
+            ? null
+            : Department.fromJson(json["department"]),
+        cabang: json["cabang"] == null ? null : Cabang.fromJson(json["cabang"]),
+        kategoriPengajuan: json["kategori_pengajuan"] == null
+            ? null
+            : KategoriPengajuan.fromJson(json["kategori_pengajuan"]),
+        rincianRealisasi: json["pegawai"] == null
+            ? null
+            : List<RincianRealisasi>.from(json["rincian_realisasi"]
+                .map((x) => RincianRealisasi.fromJson(x))),
       );
 
   Map<String, dynamic> toJson() => {

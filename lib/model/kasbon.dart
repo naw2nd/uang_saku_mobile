@@ -7,38 +7,6 @@ import 'package:intl/intl.dart';
 import 'package:uang_saku/model/models.dart';
 import 'package:uang_saku/model/status_approval.dart';
 
-class Properties {
-  Properties({
-    this.page,
-    this.total,
-    this.totalPage,
-    this.pageSize,
-    this.hasMorePages,
-  });
-
-  int page;
-  int total;
-  int totalPage;
-  int pageSize;
-  bool hasMorePages;
-
-  factory Properties.fromJson(Map<String, dynamic> json) => Properties(
-        page: json["page"],
-        total: json["total"],
-        totalPage: json["total_page"],
-        pageSize: json["page_size"],
-        hasMorePages: json["has_more_pages"],
-      );
-
-  Map<String, dynamic> toJson() => {
-        "page": page,
-        "total": total,
-        "total_page": totalPage,
-        "page_size": pageSize,
-        "has_more_pages": hasMorePages,
-      };
-}
-
 List<Kasbon> modelKasbonFromJson(String str) =>
     List<Kasbon>.from(json.decode(str).map((x) => Kasbon.fromJson(x)));
 
