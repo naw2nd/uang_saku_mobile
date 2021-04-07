@@ -1,23 +1,20 @@
-import 'dart:io';
 import 'package:intl/intl.dart';
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:uang_saku/model/rincian_realisasi.dart';
 
 class DetailRincianBiaya extends StatefulWidget {
   final String jenisPengajuan;
-  final RincianRealisasi rincianBiaya;
+  final rincianBiaya;
   DetailRincianBiaya({this.jenisPengajuan, this.rincianBiaya});
   @override
   _DetailRincianBiayaState createState() => _DetailRincianBiayaState();
 }
 
 class _DetailRincianBiayaState extends State<DetailRincianBiaya> {
-  // List<Image> images;
   @override
   Widget build(BuildContext context) {
-    List<Widget> list = new List<Widget>();
+    List<Widget> list = [];
     widget.rincianBiaya.images.forEach((element) {
       list.add(GestureDetector(
         onTap: () => showDialog(
@@ -106,9 +103,16 @@ class _DetailRincianBiayaState extends State<DetailRincianBiaya> {
                 children: [
                   Text("Harga Total", style: GoogleFonts.montserrat()),
                   Text(
-                      "Rp" +
-                          NumberFormat.currency(locale: "eu", symbol: "")
-                              .format(widget.rincianBiaya.total),
+                      ((widget.jenisPengajuan == "Kasbon")
+                          ? "Rp" +
+                              NumberFormat.currency(locale: "eu", symbol: "")
+                                  .format(widget.rincianBiaya.hargaSatuan) +
+                              "x @" +
+                              widget.rincianBiaya.jumlahUnit.toString() +" = "
+                          : "" )+
+                              "Rp" +
+                              NumberFormat.currency(locale: "eu", symbol: "")
+                                  .format(widget.rincianBiaya.total),
                       style:
                           GoogleFonts.montserrat(fontWeight: FontWeight.w500))
                 ],
@@ -119,45 +123,6 @@ class _DetailRincianBiayaState extends State<DetailRincianBiaya> {
               runSpacing: 10,
               children: list,
             ),
-            // Row(
-            //   mainAxisAlignment: MainAxisAlignment.spaceAround,
-            //   children: [
-            //     Flexible(
-            //       child: Padding(
-            //         padding: EdgeInsets.fromLTRB(5, 0, 5, 0),
-            //         child: ClipRRect(
-            //           borderRadius: BorderRadius.circular(15),
-            //           child: image == null
-            //               ? Center(
-            //                   child: Text(
-            //                     "Tidak ada gambar",
-            //                     style: TextStyle(
-            //                       fontFamily: "Montserrat",
-            //                     ),
-            //                   ),
-            //                 )
-            //               : Image.file(image),
-            //         ),
-            //       ),
-            //     ),
-            //     Flexible(
-            //       child: Padding(
-            //         padding: EdgeInsets.fromLTRB(5, 0, 5, 0),
-            //         child: ClipRRect(
-            //           borderRadius: BorderRadius.circular(15),
-            //           child: image == null
-            //               ? Center(
-            //                   child: Text("Tidak ada gambar",
-            //                       style: TextStyle(
-            //                         fontFamily: "Montserrat",
-            //                       )),
-            //                 )
-            //               : Image.file(image),
-            //         ),
-            //       ),
-            //     )
-            //   ],
-            // ),
             Container(
               margin: EdgeInsets.only(bottom: 5),
               child: Column(

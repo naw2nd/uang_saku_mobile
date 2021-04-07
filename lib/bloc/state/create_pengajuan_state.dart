@@ -20,12 +20,11 @@ class CreateRincianBiayaState extends BaseState {
   @override
   List<Object> get props => [this.listKategoriBiaya];
 }
-
 class RincianBiayaState extends BaseState {
-  final RincianRealisasi rincianRealisasi;
+  final rincianBiaya;
   RincianBiayaState({
-    this.rincianRealisasi,
+    this.rincianBiaya,
   });
   @override
-  List<Object> get props => [this.rincianRealisasi];
+  List<Object> get props => [this.rincianBiaya];
 }

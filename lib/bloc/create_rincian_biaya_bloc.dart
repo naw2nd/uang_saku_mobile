@@ -13,9 +13,9 @@ class CreateRincianBiayaBloc extends Bloc<BaseEvent, BaseState> {
 
   @override
   Stream<BaseState> mapEventToState(BaseEvent event) async* {
-    if (event is InitRincianEvent) {
+    if (event is InitEvent) {
       try {
-        print("rgilsj");
+        print("init event rincian");
         final MultiResponse<KategoriBiaya> responseKategoriBiaya =
             await expenseRepository.getKategoriBiaya();
 
@@ -25,11 +25,11 @@ class CreateRincianBiayaBloc extends Bloc<BaseEvent, BaseState> {
         yield ErrorState(message: "No Connection");
       }
     } else if (event is AddRincianBiayaEvent) {
-      print("add rincian");
-      yield (RincianBiayaState(rincianRealisasi: event.rincianRealisasi));
-      // yield EmptyState();
-    } else{
-      yield EmptyState();
+      print("state add rincian biaya");
+      yield (RincianBiayaState(rincianBiaya: event.rincianBiaya));
+    } else {
+      print("empty state");
+      yield (EmptyState());
     }
   }
 }

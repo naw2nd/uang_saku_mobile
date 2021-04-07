@@ -1,7 +1,17 @@
 import 'package:equatable/equatable.dart';
-import 'package:uang_saku/bloc/bloc.dart';
 
-abstract class BaseEvent extends Equatable {
+class BaseEvent extends Equatable {
   BaseEvent();
+
+  @override
+  List<Object> get props => [];
 }
 
+class InitEvent extends BaseEvent {
+  @override
+  List<Object> get props => [];
+}
+class EmptyEvent extends BaseEvent {
+  @override
+  List<Object> get props => [];
+}

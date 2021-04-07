@@ -21,4 +21,5 @@ abstract class ExpenseDataSource {
   Future<MultiResponse<Cabang>> getCabang();
   Future<MultiResponse<KategoriBiaya>> getKategoriBiaya();
   Future<SingleResponse> postReimburse(Reimburse reimburse);
+  Future<SingleResponse> postKasbon(Kasbon kasbon);
 }

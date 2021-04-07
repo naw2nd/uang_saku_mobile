@@ -111,8 +111,7 @@ class Reimburse extends Equatable {
         "id_kategori_pengajuan": idKategoriPengajuan,
         "pelaksana": List<dynamic>.from(pelaksana.map((x) => x)),
         "approval": statusApproval,
-        "tgl_pengajuan": DateFormat("yyyy-MM-dd").format(
-            tglMulai), //"${tglPengajuan.year.toString().padLeft(4, '0')}-${tglPengajuan.month.toString().padLeft(2, '0')}-${tglPengajuan.day.toString().padLeft(2, '0')}",
+        "tgl_pengajuan": DateFormat("yyyy-MM-dd").format(DateTime.now()),
         "tgl_pencairan": tglPencairan,
         "tgl_mulai":
             "${tglMulai.year.toString().padLeft(4, '0')}-${tglMulai.month.toString().padLeft(2, '0')}-${tglMulai.day.toString().padLeft(2, '0')}",

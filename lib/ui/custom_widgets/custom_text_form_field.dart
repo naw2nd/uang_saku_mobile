@@ -6,9 +6,8 @@ class CustomTextFormField extends StatefulWidget {
   final TextEditingController controller;
   final List<String> validation;
   final int minimum;
-  final int lines;
   CustomTextFormField(
-      {this.label, this.controller, this.validation, this.minimum, this.lines});
+      {this.label, this.controller, this.validation, this.minimum});
   @override
   _CustomTextFormFieldState createState() => _CustomTextFormFieldState();
 }
@@ -20,10 +19,10 @@ class _CustomTextFormFieldState extends State<CustomTextFormField> {
     return Container(
       margin: EdgeInsets.only(top: 7, bottom: 7),
       child: TextFormField(
-          keyboardType: (widget.lines == null)
-              ? TextInputType.text
-              : TextInputType.multiline,
-          maxLines: widget.lines,
+          // keyboardType: (widget.lines == null)
+          //     ? TextInputType.text
+          //     : TextInputType.multiline,
+          // maxLines: (widget.lines != null) ? widget.lines : null,
           controller: widget.controller,
           obscureText: (widget.validation.contains("password") && hidePassword)
               ? true

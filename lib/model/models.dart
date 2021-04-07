@@ -12,3 +12,4 @@ export 'kategori_pengajuan.dart';
 export 'pegawai.dart';
 export 'perusahaan.dart';
 export 'rincian_realisasi.dart';
+export 'rincian_pengajuan.dart';

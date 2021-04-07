@@ -264,7 +264,6 @@ class HttpService {
           response.data["data"].map((x) => Perusahaan.fromJson(x)));
       MultiResponse<Perusahaan> multiResponse =
           MultiResponse.fromJson(response.data);
-      print(multiResponse.data);
       return multiResponse;
     } on DioError catch (e) {
       print(e.message);
@@ -280,7 +279,6 @@ class HttpService {
           response.data["data"].map((x) => Cabang.fromJson(x)));
       MultiResponse<Cabang> multiResponse =
           MultiResponse.fromJson(response.data);
-      print(multiResponse.data);
       return multiResponse;
     } on DioError catch (e) {
       print(e.message);
@@ -296,7 +294,6 @@ class HttpService {
           response.data["data"].map((x) => KategoriBiaya.fromJson(x)));
       MultiResponse<KategoriBiaya> multiResponse =
           MultiResponse.fromJson(response.data);
-      print(multiResponse.data);
       return multiResponse;
     } on DioError catch (e) {
       print(e.message);
@@ -308,9 +305,21 @@ class HttpService {
     String endPoint = "reimburse";
     SingleResponse singleResponse;
     try {
-      print("sini");
       Response response = await _dio.post(endPoint, data: reimburse.toJson());
-      print(response);
+      singleResponse = SingleResponse.fromJson(response.data);
+    } on DioError catch (e) {
+      print(e.message);
+      throw Exception(e.message);
+    }
+
+    return singleResponse;
+  }
+  
+  Future<SingleResponse> postKasbon(Kasbon kasbon) async {
+    String endPoint = "kasbon";
+    SingleResponse singleResponse;
+    try {
+      Response response = await _dio.post(endPoint, data: kasbon.toJson());
       singleResponse = SingleResponse.fromJson(response.data);
     } on DioError catch (e) {
       print(e.message);

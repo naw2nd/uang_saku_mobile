@@ -17,19 +17,9 @@ class _CustomDatepickerState extends State<CustomDatepicker> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.only(top: 7, bottom: 7),
-      child: Stack(alignment: Alignment.topRight, children: [
-        (showIcon)
-            ? IconButton(
-                icon: Icon(
-                  Icons.event_note,
-                  color: Colors.black45,
-                ),
-                onPressed: () {},
-              )
-            : Container(),
-        TextFormField(
-            focusNode: AlwaysDisabledFocusNode(),
+        margin: EdgeInsets.only(top: 7, bottom: 7),
+        child: TextFormField(
+            readOnly: true,
             controller: widget.controller,
             validator: (value) =>
                 value.isEmpty ? widget.label + " harus diisi" : null,
@@ -40,9 +30,7 @@ class _CustomDatepickerState extends State<CustomDatepicker> {
                     borderRadius: BorderRadius.circular(10))),
             onTap: () {
               _selectDate(context);
-            }),
-      ]),
-    );
+            }));
   }
 
   _selectDate(BuildContext context) async {
@@ -58,21 +46,11 @@ class _CustomDatepickerState extends State<CustomDatepicker> {
           );
         });
 
-    if (newSelectedDate != null) {
-      setState(() {
-        showIcon = false;
-      });
-      _selectedDate = newSelectedDate;
-      widget.controller
-        ..text = DateFormat.yMMMMd('en_US').format(_selectedDate)
-        ..selection = TextSelection.fromPosition(TextPosition(
-            offset: widget.controller.text.length,
-            affinity: TextAffinity.upstream));
-    }
+    _selectedDate = newSelectedDate;
+    widget.controller
+      ..text = DateFormat.yMMMMd('en_US').format(_selectedDate)
+      ..selection = TextSelection.fromPosition(TextPosition(
+          offset: widget.controller.text.length,
+          affinity: TextAffinity.upstream));
   }
-}
-
-class AlwaysDisabledFocusNode extends FocusNode {
-  @override
-  bool get hasFocus => false;
 }

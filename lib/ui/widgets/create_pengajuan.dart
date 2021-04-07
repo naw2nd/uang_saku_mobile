@@ -9,7 +9,6 @@ import 'package:uang_saku/bloc/state/base_state.dart';
 import 'package:uang_saku/bloc/state/create_pengajuan_state.dart';
 import 'package:uang_saku/model/models.dart';
 import 'package:uang_saku/ui/custom_widgets/custom_card.dart';
-import 'package:uang_saku/ui/custom_widgets/custom_datepicker.dart';
 import 'package:uang_saku/ui/custom_widgets/custom_text_form_field.dart';
 import 'package:uang_saku/ui/detail_rincian_biaya.dart';
 import 'package:uang_saku/ui/widgets/form_rincian_biaya.dart';
@@ -26,11 +25,11 @@ class CreatePengajuan extends StatefulWidget {
 class _CreatePengajuanState extends State<CreatePengajuan> {
   var _colorTheme;
   List<String> _listJenisPencairan = ["Cash", "Transfer"];
-  List<TextEditingController> _listPelaksanaCtrl =
-      List<TextEditingController>();
-  List<Widget> _listPelakasana = List<Widget>();
-  List<RincianRealisasi> _listRincianRealisasi = List<RincianRealisasi>();
-  List<Widget> _listItemRincian = List<Widget>();
+  List<String> pelaksana = [];
+  List<TextEditingController> _listPelaksanaCtrl = [];
+  List<Widget> _listPelakasana = [];
+  List _listRincianBiaya = [];
+  List<Widget> _listItemRincian = [];
   TextEditingController _tujuanCtrl = TextEditingController();
   TextEditingController _catatanCtrl = TextEditingController();
   TextEditingController _tanggalMulaiCtrl = TextEditingController();
@@ -40,12 +39,14 @@ class _CreatePengajuanState extends State<CreatePengajuan> {
   Cabang _selectedCabang;
   String _selectedJenisPencairan;
   int _totalBiaya = 0;
+  DateTime _tglMulai;
+  DateTime _tglSelesai;
   final _formKey = GlobalKey<FormState>();
 
   @override
   void initState() {
-    context.read<CreatePengajuanBloc>().add(InitPengajuanEvent());
-    // context.read<CreateRincianBiayaBloc>().add(InitPengajuanEvent());
+    BlocProvider.of<CreatePengajuanBloc>(context).add(InitEvent());
+    // BlocProvider.of<CreateRincianBiayaBloc>(context).add(EmptyEvent());
 
     if (widget.jenisPengajuan == "Reimburse")
       _colorTheme = Color(0xFF3AE3CE);
@@ -54,6 +55,8 @@ class _CreatePengajuanState extends State<CreatePengajuan> {
     else
       _colorTheme = Color(0xFF2B4D66);
 
+    _listRincianBiaya.clear();
+    _listItemRincian.clear();
     _listPelaksanaCtrl.add(TextEditingController());
     _listPelakasana = _generateListFormPelaksana();
     super.initState();
@@ -61,6 +64,8 @@ class _CreatePengajuanState extends State<CreatePengajuan> {
 
   @override
   Widget build(BuildContext context) {
+    BlocProvider.of<CreateRincianBiayaBloc>(context).add(EmptyEvent());
+
     return MaterialApp(
       home: Scaffold(
         appBar: AppBar(
@@ -76,10 +81,6 @@ class _CreatePengajuanState extends State<CreatePengajuan> {
             IconButton(
                 icon: Icon(Icons.cancel_outlined),
                 onPressed: () {
-                  BlocProvider.of<CreatePengajuanBloc>(context)
-                      .add(CreateReimburseEvent());
-                  BlocProvider.of<CreateRincianBiayaBloc>(context)
-                      .add(CreateReimburseEvent());
                   Navigator.pop(context);
                 })
           ],
@@ -87,11 +88,9 @@ class _CreatePengajuanState extends State<CreatePengajuan> {
         body: SingleChildScrollView(
             child: Form(
           key: _formKey,
-          child:
-              BlocBuilder<CreatePengajuanBloc, BaseState>(builder: (_, state) {
+          child: BlocBuilder<CreatePengajuanBloc, BaseState>(
+              builder: (context, state) {
             if (state is CreatePengajuanState) {
-              // listItemRincian.clear();
-
               return Column(
                 children: [
                   CustomCard(
@@ -139,24 +138,52 @@ class _CreatePengajuanState extends State<CreatePengajuan> {
                             ),
                           ),
                           Row(
+                            crossAxisAlignment: CrossAxisAlignment.start,
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: <Widget>[
                               Flexible(
                                   flex: 15,
-                                  child: CustomDatepicker(
-                                    controller: _tanggalMulaiCtrl,
-                                    label: "Tanggal Mulai",
-                                  )),
+                                  child: Container(
+                                      margin:
+                                          EdgeInsets.only(top: 7, bottom: 7),
+                                      child: TextFormField(
+                                          readOnly: true,
+                                          controller: _tanggalMulaiCtrl,
+                                          validator: (value) => value.isEmpty
+                                              ? " Tgl Mulai harus diisi"
+                                              : null,
+                                          decoration: InputDecoration(
+                                              labelText: "Tanggal Mulai",
+                                              isDense: true,
+                                              border: OutlineInputBorder(
+                                                  borderRadius:
+                                                      BorderRadius.circular(
+                                                          10))),
+                                          onTap: () {
+                                            _selectDate(
+                                                context, _tglMulai, false);
+                                          }))),
                               Flexible(flex: 1, child: Container()),
                               Flexible(
                                   flex: 15,
-                                  child: CustomDatepicker(
-                                    controller: _tanggalSelesaiCtrl,
-                                    label: "Tanggal Selesai",
-                                    // start: (tanggalMulaiCtrl.text != "")
-                                    //     ? DateFormat('MMMM d, yyyy', 'en_US')
-                                    //         .parse(tanggalMulaiCtrl.text)
-                                    //     : null,
+                                  child: Container(
+                                    margin: EdgeInsets.only(top: 7, bottom: 7),
+                                    child: TextFormField(
+                                        readOnly: true,
+                                        controller: _tanggalSelesaiCtrl,
+                                        validator: (value) => value.isEmpty
+                                            ? " Tgl Selesai harus diisi"
+                                            : null,
+                                        decoration: InputDecoration(
+                                            labelText: "Tanggal Selesai",
+                                            isDense: true,
+                                            border: OutlineInputBorder(
+                                                borderRadius:
+                                                    BorderRadius.circular(10))),
+                                        onTap: () {
+                                          _selectDate(
+                                              context, _tglSelesai, true);
+                                        }),
                                   ))
                             ],
                           ),
@@ -331,23 +358,22 @@ class _CreatePengajuanState extends State<CreatePengajuan> {
                     ),
                   ),
                   BlocBuilder<CreateRincianBiayaBloc, BaseState>(
-                      builder: (_, stateRincian) {
-                    if (stateRincian is RincianBiayaState) {
-                      if (!_listRincianRealisasi
-                          .contains(stateRincian.rincianRealisasi)) {
-                        _listRincianRealisasi
-                            .add(stateRincian.rincianRealisasi);
-                        _totalBiaya += stateRincian.rincianRealisasi.total;
-                      }
-                    }
+                      builder: (context, stateRincian) {
                     _listItemRincian.clear();
-                    _listRincianRealisasi.forEach((element) {
-                      _listItemRincian.add(ItemRincian(
-                        rincianRealisasi: element,
-                      ));
-                    });
-                    print("obj" + _listRincianRealisasi.length.toString());
-                    print("wdg" + _listItemRincian.length.toString());
+                    if (stateRincian is RincianBiayaState) {
+                      print("state masuk");
+                      if (!_listRincianBiaya
+                          .contains(stateRincian.rincianBiaya)) {
+                        _listRincianBiaya.add(stateRincian.rincianBiaya);
+                        _totalBiaya += stateRincian.rincianBiaya.total;
+                      }
+                      _listRincianBiaya.forEach((element) {
+                        _listItemRincian.add(ItemRincian(
+                          jenisPengajuan: widget.jenisPengajuan,
+                          rincianBiaya: element,
+                        ));
+                      });
+                    }
                     return Column(
                       children: [
                         CustomCard(
@@ -466,12 +492,19 @@ class _CreatePengajuanState extends State<CreatePengajuan> {
                                     ],
                                   ),
                                 ),
-                                CustomTextFormField(
-                                  label: "Catatan",
-                                  controller: _catatanCtrl,
-                                  validation: [],
-                                  lines: 3,
-                                ),
+                                Container(
+                                  margin: EdgeInsets.only(top: 7, bottom: 7),
+                                  child: TextFormField(
+                                      maxLines: 3,
+                                      controller: _catatanCtrl,
+                                      decoration: InputDecoration(
+                                        labelText: "Catatan",
+                                        isDense: true,
+                                        border: OutlineInputBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(10)),
+                                      )),
+                                )
                               ],
                             ),
                           ),
@@ -501,36 +534,13 @@ class _CreatePengajuanState extends State<CreatePengajuan> {
                         elevation: 0,
                         onPressed: () {
                           if (_formKey.currentState.validate()) {
-                            if (DateFormat('MMMM d, yyyy', 'en_US')
-                                .parse(_tanggalSelesaiCtrl.text)
-                                .isBefore(DateFormat('MMMM d, yyyy', 'en_US')
-                                    .parse(_tanggalMulaiCtrl.text))) {
-                              Scaffold.of(context).showSnackBar(SnackBar(
-                                  content: Text(
-                                      "Harap masukkan tanggal yang benar")));
-                            }
-                            List<String> pelaksana = List<String>();
                             _listPelaksanaCtrl.forEach((element) {
                               pelaksana.add(element.text);
                             });
-                            Reimburse reimburse = Reimburse(
-                                tujuan: _tujuanCtrl.text,
-                                idKategoriPengajuan: _selectedKategoriPengajuan
-                                    .idKategoriPengajuan,
-                                tglMulai: DateFormat.yMMMMd('en_US')
-                                    .parse(_tanggalMulaiCtrl.text),
-                                tglSelesai: DateFormat.yMMMMd('en_US')
-                                    .parse(_tanggalSelesaiCtrl.text),
-                                idPerusahaan: _selectedPerusahaan.idPerusahaan,
-                                idCabang: _selectedCabang.idCabang,
-                                jenisPencairan:
-                                    _selectedJenisPencairan.toLowerCase(),
-                                pelaksana: pelaksana,
-                                catatan: _catatanCtrl.text,
-                                rincianRealisasi: _listRincianRealisasi);
-                            print(reimburse.toJson());
-                            BlocProvider.of<CreatePengajuanBloc>(context).add(
-                                CreateReimburseEvent(reimburse: reimburse));
+                            if (widget.jenisPengajuan == "Reimburse")
+                              _postReimburse();
+                            else
+                              _postKasbon();
                           } else {
                             Scaffold.of(context).showSnackBar(SnackBar(
                                 content: Text(
@@ -569,8 +579,70 @@ class _CreatePengajuanState extends State<CreatePengajuan> {
     );
   }
 
+  _selectDate(BuildContext context, DateTime init, bool end) async {
+    DateTime newSelectedDate = await showDatePicker(
+        context: context,
+        initialDate: (init != null)
+            ? init
+            : (!end || _tglMulai == null)
+                ? DateTime.now()
+                : _tglMulai,
+        firstDate: (_tglMulai != null && end) ? _tglMulai : DateTime(1945),
+        lastDate: (_tglSelesai != null && !end) ? _tglSelesai : DateTime(2045),
+        builder: (BuildContext context, Widget child) {
+          return Theme(
+            data: ThemeData.light(),
+            child: child,
+          );
+        });
+    if (newSelectedDate != null) {
+      if (!end) {
+        _tglMulai = newSelectedDate;
+        _tanggalMulaiCtrl.text = DateFormat.yMMMMd('en_US').format(_tglMulai);
+      } else {
+        _tglSelesai = newSelectedDate;
+        _tanggalSelesaiCtrl.text =
+            DateFormat.yMMMMd('en_US').format(_tglSelesai);
+      }
+    }
+  }
+
+  _postReimburse() {
+    Reimburse reimburse = Reimburse(
+        tujuan: _tujuanCtrl.text,
+        idKategoriPengajuan: _selectedKategoriPengajuan.idKategoriPengajuan,
+        tglMulai: DateFormat.yMMMMd('en_US').parse(_tanggalMulaiCtrl.text),
+        tglSelesai: DateFormat.yMMMMd('en_US').parse(_tanggalSelesaiCtrl.text),
+        idPerusahaan: _selectedPerusahaan.idPerusahaan,
+        idCabang: _selectedCabang.idCabang,
+        jenisPencairan: _selectedJenisPencairan.toLowerCase(),
+        pelaksana: pelaksana,
+        catatan: _catatanCtrl.text,
+        rincianRealisasi: _listRincianBiaya.cast());
+    print(reimburse.toJson());
+    BlocProvider.of<CreatePengajuanBloc>(context)
+        .add(CreateReimburseEvent(reimburse: reimburse));
+  }
+
+  _postKasbon() {
+    Kasbon kasbon = Kasbon(
+        tujuan: _tujuanCtrl.text,
+        idKategoriPengajuan: _selectedKategoriPengajuan.idKategoriPengajuan,
+        tglMulai: DateFormat.yMMMMd('en_US').parse(_tanggalMulaiCtrl.text),
+        tglSelesai: DateFormat.yMMMMd('en_US').parse(_tanggalSelesaiCtrl.text),
+        idPerusahaan: _selectedPerusahaan.idPerusahaan,
+        idCabang: _selectedCabang.idCabang,
+        jenisPencairan: _selectedJenisPencairan.toLowerCase(),
+        pelaksana: pelaksana,
+        catatanPengajuan: _catatanCtrl.text,
+        rincianPengajuan: _listRincianBiaya.cast());
+    print(kasbon.toJson());
+    BlocProvider.of<CreatePengajuanBloc>(context)
+        .add(CreateKasbonEvent(kasbon: kasbon));
+  }
+
   List<Widget> _generateListFormPelaksana() {
-    List<Widget> list = List<Widget>();
+    List<Widget> list = [];
     for (int i = 0; i < _listPelaksanaCtrl.length; i++) {
       list.add(Container(
         margin: EdgeInsets.only(top: 7, bottom: 7),
@@ -614,8 +686,9 @@ class _CreatePengajuanState extends State<CreatePengajuan> {
 }
 
 class ItemRincian extends StatelessWidget {
-  final RincianRealisasi rincianRealisasi;
-  ItemRincian({this.rincianRealisasi});
+  final rincianBiaya;
+  final String jenisPengajuan;
+  ItemRincian({this.rincianBiaya, this.jenisPengajuan});
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
@@ -627,8 +700,8 @@ class ItemRincian extends StatelessWidget {
                 shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(10)),
                 child: DetailRincianBiaya(
-                  jenisPengajuan: "Reimburse",
-                  rincianBiaya: rincianRealisasi,
+                  jenisPengajuan: jenisPengajuan,
+                  rincianBiaya: rincianBiaya,
                 ));
           }),
       child: Container(
@@ -645,11 +718,11 @@ class ItemRincian extends StatelessWidget {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text(rincianRealisasi.kategoriBiaya.namaKategoriBiaya,
+                  Text(rincianBiaya.kategoriBiaya.namaKategoriBiaya,
                       style: GoogleFonts.montserrat(
                           color: Color(0xFF555555),
                           fontWeight: FontWeight.w600)),
-                  (rincianRealisasi.images.isNotEmpty)
+                  (rincianBiaya.images.isNotEmpty)
                       ? Container(
                           child: Icon(
                             Icons.attach_file,
@@ -666,7 +739,7 @@ class ItemRincian extends StatelessWidget {
                 children: <Widget>[
                   Container(
                     width: MediaQuery.of(context).size.width / 2 - 40,
-                    child: Text(rincianRealisasi.namaItem,
+                    child: Text(rincianBiaya.namaItem,
                         overflow: TextOverflow.ellipsis,
                         maxLines: 2,
                         style: GoogleFonts.montserrat()),
@@ -677,7 +750,7 @@ class ItemRincian extends StatelessWidget {
                       child: Text(
                           "Rp" +
                               NumberFormat.currency(locale: "eu", symbol: "")
-                                  .format(rincianRealisasi.total),
+                                  .format(rincianBiaya.total),
                           overflow: TextOverflow.ellipsis,
                           maxLines: 2,
                           style: GoogleFonts.montserrat()))
