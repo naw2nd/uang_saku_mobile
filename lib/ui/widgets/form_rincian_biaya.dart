@@ -318,12 +318,53 @@ class _FormRincianBiayaState extends State<FormRincianBiaya> {
                                 listImage64
                                     .add(Image64(image: fileToBase64(element)));
                               });
-                              if (widget.jenisPengajuan == "Reimburse")
-                                _addRincianRealisasi();
-                              else
+                              if (widget.jenisPengajuan == "Reimburse") {
+                                if (_images.isNotEmpty) {
+                                  _addRincianRealisasi();
+                                  Navigator.pop(context);
+                                } else
+                                  showDialog(
+                                      context: context,
+                                      builder: (BuildContext context) {
+                                        return Dialog(
+                                            insetPadding: EdgeInsets.symmetric(
+                                                horizontal: 90),
+                                            shape: RoundedRectangleBorder(
+                                                borderRadius:
+                                                    BorderRadius.circular(10)),
+                                            child: Container(
+                                              padding: EdgeInsets.fromLTRB(
+                                                  15, 10, 15, 10),
+                                              child: Wrap(
+                                                children: [
+                                                  Container(
+                                                    padding:
+                                                        EdgeInsets.symmetric(
+                                                            vertical: 7),
+                                                    child: Text(
+                                                        "Rincian Biaya Reimburse wajib melampirkan foto / gambar",
+                                                        textAlign:
+                                                            TextAlign.center,
+                                                        style: GoogleFonts
+                                                            .montserrat()),
+                                                  ),
+                                                  Center(
+                                                    child: TextButton(
+                                                        onPressed: () {
+                                                          Navigator.pop(context);
+                                                        },
+                                                        child: Text("Ok",
+                                                            style: GoogleFonts
+                                                                .montserrat())),
+                                                  )
+                                                ],
+                                              ),
+                                            ));
+                                      });
+                              } else {
                                 _addRincianPengajuan();
-
-                              Navigator.pop(context);
+                                Navigator.pop(context);
+                              }
                             }
                           },
                           child: Container(

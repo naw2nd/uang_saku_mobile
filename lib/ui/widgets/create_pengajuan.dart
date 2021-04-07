@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -45,7 +47,6 @@ class _CreatePengajuanState extends State<CreatePengajuan> {
 
   @override
   void initState() {
-    print("INIT STATE");
     BlocProvider.of<CreatePengajuanBloc>(context).add(InitEvent());
     BlocProvider.of<CreateRincianBiayaBloc>(context).add(EmptyEvent());
 
@@ -85,8 +86,25 @@ class _CreatePengajuanState extends State<CreatePengajuan> {
         body: SingleChildScrollView(
             child: Form(
           key: _formKey,
-          child: BlocBuilder<CreatePengajuanBloc, BaseState>(
-              builder: (context, state) {
+          child: BlocConsumer<CreatePengajuanBloc, BaseState>(
+              listener: (context, state) {
+            if (state is SuccesState) {
+              Scaffold.of(context).showSnackBar(SnackBar(
+                  content:
+                      Text(widget.jenisPengajuan + " berhasil dikirimkan")));
+              Timer(
+                  Duration(seconds: 2),
+                  () =>
+                      Navigator.of(context, rootNavigator: true).pop(context));
+            } else if (state is ErrorState) {
+              Scaffold.of(context)
+                  .showSnackBar(SnackBar(content: Text(state.message)));
+              Timer(
+                  Duration(seconds: 2),
+                  () =>
+                      Navigator.of(context, rootNavigator: true).pop(context));
+            }
+          }, builder: (context, state) {
             if (state is CreatePengajuanState) {
               return Column(
                 children: [
@@ -537,18 +555,20 @@ class _CreatePengajuanState extends State<CreatePengajuan> {
                         elevation: 0,
                         onPressed: () {
                           if (_formKey.currentState.validate()) {
-                            if (_listRincianBiaya.isEmpty)
+                            if (_listRincianBiaya.isEmpty) {
                               Scaffold.of(context).showSnackBar(SnackBar(
                                   content: Text(
                                       "Harap lengkapi Rincian Biaya " +
                                           widget.jenisPengajuan)));
-                            _listPelaksanaCtrl.forEach((element) {
-                              pelaksana.add(element.text);
-                            });
-                            if (widget.jenisPengajuan == "Reimburse")
-                              _postReimburse();
-                            else
-                              _postKasbon();
+                            } else {
+                              _listPelaksanaCtrl.forEach((element) {
+                                pelaksana.add(element.text);
+                              });
+                              if (widget.jenisPengajuan == "Reimburse")
+                                _postReimburse();
+                              else
+                                _postKasbon();
+                            }
                           } else {
                             Scaffold.of(context).showSnackBar(SnackBar(
                                 content: Text(
