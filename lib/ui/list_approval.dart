@@ -1,3 +1,4 @@
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -69,6 +70,7 @@ class _ListApprovalState extends State<ListApproval> {
                         color: Colors.white,
                         height: 50,
                         child: TabBar(
+                          dragStartBehavior: DragStartBehavior.down,
                           labelStyle: GoogleFonts.montserrat(
                               fontWeight: FontWeight.w600, fontSize: 18),
                           tabs: [Text("Kasbon"), Text("Reimburse")],
@@ -79,70 +81,72 @@ class _ListApprovalState extends State<ListApproval> {
                         )),
                   )),
             ),
-            body: TabBarView(children: [
-              ListView(
+            body: TabBarView(
+                dragStartBehavior: DragStartBehavior.down,
                 children: [
-                  Container(
-                      padding: EdgeInsets.fromLTRB(15, 7, 15, 7),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text(
-                            "Minggu ini",
-                            style: GoogleFonts.montserrat(
-                                fontWeight: FontWeight.w700,
-                                fontSize: 18,
-                                color: Color(0xFF555555)),
-                          ),
-                          TextButton(
-                              onPressed: () {},
-                              child: Text("Tandai sudah dibaca",
-                                  style: GoogleFonts.montserrat(
-                                      color: Color(0xFFA8A8A8),
-                                      fontWeight: FontWeight.w600,
-                                      fontSize: 12))),
-                        ],
-                      )),
-                  ListViewApproval(
-                    idRoleApproval: widget.idRoleApproval,
-                    jenisPengajuan: "Kasbon",
-                    bodyApproval:
-                        BodyApproval(status: "aktif", tipe: "pengajuan"),
-                  )
-                ],
-              ),
-              ListView(
-                children: [
-                  Container(
-                      padding: EdgeInsets.fromLTRB(15, 7, 15, 7),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text(
-                            "Minggu ini",
-                            style: GoogleFonts.montserrat(
-                                fontWeight: FontWeight.w700,
-                                fontSize: 18,
-                                color: Color(0xFF555555)),
-                          ),
-                          TextButton(
-                              onPressed: () {},
-                              child: Text("Tandai sudah dibaca",
-                                  style: GoogleFonts.montserrat(
-                                      color: Color(0xFFA8A8A8),
-                                      fontWeight: FontWeight.w600,
-                                      fontSize: 12))),
-                        ],
-                      )),
-                  ListViewApproval(
-                    idRoleApproval: widget.idRoleApproval,
-                    jenisPengajuan: "Reimburse",
-                    bodyApproval:
-                        BodyApproval(status: "aktif", tipe: "pengajuan"),
-                  )
-                ],
-              ),
-            ]),
+                  ListView(
+                    children: [
+                      Container(
+                          padding: EdgeInsets.fromLTRB(15, 7, 15, 7),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(
+                                "Minggu ini",
+                                style: GoogleFonts.montserrat(
+                                    fontWeight: FontWeight.w700,
+                                    fontSize: 18,
+                                    color: Color(0xFF555555)),
+                              ),
+                              TextButton(
+                                  onPressed: () {},
+                                  child: Text("Tandai sudah dibaca",
+                                      style: GoogleFonts.montserrat(
+                                          color: Color(0xFFA8A8A8),
+                                          fontWeight: FontWeight.w600,
+                                          fontSize: 12))),
+                            ],
+                          )),
+                      ListViewApproval(
+                        idRoleApproval: widget.idRoleApproval,
+                        jenisPengajuan: "Kasbon",
+                        bodyApproval:
+                            BodyApproval(status: "aktif", tipe: "pengajuan"),
+                      )
+                    ],
+                  ),
+                  ListView(
+                    children: [
+                      Container(
+                          padding: EdgeInsets.fromLTRB(15, 7, 15, 7),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(
+                                "Minggu ini",
+                                style: GoogleFonts.montserrat(
+                                    fontWeight: FontWeight.w700,
+                                    fontSize: 18,
+                                    color: Color(0xFF555555)),
+                              ),
+                              TextButton(
+                                  onPressed: () {},
+                                  child: Text("Tandai sudah dibaca",
+                                      style: GoogleFonts.montserrat(
+                                          color: Color(0xFFA8A8A8),
+                                          fontWeight: FontWeight.w600,
+                                          fontSize: 12))),
+                            ],
+                          )),
+                      ListViewApproval(
+                        idRoleApproval: widget.idRoleApproval,
+                        jenisPengajuan: "Reimburse",
+                        bodyApproval:
+                            BodyApproval(status: "aktif", tipe: "pengajuan"),
+                      )
+                    ],
+                  ),
+                ]),
           )),
     );
   }
@@ -162,6 +166,7 @@ class ListViewApproval extends StatefulWidget {
 class _ListViewApprovalState extends State<ListViewApproval> {
   @override
   void initState() {
+    print("ini pengajuan " + widget.jenisPengajuan);
     BlocProvider.of<ListApprovalBloc>(context).add(GetApprovalPengajuanEvent(
         idRoleApproval: widget.idRoleApproval,
         bodyApproval: widget.bodyApproval,
@@ -239,8 +244,10 @@ class _ListViewApprovalState extends State<ListViewApproval> {
                                         "Rp" +
                                             NumberFormat.currency(
                                                     locale: "eu", symbol: "")
-                                                .format(
-                                                    element.nominalRealisasi),
+                                                .format((element.toString() ==
+                                                        "Reimburse")
+                                                    ? element.nominalRealisasi
+                                                    : element.nominalPencairan),
                                         overflow: TextOverflow.ellipsis,
                                         style: GoogleFonts.montserrat(
                                             fontSize: 13,
@@ -259,10 +266,19 @@ class _ListViewApprovalState extends State<ListViewApproval> {
             children: list,
           );
         } else {
-          return Text("KOSONG");
+          return Container(
+              padding: EdgeInsets.only(top: 200),
+              alignment: Alignment.center,
+              child: Text(
+                "Approval yang menunggu disetujui masih Kosong",
+                style: GoogleFonts.montserrat(),
+              ));
         }
       } else
-        return Text("STATE SALAH");
+        return Container(
+            padding: EdgeInsets.only(top: 200),
+            alignment: Alignment.center,
+            child: CircularProgressIndicator());
     });
   }
 }
