@@ -345,6 +345,24 @@ class HttpService {
     }
   }
 
+  Future<MultiResponse<Kasbon>> getApprovalKasbon(
+      int idRoleApproval, BodyApproval bodyApproval) async {
+    String endpoint = "kasbon/approval/${idRoleApproval.toString()}";
+    try {
+      Response response =
+          await _dio.get(endpoint, queryParameters: bodyApproval.toJson());
+      response.data["properties"] = Properties.fromJson(response.data);
+      response.data["data"] = List<Kasbon>.from(
+          response.data["data"].map((x) => Kasbon.fromJson(x)));
+      MultiResponse<Kasbon> multiResponse =
+          MultiResponse.fromJson(response.data);
+      return multiResponse;
+    } on DioError catch (e) {
+      print(e);
+      throw Exception(e.message);
+    }
+  }
+
   initalInterceptors() {
     _dio.interceptors.add(InterceptorsWrapper(onError: (error) {
       print(error.message);

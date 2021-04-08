@@ -8,9 +8,9 @@ class RoleApprovalState extends BaseState {
   @override
   List<Object> get props => [this.roleApproval];
 }
-class ListApprovalReimburseState extends BaseState {
-  final List<Reimburse> listApprovalReimburse;
-  ListApprovalReimburseState({this.listApprovalReimburse});
+class ListApprovalPengajuanState extends BaseState {
+  final List listApprovalPengajuan;
+  ListApprovalPengajuanState({this.listApprovalPengajuan});
   @override
-  List<Object> get props => [this.listApprovalReimburse];
+  List<Object> get props => [this.listApprovalPengajuan];
 }

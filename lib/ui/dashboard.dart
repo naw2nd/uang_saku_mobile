@@ -509,7 +509,10 @@ class MenuApproval extends StatelessWidget {
       child: GestureDetector(
         onTap: () {
           Navigator.push(context, MaterialPageRoute(builder: (context) {
-            return ListApproval(idRoleApproval: roleApproval.idApproval);
+            return ListApproval(
+              idRoleApproval: roleApproval.idApproval,
+              namaRoleApproval: roleApproval.namaApproval,
+            );
           }));
         },
         child: Container(

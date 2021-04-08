@@ -13,16 +13,28 @@ class ListApprovalBloc extends Bloc<BaseEvent, BaseState> {
 
   @override
   Stream<BaseState> mapEventToState(BaseEvent event) async* {
-    if (event is GetApprovalReimbruseEvent) {
+    if (event is GetApprovalPengajuanEvent) {
       yield (LoadingState());
       try {
         print("init event approval reimburse");
-        final MultiResponse<Reimburse> responseApprovalReimburse =
-            await expenseRepository.getApprovalReimburse(
-                event.idRoleApproval, event.bodyApproval);
-        print(responseApprovalReimburse.message);
-        yield (ListApprovalReimburseState(
-            listApprovalReimburse: responseApprovalReimburse.data));
+        if (event.jenisPengajuan == "Reimburse") {
+          final MultiResponse<Reimburse> responseApprovalPengajuan =
+              await expenseRepository.getApprovalReimburse(
+                  event.idRoleApproval, event.bodyApproval);
+          yield (ListApprovalPengajuanState(
+              listApprovalPengajuan: responseApprovalPengajuan.data));
+        } else{
+          final MultiResponse<Kasbon> responseApprovalReimburse =
+              await expenseRepository.getApprovalKasbon(
+                  event.idRoleApproval, event.bodyApproval);
+          yield (ListApprovalPengajuanState(
+              listApprovalPengajuan: responseApprovalReimburse.data));
+
+        }
+
+        // responseApproval = await expenseRepository.getApprovalReimburse(
+        //     event.idRoleApproval, event.bodyApproval);
+
       } catch (e) {
         yield ErrorState(message: "No Connection");
       }
