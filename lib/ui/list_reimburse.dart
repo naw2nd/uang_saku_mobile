@@ -49,52 +49,10 @@ class _ListReimburseState extends State<ListReimburse> {
               ],
             ),
             ReimburseCard(),
-            ReimburseCard()
-            // Flexible(
-            //   flex: 1,
-            //   child: Container(
-            //     padding: EdgeInsets.fromLTRB(10, 0, 10, 100),
-            //     child: Card(
-            //       color: Colors.white,
-            //       elevation: 5,
-            //       child: Container(
-            //         padding: EdgeInsets.all(10),
-            //         child: Row(
-            //           mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            //           children: <Widget>[
-            //             Icon(Icons.check_box_rounded,
-            //                 color: Colors.blue[800], size: 50),
-            //             Column(
-            //               crossAxisAlignment: CrossAxisAlignment.start,
-            //               children: <Widget>[
-            //                 Text("Kasbon disetujui korcab",
-            //                     style: TextStyle(
-            //                         fontFamily: "Montserrat",
-            //                         fontWeight: FontWeight.w600)),
-            //                 Text("Perjalanan dengan client",
-            //                     style: TextStyle(
-            //                         fontFamily: "Montserrat",
-            //                         fontWeight: FontWeight.w600,
-            //                         color: Colors.grey[500],
-            //                         fontSize: 12))
-            //               ],
-            //             ),
-            //             Text("Senin, 12 April",
-            //                 style: TextStyle(
-            //                     fontFamily: "Montserrat",
-            //                     fontWeight: FontWeight.w600,
-            //                     fontSize: 10,
-            //                     color: Colors.blue[800]))
-            //           ],
-            //         ),
-            //       ),
-            //     ),
-            //   ),
-            // )
+            //CardList()
           ],
         ),
       )),
     );
   }
 }
-

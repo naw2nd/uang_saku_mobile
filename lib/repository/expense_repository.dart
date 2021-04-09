@@ -106,7 +106,7 @@ class ExpenseRepository implements ExpenseDataSource {
     remoteDataSource.getToken();
     return await remoteDataSource.getDepartment();
   }
-  
+
   @override
   Future<MultiResponse<Cabang>> getCabang() async {
     remoteDataSource.getToken();
@@ -151,5 +151,10 @@ class ExpenseRepository implements ExpenseDataSource {
     remoteDataSource.getToken();
     return await remoteDataSource.getApprovalKasbon(
         idRoleApproval, bodyApproval);
+  }
+
+  Future<MultiResponse<Reimburse>> getListReimburse() async {
+    remoteDataSource.getToken();
+    return await remoteDataSource.getListReimburse();
   }
 }

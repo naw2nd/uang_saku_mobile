@@ -30,4 +30,5 @@ abstract class ExpenseDataSource {
       int idRoleApproval, BodyApproval bodyApproval);
   Future<MultiResponse<Kasbon>> getApprovalKasbon(
       int idRoleApproval, BodyApproval bodyApproval);
+  Future<MultiResponse<Reimburse>> getListReimburse();
 }

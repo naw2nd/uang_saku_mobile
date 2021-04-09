@@ -13,13 +13,21 @@ import 'package:uang_saku/ui/detail_rincian_approval.dart';
 import 'package:uang_saku/ui/list_kasbon.dart';
 
 class DetailsPengajuan extends StatefulWidget {
+  Color mainColor = Color(0xFF358BFC);
+  String judul = "Detail Pengajuan Kasbon";
+
+  DetailsPengajuan({this.mainColor, this.judul});
+
   @override
-  _DetailsPengajuanState createState() => _DetailsPengajuanState();
+  _DetailsPengajuanState createState() =>
+      _DetailsPengajuanState(mainColor: mainColor, judul: judul);
 }
 
 class _DetailsPengajuanState extends State<DetailsPengajuan> {
   Color mainColor = Color(0xFF358BFC);
   String judul = "Detail Pengajuan Kasbon";
+
+  _DetailsPengajuanState({this.judul, this.mainColor});
 
   @override
   void initState() {
@@ -30,7 +38,6 @@ class _DetailsPengajuanState extends State<DetailsPengajuan> {
 
   @override
   Widget build(BuildContext context) {
-    // print(list.);
     return MaterialApp(
       home: Scaffold(
         appBar: AppBar(
@@ -40,7 +47,7 @@ class _DetailsPengajuanState extends State<DetailsPengajuan> {
           title: Text(judul,
               style: TextStyle(
                   fontFamily: "Montserrat",
-                  fontSize: 18,
+                  fontSize: 16,
                   fontWeight: FontWeight.w600)),
           actions: <Widget>[
             IconButton(

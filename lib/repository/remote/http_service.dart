@@ -14,7 +14,7 @@ class HttpService {
   SharedPreferences sharedPreferences;
   String token = "";
 
-  final baseURL = "http://192.168.1.8:8000/api/v1/";
+  final baseURL = "http://192.168.0.110:8000/api/v1/";
 
   HttpService() {
     _dio = Dio(BaseOptions(baseUrl: baseURL));
@@ -192,6 +192,22 @@ class HttpService {
       response.data["data"] = List<Kasbon>.from(
           response.data["data"].map((x) => Kasbon.fromJson(x)));
       MultiResponse<Kasbon> multiResponse =
+          MultiResponse.fromJson(response.data);
+      return multiResponse;
+    } on DioError catch (e) {
+      print(e);
+      throw Exception(e.message);
+    }
+  }
+
+  Future<MultiResponse<Reimburse>> getListReimburse() async {
+    String endpoint = "reimburse";
+    try {
+      Response response = await _dio.get(endpoint);
+      response.data["properties"] = Properties.fromJson(response.data);
+      response.data["data"] = List<Reimburse>.from(
+          response.data["data"].map((x) => Reimburse.fromJson(x)));
+      MultiResponse<Reimburse> multiResponse =
           MultiResponse.fromJson(response.data);
       return multiResponse;
     } on DioError catch (e) {
