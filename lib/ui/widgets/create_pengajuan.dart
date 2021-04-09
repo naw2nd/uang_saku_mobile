@@ -12,6 +12,7 @@ import 'package:uang_saku/bloc/state/create_pengajuan_state.dart';
 import 'package:uang_saku/model/models.dart';
 import 'package:uang_saku/ui/custom_widgets/custom_card.dart';
 import 'package:uang_saku/ui/custom_widgets/custom_text_form_field.dart';
+import 'package:uang_saku/ui/custom_widgets/item_rincian.dart';
 import 'package:uang_saku/ui/detail_rincian_biaya.dart';
 import 'package:uang_saku/ui/widgets/form_rincian_biaya.dart';
 import 'package:dotted_border/dotted_border.dart';
@@ -765,80 +766,5 @@ class _CreatePengajuanState extends State<CreatePengajuan> {
       ));
     }
     return list;
-  }
-}
-
-class ItemRincian extends StatelessWidget {
-  final rincianBiaya;
-  final String jenisPengajuan;
-  ItemRincian({this.rincianBiaya, this.jenisPengajuan});
-  @override
-  Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: () => showDialog(
-          context: context,
-          barrierColor: Colors.black45,
-          builder: (BuildContext context) {
-            return Dialog(
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(10)),
-                child: DetailRincianBiaya(
-                  jenisPengajuan: jenisPengajuan,
-                  rincianBiaya: rincianBiaya,
-                ));
-          }),
-      child: Container(
-          margin: EdgeInsets.only(top: 7, bottom: 7),
-          padding: EdgeInsets.all(10),
-          decoration: BoxDecoration(
-              border: Border.all(
-                color: Colors.grey,
-              ),
-              borderRadius: BorderRadius.all(Radius.circular(10))),
-          child: Column(children: [
-            Container(
-              margin: EdgeInsets.only(bottom: 10),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(rincianBiaya.kategoriBiaya.namaKategoriBiaya,
-                      style: GoogleFonts.montserrat(
-                          color: Color(0xFF555555),
-                          fontWeight: FontWeight.w600)),
-                  (rincianBiaya.images.isNotEmpty)
-                      ? Container(
-                          child: Icon(
-                            Icons.attach_file,
-                            color: Color(0xFFA8A8A8),
-                          ),
-                        )
-                      : Container()
-                ],
-              ),
-            ),
-            Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                crossAxisAlignment: CrossAxisAlignment.end,
-                children: <Widget>[
-                  Container(
-                    width: MediaQuery.of(context).size.width / 2 - 40,
-                    child: Text(rincianBiaya.namaItem,
-                        overflow: TextOverflow.ellipsis,
-                        maxLines: 2,
-                        style: GoogleFonts.montserrat()),
-                  ),
-                  Container(
-                      alignment: Alignment.centerRight,
-                      width: MediaQuery.of(context).size.width / 2 - 40,
-                      child: Text(
-                          "Rp" +
-                              NumberFormat.currency(locale: "eu", symbol: "")
-                                  .format(rincianBiaya.total),
-                          overflow: TextOverflow.ellipsis,
-                          maxLines: 2,
-                          style: GoogleFonts.montserrat()))
-                ])
-          ])),
-    );
   }
 }

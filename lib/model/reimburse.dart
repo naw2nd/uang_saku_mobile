@@ -3,6 +3,8 @@
 //     final reimburse = reimburseFromJson(jsonString);
 
 import 'dart:convert';
+import 'package:uang_saku/model/status_approval.dart';
+
 import 'models.dart';
 import 'package:equatable/equatable.dart';
 import 'package:intl/intl.dart';
@@ -44,7 +46,7 @@ class Reimburse {
   final int idCabang;
   final int idKategoriPengajuan;
   final List<String> pelaksana;
-  final String statusApproval;
+  final StatusApproval statusApproval;
   final DateTime tglPengajuan;
   final dynamic tglPencairan;
   final DateTime tglMulai;
@@ -73,7 +75,7 @@ class Reimburse {
         idCabang: json["id_cabang"],
         idKategoriPengajuan: json["id_kategori_pengajuan"],
         pelaksana: List<String>.from(json["pelaksana"].map((x) => x)),
-        statusApproval: json["status_approval"],
+        statusApproval: StatusApproval.fromJson(json["approval"]),
         tglPengajuan: DateFormat('d MMM yyyy').parse(json["tgl_pengajuan"]),
         tglPencairan: DateFormat('d MMM yyyy').parse(json["tgl_pencairan"]),
         tglMulai: DateTime.parse(json["tgl_mulai"]),

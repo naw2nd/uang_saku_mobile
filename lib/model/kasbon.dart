@@ -16,7 +16,6 @@ class Kasbon {
     this.idCabang,
     this.idKategoriPengajuan,
     this.pelaksana,
-    this.approval,
     this.tglPengajuan,
     this.tglPencairan,
     this.tglTotalan,
@@ -52,14 +51,13 @@ class Kasbon {
   int idCabang;
   int idKategoriPengajuan;
   List<String> pelaksana;
-  StatusApproval approval;
   DateTime tglPengajuan;
   dynamic tglPencairan;
   DateTime tglTotalan;
   DateTime tglMulai;
   DateTime tglSelesai;
   String nomorPengajuan;
-  String statusApproval;
+  StatusApproval statusApproval;
   int statusPengajuan;
   int statusPertanggungjawaban;
   int statusPencairan;
@@ -88,14 +86,13 @@ class Kasbon {
         idCabang: json["id_cabang"],
         idKategoriPengajuan: json["id_kategori_pengajuan"],
         pelaksana: List<String>.from(json["pelaksana"].map((x) => x)),
-        approval: StatusApproval.fromJson(json["approval"]),
+        statusApproval: StatusApproval.fromJson(json["approval"]),
         tglPengajuan: DateFormat('d MMM yyyy').parse(json["tgl_pengajuan"]),
         tglPencairan: DateFormat('d MMM yyyy').parse(json["tgl_pencairan"]),
         tglTotalan: DateTime.parse(json["tgl_totalan"]),
         tglMulai: DateTime.parse(json["tgl_mulai"]),
         tglSelesai: DateTime.parse(json["tgl_selesai"]),
         nomorPengajuan: json["nomor_pengajuan"],
-        statusApproval: json["status_approval"] as String,
         statusPengajuan: json["status_pengajuan"],
         statusPertanggungjawaban: json["status_pertanggungjawaban"],
         statusPencairan: json["status_pencairan"],

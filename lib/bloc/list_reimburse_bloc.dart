@@ -1,6 +1,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:uang_saku/bloc/bloc.dart';
 import 'package:uang_saku/bloc/event/list_reimburse_event.dart';
+import 'package:uang_saku/bloc/event/reimburse_event.dart';
 import 'package:uang_saku/bloc/state/list_reimburse_state.dart';
 import 'package:uang_saku/model/models.dart';
 import 'package:uang_saku/model/multi_response.dart';
@@ -21,6 +22,18 @@ class ListReimburseBloc extends Bloc<BaseEvent, BaseState> {
           yield ListReimburseState(reimburse: multiResponse.data);
         } else {
           yield ErrorState(message: multiResponse.message);
+        }
+      } catch (e) {
+        yield ErrorState(message: "Tidak Terhubung");
+      }
+    } else if (event is GetReimburseEvent) {
+      try {
+        final SingleResponse<Reimburse> singleResponse =
+            await expenseRepository.getReimburse(event.id);
+        if (singleResponse.success) {
+          yield ReimburseState(reimburse: singleResponse.data);
+        } else {
+          yield ErrorState(message: singleResponse.message);
         }
       } catch (e) {
         yield ErrorState(message: "Tidak Terhubung");

@@ -9,5 +9,13 @@ class ListKasbonState extends BaseState {
 
   @override
   List<Object> get props => [kasbon];
+}
 
+class KasbonState extends BaseState {
+  final Kasbon kasbon;
+
+  KasbonState({this.kasbon});
+
+  @override
+  List<Object> get props => [kasbon];
 }

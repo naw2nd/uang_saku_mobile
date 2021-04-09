@@ -4,13 +4,20 @@ class StatusApproval {
     this.active,
     this.approved,
     this.progress,
+    // this.keterangan
   });
 
   List<int> all;
   int active;
   List<dynamic> approved;
   List<int> progress;
-
+  List<String> keterangan = [
+    "",
+    "Korcab",
+    "Supervisor",
+    "Keuangan",
+    "Direktur"
+  ];
   factory StatusApproval.fromJson(Map<String, dynamic> json) => StatusApproval(
         all: List<int>.from(json["all"].map((x) => x)),
         active: json["active"],

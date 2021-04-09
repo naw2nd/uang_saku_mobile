@@ -4,8 +4,6 @@ import 'package:uang_saku/bloc/bloc.dart';
 import 'package:uang_saku/bloc/event/list_reimburse_event.dart';
 import 'package:uang_saku/bloc/list_reimburse_bloc.dart';
 import 'package:uang_saku/bloc/state/list_reimburse_state.dart';
-import 'package:uang_saku/ui/list_kasbon.dart';
-import 'package:uang_saku/ui/widgets/details_pengajuan.dart';
 import 'package:intl/intl.dart';
 
 class CardList extends StatefulWidget {
@@ -80,7 +78,7 @@ class _KasbonCardState extends State<KasbonCard> {
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: <Widget>[
-                          Text(x.statusApproval,
+                          Text("x.statusApproval",
                               style: TextStyle(
                                   fontFamily: "Montserrat",
                                   fontSize: 12,
@@ -152,7 +150,7 @@ class _ReimburseCardState extends State<ReimburseCard> {
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: <Widget>[
-                          Text(x.statusApproval,
+                          Text("x.statusApproval",
                               style: TextStyle(
                                   fontFamily: "Montserrat",
                                   fontSize: 12,

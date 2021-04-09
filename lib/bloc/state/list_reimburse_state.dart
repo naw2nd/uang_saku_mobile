@@ -9,3 +9,11 @@ class ListReimburseState extends BaseState {
   @override
   List<Object> get props => [this.reimburse];
 }
+class ReimburseState extends BaseState {
+  final Reimburse reimburse;
+
+  ReimburseState({this.reimburse});
+
+  @override
+  List<Object> get props => [reimburse];
+}

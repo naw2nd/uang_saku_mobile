@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:uang_saku/ui/list_approval.dart';
-import 'package:uang_saku/ui/widgets/details_pengajuan.dart';
+import 'package:uang_saku/ui/widgets/details_pengajuan_kasbon.dart';
 
 class ReimburseApproval extends StatefulWidget {
   @override
@@ -16,7 +16,7 @@ class _ReimburseApprovalState extends State<ReimburseApproval> {
         children: <Widget>[
           Flexible(
             flex: 1,
-            child: DetailsPengajuan(
+            child: DetailsPengajuanKasbon(
               // judul: "Detail Pengajuan Reimburse",
               // mainColor: Color(0xFF3AE3CE),
             ),

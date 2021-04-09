@@ -12,8 +12,10 @@ abstract class ExpenseDataSource {
   Future<SingleResponse<User>> getProfile();
   Future<SingleResponse<String>> putUser(User user);
   Future<SingleResponse> postPassword(String password);
-  Future<SingleResponse<Kasbon>> getKasbon();
+  Future<SingleResponse<Kasbon>> getKasbon(int id);
+  Future<SingleResponse<Reimburse>> getReimburse(int id);
   Future<MultiResponse<Kasbon>> getListKasbon();
+  Future<MultiResponse<Reimburse>> getListReimburse();
   Future<SingleResponse<Kasbon>> deleteKasbon(int id, String catatan);
   setToken(String token);
   getToken();
@@ -30,5 +32,4 @@ abstract class ExpenseDataSource {
       int idRoleApproval, BodyApproval bodyApproval);
   Future<MultiResponse<Kasbon>> getApprovalKasbon(
       int idRoleApproval, BodyApproval bodyApproval);
-  Future<MultiResponse<Reimburse>> getListReimburse();
 }

@@ -5,6 +5,7 @@ import 'package:uang_saku/bloc/bloc.dart';
 import 'package:uang_saku/bloc/list_reimburse_bloc.dart';
 import 'package:uang_saku/bloc/state/list_reimburse_state.dart';
 import 'package:intl/intl.dart';
+import 'package:uang_saku/ui/widgets/details_pengajuan_kasbon.dart';
 
 import 'custom_widgets/custom_card.dart';
 
@@ -94,102 +95,113 @@ class _ListKasbonState extends State<ListKasbon> {
                         list.add(Container(
                             margin: EdgeInsets.only(bottom: 10),
                             padding: EdgeInsets.symmetric(horizontal: 15),
-                            child: CustomCard(
-                                container: Container(
-                              child: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Flexible(
-                                        flex: 2,
-                                        child: Icon(
-                                          Icons.insert_drive_file_outlined,
-                                          size: 27,
-                                        )),
-                                    Flexible(
-                                      flex: 15,
-                                      child: Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
-                                        children: [
-                                          Flexible(
-                                              flex: 10,
-                                              child: Column(
-                                                crossAxisAlignment:
-                                                    CrossAxisAlignment.start,
-                                                children: [
-                                                  Container(
+                            child: GestureDetector(
+                              onTap: () {
+                                Navigator.push(context,
+                                    MaterialPageRoute(builder: (context) {
+                                  return DetailsPengajuanKasbon(
+                                      id: element.idPengajuanKasbon);
+                                }));
+                              },
+                              child: CustomCard(
+                                  container: Container(
+                                child: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Flexible(
+                                          flex: 2,
+                                          child: Icon(
+                                            Icons.insert_drive_file_outlined,
+                                            size: 27,
+                                          )),
+                                      Flexible(
+                                        flex: 15,
+                                        child: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            Flexible(
+                                                flex: 10,
+                                                child: Column(
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.start,
+                                                  children: [
+                                                    Container(
+                                                        margin: EdgeInsets.only(
+                                                            bottom: 5),
+                                                        child: Text(
+                                                          element.tujuan,
+                                                          overflow: TextOverflow
+                                                              .ellipsis,
+                                                          style: GoogleFonts
+                                                              .roboto(
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .w800,
+                                                                  fontSize: 14),
+                                                        )),
+                                                    Text(
+                                                      "id kategori = " +
+                                                          element
+                                                              .idKategoriPengajuan
+                                                              .toString(),
+                                                      overflow:
+                                                          TextOverflow.ellipsis,
+                                                    )
+                                                  ],
+                                                )),
+                                            Flexible(
+                                                flex: 6,
+                                                child: Column(
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.end,
+                                                  children: [
+                                                    Container(
                                                       margin: EdgeInsets.only(
                                                           bottom: 5),
                                                       child: Text(
-                                                        element.tujuan,
+                                                        DateFormat.yMMMd()
+                                                            .format(element
+                                                                .tglPengajuan),
                                                         overflow: TextOverflow
                                                             .ellipsis,
-                                                        style:
-                                                            GoogleFonts.roboto(
+                                                        style: GoogleFonts
+                                                            .montserrat(
+                                                                fontSize: 12,
                                                                 fontWeight:
                                                                     FontWeight
-                                                                        .w800,
-                                                                fontSize: 14),
-                                                      )),
-                                                  Text(
-                                                    "id kategori = " +
-                                                        element
-                                                            .idKategoriPengajuan
-                                                            .toString(),
-                                                    overflow:
-                                                        TextOverflow.ellipsis,
-                                                  )
-                                                ],
-                                              )),
-                                          Flexible(
-                                              flex: 6,
-                                              child: Column(
-                                                crossAxisAlignment:
-                                                    CrossAxisAlignment.end,
-                                                children: [
-                                                  Container(
-                                                    margin: EdgeInsets.only(
-                                                        bottom: 5),
-                                                    child: Text(
-                                                      DateFormat.yMMMd().format(
-                                                          element.tglPengajuan),
+                                                                        .w600,
+                                                                color: Color(
+                                                                    0xFF6f96b0)),
+                                                      ),
+                                                    ),
+                                                    Text(
+                                                      "Rp" +
+                                                          NumberFormat.currency(
+                                                                  locale: "eu",
+                                                                  symbol: "")
+                                                              .format(element
+                                                                  .nominalPencairan),
                                                       overflow:
                                                           TextOverflow.ellipsis,
                                                       style: GoogleFonts
                                                           .montserrat(
-                                                              fontSize: 12,
+                                                              fontSize: 13,
                                                               fontWeight:
                                                                   FontWeight
-                                                                      .w600,
+                                                                      .w500,
                                                               color: Color(
-                                                                  0xFF6f96b0)),
-                                                    ),
-                                                  ),
-                                                  Text(
-                                                    "Rp" +
-                                                        NumberFormat.currency(
-                                                                locale: "eu",
-                                                                symbol: "")
-                                                            .format(element
-                                                                .nominalPencairan),
-                                                    overflow:
-                                                        TextOverflow.ellipsis,
-                                                    style:
-                                                        GoogleFonts.montserrat(
-                                                            fontSize: 13,
-                                                            fontWeight:
-                                                                FontWeight.w500,
-                                                            color: Color(
-                                                                0xFF58b84b)),
-                                                  )
-                                                ],
-                                              )),
-                                        ],
-                                      ),
-                                    )
-                                  ]),
-                            ))));
+                                                                  0xFF58b84b)),
+                                                    )
+                                                  ],
+                                                )),
+                                          ],
+                                        ),
+                                      )
+                                    ]),
+                              )),
+                            )));
                       });
                       return Expanded(
                         child: ListView(

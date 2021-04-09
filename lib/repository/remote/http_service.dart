@@ -165,23 +165,18 @@ class HttpService {
     return singleResponse;
   }
 
-  Future<SingleResponse<Kasbon>> getKasbon() async {
-    String endPoint = "kasbon/1";
-    SingleResponse<Kasbon> singleResponseKasbon;
+  Future<SingleResponse<Kasbon>> getKasbon(int id) async {
+    String endPoint = "kasbon/${id.toString()}";
     try {
       Response response = await _dio.get(endPoint);
-      print(response);
-      SingleResponse singleResponse = SingleResponse.fromJson(response.data);
-      singleResponseKasbon = SingleResponse<Kasbon>(
-          success: singleResponse.success,
-          message: singleResponse.message,
-          data: Kasbon.fromJson(singleResponse.data));
-      print(singleResponseKasbon.message);
+      response.data["data"] = Kasbon.fromJson(response.data["data"]);
+      SingleResponse<Kasbon> singleResponse =
+          SingleResponse.fromJson(response.data);
+      return singleResponse;
     } on DioError catch (e) {
       print(e.message);
       throw Exception(e.message);
     }
-    return singleResponseKasbon;
   }
 
   Future<MultiResponse<Kasbon>> getListKasbon() async {
@@ -196,6 +191,20 @@ class HttpService {
       return multiResponse;
     } on DioError catch (e) {
       print(e);
+      throw Exception(e.message);
+    }
+  }
+
+  Future<SingleResponse<Reimburse>> getReimburse(int id) async {
+    String endPoint = "reimburse/${id.toString()}";
+    try {
+      Response response = await _dio.get(endPoint);
+      response.data["data"] = Reimburse.fromJson(response.data["data"]);
+      SingleResponse<Reimburse> singleResponse =
+          SingleResponse.fromJson(response.data);
+      return singleResponse;
+    } on DioError catch (e) {
+      print(e.message);
       throw Exception(e.message);
     }
   }
