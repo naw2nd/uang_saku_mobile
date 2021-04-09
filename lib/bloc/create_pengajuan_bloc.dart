@@ -24,12 +24,16 @@ class CreatePengajuanBloc extends Bloc<BaseEvent, BaseState> {
         final MultiResponse<Perusahaan> responsePerusahaan =
             await expenseRepository.getPerusahaan();
 
+        final MultiResponse<Department> responseDepartment =
+            await expenseRepository.getDepartment();
+
         final MultiResponse<Cabang> responseCabang =
             await expenseRepository.getCabang();
 
         yield (CreatePengajuanState(
             listKategori: responseKategori.data,
             listCabang: responseCabang.data,
+            listDepartment: responseDepartment.data,
             listPerusahaan: responsePerusahaan.data));
       } catch (e) {
         yield ErrorState(message: "No Connection");

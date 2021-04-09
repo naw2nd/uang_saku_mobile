@@ -258,6 +258,21 @@ class HttpService {
     }
   }
 
+  Future<MultiResponse<Department>> getDepartment() async {
+    String endPoint = "department";
+    try {
+      Response response = await _dio.get(endPoint);
+      response.data["data"] = List<Department>.from(
+          response.data["data"].map((x) => Department.fromJson(x)));
+      MultiResponse<Department> multiResponse =
+          MultiResponse.fromJson(response.data);
+      return multiResponse;
+    } on DioError catch (e) {
+      print(e.message);
+      throw Exception(e.message);
+    }
+  }
+
   Future<MultiResponse<Cabang>> getCabang() async {
     String endPoint = "cabang";
     try {

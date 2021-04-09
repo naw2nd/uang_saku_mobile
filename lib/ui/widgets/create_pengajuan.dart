@@ -38,6 +38,7 @@ class _CreatePengajuanState extends State<CreatePengajuan> {
   TextEditingController _tanggalSelesaiCtrl = TextEditingController();
   KategoriPengajuan _selectedKategoriPengajuan;
   Perusahaan _selectedPerusahaan;
+  Department _selectedDepartment;
   Cabang _selectedCabang;
   String _selectedJenisPencairan;
   int _totalBiaya = 0;
@@ -225,6 +226,33 @@ class _CreatePengajuanState extends State<CreatePengajuan> {
                                 return DropdownMenuItem(
                                   value: value,
                                   child: Text(value.namaPerusahaan),
+                                );
+                              }).toList(),
+                            ),
+                          ),
+                          Container(
+                            margin: EdgeInsets.only(top: 7, bottom: 7),
+                            child: DropdownButtonFormField(
+                              decoration: InputDecoration(
+                                  isDense: true,
+                                  contentPadding: EdgeInsets.all(13),
+                                  labelText: "Department",
+                                  border: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(10))),
+                              value: _selectedDepartment,
+                              validator: (value) => (value == null)
+                                  ? "Department harus diisi"
+                                  : null,
+                              isDense: true,
+                              onChanged: (newValue) {
+                                setState(() {
+                                  _selectedDepartment = newValue;
+                                });
+                              },
+                              items: state.listDepartment.map((value) {
+                                return DropdownMenuItem(
+                                  value: value,
+                                  child: Text(value.namaDepartment),
                                 );
                               }).toList(),
                             ),
@@ -642,6 +670,7 @@ class _CreatePengajuanState extends State<CreatePengajuan> {
         tglMulai: DateFormat.yMMMMd('en_US').parse(_tanggalMulaiCtrl.text),
         tglSelesai: DateFormat.yMMMMd('en_US').parse(_tanggalSelesaiCtrl.text),
         idPerusahaan: _selectedPerusahaan.idPerusahaan,
+        idDepartment: _selectedDepartment.idDepartment,
         idCabang: _selectedCabang.idCabang,
         jenisPencairan: _selectedJenisPencairan.toLowerCase(),
         pelaksana: pelaksana,
@@ -659,6 +688,7 @@ class _CreatePengajuanState extends State<CreatePengajuan> {
         tglMulai: DateFormat.yMMMMd('en_US').parse(_tanggalMulaiCtrl.text),
         tglSelesai: DateFormat.yMMMMd('en_US').parse(_tanggalSelesaiCtrl.text),
         idPerusahaan: _selectedPerusahaan.idPerusahaan,
+        idDepartment: _selectedDepartment.idDepartment,
         idCabang: _selectedCabang.idCabang,
         jenisPencairan: _selectedJenisPencairan.toLowerCase(),
         pelaksana: pelaksana,

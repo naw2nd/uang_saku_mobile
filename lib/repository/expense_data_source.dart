@@ -20,6 +20,7 @@ abstract class ExpenseDataSource {
   logout();
   Future<MultiResponse<KategoriPengajuan>> getKategori();
   Future<MultiResponse<Perusahaan>> getPerusahaan();
+  Future<MultiResponse<Department>> getDepartment();
   Future<MultiResponse<Cabang>> getCabang();
   Future<MultiResponse<KategoriBiaya>> getKategoriBiaya();
   Future<SingleResponse> postReimburse(Reimburse reimburse);
