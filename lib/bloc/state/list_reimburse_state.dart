@@ -7,5 +7,5 @@ class ListReimburseState extends BaseState {
   ListReimburseState({this.reimburse});
 
   @override
-  List<Object> get props => [reimburse];
+  List<Object> get props => [this.reimburse];
 }

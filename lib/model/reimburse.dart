@@ -7,16 +7,6 @@ import 'models.dart';
 import 'package:equatable/equatable.dart';
 import 'package:intl/intl.dart';
 
-List<Reimburse> modelReimburseFromJson(String str) =>
-    List<Reimburse>.from(json.decode(str).map((x) => Reimburse.fromJson(x)));
-
-String modelReimburseToJson(List<Reimburse> data) =>
-    json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
-
-// Reimburse reimburseFromJson(String str) => Reimburse.fromJson(json.decode(str));
-
-// String reimburseToJson(Reimburse data) => json.encode(data.toJson());
-
 class Reimburse {
   Reimburse({
     this.idPengajuanReimburse,
@@ -99,19 +89,20 @@ class Reimburse {
         // additionalInfo: List<AdditionalInfo>.from(
         //json["additional_info"].map((x) => AdditionalInfo.fromJson(x))),
         idPerusahaan: json["id_perusahaan"],
-        pegawai:
-            json["pegawai"] == null ? null : Pegawai.fromJson(json["pegawai"]),
-        perusahaan: json["perusahaan"] == null
+        pegawai: (json["pegawai"] == null)
+            ? null
+            : Pegawai.fromJson(json["pegawai"]),
+        perusahaan: (json["perusahaan"] == null)
             ? null
             : Perusahaan.fromJson(json["perusahaan"]),
-        department: json["department"] == null
+        department: (json["department"] == null)
             ? null
             : Department.fromJson(json["department"]),
         cabang: json["cabang"] == null ? null : Cabang.fromJson(json["cabang"]),
-        kategoriPengajuan: json["kategori_pengajuan"] == null
+        kategoriPengajuan: (json["kategori_pengajuan"] == null)
             ? null
             : KategoriPengajuan.fromJson(json["kategori_pengajuan"]),
-        rincianRealisasi: json["pegawai"] == null
+        rincianRealisasi: (json["rincian_realisasi"] == null)
             ? null
             : List<RincianRealisasi>.from(json["rincian_realisasi"]
                 .map((x) => RincianRealisasi.fromJson(x))),

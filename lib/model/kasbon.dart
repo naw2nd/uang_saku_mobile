@@ -7,11 +7,6 @@ import 'package:intl/intl.dart';
 import 'package:uang_saku/model/models.dart';
 import 'package:uang_saku/model/status_approval.dart';
 
-List<Kasbon> modelKasbonFromJson(String str) =>
-    List<Kasbon>.from(json.decode(str).map((x) => Kasbon.fromJson(x)));
-
-String modelKasbonToJson(List<Kasbon> data) =>
-    json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
 
 class Kasbon {
   Kasbon({

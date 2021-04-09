@@ -166,7 +166,6 @@ class ListViewApproval extends StatefulWidget {
 class _ListViewApprovalState extends State<ListViewApproval> {
   @override
   void initState() {
-    print("ini pengajuan " + widget.jenisPengajuan);
     BlocProvider.of<ListApprovalBloc>(context).add(GetApprovalPengajuanEvent(
         idRoleApproval: widget.idRoleApproval,
         bodyApproval: widget.bodyApproval,
@@ -241,13 +240,15 @@ class _ListViewApprovalState extends State<ListViewApproval> {
                                         ),
                                       ),
                                       Text(
-                                        "Rp" +
-                                            NumberFormat.currency(
-                                                    locale: "eu", symbol: "")
-                                                .format((element.toString() ==
-                                                        "Reimburse")
-                                                    ? element.nominalRealisasi
-                                                    : element.nominalPencairan),
+                                        "Rp" 
+                                        // +
+                                        //     NumberFormat.currency(
+                                        //             locale: "eu", symbol: "")
+                                        //         .format((element.toString() ==
+                                        //                 "Reimburse")
+                                        //             ? element.nominalRealisasi
+                                        //             : element.nominalPencairan)
+                                                    ,
                                         overflow: TextOverflow.ellipsis,
                                         style: GoogleFonts.montserrat(
                                             fontSize: 13,

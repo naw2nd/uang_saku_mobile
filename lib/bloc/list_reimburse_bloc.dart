@@ -13,9 +13,8 @@ class ListReimburseBloc extends Bloc<BaseEvent, BaseState> {
 
   @override
   Stream<BaseState> mapEventToState(BaseEvent event) async* {
-    if (event is ListReimburseEvent) {
+    if (event is InitEvent) {
       try {
-        print("reimburse bloc");
         final MultiResponse<Reimburse> multiResponse =
             await expenseRepository.getListReimburse();
         if (multiResponse.success) {
