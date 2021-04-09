@@ -13,7 +13,7 @@ class HttpService {
   SharedPreferences sharedPreferences;
   String token = "";
 
-  final baseURL = "http://192.168.1.8:8000/api/v1/";
+  final baseURL = "http://192.168.0.110:8000/api/v1/";
 
   HttpService() {
     _dio = Dio(BaseOptions(baseUrl: baseURL));
@@ -188,21 +188,40 @@ class HttpService {
     MultiResponse<Kasbon> multiResponseKasbon;
     try {
       Response response = await _dio.get(endpoint);
+      //response.data["data"] = List<Kasbon>.from(response.data["data"].map(x) =>kasbon.fromJson(x));
       print(response.data["data"]);
-
       MultiResponse multiResponse = MultiResponse.fromJson(response.data);
-      print("puasa");
-      print(multiResponse.data);
-      //List<Kasbon> kasbon = (response.data["data"]).map((x) => Kasbon.fromJson(json.decode(x)));
-      // print(kasbon);
       multiResponseKasbon = MultiResponse<Kasbon>(
           success: multiResponse.success,
           message: multiResponse.message,
           //properties: multiResponse.properties,
           data: List<Kasbon>.from(
               (response.data["data"] as List).map((x) => Kasbon.fromJson(x))));
+    } on DioError catch (e) {
+      print(e);
+      throw Exception(e.message);
+    }
+    return multiResponseKasbon;
+  }
 
-      print("indra" + multiResponseKasbon.message);
+  Future<MultiResponse<Reimburse>> getListReimburse() async {
+    String endpoint = "reimburse";
+    MultiResponse<Reimburse> multiResponseReimburse;
+    try {
+      Response response = await _dio.get(endpoint);
+      print(response.data["data"]);
+      //List tagJson = json.decode(response.data["data"]);
+      MultiResponse multiResponse = MultiResponse.fromJson(response.data);
+      print("puasa");
+      print(multiResponse.data);
+
+      multiResponseReimburse = MultiResponse<Reimburse>(
+          success: multiResponse.success,
+          message: multiResponse.message,
+          //data: tagJson.map<Reimburse>((e) => Reimburse.fromJson(e)).toList()
+          //properties: multiResponse.properties,
+          data: List<Reimburse>.from((response.data["data"] as List)
+              .map((x) => Reimburse.fromJson(x))));
     } on DioError catch (e) {
       print(e);
       throw Exception(e.message);
@@ -210,7 +229,7 @@ class HttpService {
       print("error");
       print(e);
     }
-    return multiResponseKasbon;
+    return multiResponseReimburse;
   }
 
   logout() async {

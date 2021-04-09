@@ -23,7 +23,7 @@ class _CustomTextFormFieldState extends State<CustomTextFormField> {
           keyboardType: (widget.lines == null)
               ? TextInputType.text
               : TextInputType.multiline,
-          maxLines: widget.lines,
+          // maxLines: widget.lines,
           controller: widget.controller,
           obscureText: (widget.validation.contains("password") && hidePassword)
               ? true

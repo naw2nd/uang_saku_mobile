@@ -7,11 +7,17 @@ import 'models.dart';
 import 'package:equatable/equatable.dart';
 import 'package:intl/intl.dart';
 
-Reimburse reimburseFromJson(String str) => Reimburse.fromJson(json.decode(str));
+List<Reimburse> modelReimburseFromJson(String str) =>
+    List<Reimburse>.from(json.decode(str).map((x) => Reimburse.fromJson(x)));
 
-String reimburseToJson(Reimburse data) => json.encode(data.toJson());
+String modelReimburseToJson(List<Reimburse> data) =>
+    json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
 
-class Reimburse extends Equatable {
+// Reimburse reimburseFromJson(String str) => Reimburse.fromJson(json.decode(str));
+
+// String reimburseToJson(Reimburse data) => json.encode(data.toJson());
+
+class Reimburse {
   Reimburse({
     this.idPengajuanReimburse,
     this.idPegawai,
@@ -77,7 +83,7 @@ class Reimburse extends Equatable {
         idCabang: json["id_cabang"],
         idKategoriPengajuan: json["id_kategori_pengajuan"],
         pelaksana: List<String>.from(json["pelaksana"].map((x) => x)),
-        statusApproval: json["approval"],
+        statusApproval: json["approval"] as String,
         tglPengajuan: DateTime.parse(json["tgl_pengajuan"]),
         tglPencairan: json["tgl_pencairan"],
         tglMulai: DateTime.parse(json["tgl_mulai"]),
@@ -86,12 +92,12 @@ class Reimburse extends Equatable {
         statusPengajuan: json["status_pengajuan"],
         statusPencairan: json["status_pencairan"],
         jenisPencairan: json["jenis_pencairan"],
-        tujuan: json["tujuan"],
+        tujuan: json["tujuan"] as String,
         catatan: json["catatan"],
         catatanPencairan: json["catatan_pencairan"],
         nominalRealisasi: json["nominal_realisasi"],
-        additionalInfo: List<AdditionalInfo>.from(
-            json["additional_info"].map((x) => AdditionalInfo.fromJson(x))),
+        // additionalInfo: List<AdditionalInfo>.from(
+        //json["additional_info"].map((x) => AdditionalInfo.fromJson(x))),
         idPerusahaan: json["id_perusahaan"],
         pegawai: Pegawai.fromJson(json["pegawai"]),
         perusahaan: Perusahaan.fromJson(json["perusahaan"]),
@@ -112,7 +118,7 @@ class Reimburse extends Equatable {
         "pelaksana": List<dynamic>.from(pelaksana.map((x) => x)),
         "approval": statusApproval,
         "tgl_pengajuan": DateFormat("yyyy-MM-dd").format(
-            tglMulai), //"${tglPengajuan.year.toString().padLeft(4, '0')}-${tglPengajuan.month.toString().padLeft(2, '0')}-${tglPengajuan.day.toString().padLeft(2, '0')}",
+            tglPengajuan), //"${tglPengajuan.year.toString().padLeft(4, '0')}-${tglPengajuan.month.toString().padLeft(2, '0')}-${tglPengajuan.day.toString().padLeft(2, '0')}",
         "tgl_pencairan": tglPencairan,
         "tgl_mulai":
             "${tglMulai.year.toString().padLeft(4, '0')}-${tglMulai.month.toString().padLeft(2, '0')}-${tglMulai.day.toString().padLeft(2, '0')}",
@@ -130,15 +136,20 @@ class Reimburse extends Equatable {
             ? List<dynamic>.from(additionalInfo.map((x) => x.toJson()))
             : "",
         "id_perusahaan": idPerusahaan,
-        // "pegawai": pegawai.toJson(),
-        // "perusahaan": perusahaan.toJson(),
-        // "department": department.toJson(),
-        // "cabang": cabang.toJson(),
-        // "kategori_pengajuan": kategoriPengajuan.toJson(),
+        "pegawai": pegawai.toJson(),
+        "perusahaan": perusahaan.toJson(),
+        "department": department.toJson(),
+        "cabang": cabang.toJson(),
+        "kategori_pengajuan": kategoriPengajuan.toJson(),
         "rincian_realisasi":
             List<dynamic>.from(rincianRealisasi.map((x) => x.toJson())),
       };
 
   @override
-  List<Object> get props => [];
+  String toString() {
+    return '{ ${this.tujuan},${this.tglPengajuan},${this.statusApproval} }';
+  }
+
+  // @override
+  // List<Object> get props => [];
 }

@@ -25,7 +25,6 @@ class _ListApprovalState extends State<ListApproval> {
     super.initState();
   }
 
-  
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -130,7 +129,7 @@ class _ListApprovalState extends State<ListApproval> {
                         )
                       ],
                     ),
-                    KasbonCard(),
+                    //KasbonCard(),
                   ],
                 ),
               ),
@@ -163,7 +162,7 @@ class _ListApprovalState extends State<ListApproval> {
                       )
                     ],
                   ),
-                  ReimburseCard()
+                  //ReimburseCard()
                 ],
               ),
             ]),
@@ -241,23 +240,23 @@ class NoteDialog extends StatelessWidget {
 }
 
 // TabBar myTabBar = TabBar(
-  //   labelStyle: TextStyle(
-  //       fontFamily: "Montserrat", fontWeight: FontWeight.w600, fontSize: 18),
-  //   tabs: <Widget>[
-  //     BlocBuilder<ListKasbonBloc, BaseState>(builder: (_, state) {
-  //       if (state is ListKasbonState) {
-  //         Badge(
-  //           badgeContent: Text(state.kasbon.length.toString()),
-  //           child: Text("Kasbon"),
-  //         );
-  //       }
-  //       ;
-  //     }),
-  //     // Badge(
-  //     //   badgeContent: Text("1"),
-  //     //   child: Text("Reimburse"),
-  //     // )
-  //   ],
-  //   indicatorColor: Color(0xFF2B4D66),
-  //   labelColor: Color(0xFF2B4D66),
-  // );
+//   labelStyle: TextStyle(
+//       fontFamily: "Montserrat", fontWeight: FontWeight.w600, fontSize: 18),
+//   tabs: <Widget>[
+//     BlocBuilder<ListKasbonBloc, BaseState>(builder: (_, state) {
+//       if (state is ListKasbonState) {
+//         Badge(
+//           badgeContent: Text(state.kasbon.length.toString()),
+//           child: Text("Kasbon"),
+//         );
+//       }
+//       ;
+//     }),
+//     // Badge(
+//     //   badgeContent: Text("1"),
+//     //   child: Text("Reimburse"),
+//     // )
+//   ],
+//   indicatorColor: Color(0xFF2B4D66),
+//   labelColor: Color(0xFF2B4D66),
+// );

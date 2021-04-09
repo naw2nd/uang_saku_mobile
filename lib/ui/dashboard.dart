@@ -204,7 +204,8 @@ class _DashboardPageState extends State<DashboardPage> {
                         ),
                         Container(
                           height: 150,
-                          padding: EdgeInsets.only(right: 10, left: 10, top: 10),
+                          padding:
+                              EdgeInsets.only(right: 10, left: 10, top: 10),
                           decoration: BoxDecoration(
                               color: Colors.grey,
                               borderRadius: BorderRadius.circular(15)),
@@ -428,8 +429,8 @@ class _DashboardPageState extends State<DashboardPage> {
                             )
                           ],
                         ),
-                        KasbonCard(),
-                        ReimburseCard()
+                        //KasbonCard(),
+                        //ReimburseCard()
                       ],
                     ),
                   ),

@@ -5,6 +5,7 @@
 import 'dart:convert';
 
 import 'package:uang_saku/model/models.dart';
+import 'package:intl/intl.dart';
 
 // Kasbon kasbonFromJson(String str) => Kasbon.fromJson(json.decode(str));
 // String kasbonToJson(Kasbon data) => json.encode(data.toJson());
@@ -161,8 +162,9 @@ class Kasbon {
         idKategoriPengajuan: json["id_kategori_pengajuan"],
         pelaksana: List<String>.from(json["pelaksana"].map((x) => x)),
         approval: Approval.fromJson(json["approval"]),
-        tglPengajuan: DateTime.parse(json["tgl_pengajuan"]) as DateTime,
-        tglPencairan: json["tgl_pencairan"],
+        // tglPengajuan: DateTime.parse(json["tgl_pengajuan"]),
+        tglPengajuan: DateFormat('d MMM yyyy').parse(json["tgl_pengajuan"]),
+        tglPencairan: DateFormat('d MMM yyyy').parse(json["tgl_pencairan"]),
         tglTotalan: DateTime.parse(json["tgl_totalan"]),
         tglMulai: DateTime.parse(json["tgl_mulai"]),
         tglSelesai: DateTime.parse(json["tgl_selesai"]),
@@ -179,8 +181,8 @@ class Kasbon {
         nominalPencairan: json["nominal_pencairan"],
         nominalRealisasi: json["nominal_realisasi"],
         nominalSelisih: json["nominal_selisih"],
-        additionalInfo: List<AdditionalInfo>.from(
-            json["additional_info"].map((x) => AdditionalInfo.fromJson(x))),
+        //additionalInfo: List<AdditionalInfo>.from(
+        //  json["additional_info"].map((x) => AdditionalInfo.fromJson(x))),
         idPerusahaan: json["id_perusahaan"],
         pegawai: Pegawai.fromJson(json["pegawai"]),
         perusahaan: Perusahaan.fromJson(json["perusahaan"]),
@@ -188,10 +190,13 @@ class Kasbon {
         cabang: Cabang.fromJson(json["cabang"]),
         kategoriPengajuan:
             KategoriPengajuan.fromJson(json["kategori_pengajuan"]),
-        rincianPengajuan: (json["rincian_pengajuan"] != null) ? List<RincianPengajuan>.from(
-            json["rincian_pengajuan"].map((x) => RincianPengajuan.fromJson(x))) : [],
-        rincianRealisasi: (json["rincian_realisasi"] != null) ?
-            List<dynamic>.from(json["rincian_realisasi"].map((x) => x)) : [],
+        rincianPengajuan: (json["rincian_pengajuan"] != null)
+            ? List<RincianPengajuan>.from(json["rincian_pengajuan"]
+                .map((x) => RincianPengajuan.fromJson(x)))
+            : [],
+        rincianRealisasi: (json["rincian_realisasi"] != null)
+            ? List<dynamic>.from(json["rincian_realisasi"].map((x) => x))
+            : [],
       );
 
   Map<String, dynamic> toJson() => {
@@ -202,8 +207,8 @@ class Kasbon {
         "id_kategori_pengajuan": idKategoriPengajuan,
         "pelaksana": List<dynamic>.from(pelaksana.map((x) => x)),
         "approval": approval.toJson(),
-        "tgl_pengajuan":
-            "${tglPengajuan.year.toString().padLeft(4, '0')}-${tglPengajuan.month.toString().padLeft(2, '0')}-${tglPengajuan.day.toString().padLeft(2, '0')}",
+        "tgl_pengajuan": tglPengajuan,
+        //"${tglPengajuan.year.toString().padLeft(4, '0')}-${tglPengajuan.month.toString().padLeft(2, '0')}-${tglPengajuan.day.toString().padLeft(2, '0')}",
         "tgl_pencairan": tglPencairan,
         "tgl_totalan":
             "${tglTotalan.year.toString().padLeft(4, '0')}-${tglTotalan.month.toString().padLeft(2, '0')}-${tglTotalan.day.toString().padLeft(2, '0')}",

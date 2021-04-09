@@ -26,6 +26,7 @@ class ListKasbonBloc extends Bloc<BaseEvent, BaseState> {
             await expenseRepository.getListKasbon();
         print("berhasil");
         if (multiResponse.success) {
+          print("test");
           print(multiResponse.message);
           print(multiResponse.data);
           yield ListKasbonState(kasbon: multiResponse.data);

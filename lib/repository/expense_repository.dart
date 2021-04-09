@@ -119,4 +119,10 @@ class ExpenseRepository implements ExpenseDataSource {
     remoteDataSource.getToken();
     return await remoteDataSource.postReimburse(reimburse);
   }
+
+  @override
+  Future<MultiResponse<Reimburse>> getListReimburse() async{
+    remoteDataSource.getToken();
+    return await remoteDataSource.getListReimburse();
+  }
 }
