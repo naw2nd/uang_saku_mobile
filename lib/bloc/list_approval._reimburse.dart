@@ -25,6 +25,15 @@ class ListApprovalReimburseBloc extends Bloc<BaseEvent, BaseState> {
       } catch (e) {
         yield ErrorState(message: "No Connection");
       }
+    } else if (event is PostApprovalReimburseEvent) {
+      try {
+        print("post event approval reimburse");
+        final SingleResponse singleResponse = await expenseRepository
+            .postApprovalReimburse(event.idRoleApproval, event.bodyApproval);
+        yield (SuccesState<String>(data: singleResponse.message));
+      } catch (e) {
+        yield ErrorState(message: "No Connection");
+      }
     }
   }
 }

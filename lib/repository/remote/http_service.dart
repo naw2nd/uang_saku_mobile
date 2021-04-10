@@ -421,6 +421,23 @@ class HttpService {
     }
   }
 
+  Future<SingleResponse> postApprovalReimburse(
+      int idRoleApproval, BodyPostApproval bodyApproval) async {
+    String endpoint = "reimburse/approval/${idRoleApproval.toString()}";
+    try {
+      print(bodyApproval.toJson());
+      Response response =
+          await _dio.post(endpoint, data: bodyApproval.toJson());
+          print(response.data);
+      SingleResponse singleResponse = SingleResponse.fromJson(response.data);
+      print(singleResponse);
+      return singleResponse;
+    } on DioError catch (e) {
+      print(e);
+      throw Exception(e.message);
+    }
+  }
+
   initalInterceptors() {
     _dio.interceptors.add(InterceptorsWrapper(onError: (error) {
       print(error.message);

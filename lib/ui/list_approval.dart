@@ -9,9 +9,8 @@ import 'package:uang_saku/bloc/list_approval_kasbon._bloc.dart';
 import 'package:uang_saku/bloc/state/approval_state.dart';
 import 'package:uang_saku/model/models.dart';
 import 'package:uang_saku/ui/details_approval_kasbon.dart';
+import 'package:uang_saku/ui/details_approval_reimburse.dart';
 import 'package:uang_saku/ui/filter_approval.dart';
-import 'package:uang_saku/ui/widgets/details_pengajuan_kasbon.dart';
-import 'package:uang_saku/ui/widgets/details_pengajuan_reimburse.dart';
 
 import 'custom_widgets/custom_card.dart';
 import 'package:intl/intl.dart';
@@ -127,7 +126,8 @@ class _ListApprovalState extends State<ListApproval> {
                             return ListViewApproval(
                                 jenisPengajuan: "Kasbon",
                                 listApprovalPengajuan:
-                                    state.listApprovalPengajuan, idRoleApproval: widget.idRoleApproval);
+                                    state.listApprovalPengajuan,
+                                idRoleApproval: widget.idRoleApproval);
                           } else {
                             return Container(
                                 padding: EdgeInsets.only(top: 200),
@@ -173,9 +173,11 @@ class _ListApprovalState extends State<ListApproval> {
                         if (state is ListApprovalPengajuanState) {
                           if (state.listApprovalPengajuan.isNotEmpty) {
                             return ListViewApproval(
-                                jenisPengajuan: "Reimburse",
-                                listApprovalPengajuan:
-                                    state.listApprovalPengajuan);
+                              jenisPengajuan: "Reimburse",
+                              listApprovalPengajuan:
+                                  state.listApprovalPengajuan,
+                              idRoleApproval: widget.idRoleApproval,
+                            );
                           } else {
                             return Container(
                                 padding: EdgeInsets.only(top: 200),
@@ -203,7 +205,8 @@ class ListViewApproval extends StatefulWidget {
   final String jenisPengajuan;
   final List listApprovalPengajuan;
   final int idRoleApproval;
-  ListViewApproval({this.jenisPengajuan, this.listApprovalPengajuan, this.idRoleApproval});
+  ListViewApproval(
+      {this.jenisPengajuan, this.listApprovalPengajuan, this.idRoleApproval});
   @override
   _ListViewApprovalState createState() => _ListViewApprovalState();
 }
@@ -220,12 +223,15 @@ class _ListViewApprovalState extends State<ListViewApproval> {
             onTap: () {
               if (widget.jenisPengajuan == "Reimburse")
                 Navigator.push(context, MaterialPageRoute(builder: (context) {
-                  return DetailsPengajuanReimburse(
-                      id: element.idPengajuanReimburse);
+                  return DetailsApprovalReimburse(
+                      id: element.idPengajuanReimburse,
+                      idRoleApproval: widget.idRoleApproval);
                 }));
               else
                 Navigator.push(context, MaterialPageRoute(builder: (context) {
-                  return DetailsApprovalKasbon(id: element.idPengajuanKasbon, idRoleApproval: widget.idRoleApproval);
+                  return DetailsApprovalKasbon(
+                      id: element.idPengajuanKasbon,
+                      idRoleApproval: widget.idRoleApproval);
                 }));
             },
             child: CustomCard(

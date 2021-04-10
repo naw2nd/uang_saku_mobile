@@ -170,4 +170,11 @@ class ExpenseRepository implements ExpenseDataSource {
     return await remoteDataSource.postApprovalKasbon(
         idRoleApproval, bodyApproval);
   }
+  @override
+  Future<SingleResponse> postApprovalReimburse(
+      int idRoleApproval, BodyPostApproval bodyApproval) async {
+    remoteDataSource.getToken();
+    return await remoteDataSource.postApprovalReimburse(
+        idRoleApproval, bodyApproval);
+  }
 }

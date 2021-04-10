@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
-import 'package:uang_saku/ui/widgets/details_pengajuan_kasbon.dart';
 
 class DetailsApproval extends StatefulWidget {
   @override

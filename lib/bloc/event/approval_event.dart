@@ -21,3 +21,11 @@ class PostApprovalKasbonEvent extends BaseEvent {
   @override
   List<Object> get props => [this.idRoleApproval, this.bodyApproval];
 }
+
+class PostApprovalReimburseEvent extends BaseEvent {
+  final int idRoleApproval;
+  final BodyPostApproval bodyApproval;
+  PostApprovalReimburseEvent({this.idRoleApproval, this.bodyApproval});
+  @override
+  List<Object> get props => [this.idRoleApproval, this.bodyApproval];
+}
