@@ -17,8 +17,6 @@ class DetailsPengajuanKasbon extends StatefulWidget {
 }
 
 class _DetailsPengajuanKasbonState extends State<DetailsPengajuanKasbon> {
-  Color mainColor = Color(0xFF358BFC);
-  String judul = "Detail Pengajuan Kasbon";
 
   @override
   void initState() {
@@ -92,7 +90,7 @@ class _DetailsPengajuanKasbonState extends State<DetailsPengajuanKasbon> {
                               ],
                             )),
                         Flexible(
-                            flex: 3,
+                            flex: 4,
                             child: Container(
                               padding: EdgeInsets.symmetric(
                                   vertical: 2, horizontal: 10),
@@ -108,7 +106,7 @@ class _DetailsPengajuanKasbonState extends State<DetailsPengajuanKasbon> {
                                   (state.kasbon.statusApproval.approved
                                           .contains(element))
                                       ? "Disetujui"
-                                      : "Menunggu",
+                                      : "Menunggu",overflow: TextOverflow.ellipsis,
                                   style: GoogleFonts.montserrat(
                                       fontSize: 16,
                                       fontWeight: FontWeight.w500,

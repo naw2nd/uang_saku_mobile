@@ -1,3 +1,4 @@
+import 'package:uang_saku/model/body_post_approval.dart';
 import 'package:uang_saku/model/kasbon.dart';
 import 'package:uang_saku/model/multi_response.dart';
 import 'package:uang_saku/model/kategori_pengajuan.dart';
@@ -80,6 +81,7 @@ class ExpenseRepository implements ExpenseDataSource {
     remoteDataSource.getToken();
     return await remoteDataSource.getKasbon(id);
   }
+
   @override
   Future<SingleResponse<Reimburse>> getReimburse(int id) async {
     remoteDataSource.getToken();
@@ -90,6 +92,12 @@ class ExpenseRepository implements ExpenseDataSource {
   Future<MultiResponse<Kasbon>> getListKasbon() async {
     remoteDataSource.getToken();
     return await remoteDataSource.getListKasbon();
+  }
+
+  @override
+  Future<MultiResponse<Reimburse>> getListReimburse() async {
+    remoteDataSource.getToken();
+    return await remoteDataSource.getListReimburse();
   }
 
   Future<MultiResponse<KategoriPengajuan>> getKategori() async {
@@ -141,7 +149,7 @@ class ExpenseRepository implements ExpenseDataSource {
 
   @override
   Future<MultiResponse<Reimburse>> getApprovalReimburse(
-      int idRoleApproval, BodyApproval bodyApproval) async {
+      int idRoleApproval, BodyGetApproval bodyApproval) async {
     remoteDataSource.getToken();
     return await remoteDataSource.getApprovalReimburse(
         idRoleApproval, bodyApproval);
@@ -149,14 +157,17 @@ class ExpenseRepository implements ExpenseDataSource {
 
   @override
   Future<MultiResponse<Kasbon>> getApprovalKasbon(
-      int idRoleApproval, BodyApproval bodyApproval) async {
+      int idRoleApproval, BodyGetApproval bodyApproval) async {
     remoteDataSource.getToken();
     return await remoteDataSource.getApprovalKasbon(
         idRoleApproval, bodyApproval);
   }
 
-  Future<MultiResponse<Reimburse>> getListReimburse() async {
+  @override
+  Future<SingleResponse> postApprovalKasbon(
+      int idRoleApproval, BodyPostApproval bodyApproval) async {
     remoteDataSource.getToken();
-    return await remoteDataSource.getListReimburse();
+    return await remoteDataSource.postApprovalKasbon(
+        idRoleApproval, bodyApproval);
   }
 }

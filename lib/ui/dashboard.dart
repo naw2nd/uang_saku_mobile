@@ -181,7 +181,7 @@ class _DashboardPageState extends State<DashboardPage> {
                             ],
                           ),
                         ),
-                        ListMenuApproval(),
+                        ListMenuApproval(mainContext: context),
                         // Container(
                         //   padding: EdgeInsets.symmetric(horizontal: 15),
                         //   child: Column(
@@ -445,11 +445,23 @@ class _DashboardPageState extends State<DashboardPage> {
   }
 }
 
-class ListMenuApproval extends StatelessWidget {
+class ListMenuApproval extends StatefulWidget {
+  final BuildContext mainContext;
+  ListMenuApproval({this.mainContext});
   @override
-  Widget build(BuildContext context) {
+  _ListMenuApprovalState createState() => _ListMenuApprovalState();
+}
+
+class _ListMenuApprovalState extends State<ListMenuApproval> {
+  @override
+  void initState() {
     BlocProvider.of<RoleApprovalBloc>(context).add(InitEvent());
 
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
     return BlocBuilder<RoleApprovalBloc, BaseState>(builder: (context, state) {
       if (state is RoleApprovalState) {
         if (state.roleApproval.isEmpty)
@@ -479,7 +491,10 @@ class ListMenuApproval extends StatelessWidget {
                         return Builder(
                           builder: (BuildContext context) {
                             return Container(
-                                child: MenuApproval(roleApproval: i));
+                                child: MenuApproval(
+                              roleApproval: i,
+                              mainContext: widget.mainContext,
+                            ));
                           },
                         );
                       }).toList(),
@@ -496,15 +511,16 @@ class ListMenuApproval extends StatelessWidget {
 }
 
 class MenuApproval extends StatelessWidget {
+  final BuildContext mainContext;
   final RoleApproval roleApproval;
-  MenuApproval({this.roleApproval});
+  MenuApproval({this.roleApproval, this.mainContext});
 
   @override
   Widget build(BuildContext context) {
     return Container(
       child: GestureDetector(
         onTap: () {
-          Navigator.push(context, MaterialPageRoute(builder: (context) {
+          Navigator.push(mainContext, MaterialPageRoute(builder: (context) {
             return ListApproval(
               idRoleApproval: roleApproval.idApproval,
               namaRoleApproval: roleApproval.namaApproval,

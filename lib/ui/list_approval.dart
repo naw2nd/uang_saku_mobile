@@ -4,10 +4,14 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:uang_saku/bloc/bloc.dart';
 import 'package:uang_saku/bloc/event/approval_event.dart';
-import 'package:uang_saku/bloc/list_approval._bloc.dart';
+import 'package:uang_saku/bloc/list_approval._reimburse.dart';
+import 'package:uang_saku/bloc/list_approval_kasbon._bloc.dart';
 import 'package:uang_saku/bloc/state/approval_state.dart';
 import 'package:uang_saku/model/models.dart';
+import 'package:uang_saku/ui/details_approval_kasbon.dart';
 import 'package:uang_saku/ui/filter_approval.dart';
+import 'package:uang_saku/ui/widgets/details_pengajuan_kasbon.dart';
+import 'package:uang_saku/ui/widgets/details_pengajuan_reimburse.dart';
 
 import 'custom_widgets/custom_card.dart';
 import 'package:intl/intl.dart';
@@ -24,7 +28,16 @@ class _ListApprovalState extends State<ListApproval> {
   @override
   void initState() {
     print("init event");
-
+    BlocProvider.of<ListApprovalKasbonBloc>(context).add(
+        GetApprovalPengajuanEvent(
+            idRoleApproval: widget.idRoleApproval,
+            bodyApproval: BodyGetApproval(status: "aktif", tipe: "pengajuan"),
+            jenisPengajuan: "Kasbon"));
+    BlocProvider.of<ListApprovalReimburseBloc>(context).add(
+        GetApprovalPengajuanEvent(
+            idRoleApproval: widget.idRoleApproval,
+            bodyApproval: BodyGetApproval(status: "aktif", tipe: "pengajuan"),
+            jenisPengajuan: "Reimburse"));
     super.initState();
   }
 
@@ -84,7 +97,7 @@ class _ListApprovalState extends State<ListApproval> {
             body: TabBarView(
                 dragStartBehavior: DragStartBehavior.down,
                 children: [
-                  ListView(
+                  Column(
                     children: [
                       Container(
                           padding: EdgeInsets.fromLTRB(15, 7, 15, 7),
@@ -107,15 +120,32 @@ class _ListApprovalState extends State<ListApproval> {
                                           fontSize: 12))),
                             ],
                           )),
-                      ListViewApproval(
-                        idRoleApproval: widget.idRoleApproval,
-                        jenisPengajuan: "Kasbon",
-                        bodyApproval:
-                            BodyApproval(status: "aktif", tipe: "pengajuan"),
-                      )
+                      BlocBuilder<ListApprovalKasbonBloc, BaseState>(
+                          builder: (context, state) {
+                        if (state is ListApprovalPengajuanState) {
+                          if (state.listApprovalPengajuan.isNotEmpty) {
+                            return ListViewApproval(
+                                jenisPengajuan: "Kasbon",
+                                listApprovalPengajuan:
+                                    state.listApprovalPengajuan, idRoleApproval: widget.idRoleApproval);
+                          } else {
+                            return Container(
+                                padding: EdgeInsets.only(top: 200),
+                                alignment: Alignment.center,
+                                child: Text(
+                                  "Approval yang menunggu disetujui masih Kosong",
+                                  style: GoogleFonts.montserrat(),
+                                ));
+                          }
+                        } else
+                          return Container(
+                              padding: EdgeInsets.only(top: 200),
+                              alignment: Alignment.center,
+                              child: CircularProgressIndicator());
+                      })
                     ],
                   ),
-                  ListView(
+                  Column(
                     children: [
                       Container(
                           padding: EdgeInsets.fromLTRB(15, 7, 15, 7),
@@ -138,12 +168,29 @@ class _ListApprovalState extends State<ListApproval> {
                                           fontSize: 12))),
                             ],
                           )),
-                      ListViewApproval(
-                        idRoleApproval: widget.idRoleApproval,
-                        jenisPengajuan: "Reimburse",
-                        bodyApproval:
-                            BodyApproval(status: "aktif", tipe: "pengajuan"),
-                      )
+                      BlocBuilder<ListApprovalReimburseBloc, BaseState>(
+                          builder: (context, state) {
+                        if (state is ListApprovalPengajuanState) {
+                          if (state.listApprovalPengajuan.isNotEmpty) {
+                            return ListViewApproval(
+                                jenisPengajuan: "Reimburse",
+                                listApprovalPengajuan:
+                                    state.listApprovalPengajuan);
+                          } else {
+                            return Container(
+                                padding: EdgeInsets.only(top: 200),
+                                alignment: Alignment.center,
+                                child: Text(
+                                  "Approval yang menunggu disetujui masih Kosong",
+                                  style: GoogleFonts.montserrat(),
+                                ));
+                          }
+                        } else
+                          return Container(
+                              padding: EdgeInsets.only(top: 200),
+                              alignment: Alignment.center,
+                              child: CircularProgressIndicator());
+                      })
                     ],
                   ),
                 ]),
@@ -154,200 +201,178 @@ class _ListApprovalState extends State<ListApproval> {
 
 class ListViewApproval extends StatefulWidget {
   final String jenisPengajuan;
+  final List listApprovalPengajuan;
   final int idRoleApproval;
-  final BodyApproval bodyApproval;
-
-  ListViewApproval(
-      {this.jenisPengajuan, this.idRoleApproval, this.bodyApproval});
+  ListViewApproval({this.jenisPengajuan, this.listApprovalPengajuan, this.idRoleApproval});
   @override
   _ListViewApprovalState createState() => _ListViewApprovalState();
 }
 
 class _ListViewApprovalState extends State<ListViewApproval> {
   @override
-  void initState() {
-    BlocProvider.of<ListApprovalBloc>(context).add(GetApprovalPengajuanEvent(
-        idRoleApproval: widget.idRoleApproval,
-        bodyApproval: widget.bodyApproval,
-        jenisPengajuan: widget.jenisPengajuan));
-    super.initState();
-  }
-
-  @override
   Widget build(BuildContext context) {
-    return BlocBuilder<ListApprovalBloc, BaseState>(builder: (context, state) {
-      if (state is ListApprovalPengajuanState) {
-        if (state.listApprovalPengajuan.isNotEmpty) {
-          List<Widget> list = [];
-          state.listApprovalPengajuan.forEach((element) {
-            list.add(Container(
-                margin: EdgeInsets.only(bottom: 10),
-                padding: EdgeInsets.symmetric(horizontal: 15),
-                child: CustomCard(
-                    container: Container(
-                  child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Flexible(
-                            flex: 2,
-                            child: Icon(
-                              Icons.insert_drive_file_outlined,
-                              size: 27,
-                            )),
-                        Flexible(
-                          flex: 15,
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Flexible(
-                                  flex: 10,
-                                  child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Container(
-                                          margin: EdgeInsets.only(bottom: 5),
-                                          child: Text(
-                                            element.tujuan,
-                                            overflow: TextOverflow.ellipsis,
-                                            style: GoogleFonts.roboto(
-                                                fontWeight: FontWeight.w800,
-                                                fontSize: 14),
-                                          )),
-                                      Text(
-                                        "id kategori = " +
-                                            element.idKategoriPengajuan
-                                                .toString(),
+    List<Widget> list = [];
+    widget.listApprovalPengajuan.forEach((element) {
+      list.add(Container(
+          margin: EdgeInsets.only(bottom: 10),
+          padding: EdgeInsets.symmetric(horizontal: 15),
+          child: GestureDetector(
+            onTap: () {
+              if (widget.jenisPengajuan == "Reimburse")
+                Navigator.push(context, MaterialPageRoute(builder: (context) {
+                  return DetailsPengajuanReimburse(
+                      id: element.idPengajuanReimburse);
+                }));
+              else
+                Navigator.push(context, MaterialPageRoute(builder: (context) {
+                  return DetailsApprovalKasbon(id: element.idPengajuanKasbon, idRoleApproval: widget.idRoleApproval);
+                }));
+            },
+            child: CustomCard(
+                container: Container(
+              child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Flexible(
+                        flex: 2,
+                        child: Icon(
+                          Icons.insert_drive_file_outlined,
+                          size: 27,
+                        )),
+                    Flexible(
+                      flex: 15,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Flexible(
+                              flex: 10,
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Container(
+                                      margin: EdgeInsets.only(bottom: 5),
+                                      child: Text(
+                                        element.tujuan,
                                         overflow: TextOverflow.ellipsis,
-                                      )
-                                    ],
-                                  )),
-                              Flexible(
-                                  flex: 6,
-                                  child: Column(
-                                    crossAxisAlignment: CrossAxisAlignment.end,
-                                    children: [
-                                      Container(
-                                        margin: EdgeInsets.only(bottom: 5),
-                                        child: Text(
-                                          DateFormat.yMMMd()
-                                              .format(element.tglPengajuan),
-                                          overflow: TextOverflow.ellipsis,
-                                          style: GoogleFonts.montserrat(
-                                              fontSize: 12,
-                                              fontWeight: FontWeight.w600,
-                                              color: Color(0xFF6f96b0)),
-                                        ),
-                                      ),
-                                      Text(
-                                        "Rp" 
-                                        // +
-                                        //     NumberFormat.currency(
-                                        //             locale: "eu", symbol: "")
-                                        //         .format((element.toString() ==
-                                        //                 "Reimburse")
-                                        //             ? element.nominalRealisasi
-                                        //             : element.nominalPencairan)
-                                                    ,
-                                        overflow: TextOverflow.ellipsis,
-                                        style: GoogleFonts.montserrat(
-                                            fontSize: 13,
-                                            fontWeight: FontWeight.w500,
-                                            color: Color(0xFF58b84b)),
-                                      )
-                                    ],
-                                  )),
-                            ],
-                          ),
-                        )
-                      ]),
-                ))));
-          });
-          return Column(
-            children: list,
-          );
-        } else {
-          return Container(
-              padding: EdgeInsets.only(top: 200),
-              alignment: Alignment.center,
-              child: Text(
-                "Approval yang menunggu disetujui masih Kosong",
-                style: GoogleFonts.montserrat(),
-              ));
-        }
-      } else
-        return Container(
-            padding: EdgeInsets.only(top: 200),
-            alignment: Alignment.center,
-            child: CircularProgressIndicator());
+                                        style: GoogleFonts.roboto(
+                                            fontWeight: FontWeight.w800,
+                                            fontSize: 14),
+                                      )),
+                                  Text(
+                                    "id kategori = " +
+                                        element.idKategoriPengajuan.toString(),
+                                    overflow: TextOverflow.ellipsis,
+                                  )
+                                ],
+                              )),
+                          Flexible(
+                              flex: 6,
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.end,
+                                children: [
+                                  Container(
+                                    margin: EdgeInsets.only(bottom: 5),
+                                    child: Text(
+                                      DateFormat.yMMMd()
+                                          .format(element.tglPengajuan),
+                                      overflow: TextOverflow.ellipsis,
+                                      style: GoogleFonts.montserrat(
+                                          fontSize: 12,
+                                          fontWeight: FontWeight.w600,
+                                          color: Color(0xFF6f96b0)),
+                                    ),
+                                  ),
+                                  Text(
+                                    "Rp" +
+                                        NumberFormat.currency(
+                                                locale: "eu", symbol: "")
+                                            .format((widget.jenisPengajuan ==
+                                                    "Reimburse")
+                                                ? element.nominalRealisasi
+                                                : element.nominalPencairan),
+                                    overflow: TextOverflow.ellipsis,
+                                    style: GoogleFonts.montserrat(
+                                        fontSize: 13,
+                                        fontWeight: FontWeight.w500,
+                                        color: Color(0xFF58b84b)),
+                                  )
+                                ],
+                              )),
+                        ],
+                      ),
+                    )
+                  ]),
+            )),
+          )));
     });
+    return Expanded(child: ListView(children: list));
   }
 }
 
-class NoteDialog extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Dialog(
-      child: Container(
-        height: MediaQuery.of(context).size.width * 0.6,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Padding(
-                padding: EdgeInsets.all(10),
-                child: Text(
-                  "Catatan Dari Approval",
-                  style: TextStyle(
-                      fontFamily: "Montserrat", fontWeight: FontWeight.w600),
-                )),
-            Container(
-              padding: EdgeInsets.fromLTRB(20, 0, 20, 10),
-              child: TextField(
-                maxLines: 3,
-                decoration: const InputDecoration(
-                  hintStyle: TextStyle(color: Colors.black45),
-                  errorStyle: TextStyle(color: Colors.redAccent),
-                  border: OutlineInputBorder(),
-                  labelText: 'Catatan',
-                ),
-                onTap: () {},
-                //controller: tanggalSelesai,
-              ),
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: [
-                RaisedButton(
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(15)),
-                  color: Colors.red,
-                  onPressed: () {
-                    Navigator.pop(context);
-                  },
-                  child: Text(
-                    "Batal",
-                    style: TextStyle(
-                        fontFamily: "Montserrat",
-                        fontWeight: FontWeight.w600,
-                        color: Colors.white),
-                  ),
-                ),
-                RaisedButton(
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(15)),
-                  color: Color(0xFF2B4D66),
-                  onPressed: () {},
-                  child: Text("Kirim",
-                      style: TextStyle(
-                          fontFamily: "Montserrat",
-                          fontWeight: FontWeight.w600,
-                          color: Colors.white)),
-                )
-              ],
-            )
-          ],
-        ),
-      ),
-    );
-  }
-}
+// class NoteDialog extends StatelessWidget {
+//   @override
+//   Widget build(BuildContext context) {
+//     return Dialog(
+//       child: Container(
+//         height: MediaQuery.of(context).size.width * 0.6,
+//         child: Column(
+//           crossAxisAlignment: CrossAxisAlignment.start,
+//           children: [
+//             Padding(
+//                 padding: EdgeInsets.all(10),
+//                 child: Text(
+//                   "Catatan Dari Approval",
+//                   style: TextStyle(
+//                       fontFamily: "Montserrat", fontWeight: FontWeight.w600),
+//                 )),
+//             Container(
+//               padding: EdgeInsets.fromLTRB(20, 0, 20, 10),
+//               child: TextField(
+//                 maxLines: 3,
+//                 decoration: const InputDecoration(
+//                   hintStyle: TextStyle(color: Colors.black45),
+//                   errorStyle: TextStyle(color: Colors.redAccent),
+//                   border: OutlineInputBorder(),
+//                   labelText: 'Catatan',
+//                 ),
+//                 onTap: () {},
+//                 //controller: tanggalSelesai,
+//               ),
+//             ),
+//             Row(
+//               mainAxisAlignment: MainAxisAlignment.spaceAround,
+//               children: [
+//                 RaisedButton(
+//                   shape: RoundedRectangleBorder(
+//                       borderRadius: BorderRadius.circular(15)),
+//                   color: Colors.red,
+//                   onPressed: () {
+//                     Navigator.pop(context);
+//                   },
+//                   child: Text(
+//                     "Batal",
+//                     style: TextStyle(
+//                         fontFamily: "Montserrat",
+//                         fontWeight: FontWeight.w600,
+//                         color: Colors.white),
+//                   ),
+//                 ),
+//                 RaisedButton(
+//                   shape: RoundedRectangleBorder(
+//                       borderRadius: BorderRadius.circular(15)),
+//                   color: Color(0xFF2B4D66),
+//                   onPressed: () {},
+//                   child: Text("Kirim",
+//                       style: TextStyle(
+//                           fontFamily: "Montserrat",
+//                           fontWeight: FontWeight.w600,
+//                           color: Colors.white)),
+//                 )
+//               ],
+//             )
+//           ],
+//         ),
+//       ),
+//     );
+//   }
+// }

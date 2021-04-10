@@ -47,7 +47,7 @@ class _KasbonApprovalState extends State<KasbonApproval> {
           showDialog(
               context: context,
               builder: (BuildContext context) {
-                return NoteDialog();
+                // return NoteDialog();
               });
                     });
                   },

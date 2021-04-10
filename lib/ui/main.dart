@@ -4,7 +4,8 @@ import 'package:uang_saku/bloc/bloc.dart';
 import 'package:uang_saku/bloc/create_pengajuan_bloc.dart';
 import 'package:uang_saku/bloc/create_rincian_biaya_bloc.dart';
 import 'package:uang_saku/bloc/forgot_password_bloc.dart';
-import 'package:uang_saku/bloc/list_approval._bloc.dart';
+import 'package:uang_saku/bloc/list_approval._reimburse.dart';
+import 'package:uang_saku/bloc/list_approval_kasbon._bloc.dart';
 import 'package:uang_saku/bloc/list_reimburse_bloc.dart';
 import 'package:uang_saku/bloc/profile_bloc.dart';
 import 'package:uang_saku/bloc/role_approval_bloc.dart';
@@ -53,9 +54,13 @@ class MyApp extends StatelessWidget {
             create: (context) =>
                 RoleApprovalBloc(expenseRepository: expenseRepository),
           ),
-          BlocProvider<ListApprovalBloc>(
+          BlocProvider<ListApprovalKasbonBloc>(
             create: (context) =>
-                ListApprovalBloc(expenseRepository: expenseRepository),
+                ListApprovalKasbonBloc(expenseRepository: expenseRepository),
+          ),
+          BlocProvider<ListApprovalReimburseBloc>(
+            create: (context) =>
+                ListApprovalReimburseBloc(expenseRepository: expenseRepository),
           ),
         ],
         child: MaterialApp(

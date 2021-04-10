@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:uang_saku/bloc/bloc.dart';
-import 'package:uang_saku/bloc/event/list_reimburse_event.dart';
 import 'package:uang_saku/bloc/list_reimburse_bloc.dart';
 import 'package:uang_saku/bloc/state/list_reimburse_state.dart';
 import 'package:intl/intl.dart';
@@ -46,7 +45,7 @@ class _KasbonCardState extends State<KasbonCard> {
   @override
   void initState() {
     print("init event");
-    context.read<ListKasbonBloc>().add(ListKasbonEvent());
+    // context.read<ListKasbonBloc>().add(ListKasbonEvent());
     //context.read<ListReimburseBloc>().add(ListReimburseEvent());
     super.initState();
   }
@@ -119,7 +118,7 @@ class _ReimburseCardState extends State<ReimburseCard> {
   @override
   void initState() {
     print("init event");
-    context.read<ListReimburseBloc>().add(ListReimburseEvent());
+    // context.read<ListReimburseBloc>().add(ListReimburseEvent());
     super.initState();
   }
 

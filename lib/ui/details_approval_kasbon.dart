@@ -2,27 +2,27 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:uang_saku/bloc/bloc.dart';
+import 'package:uang_saku/bloc/event/approval_event.dart';
+import 'package:uang_saku/bloc/event/kasbon_event.dart';
 import 'package:intl/intl.dart';
-import 'package:uang_saku/bloc/event/reimburse_event.dart';
-import 'package:uang_saku/bloc/list_reimburse_bloc.dart';
-import 'package:uang_saku/bloc/state/list_reimburse_state.dart';
+import 'package:uang_saku/bloc/list_approval_kasbon._bloc.dart';
+import 'package:uang_saku/model/body_post_approval.dart';
 import 'package:uang_saku/ui/custom_widgets/custom_card.dart';
 import 'package:uang_saku/ui/custom_widgets/item_rincian.dart';
 
-class DetailsPengajuanReimburse extends StatefulWidget {
+class DetailsApprovalKasbon extends StatefulWidget {
   final int id;
-  DetailsPengajuanReimburse({this.id});
+  final int idRoleApproval;
+  DetailsApprovalKasbon({this.id, this.idRoleApproval});
 
   @override
-  _DetailsPengajuanReimburseState createState() =>
-      _DetailsPengajuanReimburseState();
+  _DetailsApprovalKasbonState createState() => _DetailsApprovalKasbonState();
 }
 
-class _DetailsPengajuanReimburseState extends State<DetailsPengajuanReimburse> {
+class _DetailsApprovalKasbonState extends State<DetailsApprovalKasbon> {
   @override
   void initState() {
-    BlocProvider.of<ListReimburseBloc>(context)
-        .add(GetReimburseEvent(id: widget.id));
+    BlocProvider.of<ListKasbonBloc>(context).add(GetKasbonEvent(id: widget.id));
     super.initState();
   }
 
@@ -35,24 +35,24 @@ class _DetailsPengajuanReimburseState extends State<DetailsPengajuanReimburse> {
               borderRadius: BorderRadius.only(
                   bottomLeft: Radius.circular(15),
                   bottomRight: Radius.circular(15))),
-          backgroundColor: Color(0xFF3AE3CE),
-          title: Text("Detail Pengajuan Reimburse",
+          backgroundColor: Color(0xFF358BFC),
+          title: Text("Detail Pengajuan Kasbon",
               style: GoogleFonts.montserrat(
                   fontSize: 18, fontWeight: FontWeight.w600)),
           actions: [
             IconButton(
                 icon: Icon(Icons.cancel_outlined),
                 onPressed: () {
-                  BlocProvider.of<ListReimburseBloc>(context).add(InitEvent());
+                  BlocProvider.of<ListKasbonBloc>(context).add(InitEvent());
                   Navigator.pop(context);
                 })
           ],
         ),
-        body: BlocBuilder<ListReimburseBloc, BaseState>(
+        body: BlocBuilder<ListKasbonBloc, BaseState>(
           builder: (_, state) {
-            if (state is ReimburseState) {
+            if (state is KasbonState) {
               List<Widget> listPelaksana = [];
-              state.reimburse.pelaksana.forEach((element) {
+              state.kasbon.pelaksana.forEach((element) {
                 listPelaksana.add(Text("- " + element,
                     style: GoogleFonts.montserrat(
                         fontSize: 15,
@@ -69,7 +69,7 @@ class _DetailsPengajuanReimburseState extends State<DetailsPengajuanReimburse> {
                       color: Color(0xFF555555)),
                 ),
               ];
-              state.reimburse.statusApproval.all.forEach((element) {
+              state.kasbon.statusApproval.all.forEach((element) {
                 listApproval.add(Container(
                     padding: EdgeInsets.fromLTRB(0, 10, 0, 0),
                     child: Row(
@@ -81,7 +81,7 @@ class _DetailsPengajuanReimburseState extends State<DetailsPengajuanReimburse> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
-                                    state.reimburse.statusApproval
+                                    state.kasbon.statusApproval
                                         .keterangan[element],
                                     style: GoogleFonts.montserrat(
                                         fontSize: 15,
@@ -99,13 +99,13 @@ class _DetailsPengajuanReimburseState extends State<DetailsPengajuanReimburse> {
                               decoration: BoxDecoration(
                                 borderRadius:
                                     BorderRadius.all(Radius.circular(15)),
-                                color: (state.reimburse.statusApproval.approved
+                                color: (state.kasbon.statusApproval.approved
                                         .contains(element))
-                                    ? Color(0xFF3AE3CE)
+                                    ? Color(0xFF358BFC)
                                     : Color(0xFF555555),
                               ),
                               child: Text(
-                                  (state.reimburse.statusApproval.approved
+                                  (state.kasbon.statusApproval.approved
                                           .contains(element))
                                       ? "Disetujui"
                                       : "Menunggu",
@@ -119,9 +119,9 @@ class _DetailsPengajuanReimburseState extends State<DetailsPengajuanReimburse> {
                     )));
               });
               List<Widget> listRincian = [];
-              state.reimburse.rincianRealisasi.forEach((element) {
+              state.kasbon.rincianPengajuan.forEach((element) {
                 listRincian.add(ItemRincian(
-                  jenisPengajuan: "Reimburse",
+                  jenisPengajuan: "Kasbon",
                   rincianBiaya: element,
                 ));
               });
@@ -147,19 +147,19 @@ class _DetailsPengajuanReimburseState extends State<DetailsPengajuanReimburse> {
                                       child: Text("Nomor Pengajuan",
                                           style: GoogleFonts.montserrat()),
                                     ),
-                                    Text(state.reimburse.nomorPengajuan,
+                                    Text(state.kasbon.nomorPengajuan,
                                         style: GoogleFonts.montserrat(
                                             fontSize: 15,
                                             fontWeight: FontWeight.w600,
-                                            color: Color(0xFF3AE3CE))),
+                                            color: Color(0xFF358BFC))),
                                     Container(
                                       padding: EdgeInsets.fromLTRB(0, 7, 0, 0),
                                       child: Text("Tanggal Pengajuan",
                                           style: GoogleFonts.montserrat()),
                                     ),
                                     Text(
-                                        DateFormat.yMMMMd('en_US').format(
-                                            state.reimburse.tglPengajuan),
+                                        DateFormat.yMMMMd('en_US')
+                                            .format(state.kasbon.tglPengajuan),
                                         style: GoogleFonts.montserrat(
                                             fontSize: 15,
                                             fontWeight: FontWeight.w600,
@@ -169,7 +169,7 @@ class _DetailsPengajuanReimburseState extends State<DetailsPengajuanReimburse> {
                                       child: Text("Nama Pegawai",
                                           style: GoogleFonts.montserrat()),
                                     ),
-                                    Text(state.reimburse.pegawai.namaPegawai,
+                                    Text(state.kasbon.pegawai.namaPegawai,
                                         style: GoogleFonts.montserrat(
                                             fontSize: 15,
                                             fontWeight: FontWeight.w600,
@@ -179,7 +179,7 @@ class _DetailsPengajuanReimburseState extends State<DetailsPengajuanReimburse> {
                                       child: Text("Tujuan",
                                           style: GoogleFonts.montserrat()),
                                     ),
-                                    Text(state.reimburse.tujuan,
+                                    Text(state.kasbon.tujuan,
                                         style: GoogleFonts.montserrat(
                                             fontSize: 15,
                                             fontWeight: FontWeight.w600,
@@ -190,8 +190,7 @@ class _DetailsPengajuanReimburseState extends State<DetailsPengajuanReimburse> {
                                           style: GoogleFonts.montserrat()),
                                     ),
                                     Text(
-                                        state
-                                            .reimburse.perusahaan.namaPerusahaan
+                                        state.kasbon.perusahaan.namaPerusahaan
                                             .toString(),
                                         style: GoogleFonts.montserrat(
                                             fontSize: 15,
@@ -203,11 +202,10 @@ class _DetailsPengajuanReimburseState extends State<DetailsPengajuanReimburse> {
                                           style: GoogleFonts.montserrat()),
                                     ),
                                     Text(
-                                        state.reimburse.department
-                                                .namaDepartment
+                                        state.kasbon.department.namaDepartment
                                                 .toString() +
                                             ", " +
-                                            state.reimburse.cabang.namaCabang
+                                            state.kasbon.cabang.namaCabang
                                                 .toString(),
                                         style: GoogleFonts.montserrat(
                                             fontSize: 15,
@@ -241,8 +239,7 @@ class _DetailsPengajuanReimburseState extends State<DetailsPengajuanReimburse> {
                                                     Text(
                                                         DateFormat.yMMMMd(
                                                                 'en_US')
-                                                            .format(state
-                                                                .reimburse
+                                                            .format(state.kasbon
                                                                 .tglMulai)
                                                             .toString(),
                                                         style: GoogleFonts
@@ -251,8 +248,8 @@ class _DetailsPengajuanReimburseState extends State<DetailsPengajuanReimburse> {
                                                                     FontWeight
                                                                         .w600,
                                                                 fontSize: 16,
-                                                                color: Color(
-                                                                    0xfff06060)))
+                                                                color:
+                                                                    Colors.red))
                                                   ])),
                                               Container(
                                                   height: 50,
@@ -270,8 +267,7 @@ class _DetailsPengajuanReimburseState extends State<DetailsPengajuanReimburse> {
                                                     Text(
                                                         DateFormat.yMMMMd(
                                                                 'en_US')
-                                                            .format(state
-                                                                .reimburse
+                                                            .format(state.kasbon
                                                                 .tglSelesai)
                                                             .toString(),
                                                         style: GoogleFonts
@@ -280,8 +276,8 @@ class _DetailsPengajuanReimburseState extends State<DetailsPengajuanReimburse> {
                                                                     FontWeight
                                                                         .w600,
                                                                 fontSize: 16,
-                                                                color: Color(
-                                                                    0xfff06060)))
+                                                                color:
+                                                                    Colors.red))
                                                   ]))
                                             ]))
                                   ])))),
@@ -322,9 +318,9 @@ class _DetailsPengajuanReimburseState extends State<DetailsPengajuanReimburse> {
                                     decoration: BoxDecoration(
                                         borderRadius: BorderRadius.all(
                                             Radius.circular(15)),
-                                        color: Color(0xFF3AE3CE)),
+                                        color: Color(0xFF358BFC)),
                                     child: Text(
-                                      (state.reimburse.jenisPencairan == "cash")
+                                      (state.kasbon.jenisPencairan == "cash")
                                           ? "Terima Cash"
                                           : "Via Transfer",
                                       style: GoogleFonts.montserrat(
@@ -352,8 +348,8 @@ class _DetailsPengajuanReimburseState extends State<DetailsPengajuanReimburse> {
                                     "Rp" +
                                         NumberFormat.currency(
                                                 locale: "eu", symbol: "")
-                                            .format(state
-                                                .reimburse.nominalRealisasi),
+                                            .format(
+                                                state.kasbon.nominalPencairan),
                                     style: GoogleFonts.montserrat(
                                         fontSize: 16,
                                         fontWeight: FontWeight.w500,
@@ -366,8 +362,8 @@ class _DetailsPengajuanReimburseState extends State<DetailsPengajuanReimburse> {
                                   style: GoogleFonts.montserrat()),
                             ),
                             Text(
-                                (state.reimburse.catatan != null)
-                                    ? state.reimburse.catatan
+                                (state.kasbon.catatanPengajuan != null)
+                                    ? state.kasbon.catatanPengajuan
                                     : "Tidak ada catatan",
                                 style: GoogleFonts.montserrat(
                                     fontSize: 15, fontWeight: FontWeight.w500))
@@ -377,26 +373,81 @@ class _DetailsPengajuanReimburseState extends State<DetailsPengajuanReimburse> {
                     ),
                   ),
                   Container(
-                      padding: EdgeInsets.fromLTRB(15, 10, 15, 5),
-                      child: Container(
-                          height: 40.0,
-                          child: RaisedButton(
-                              elevation: 2,
-                              onPressed: () {},
-                              shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(10)),
-                              padding: EdgeInsets.all(0.0),
-                              child: Ink(
+                    padding: EdgeInsets.fromLTRB(15, 10, 15, 5),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Flexible(
+                            flex: 15,
+                            child: Container(
+                              height: 40.0,
+                              child: RaisedButton(
+                                elevation: 2,
+                                onPressed: () {},
+                                shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(10)),
+                                padding: EdgeInsets.all(0.0),
+                                child: Ink(
                                   decoration: BoxDecoration(
-                                      color: Color(0xFF3AE3CE),
+                                      color: Color(0xfff54949),
                                       borderRadius: BorderRadius.circular(10)),
                                   child: Container(
-                                      alignment: Alignment.center,
-                                      child: Text("Update",
-                                          style: GoogleFonts.montserrat(
-                                              fontWeight: FontWeight.w500,
-                                              fontSize: 18,
-                                              color: Colors.white))))))),
+                                    alignment: Alignment.center,
+                                    child: Text(
+                                      "Tolak",
+                                      style: GoogleFonts.montserrat(
+                                          fontWeight: FontWeight.w500,
+                                          fontSize: 18,
+                                          color: Colors.white),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            )),
+                        Flexible(
+                          flex: 1,
+                          child: Container(),
+                        ),
+                        Flexible(
+                            flex: 15,
+                            child: Container(
+                              height: 40.0,
+                              child: RaisedButton(
+                                elevation: 2,
+                                onPressed: () {
+                                  BlocProvider.of<ListApprovalKasbonBloc>(
+                                          context)
+                                      .add(PostApprovalKasbonEvent(
+                                          idRoleApproval: widget.idRoleApproval,
+                                          bodyApproval: BodyPostApproval(
+                                              idPengajuanKasbon: widget.id,
+                                              catatan: "nocat",
+                                              status: "setuju",
+                                              tipe: "pengajuan")));
+                                },
+                                shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(10)),
+                                padding: EdgeInsets.all(0.0),
+                                child: Ink(
+                                  decoration: BoxDecoration(
+                                      color: Color(0xFF358BFC),
+                                      borderRadius: BorderRadius.circular(10)),
+                                  child: Container(
+                                    alignment: Alignment.center,
+                                    child: Text(
+                                      "Setujui",
+                                      style: GoogleFonts.montserrat(
+                                          fontWeight: FontWeight.w500,
+                                          fontSize: 18,
+                                          color: Colors.white),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            )),
+                      ],
+                    ),
+                  ),
                   // Row(
                   //   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   //   children: <Widget>[
@@ -447,11 +498,11 @@ class _DetailsPengajuanReimburseState extends State<DetailsPengajuanReimburse> {
                   //                                   child: Text("Ya"),
                   //                                   onPressed: () {
                   //                                     // (state
-                  //                                     //     is CancelReimburseState);
+                  //                                     //     is CancelKasbonState);
                   //                                     // context
-                  //                                     //     .read<ReimburseBloc>()
+                  //                                     //     .read<KasbonBloc>()
                   //                                     //     .add(
-                  //                                     //         CancelReimburseEvent());
+                  //                                     //         CancelKasbonEvent());
                   //                                     // return Navigator.push(
                   //                                     //     context,
                   //                                     //     MaterialPageRoute(

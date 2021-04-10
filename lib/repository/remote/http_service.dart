@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:dio/dio.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:uang_saku/model/body_post_approval.dart';
 import 'package:uang_saku/model/list_kasbon.dart';
 import 'package:uang_saku/model/models.dart';
 import 'package:uang_saku/model/multi_response.dart';
@@ -368,7 +369,7 @@ class HttpService {
   }
 
   Future<MultiResponse<Reimburse>> getApprovalReimburse(
-      int idRoleApproval, BodyApproval bodyApproval) async {
+      int idRoleApproval, BodyGetApproval bodyApproval) async {
     String endpoint = "reimburse/approval/${idRoleApproval.toString()}";
     try {
       Response response =
@@ -386,7 +387,7 @@ class HttpService {
   }
 
   Future<MultiResponse<Kasbon>> getApprovalKasbon(
-      int idRoleApproval, BodyApproval bodyApproval) async {
+      int idRoleApproval, BodyGetApproval bodyApproval) async {
     String endpoint = "kasbon/approval/${idRoleApproval.toString()}";
     try {
       Response response =
@@ -397,6 +398,23 @@ class HttpService {
       MultiResponse<Kasbon> multiResponse =
           MultiResponse.fromJson(response.data);
       return multiResponse;
+    } on DioError catch (e) {
+      print(e);
+      throw Exception(e.message);
+    }
+  }
+
+  Future<SingleResponse> postApprovalKasbon(
+      int idRoleApproval, BodyPostApproval bodyApproval) async {
+    String endpoint = "kasbon/approval/${idRoleApproval.toString()}";
+    try {
+      print(bodyApproval.toJson());
+      Response response =
+          await _dio.post(endpoint, data: bodyApproval.toJson());
+          print(response.data);
+      SingleResponse singleResponse = SingleResponse.fromJson(response.data);
+      print(singleResponse.message);
+      return singleResponse;
     } on DioError catch (e) {
       print(e);
       throw Exception(e.message);

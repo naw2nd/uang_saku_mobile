@@ -4,12 +4,12 @@
 
 import 'dart:convert';
 
-BodyApproval bodyApprovalFromJson(String str) => BodyApproval.fromJson(json.decode(str));
+BodyGetApproval bodyApprovalFromJson(String str) => BodyGetApproval.fromJson(json.decode(str));
 
-String bodyApprovalToJson(BodyApproval data) => json.encode(data.toJson());
+String bodyApprovalToJson(BodyGetApproval data) => json.encode(data.toJson());
 
-class BodyApproval {
-    BodyApproval({
+class BodyGetApproval {
+    BodyGetApproval({
         this.tipe,
         this.status,
         this.idDepartment,
@@ -29,7 +29,7 @@ class BodyApproval {
     final DateTime tglMulai;
     final DateTime tglSelesai;
 
-    factory BodyApproval.fromJson(Map<String, dynamic> json) => BodyApproval(
+    factory BodyGetApproval.fromJson(Map<String, dynamic> json) => BodyGetApproval(
         tipe: json["tipe"],
         status: json["status"],
         idDepartment: List<int>.from(json["id_department"].map((x) => x)),

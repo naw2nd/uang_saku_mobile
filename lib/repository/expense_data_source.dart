@@ -1,3 +1,4 @@
+import 'package:uang_saku/model/body_post_approval.dart';
 import 'package:uang_saku/model/list_kasbon.dart';
 import 'package:uang_saku/model/models.dart';
 import 'package:uang_saku/model/multi_response.dart';
@@ -29,7 +30,9 @@ abstract class ExpenseDataSource {
   Future<SingleResponse> postKasbon(Kasbon kasbon);
   Future<MultiResponse<RoleApproval>> getRoleApproval();
   Future<MultiResponse<Reimburse>> getApprovalReimburse(
-      int idRoleApproval, BodyApproval bodyApproval);
+      int idRoleApproval, BodyGetApproval bodyApproval);
   Future<MultiResponse<Kasbon>> getApprovalKasbon(
-      int idRoleApproval, BodyApproval bodyApproval);
+      int idRoleApproval, BodyGetApproval bodyApproval);
+  Future<SingleResponse> postApprovalKasbon(
+      int idRoleApproval, BodyPostApproval bodyApproval);
 }
