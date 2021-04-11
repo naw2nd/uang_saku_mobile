@@ -55,23 +55,21 @@ class ItemRincian extends StatelessWidget {
             ),
             Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                crossAxisAlignment: CrossAxisAlignment.end,
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Flexible(
-                    flex: 7,
+                    flex: 6,
                     child: Text(rincianBiaya.namaItem,
                         overflow: TextOverflow.ellipsis,
-                        maxLines: 2,
                         style: GoogleFonts.montserrat()),
                   ),
                   Flexible(
-                      flex: 3,
+                      flex: 4,
                       child: Text(
                           "Rp" +
                               NumberFormat.currency(locale: "eu", symbol: "")
                                   .format(rincianBiaya.total),
                           overflow: TextOverflow.ellipsis,
-                          maxLines: 2,
                           style: GoogleFonts.montserrat()))
                 ])
           ])),

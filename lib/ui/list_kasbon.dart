@@ -111,9 +111,11 @@ class _ListKasbonState extends State<ListKasbon> {
                                     children: [
                                       Flexible(
                                           flex: 2,
-                                          child: Icon(
-                                            Icons.insert_drive_file_outlined,
-                                            size: 27,
+                                          child: Image(
+                                            image: AssetImage(
+                                                "images/send-file-blue.png"),
+                                            width: 31,
+                                            height: 31,
                                           )),
                                       Flexible(
                                         flex: 15,

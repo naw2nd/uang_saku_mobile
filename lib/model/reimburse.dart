@@ -136,11 +136,11 @@ class Reimburse {
             ? List<dynamic>.from(additionalInfo.map((x) => x.toJson()))
             : "",
         "id_perusahaan": idPerusahaan,
-        "pegawai": pegawai.toJson(),
-        "perusahaan": perusahaan.toJson(),
-        "department": department.toJson(),
-        "cabang": cabang.toJson(),
-        "kategori_pengajuan": kategoriPengajuan.toJson(),
+        // "pegawai": pegawai.toJson(),
+        // "perusahaan": perusahaan.toJson(),
+        // "department": department.toJson(),
+        // "cabang": cabang.toJson(),
+        // "kategori_pengajuan": kategoriPengajuan.toJson(),
         "rincian_realisasi":
             List<dynamic>.from(rincianRealisasi.map((x) => x.toJson())),
       };

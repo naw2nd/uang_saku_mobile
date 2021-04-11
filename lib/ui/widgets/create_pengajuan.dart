@@ -14,6 +14,8 @@ import 'package:uang_saku/ui/custom_widgets/custom_card.dart';
 import 'package:uang_saku/ui/custom_widgets/custom_text_form_field.dart';
 import 'package:uang_saku/ui/custom_widgets/item_rincian.dart';
 import 'package:uang_saku/ui/detail_rincian_biaya.dart';
+import 'package:uang_saku/ui/main_page.dart';
+import 'package:uang_saku/ui/widgets/bottom_navbar.dart';
 import 'package:uang_saku/ui/widgets/form_rincian_biaya.dart';
 import 'package:dotted_border/dotted_border.dart';
 import 'package:intl/intl.dart';
@@ -96,8 +98,11 @@ class _CreatePengajuanState extends State<CreatePengajuan> {
                       Text(widget.jenisPengajuan + " berhasil dikirimkan")));
               Timer(
                   Duration(seconds: 2),
-                  () =>
-                      Navigator.of(context, rootNavigator: true).pop(context));
+                  () => Navigator.pushReplacement(context,
+                          MaterialPageRoute(builder: (context) {
+                        return BottomNavbar();
+                      })));
+              // Navigator.of(context, rootNavigator: true).pop(context));
             } else if (state is ErrorState) {
               Scaffold.of(context)
                   .showSnackBar(SnackBar(content: Text(state.message)));
