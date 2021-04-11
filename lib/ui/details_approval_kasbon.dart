@@ -5,7 +5,6 @@ import 'package:uang_saku/bloc/bloc.dart';
 import 'package:uang_saku/bloc/event/approval_event.dart';
 import 'package:uang_saku/bloc/event/kasbon_event.dart';
 import 'package:intl/intl.dart';
-import 'package:uang_saku/bloc/list_approval_kasbon._bloc.dart';
 import 'package:uang_saku/model/body_post_approval.dart';
 import 'package:uang_saku/ui/custom_widgets/custom_card.dart';
 import 'package:uang_saku/ui/custom_widgets/item_rincian.dart';
@@ -22,7 +21,7 @@ class DetailsApprovalKasbon extends StatefulWidget {
 class _DetailsApprovalKasbonState extends State<DetailsApprovalKasbon> {
   @override
   void initState() {
-    BlocProvider.of<ListKasbonBloc>(context).add(GetKasbonEvent(id: widget.id));
+    BlocProvider.of<KasbonBloc>(context).add(GetKasbonEvent(id: widget.id));
     super.initState();
   }
 
@@ -43,12 +42,12 @@ class _DetailsApprovalKasbonState extends State<DetailsApprovalKasbon> {
             IconButton(
                 icon: Icon(Icons.cancel_outlined),
                 onPressed: () {
-                  BlocProvider.of<ListKasbonBloc>(context).add(InitEvent());
+                  BlocProvider.of<KasbonBloc>(context).add(InitEvent());
                   Navigator.pop(context);
                 })
           ],
         ),
-        body: BlocBuilder<ListKasbonBloc, BaseState>(
+        body: BlocBuilder<KasbonBloc, BaseState>(
           builder: (_, state) {
             if (state is KasbonState) {
               List<Widget> listPelaksana = [];
@@ -415,7 +414,7 @@ class _DetailsApprovalKasbonState extends State<DetailsApprovalKasbon> {
                               child: RaisedButton(
                                 elevation: 2,
                                 onPressed: () {
-                                  BlocProvider.of<ListApprovalKasbonBloc>(
+                                  BlocProvider.of<KasbonBloc>(
                                           context)
                                       .add(PostApprovalKasbonEvent(
                                           idRoleApproval: widget.idRoleApproval,

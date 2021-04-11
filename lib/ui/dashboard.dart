@@ -30,6 +30,8 @@ class _DashboardPageState extends State<DashboardPage> {
 
   @override
   void initState() {
+    BlocProvider.of<RoleApprovalBloc>(context).add(InitEvent());
+
     super.initState();
   }
 
@@ -185,7 +187,98 @@ class _DashboardPageState extends State<DashboardPage> {
                               ],
                             ),
                           ),
-                          ListMenuApproval(),
+                          BlocBuilder<RoleApprovalBloc, BaseState>(
+                              builder: (_, state) {
+                            if (state is RoleApprovalState) {
+                              if (state.roleApproval.isEmpty)
+                                return Container();
+                              else {
+                                return Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Container(
+                                        padding:
+                                            EdgeInsets.fromLTRB(15, 10, 15, 0),
+                                        child: Text(
+                                          "Approval",
+                                          style: GoogleFonts.montserrat(
+                                              fontWeight: FontWeight.w700,
+                                              fontSize: 18,
+                                              color: Color(0xFF555555)),
+                                        ),
+                                      ),
+                                      Container(
+                                          padding: EdgeInsets.only(top: 5),
+                                          child: (state.roleApproval.length ==
+                                                  1)
+                                              ? Container(
+                                                  padding: EdgeInsets.symmetric(
+                                                      horizontal: 15),
+                                                  height: 145,
+                                                  child: GestureDetector(
+                                                    onTap: () {
+                                                      Navigator.push(context,
+                                                          MaterialPageRoute(
+                                                              builder:
+                                                                  (context) {
+                                                        return ListApproval(
+                                                          idRoleApproval: state
+                                                              .roleApproval
+                                                              .first
+                                                              .idApproval,
+                                                          namaRoleApproval:
+                                                              state
+                                                                  .roleApproval
+                                                                  .first
+                                                                  .namaApproval,
+                                                        );
+                                                      }))
+                                                        ..whenComplete(
+                                                            () => initState());
+                                                    },
+                                                    child: MenuApproval(
+                                                      roleApproval: state
+                                                          .roleApproval.first,
+                                                    ),
+                                                  ),
+                                                )
+                                              : CarouselSlider(
+                                                  options: CarouselOptions(
+                                                    height: 145,
+                                                    enlargeCenterPage: true,
+                                                  ),
+                                                  items: state.roleApproval
+                                                      .map((i) {
+                                                    return GestureDetector(
+                                                      onTap: () {
+                                                        Navigator.push(context,
+                                                            MaterialPageRoute(
+                                                                builder:
+                                                                    (context) {
+                                                          return ListApproval(
+                                                            idRoleApproval:
+                                                                i.idApproval,
+                                                            namaRoleApproval:
+                                                                i.namaApproval,
+                                                          );
+                                                        }))
+                                                          ..whenComplete(() =>
+                                                              initState());
+                                                      },
+                                                      child: MenuApproval(
+                                                          roleApproval: i),
+                                                    );
+                                                  }).toList(),
+                                                ))
+                                    ]);
+                              }
+                            } else
+                              return Container(
+                                  margin: EdgeInsets.only(top: 15, bottom: 15),
+                                  alignment: Alignment.center,
+                                  child: CircularProgressIndicator());
+                          }),
                           ProgressPengajuan(),
                           Container(
                             padding: EdgeInsets.fromLTRB(15, 15, 15, 5),
@@ -431,67 +524,6 @@ class _ProgressPengajuanState extends State<ProgressPengajuan> {
   }
 }
 
-class ListMenuApproval extends StatefulWidget {
-  _ListMenuApprovalState createState() => _ListMenuApprovalState();
-}
-
-class _ListMenuApprovalState extends State<ListMenuApproval> {
-  @override
-  void initState() {
-    BlocProvider.of<RoleApprovalBloc>(context).add(InitEvent());
-    super.initState();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return BlocBuilder<RoleApprovalBloc, BaseState>(builder: (context, state) {
-      if (state is RoleApprovalState) {
-        if (state.roleApproval.isEmpty)
-          return Container();
-        else {
-          return Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Container(
-                  padding: EdgeInsets.fromLTRB(15, 10, 15, 0),
-                  child: Text(
-                    "Approval",
-                    style: GoogleFonts.montserrat(
-                        fontWeight: FontWeight.w700,
-                        fontSize: 18,
-                        color: Color(0xFF555555)),
-                  ),
-                ),
-                Container(
-                    padding: EdgeInsets.only(top: 5),
-                    child: (state.roleApproval.length == 1)
-                        ? Container(
-                          padding: EdgeInsets.symmetric(horizontal: 15),
-                          height: 145,
-                          child: MenuApproval(
-                              roleApproval: state.roleApproval.first,
-                            ),
-                        )
-                        : CarouselSlider(
-                            options: CarouselOptions(
-                              height: 145,
-                              enlargeCenterPage: true,
-                            ),
-                            items: state.roleApproval.map((i) {
-                              return MenuApproval(roleApproval: i);
-                            }).toList(),
-                          ))
-              ]);
-        }
-      } else
-        return Container(
-            margin: EdgeInsets.only(top: 15, bottom: 15),
-            alignment: Alignment.center,
-            child: CircularProgressIndicator());
-    });
-  }
-}
-
 class MenuApproval extends StatelessWidget {
   final RoleApproval roleApproval;
   MenuApproval({this.roleApproval});
@@ -499,87 +531,56 @@ class MenuApproval extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      child: GestureDetector(
-        onTap: () {
-          Navigator.push(context, MaterialPageRoute(builder: (context) {
-            return ListApproval(
-              idRoleApproval: roleApproval.idApproval,
-              namaRoleApproval: roleApproval.namaApproval,
-            );
-          }));
-        },
-        child: Container(
-          padding: EdgeInsets.only(left: 15, right: 15),
-          decoration: BoxDecoration(
-              color: Color(0xFF2B4D66),
-              borderRadius: BorderRadius.circular(15)),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Flexible(
-                flex: 3,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Row(
-                      children: [
-                        Text(
-                            (roleApproval.kasbonCount +
-                                    roleApproval.reimburseCount)
-                                .toString(),
-                            style: GoogleFonts.montserrat(
-                                color: Color(0xFFE1F9F2),
-                                fontSize: 75,
-                                fontWeight: FontWeight.w700)),
-                        Container(
-                          padding: EdgeInsets.fromLTRB(5, 20, 0, 0),
-                          child: Image(
-                              image: AssetImage("images/jumlah_approval.png")),
-                        ),
-                      ],
-                    ),
-                    Container(
-                      child: Text("Pengajuan menunggu disetujui oleh :",
-                          style: GoogleFonts.montserrat(
-                              color: Color(0xFFE1F9F2),
-                              fontSize: 14,
-                              fontWeight: FontWeight.w700),
-                          textAlign: TextAlign.left,
-                          overflow: TextOverflow.clip),
-                    ),
-                  ],
-                ),
-              ),
-              Flexible(
-                flex: 2,
-                child: Column(
-                  children: [
-                    Container(
-                      padding: EdgeInsets.only(top: 15, bottom: 2),
+        padding: EdgeInsets.only(left: 15, right: 15),
+        decoration: BoxDecoration(
+            color: Color(0xFF2B4D66), borderRadius: BorderRadius.circular(15)),
+        child:
+            Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
+          Flexible(
+              flex: 3,
+              child: ListView(children: [
+                Row(children: [
+                  Text(
+                      (roleApproval.kasbonCount + roleApproval.reimburseCount)
+                          .toString(),
+                      style: GoogleFonts.montserrat(
+                          color: Color(0xFFE1F9F2),
+                          fontSize: 75,
+                          fontWeight: FontWeight.w700)),
+                  Container(
+                      padding: EdgeInsets.fromLTRB(5, 20, 0, 0),
                       child: Image(
-                        image: AssetImage(
-                            "images/" + roleApproval.namaApproval + ".png"),
-                        width: 80,
-                        height: 80,
-                      ),
-                    ),
-                    Container(
-                      child: Text(roleApproval.namaApproval,
-                          style: GoogleFonts.montserrat(
-                              color: Color(0xFFE1F9F2),
-                              fontSize: 20,
-                              fontWeight: FontWeight.w700),
-                          textAlign: TextAlign.left,
-                          overflow: TextOverflow.clip),
-                    )
-                  ],
-                ),
-              )
-            ],
-          ),
-        ),
-      ),
-    );
+                          image: AssetImage("images/jumlah_approval.png")))
+                ]),
+                Text("Pengajuan menunggu disetujui oleh :",
+                    style: GoogleFonts.montserrat(
+                        color: Color(0xFFE1F9F2),
+                        fontSize: 14,
+                        fontWeight: FontWeight.w700),
+                    textAlign: TextAlign.left,
+                    overflow: TextOverflow.clip)
+              ])),
+          Flexible(
+              flex: 2,
+              child: Column(children: [
+                Container(
+                    padding: EdgeInsets.only(top: 15, bottom: 2),
+                    child: Image(
+                      image: AssetImage(
+                          "images/" + roleApproval.namaApproval + ".png"),
+                      width: 80,
+                      height: 80,
+                    )),
+                Container(
+                    child: Text(roleApproval.namaApproval,
+                        style: GoogleFonts.montserrat(
+                            color: Color(0xFFE1F9F2),
+                            fontSize: 20,
+                            fontWeight: FontWeight.w700),
+                        textAlign: TextAlign.left,
+                        overflow: TextOverflow.clip))
+              ]))
+        ]));
   }
 }
 

@@ -7,8 +7,7 @@ import 'package:uang_saku/bloc/bloc.dart';
 import 'package:uang_saku/bloc/event/approval_event.dart';
 import 'package:intl/intl.dart';
 import 'package:uang_saku/bloc/event/reimburse_event.dart';
-import 'package:uang_saku/bloc/list_approval._reimburse.dart';
-import 'package:uang_saku/bloc/list_reimburse_bloc.dart';
+import 'package:uang_saku/bloc/reimburse_bloc.dart';
 import 'package:uang_saku/bloc/state/list_reimburse_state.dart';
 import 'package:uang_saku/model/body_post_approval.dart';
 import 'package:uang_saku/ui/custom_widgets/custom_card.dart';
@@ -28,7 +27,7 @@ class DetailsApprovalReimburse extends StatefulWidget {
 class _DetailsApprovalReimburseState extends State<DetailsApprovalReimburse> {
   @override
   void initState() {
-    BlocProvider.of<ListReimburseBloc>(context)
+    BlocProvider.of<ReimburseBloc>(context)
         .add(GetReimburseEvent(id: widget.id));
     super.initState();
   }
@@ -50,12 +49,12 @@ class _DetailsApprovalReimburseState extends State<DetailsApprovalReimburse> {
             IconButton(
                 icon: Icon(Icons.cancel_outlined),
                 onPressed: () {
-                  BlocProvider.of<ListReimburseBloc>(context).add(InitEvent());
+                  BlocProvider.of<ReimburseBloc>(context).add(InitEvent());
                   Navigator.pop(context);
                 })
           ],
         ),
-        body: BlocConsumer<ListReimburseBloc, BaseState>(
+        body: BlocConsumer<ReimburseBloc, BaseState>(
           listener: (context, state) {
             if (state is SuccesState) {
               Scaffold.of(context).showSnackBar(SnackBar(
@@ -450,15 +449,7 @@ class _DetailsApprovalReimburseState extends State<DetailsApprovalReimburse> {
                               child: RaisedButton(
                                 elevation: 2,
                                 onPressed: () {
-                                  BlocProvider.of<ListApprovalReimburseBloc>(
-                                          context)
-                                      .add(PostApprovalReimburseEvent(
-                                          idRoleApproval: widget.idRoleApproval,
-                                          bodyApproval: BodyPostApproval(
-                                              idPengajuanReimburse: widget.id,
-                                              catatan: "nocat",
-                                              status: "setuju")));
-                                  BlocProvider.of<ListReimburseBloc>(context)
+                                  BlocProvider.of<ReimburseBloc>(context)
                                       .add(PostApprovalReimburseEvent(
                                           idRoleApproval: widget.idRoleApproval,
                                           bodyApproval: BodyPostApproval(

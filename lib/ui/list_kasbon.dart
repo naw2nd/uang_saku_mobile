@@ -14,7 +14,7 @@ class ListKasbon extends StatefulWidget {
 class _ListKasbonState extends State<ListKasbon> {
   @override
   void initState() {
-    BlocProvider.of<ListKasbonBloc>(context).add(InitEvent());
+    BlocProvider.of<KasbonBloc>(context).add(KasbonEvent());
     super.initState();
   }
 
@@ -83,8 +83,7 @@ class _ListKasbonState extends State<ListKasbon> {
                                     fontSize: 12))),
                       ],
                     )),
-                BlocBuilder<ListKasbonBloc, BaseState>(
-                    builder: (context, state) {
+                BlocBuilder<KasbonBloc, BaseState>(builder: (context, state) {
                   if (state is ListKasbonState) {
                     if (state.kasbon.isNotEmpty) {
                       List<Widget> list = [];
@@ -98,7 +97,8 @@ class _ListKasbonState extends State<ListKasbon> {
                                     MaterialPageRoute(builder: (context) {
                                   return DetailsPengajuanKasbon(
                                       id: element.idPengajuanKasbon);
-                                }));
+                                }))
+                                  ..whenComplete(() => initState());
                               },
                               child: CustomCard(
                                   container: Container(

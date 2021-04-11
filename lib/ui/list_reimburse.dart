@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:uang_saku/bloc/bloc.dart';
-import 'package:uang_saku/bloc/list_reimburse_bloc.dart';
+import 'package:uang_saku/bloc/event/reimburse_event.dart';
+import 'package:uang_saku/bloc/reimburse_bloc.dart';
 import 'package:uang_saku/bloc/state/list_reimburse_state.dart';
 import 'package:intl/intl.dart';
 import 'custom_widgets/custom_card.dart';
@@ -16,7 +17,7 @@ class ListReimburse extends StatefulWidget {
 class _ListReimburseState extends State<ListReimburse> {
   @override
   void initState() {
-    BlocProvider.of<ListReimburseBloc>(context).add(InitEvent());
+    BlocProvider.of<ReimburseBloc>(context).add(ReimburseEvent());
     super.initState();
   }
 
@@ -85,7 +86,7 @@ class _ListReimburseState extends State<ListReimburse> {
                                     fontSize: 12))),
                       ],
                     )),
-                BlocBuilder<ListReimburseBloc, BaseState>(
+                BlocBuilder<ReimburseBloc, BaseState>(
                     builder: (context, state) {
                   if (state is ListReimburseState) {
                     if (state.reimburse.isNotEmpty) {
@@ -100,7 +101,8 @@ class _ListReimburseState extends State<ListReimburse> {
                                     MaterialPageRoute(builder: (context) {
                                   return DetailsPengajuanReimburse(
                                       id: element.idPengajuanReimburse);
-                                }));
+                                }))
+                                  ..whenComplete(() => initState());
                               },
                               child: CustomCard(
                                   container: Container(

@@ -4,7 +4,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:uang_saku/bloc/bloc.dart';
 import 'package:intl/intl.dart';
 import 'package:uang_saku/bloc/event/reimburse_event.dart';
-import 'package:uang_saku/bloc/list_reimburse_bloc.dart';
+import 'package:uang_saku/bloc/reimburse_bloc.dart';
 import 'package:uang_saku/bloc/state/list_reimburse_state.dart';
 import 'package:uang_saku/ui/custom_widgets/custom_card.dart';
 import 'package:uang_saku/ui/custom_widgets/item_rincian.dart';
@@ -21,7 +21,7 @@ class DetailsPengajuanReimburse extends StatefulWidget {
 class _DetailsPengajuanReimburseState extends State<DetailsPengajuanReimburse> {
   @override
   void initState() {
-    BlocProvider.of<ListReimburseBloc>(context)
+    BlocProvider.of<ReimburseBloc>(context)
         .add(GetReimburseEvent(id: widget.id));
     super.initState();
   }
@@ -43,12 +43,12 @@ class _DetailsPengajuanReimburseState extends State<DetailsPengajuanReimburse> {
             IconButton(
                 icon: Icon(Icons.cancel_outlined),
                 onPressed: () {
-                  BlocProvider.of<ListReimburseBloc>(context).add(InitEvent());
+                  BlocProvider.of<ReimburseBloc>(context).add(InitEvent());
                   Navigator.pop(context);
                 })
           ],
         ),
-        body: BlocBuilder<ListReimburseBloc, BaseState>(
+        body: BlocBuilder<ReimburseBloc, BaseState>(
           builder: (_, state) {
             if (state is ReimburseState) {
               List<Widget> listPelaksana = [];

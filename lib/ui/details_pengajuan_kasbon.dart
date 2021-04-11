@@ -20,7 +20,7 @@ class _DetailsPengajuanKasbonState extends State<DetailsPengajuanKasbon> {
 
   @override
   void initState() {
-    BlocProvider.of<ListKasbonBloc>(context).add(GetKasbonEvent(id: widget.id));
+    BlocProvider.of<KasbonBloc>(context).add(GetKasbonEvent(id: widget.id));
     super.initState();
   }
 
@@ -41,12 +41,12 @@ class _DetailsPengajuanKasbonState extends State<DetailsPengajuanKasbon> {
             IconButton(
                 icon: Icon(Icons.cancel_outlined),
                 onPressed: () {
-                  BlocProvider.of<ListKasbonBloc>(context).add(InitEvent());
+                  BlocProvider.of<KasbonBloc>(context).add(InitEvent());
                   Navigator.pop(context);
                 })
           ],
         ),
-        body: BlocBuilder<ListKasbonBloc, BaseState>(
+        body: BlocBuilder<KasbonBloc, BaseState>(
           builder: (_, state) {
             if (state is KasbonState) {
               List<Widget> listPelaksana = [];

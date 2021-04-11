@@ -4,8 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:uang_saku/bloc/bloc.dart';
 import 'package:uang_saku/bloc/event/approval_event.dart';
-import 'package:uang_saku/bloc/list_approval._reimburse.dart';
-import 'package:uang_saku/bloc/list_approval_kasbon._bloc.dart';
+import 'package:uang_saku/bloc/reimburse_bloc.dart';
 import 'package:uang_saku/bloc/state/approval_state.dart';
 import 'package:uang_saku/model/models.dart';
 import 'package:uang_saku/ui/details_approval_kasbon.dart';
@@ -23,21 +22,29 @@ class ListApproval extends StatefulWidget {
 }
 
 class _ListApprovalState extends State<ListApproval> {
+  // @override
+  // void didChangeDependencies() {
+  //   initState();
+  //   // TODO: implement didChangeDependencies
+  //   super.didChangeDependencies();
+  // }
   @override
   void initState() {
     print("init event");
-    BlocProvider.of<ListApprovalKasbonBloc>(context).add(
-        GetApprovalPengajuanEvent(
-            idRoleApproval: widget.idRoleApproval,
-            bodyApproval: BodyGetApproval(status: "aktif", tipe: "pengajuan"),
-            jenisPengajuan: "Kasbon"));
-    BlocProvider.of<ListApprovalReimburseBloc>(context).add(
-        GetApprovalPengajuanEvent(
-            idRoleApproval: widget.idRoleApproval,
-            bodyApproval: BodyGetApproval(status: "aktif", tipe: "pengajuan"),
-            jenisPengajuan: "Reimburse"));
+    BlocProvider.of<KasbonBloc>(context).add(GetApprovalPengajuanEvent(
+        idRoleApproval: widget.idRoleApproval,
+        bodyApproval: BodyGetApproval(status: "aktif", tipe: "pengajuan"),
+        jenisPengajuan: "Kasbon"));
+    BlocProvider.of<ReimburseBloc>(context).add(GetApprovalPengajuanEvent(
+        idRoleApproval: widget.idRoleApproval,
+        bodyApproval: BodyGetApproval(status: "aktif", tipe: "pengajuan"),
+        jenisPengajuan: "Reimburse"));
     super.initState();
   }
+
+initEvent(){
+  
+}
 
   @override
   Widget build(BuildContext context) {
@@ -118,15 +125,138 @@ class _ListApprovalState extends State<ListApproval> {
                                           fontSize: 12))),
                             ],
                           )),
-                      BlocBuilder<ListApprovalKasbonBloc, BaseState>(
-                          builder: (context, state) {
+                      BlocBuilder<KasbonBloc, BaseState>(builder: (_, state) {
                         if (state is ListApprovalPengajuanState) {
                           if (state.listApprovalPengajuan.isNotEmpty) {
-                            return ListViewApproval(
-                                jenisPengajuan: "Kasbon",
-                                listApprovalPengajuan:
-                                    state.listApprovalPengajuan,
-                                idRoleApproval: widget.idRoleApproval);
+                            List<Widget> list = [];
+                            state.listApprovalPengajuan.forEach((element) {
+                              list.add(Container(
+                                  margin: EdgeInsets.only(bottom: 10),
+                                  padding: EdgeInsets.symmetric(horizontal: 15),
+                                  child: GestureDetector(
+                                    onTap: () {
+                                      Navigator.push(context,
+                                          MaterialPageRoute(builder: (context) {
+                                        return DetailsApprovalKasbon(
+                                            id: element.idPengajuanKasbon,
+                                            idRoleApproval:
+                                                widget.idRoleApproval);
+                                      }))..whenComplete(() => initState());
+                                    },
+                                    child: CustomCard(
+                                        container: Container(
+                                      child: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            Flexible(
+                                                flex: 2,
+                                                child: Image(
+                                                    image: AssetImage(
+                                                        "images/send-file-download.png"),
+                                                    width: 31,
+                                                    height: 31)),
+                                            Flexible(
+                                              flex: 15,
+                                              child: Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment
+                                                        .spaceBetween,
+                                                children: [
+                                                  Flexible(
+                                                      flex: 10,
+                                                      child: Column(
+                                                        crossAxisAlignment:
+                                                            CrossAxisAlignment
+                                                                .start,
+                                                        children: [
+                                                          Container(
+                                                              margin: EdgeInsets
+                                                                  .only(
+                                                                      bottom:
+                                                                          5),
+                                                              child: Text(
+                                                                element.tujuan,
+                                                                overflow:
+                                                                    TextOverflow
+                                                                        .ellipsis,
+                                                                style: GoogleFonts.roboto(
+                                                                    fontWeight:
+                                                                        FontWeight
+                                                                            .w800,
+                                                                    fontSize:
+                                                                        14),
+                                                              )),
+                                                          Text(
+                                                            "id kategori = " +
+                                                                element
+                                                                    .idKategoriPengajuan
+                                                                    .toString(),
+                                                            overflow:
+                                                                TextOverflow
+                                                                    .ellipsis,
+                                                          )
+                                                        ],
+                                                      )),
+                                                  Flexible(
+                                                      flex: 6,
+                                                      child: Column(
+                                                        crossAxisAlignment:
+                                                            CrossAxisAlignment
+                                                                .end,
+                                                        children: [
+                                                          Container(
+                                                            margin:
+                                                                EdgeInsets.only(
+                                                                    bottom: 5),
+                                                            child: Text(
+                                                              DateFormat.yMMMd()
+                                                                  .format(element
+                                                                      .tglPengajuan),
+                                                              overflow:
+                                                                  TextOverflow
+                                                                      .ellipsis,
+                                                              style: GoogleFonts.montserrat(
+                                                                  fontSize: 12,
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .w600,
+                                                                  color: Color(
+                                                                      0xFF6f96b0)),
+                                                            ),
+                                                          ),
+                                                          Text(
+                                                            "Rp" +
+                                                                NumberFormat.currency(
+                                                                        locale:
+                                                                            "eu",
+                                                                        symbol:
+                                                                            "")
+                                                                    .format(element
+                                                                        .nominalPencairan),
+                                                            overflow:
+                                                                TextOverflow
+                                                                    .ellipsis,
+                                                            style: GoogleFonts
+                                                                .montserrat(
+                                                                    fontSize:
+                                                                        13,
+                                                                    fontWeight:
+                                                                        FontWeight
+                                                                            .w500,
+                                                                    color: Color(
+                                                                        0xFF58b84b)),
+                                                          )
+                                                        ],
+                                                      )),
+                                                ],
+                                              ),
+                                            )
+                                          ]),
+                                    )),
+                                  )));
+                            });
+                            return Expanded(child: ListView(children: list));
                           } else {
                             return Container(
                                 padding: EdgeInsets.only(top: 200),
@@ -167,24 +297,143 @@ class _ListApprovalState extends State<ListApproval> {
                                           fontSize: 12))),
                             ],
                           )),
-                      BlocBuilder<ListApprovalReimburseBloc, BaseState>(
-                          builder: (context, state) {
+                      BlocBuilder<ReimburseBloc, BaseState>(
+                          builder: (_, state) {
                         if (state is ListApprovalPengajuanState) {
                           if (state.listApprovalPengajuan.isNotEmpty) {
-                            return ListViewApproval(
-                              jenisPengajuan: "Reimburse",
-                              listApprovalPengajuan:
-                                  state.listApprovalPengajuan,
-                              idRoleApproval: widget.idRoleApproval,
-                            );
+                            List<Widget> list = [];
+                            state.listApprovalPengajuan.forEach((element) {
+                              list.add(Container(
+                                  margin: EdgeInsets.only(bottom: 10),
+                                  padding: EdgeInsets.symmetric(horizontal: 15),
+                                  child: GestureDetector(
+                                      onTap: () {
+                                        Navigator.push(context,
+                                            MaterialPageRoute(
+                                                builder: (context) {
+                                          return DetailsApprovalReimburse(
+                                              id: element.idPengajuanReimburse,
+                                              idRoleApproval:
+                                                  widget.idRoleApproval);
+                                        }))..whenComplete(() => initState());
+                                      },
+                                      child: CustomCard(
+                                          container: Container(
+                                              child: Row(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment
+                                                          .spaceBetween,
+                                                  children: [
+                                            Flexible(
+                                                flex: 2,
+                                                child: Image(
+                                                    image: AssetImage(
+                                                        "images/send-file-download.png"),
+                                                    width: 31,
+                                                    height: 31)),
+                                            Flexible(
+                                                flex: 15,
+                                                child: Row(
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment
+                                                            .spaceBetween,
+                                                    children: [
+                                                      Flexible(
+                                                          flex: 10,
+                                                          child: Column(
+                                                            crossAxisAlignment:
+                                                                CrossAxisAlignment
+                                                                    .start,
+                                                            children: [
+                                                              Container(
+                                                                  margin: EdgeInsets
+                                                                      .only(
+                                                                          bottom:
+                                                                              5),
+                                                                  child: Text(
+                                                                    element
+                                                                        .tujuan,
+                                                                    overflow:
+                                                                        TextOverflow
+                                                                            .ellipsis,
+                                                                    style: GoogleFonts.roboto(
+                                                                        fontWeight:
+                                                                            FontWeight
+                                                                                .w800,
+                                                                        fontSize:
+                                                                            14),
+                                                                  )),
+                                                              Text(
+                                                                "id kategori = " +
+                                                                    element
+                                                                        .idKategoriPengajuan
+                                                                        .toString(),
+                                                                overflow:
+                                                                    TextOverflow
+                                                                        .ellipsis,
+                                                              )
+                                                            ],
+                                                          )),
+                                                      Flexible(
+                                                          flex: 6,
+                                                          child: Column(
+                                                              crossAxisAlignment:
+                                                                  CrossAxisAlignment
+                                                                      .end,
+                                                              children: [
+                                                                Container(
+                                                                  margin: EdgeInsets
+                                                                      .only(
+                                                                          bottom:
+                                                                              5),
+                                                                  child: Text(
+                                                                    DateFormat
+                                                                            .yMMMd()
+                                                                        .format(
+                                                                            element.tglPengajuan),
+                                                                    overflow:
+                                                                        TextOverflow
+                                                                            .ellipsis,
+                                                                    style: GoogleFonts.montserrat(
+                                                                        fontSize:
+                                                                            12,
+                                                                        fontWeight:
+                                                                            FontWeight
+                                                                                .w600,
+                                                                        color: Color(
+                                                                            0xFF6f96b0)),
+                                                                  ),
+                                                                ),
+                                                                Text(
+                                                                  "Rp" +
+                                                                      NumberFormat.currency(
+                                                                              locale: "eu",
+                                                                              symbol: "")
+                                                                          .format(element.nominalRealisasi),
+                                                                  overflow:
+                                                                      TextOverflow
+                                                                          .ellipsis,
+                                                                  style: GoogleFonts.montserrat(
+                                                                      fontSize:
+                                                                          13,
+                                                                      fontWeight:
+                                                                          FontWeight
+                                                                              .w500,
+                                                                      color: Color(
+                                                                          0xFF58b84b)),
+                                                                )
+                                                              ]))
+                                                    ]))
+                                          ]))))));
+                            });
+                            return Expanded(child: ListView(children: list));
                           } else {
                             return Container(
                                 padding: EdgeInsets.only(top: 200),
                                 alignment: Alignment.center,
                                 child: Text(
-                                  "Approval yang menunggu disetujui masih Kosong",
-                                  style: GoogleFonts.montserrat(),
-                                ));
+                                    "Approval yang menunggu disetujui masih Kosong",
+                                    style: GoogleFonts.montserrat()));
                           }
                         } else
                           return Container(
@@ -197,120 +446,6 @@ class _ListApprovalState extends State<ListApproval> {
                 ]),
           )),
     );
-  }
-}
-
-class ListViewApproval extends StatefulWidget {
-  final String jenisPengajuan;
-  final List listApprovalPengajuan;
-  final int idRoleApproval;
-  ListViewApproval(
-      {this.jenisPengajuan, this.listApprovalPengajuan, this.idRoleApproval});
-  @override
-  _ListViewApprovalState createState() => _ListViewApprovalState();
-}
-
-class _ListViewApprovalState extends State<ListViewApproval> {
-  @override
-  Widget build(BuildContext context) {
-    List<Widget> list = [];
-    widget.listApprovalPengajuan.forEach((element) {
-      list.add(Container(
-          margin: EdgeInsets.only(bottom: 10),
-          padding: EdgeInsets.symmetric(horizontal: 15),
-          child: GestureDetector(
-            onTap: () {
-              if (widget.jenisPengajuan == "Reimburse")
-                Navigator.push(context, MaterialPageRoute(builder: (context) {
-                  return DetailsApprovalReimburse(
-                      id: element.idPengajuanReimburse,
-                      idRoleApproval: widget.idRoleApproval);
-                }));
-              else
-                Navigator.push(context, MaterialPageRoute(builder: (context) {
-                  return DetailsApprovalKasbon(
-                      id: element.idPengajuanKasbon,
-                      idRoleApproval: widget.idRoleApproval);
-                }));
-            },
-            child: CustomCard(
-                container: Container(
-              child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Flexible(
-                        flex: 2,
-                        child: Image(
-                          image: AssetImage("images/send-file-download.png"),
-                          width: 31,
-                          height: 31)),
-                    Flexible(
-                      flex: 15,
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Flexible(
-                              flex: 10,
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Container(
-                                      margin: EdgeInsets.only(bottom: 5),
-                                      child: Text(
-                                        element.tujuan,
-                                        overflow: TextOverflow.ellipsis,
-                                        style: GoogleFonts.roboto(
-                                            fontWeight: FontWeight.w800,
-                                            fontSize: 14),
-                                      )),
-                                  Text(
-                                    "id kategori = " +
-                                        element.idKategoriPengajuan.toString(),
-                                    overflow: TextOverflow.ellipsis,
-                                  )
-                                ],
-                              )),
-                          Flexible(
-                              flex: 6,
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.end,
-                                children: [
-                                  Container(
-                                    margin: EdgeInsets.only(bottom: 5),
-                                    child: Text(
-                                      DateFormat.yMMMd()
-                                          .format(element.tglPengajuan),
-                                      overflow: TextOverflow.ellipsis,
-                                      style: GoogleFonts.montserrat(
-                                          fontSize: 12,
-                                          fontWeight: FontWeight.w600,
-                                          color: Color(0xFF6f96b0)),
-                                    ),
-                                  ),
-                                  Text(
-                                    "Rp" +
-                                        NumberFormat.currency(
-                                                locale: "eu", symbol: "")
-                                            .format((widget.jenisPengajuan ==
-                                                    "Reimburse")
-                                                ? element.nominalRealisasi
-                                                : element.nominalPencairan),
-                                    overflow: TextOverflow.ellipsis,
-                                    style: GoogleFonts.montserrat(
-                                        fontSize: 13,
-                                        fontWeight: FontWeight.w500,
-                                        color: Color(0xFF58b84b)),
-                                  )
-                                ],
-                              )),
-                        ],
-                      ),
-                    )
-                  ]),
-            )),
-          )));
-    });
-    return Expanded(child: ListView(children: list));
   }
 }
 

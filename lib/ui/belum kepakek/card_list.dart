@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:uang_saku/bloc/bloc.dart';
-import 'package:uang_saku/bloc/list_reimburse_bloc.dart';
+import 'package:uang_saku/bloc/reimburse_bloc.dart';
 import 'package:uang_saku/bloc/state/list_reimburse_state.dart';
 import 'package:intl/intl.dart';
 
@@ -52,7 +52,7 @@ class _KasbonCardState extends State<KasbonCard> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<ListKasbonBloc, BaseState>(builder: (_, state) {
+    return BlocBuilder<KasbonBloc, BaseState>(builder: (_, state) {
       print("Bloc panggil");
       print(state);
       if (state is ListKasbonState) {
@@ -124,7 +124,7 @@ class _ReimburseCardState extends State<ReimburseCard> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<ListReimburseBloc, BaseState>(builder: (_, state) {
+    return BlocBuilder<ReimburseBloc, BaseState>(builder: (_, state) {
       print("Bloc panggil");
       print(state);
       if (state is ListReimburseState) {
