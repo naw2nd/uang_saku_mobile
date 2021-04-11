@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -9,9 +11,11 @@ import 'package:uang_saku/bloc/state/base_state.dart';
 import 'package:uang_saku/bloc/state/create_pengajuan_state.dart';
 import 'package:uang_saku/model/models.dart';
 import 'package:uang_saku/ui/custom_widgets/custom_card.dart';
-import 'package:uang_saku/ui/custom_widgets/custom_datepicker.dart';
 import 'package:uang_saku/ui/custom_widgets/custom_text_form_field.dart';
+import 'package:uang_saku/ui/custom_widgets/item_rincian.dart';
 import 'package:uang_saku/ui/detail_rincian_biaya.dart';
+import 'package:uang_saku/ui/main_page.dart';
+import 'package:uang_saku/ui/widgets/bottom_navbar.dart';
 import 'package:uang_saku/ui/widgets/form_rincian_biaya.dart';
 import 'package:dotted_border/dotted_border.dart';
 import 'package:intl/intl.dart';
@@ -26,26 +30,29 @@ class CreatePengajuan extends StatefulWidget {
 class _CreatePengajuanState extends State<CreatePengajuan> {
   var _colorTheme;
   List<String> _listJenisPencairan = ["Cash", "Transfer"];
-  List<TextEditingController> _listPelaksanaCtrl =
-      List<TextEditingController>();
-  List<Widget> _listPelakasana = List<Widget>();
-  List<RincianRealisasi> _listRincianRealisasi = List<RincianRealisasi>();
-  List<Widget> _listItemRincian = List<Widget>();
+  List<String> pelaksana = [];
+  List<TextEditingController> _listPelaksanaCtrl = [];
+  List<Widget> _listPelakasana = [];
+  List _listRincianBiaya = [];
+  List<Widget> _listItemRincian = [];
   TextEditingController _tujuanCtrl = TextEditingController();
   TextEditingController _catatanCtrl = TextEditingController();
   TextEditingController _tanggalMulaiCtrl = TextEditingController();
   TextEditingController _tanggalSelesaiCtrl = TextEditingController();
   KategoriPengajuan _selectedKategoriPengajuan;
   Perusahaan _selectedPerusahaan;
+  Department _selectedDepartment;
   Cabang _selectedCabang;
   String _selectedJenisPencairan;
   int _totalBiaya = 0;
+  DateTime _tglMulai;
+  DateTime _tglSelesai;
   final _formKey = GlobalKey<FormState>();
 
   @override
   void initState() {
-    context.read<CreatePengajuanBloc>().add(InitPengajuanEvent());
-    // context.read<CreateRincianBiayaBloc>().add(InitPengajuanEvent());
+    BlocProvider.of<CreatePengajuanBloc>(context).add(InitEvent());
+    BlocProvider.of<CreateRincianBiayaBloc>(context).add(EmptyEvent());
 
     if (widget.jenisPengajuan == "Reimburse")
       _colorTheme = Color(0xFF3AE3CE);
@@ -76,10 +83,6 @@ class _CreatePengajuanState extends State<CreatePengajuan> {
             IconButton(
                 icon: Icon(Icons.cancel_outlined),
                 onPressed: () {
-                  BlocProvider.of<CreatePengajuanBloc>(context)
-                      .add(CreateReimburseEvent());
-                  BlocProvider.of<CreateRincianBiayaBloc>(context)
-                      .add(CreateReimburseEvent());
                   Navigator.pop(context);
                 })
           ],
@@ -87,237 +90,326 @@ class _CreatePengajuanState extends State<CreatePengajuan> {
         body: SingleChildScrollView(
             child: Form(
           key: _formKey,
-          child:
-              BlocBuilder<CreatePengajuanBloc, BaseState>(builder: (_, state) {
+          child: BlocConsumer<CreatePengajuanBloc, BaseState>(
+              listener: (context, state) {
+            if (state is SuccesState) {
+              Scaffold.of(context).showSnackBar(SnackBar(
+                  content:
+                      Text(widget.jenisPengajuan + " berhasil dikirimkan")));
+              Timer(
+                  Duration(seconds: 2),
+                  () => Navigator.pushReplacement(context,
+                          MaterialPageRoute(builder: (context) {
+                        return BottomNavbar();
+                      })));
+              // Navigator.of(context, rootNavigator: true).pop(context));
+            } else if (state is ErrorState) {
+              Scaffold.of(context)
+                  .showSnackBar(SnackBar(content: Text(state.message)));
+              Timer(
+                  Duration(seconds: 2),
+                  () =>
+                      Navigator.of(context, rootNavigator: true).pop(context));
+            }
+          }, builder: (context, state) {
             if (state is CreatePengajuanState) {
-              // listItemRincian.clear();
-
               return Column(
                 children: [
-                  CustomCard(
-                    container: Container(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            "Detail Pengajuan",
-                            style: GoogleFonts.montserrat(
-                                fontWeight: FontWeight.w700,
-                                fontSize: 16,
-                                color: Color(0xFF555555)),
-                          ),
-                          CustomTextFormField(
-                            label: "Tujuan",
-                            validation: ["required"],
-                            controller: _tujuanCtrl,
-                          ),
-                          Container(
-                            margin: EdgeInsets.only(top: 7, bottom: 7),
-                            child: DropdownButtonFormField(
-                              decoration: InputDecoration(
-                                  isDense: true,
-                                  contentPadding: EdgeInsets.all(13),
-                                  labelText: "Kategori Pengajuan",
-                                  border: OutlineInputBorder(
-                                      borderRadius: BorderRadius.circular(10))),
-                              value: _selectedKategoriPengajuan,
-                              validator: (value) => (value == null)
-                                  ? "Kategori Pengajuan harus diisi"
-                                  : null,
-                              isDense: true,
-                              onChanged: (newValue) {
-                                setState(() {
-                                  _selectedKategoriPengajuan = newValue;
-                                });
-                              },
-                              items: state.listKategori.map((value) {
-                                return DropdownMenuItem(
-                                  value: value,
-                                  child: Text(value.namaKategoriPengajuan),
-                                );
-                              }).toList(),
+                  Container(
+                    padding: EdgeInsets.fromLTRB(15, 10, 15, 0),
+                    child: CustomCard(
+                      container: Container(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              "Detail Pengajuan",
+                              style: GoogleFonts.montserrat(
+                                  fontWeight: FontWeight.w700,
+                                  fontSize: 16,
+                                  color: Color(0xFF555555)),
                             ),
-                          ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: <Widget>[
-                              Flexible(
-                                  flex: 15,
-                                  child: CustomDatepicker(
-                                    controller: _tanggalMulaiCtrl,
-                                    label: "Tanggal Mulai",
-                                  )),
-                              Flexible(flex: 1, child: Container()),
-                              Flexible(
-                                  flex: 15,
-                                  child: CustomDatepicker(
-                                    controller: _tanggalSelesaiCtrl,
-                                    label: "Tanggal Selesai",
-                                    // start: (tanggalMulaiCtrl.text != "")
-                                    //     ? DateFormat('MMMM d, yyyy', 'en_US')
-                                    //         .parse(tanggalMulaiCtrl.text)
-                                    //     : null,
-                                  ))
-                            ],
-                          ),
-                          Container(
-                            margin: EdgeInsets.only(top: 7, bottom: 7),
-                            child: DropdownButtonFormField(
-                              decoration: InputDecoration(
-                                  isDense: true,
-                                  contentPadding: EdgeInsets.all(13),
-                                  labelText: "Perusahaan",
-                                  border: OutlineInputBorder(
-                                      borderRadius: BorderRadius.circular(10))),
-                              value: _selectedPerusahaan,
-                              validator: (value) => (value == null)
-                                  ? "Perusahaan harus diisi"
-                                  : null,
-                              isDense: true,
-                              onChanged: (newValue) {
-                                setState(() {
-                                  _selectedPerusahaan = newValue;
-                                });
-                              },
-                              items: state.listPerusahaan.map((value) {
-                                return DropdownMenuItem(
-                                  value: value,
-                                  child: Text(value.namaPerusahaan),
-                                );
-                              }).toList(),
+                            CustomTextFormField(
+                              label: "Tujuan",
+                              validation: ["required"],
+                              controller: _tujuanCtrl,
                             ),
-                          ),
-                          Container(
-                            margin: EdgeInsets.only(top: 7, bottom: 7),
-                            child: DropdownButtonFormField(
-                              decoration: InputDecoration(
-                                  isDense: true,
-                                  contentPadding: EdgeInsets.all(13),
-                                  labelText: "Cabang",
-                                  border: OutlineInputBorder(
-                                      borderRadius: BorderRadius.circular(10))),
-                              value: _selectedCabang,
-                              validator: (value) =>
-                                  (value == null) ? "Cabang harus diisi" : null,
-                              isDense: true,
-                              onChanged: (newValue) {
-                                setState(() {
-                                  _selectedCabang = newValue;
-                                });
-                              },
-                              items: state.listCabang.map((value) {
-                                return DropdownMenuItem(
-                                  value: value,
-                                  child: Text(value.namaCabang),
-                                );
-                              }).toList(),
+                            Container(
+                              margin: EdgeInsets.only(top: 7, bottom: 7),
+                              child: DropdownButtonFormField(
+                                decoration: InputDecoration(
+                                    isDense: true,
+                                    contentPadding: EdgeInsets.all(13),
+                                    labelText: "Kategori Pengajuan",
+                                    border: OutlineInputBorder(
+                                        borderRadius:
+                                            BorderRadius.circular(10))),
+                                value: _selectedKategoriPengajuan,
+                                validator: (value) => (value == null)
+                                    ? "Kategori Pengajuan harus diisi"
+                                    : null,
+                                isDense: true,
+                                onChanged: (newValue) {
+                                  setState(() {
+                                    _selectedKategoriPengajuan = newValue;
+                                  });
+                                },
+                                items: state.listKategori.map((value) {
+                                  return DropdownMenuItem(
+                                    value: value,
+                                    child: Text(value.namaKategoriPengajuan),
+                                  );
+                                }).toList(),
+                              ),
                             ),
-                          ),
-                          Container(
-                            margin: EdgeInsets.only(top: 7, bottom: 7),
-                            child: DropdownButtonFormField(
-                              decoration: InputDecoration(
-                                  isDense: true,
-                                  contentPadding: EdgeInsets.all(13),
-                                  labelText: "Jenis Pencairan",
-                                  border: OutlineInputBorder(
-                                      borderRadius: BorderRadius.circular(10))),
-                              value: _selectedJenisPencairan,
-                              validator: (value) => (value == null)
-                                  ? "Jenis Pencairan harus diisi"
-                                  : null,
-                              isDense: true,
-                              onChanged: (newValue) {
-                                setState(() {
-                                  _selectedJenisPencairan = newValue;
-                                });
-                              },
-                              items: _listJenisPencairan.map((value) {
-                                return DropdownMenuItem(
-                                  value: value,
-                                  child: Text(value),
-                                );
-                              }).toList(),
+                            Row(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: <Widget>[
+                                Flexible(
+                                    flex: 15,
+                                    child: Container(
+                                        margin:
+                                            EdgeInsets.only(top: 7, bottom: 7),
+                                        child: TextFormField(
+                                            readOnly: true,
+                                            controller: _tanggalMulaiCtrl,
+                                            validator: (value) => value.isEmpty
+                                                ? " Tgl Mulai harus diisi"
+                                                : null,
+                                            decoration: InputDecoration(
+                                                labelText: "Tanggal Mulai",
+                                                isDense: true,
+                                                border: OutlineInputBorder(
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            10))),
+                                            onTap: () {
+                                              _selectDate(
+                                                  context, _tglMulai, false);
+                                            }))),
+                                Flexible(flex: 1, child: Container()),
+                                Flexible(
+                                    flex: 15,
+                                    child: Container(
+                                      margin:
+                                          EdgeInsets.only(top: 7, bottom: 7),
+                                      child: TextFormField(
+                                          readOnly: true,
+                                          controller: _tanggalSelesaiCtrl,
+                                          validator: (value) => value.isEmpty
+                                              ? " Tgl Selesai harus diisi"
+                                              : null,
+                                          decoration: InputDecoration(
+                                              labelText: "Tanggal Selesai",
+                                              isDense: true,
+                                              border: OutlineInputBorder(
+                                                  borderRadius:
+                                                      BorderRadius.circular(
+                                                          10))),
+                                          onTap: () {
+                                            _selectDate(
+                                                context, _tglSelesai, true);
+                                          }),
+                                    ))
+                              ],
                             ),
-                          ),
-                        ],
+                            Container(
+                              margin: EdgeInsets.only(top: 7, bottom: 7),
+                              child: DropdownButtonFormField(
+                                decoration: InputDecoration(
+                                    isDense: true,
+                                    contentPadding: EdgeInsets.all(13),
+                                    labelText: "Perusahaan",
+                                    border: OutlineInputBorder(
+                                        borderRadius:
+                                            BorderRadius.circular(10))),
+                                value: _selectedPerusahaan,
+                                validator: (value) => (value == null)
+                                    ? "Perusahaan harus diisi"
+                                    : null,
+                                isDense: true,
+                                onChanged: (newValue) {
+                                  setState(() {
+                                    _selectedPerusahaan = newValue;
+                                  });
+                                },
+                                items: state.listPerusahaan.map((value) {
+                                  return DropdownMenuItem(
+                                    value: value,
+                                    child: Text(value.namaPerusahaan),
+                                  );
+                                }).toList(),
+                              ),
+                            ),
+                            Container(
+                              margin: EdgeInsets.only(top: 7, bottom: 7),
+                              child: DropdownButtonFormField(
+                                decoration: InputDecoration(
+                                    isDense: true,
+                                    contentPadding: EdgeInsets.all(13),
+                                    labelText: "Department",
+                                    border: OutlineInputBorder(
+                                        borderRadius:
+                                            BorderRadius.circular(10))),
+                                value: _selectedDepartment,
+                                validator: (value) => (value == null)
+                                    ? "Department harus diisi"
+                                    : null,
+                                isDense: true,
+                                onChanged: (newValue) {
+                                  setState(() {
+                                    _selectedDepartment = newValue;
+                                  });
+                                },
+                                items: state.listDepartment.map((value) {
+                                  return DropdownMenuItem(
+                                    value: value,
+                                    child: Text(value.namaDepartment),
+                                  );
+                                }).toList(),
+                              ),
+                            ),
+                            Container(
+                              margin: EdgeInsets.only(top: 7, bottom: 7),
+                              child: DropdownButtonFormField(
+                                decoration: InputDecoration(
+                                    isDense: true,
+                                    contentPadding: EdgeInsets.all(13),
+                                    labelText: "Cabang",
+                                    border: OutlineInputBorder(
+                                        borderRadius:
+                                            BorderRadius.circular(10))),
+                                value: _selectedCabang,
+                                validator: (value) => (value == null)
+                                    ? "Cabang harus diisi"
+                                    : null,
+                                isDense: true,
+                                onChanged: (newValue) {
+                                  setState(() {
+                                    _selectedCabang = newValue;
+                                  });
+                                },
+                                items: state.listCabang.map((value) {
+                                  return DropdownMenuItem(
+                                    value: value,
+                                    child: Text(value.namaCabang),
+                                  );
+                                }).toList(),
+                              ),
+                            ),
+                            Container(
+                              margin: EdgeInsets.only(top: 7, bottom: 7),
+                              child: DropdownButtonFormField(
+                                decoration: InputDecoration(
+                                    isDense: true,
+                                    contentPadding: EdgeInsets.all(13),
+                                    labelText: "Jenis Pencairan",
+                                    border: OutlineInputBorder(
+                                        borderRadius:
+                                            BorderRadius.circular(10))),
+                                value: _selectedJenisPencairan,
+                                validator: (value) => (value == null)
+                                    ? "Jenis Pencairan harus diisi"
+                                    : null,
+                                isDense: true,
+                                onChanged: (newValue) {
+                                  setState(() {
+                                    _selectedJenisPencairan = newValue;
+                                  });
+                                },
+                                items: _listJenisPencairan.map((value) {
+                                  return DropdownMenuItem(
+                                    value: value,
+                                    child: Text(value),
+                                  );
+                                }).toList(),
+                              ),
+                            ),
+                          ],
+                        ),
                       ),
                     ),
                   ),
-                  CustomCard(
-                    container: Container(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            "Pelaksana",
-                            style: GoogleFonts.montserrat(
-                                fontWeight: FontWeight.w700,
-                                fontSize: 16,
-                                color: Color(0xFF555555)),
-                          ),
-                          Container(
-                            margin: EdgeInsets.only(bottom: 7),
-                            child: Column(
-                              children: _listPelakasana,
+                  Container(
+                    padding: EdgeInsets.fromLTRB(15, 15, 15, 0),
+                    child: CustomCard(
+                      container: Container(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              "Pelaksana",
+                              style: GoogleFonts.montserrat(
+                                  fontWeight: FontWeight.w700,
+                                  fontSize: 16,
+                                  color: Color(0xFF555555)),
                             ),
-                          ),
-                          DottedBorder(
-                            color: Colors.grey,
-                            dashPattern: [5, 5],
-                            borderType: BorderType.RRect,
-                            radius: Radius.circular(10),
-                            strokeWidth: 1,
-                            child: ClipRRect(
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(10)),
-                              child: Container(
-                                height: 45,
-                                child: Builder(
-                                  builder: (context) => RaisedButton(
-                                    shape: RoundedRectangleBorder(
-                                        borderRadius:
-                                            BorderRadius.circular(10)),
-                                    padding: EdgeInsets.all(0),
-                                    elevation: 0,
-                                    onPressed: () {
-                                      bool empty = false;
-                                      _listPelaksanaCtrl.forEach((element) {
-                                        if (element.text == "") empty = true;
-                                      });
-                                      if (empty) {
-                                        Scaffold.of(context).showSnackBar(SnackBar(
-                                            content: Text(
-                                                "Harap mengisi form pelaksana yang masih kosong")));
-                                      } else {
-                                        _listPelaksanaCtrl
-                                            .add(TextEditingController());
-                                        setState(() {
-                                          _listPelakasana =
-                                              _generateListFormPelaksana();
+                            Container(
+                              margin: EdgeInsets.only(bottom: 7),
+                              child: Column(
+                                children: _listPelakasana,
+                              ),
+                            ),
+                            DottedBorder(
+                              color: Colors.grey,
+                              dashPattern: [5, 5],
+                              borderType: BorderType.RRect,
+                              radius: Radius.circular(10),
+                              strokeWidth: 1,
+                              child: ClipRRect(
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(10)),
+                                child: Container(
+                                  height: 45,
+                                  child: Builder(
+                                    builder: (context) => RaisedButton(
+                                      shape: RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(10)),
+                                      padding: EdgeInsets.all(0),
+                                      elevation: 0,
+                                      onPressed: () {
+                                        bool empty = false;
+                                        _listPelaksanaCtrl.forEach((element) {
+                                          if (element.text == "") empty = true;
                                         });
-                                      }
-                                    },
-                                    child: Ink(
-                                      color: Colors.white,
-                                      child: Container(
-                                        alignment: Alignment.center,
-                                        child: Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.center,
-                                          children: [
-                                            Text(
-                                              "Tambahkan Pelaksana ",
-                                              style: GoogleFonts.montserrat(
-                                                  color: Colors.grey,
-                                                  fontWeight: FontWeight.w500),
-                                            ),
-                                            Icon(
-                                              Icons.person_add_alt_1,
-                                              size: 20,
-                                              color: Colors.grey,
-                                            ),
-                                          ],
+                                        if (empty) {
+                                          Scaffold.of(context).showSnackBar(
+                                              SnackBar(
+                                                  content: Text(
+                                                      "Harap mengisi form pelaksana yang masih kosong")));
+                                        } else {
+                                          _listPelaksanaCtrl
+                                              .add(TextEditingController());
+                                          setState(() {
+                                            _listPelakasana =
+                                                _generateListFormPelaksana();
+                                          });
+                                        }
+                                      },
+                                      child: Ink(
+                                        color: Colors.white,
+                                        child: Container(
+                                          alignment: Alignment.center,
+                                          child: Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.center,
+                                            children: [
+                                              Text(
+                                                "Tambahkan Pelaksana ",
+                                                style: GoogleFonts.montserrat(
+                                                    color: Colors.grey,
+                                                    fontWeight:
+                                                        FontWeight.w500),
+                                              ),
+                                              Icon(
+                                                Icons.person_add_alt_1,
+                                                size: 20,
+                                                color: Colors.grey,
+                                              ),
+                                            ],
+                                          ),
                                         ),
                                       ),
                                     ),
@@ -325,154 +417,175 @@ class _CreatePengajuanState extends State<CreatePengajuan> {
                                 ),
                               ),
                             ),
-                          ),
-                        ],
+                          ],
+                        ),
                       ),
                     ),
                   ),
                   BlocBuilder<CreateRincianBiayaBloc, BaseState>(
-                      builder: (_, stateRincian) {
-                    if (stateRincian is RincianBiayaState) {
-                      if (!_listRincianRealisasi
-                          .contains(stateRincian.rincianRealisasi)) {
-                        _listRincianRealisasi
-                            .add(stateRincian.rincianRealisasi);
-                        _totalBiaya += stateRincian.rincianRealisasi.total;
-                      }
-                    }
+                      builder: (context, stateRincian) {
                     _listItemRincian.clear();
-                    _listRincianRealisasi.forEach((element) {
+                    if (stateRincian is RincianBiayaState) {
+                      print("state masuk");
+                      if (!_listRincianBiaya
+                          .contains(stateRincian.rincianBiaya)) {
+                        _listRincianBiaya.add(stateRincian.rincianBiaya);
+                        _totalBiaya += stateRincian.rincianBiaya.total;
+                      }
+                    } else if (stateRincian is EmptyState) {
+                      _listRincianBiaya.clear();
+                      _totalBiaya = 0;
+                    } else if (stateRincian is DeleteRincianBiayaState) {
+                      _totalBiaya -= stateRincian.rincianBiaya.total;
+                      _listRincianBiaya.remove(stateRincian.rincianBiaya);
+                    }
+                    _listRincianBiaya.forEach((element) {
                       _listItemRincian.add(ItemRincian(
-                        rincianRealisasi: element,
+                        jenisPengajuan: widget.jenisPengajuan,
+                        rincianBiaya: element,
                       ));
                     });
-                    print("obj" + _listRincianRealisasi.length.toString());
-                    print("wdg" + _listItemRincian.length.toString());
                     return Column(
                       children: [
-                        CustomCard(
-                          container: Container(
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  "Rincian Biaya",
-                                  style: GoogleFonts.montserrat(
-                                      fontWeight: FontWeight.w700,
-                                      fontSize: 16,
-                                      color: Color(0xFF555555)),
-                                ),
-                                Container(
-                                  margin: EdgeInsets.only(bottom: 7),
-                                  child: (_listItemRincian.isNotEmpty)
-                                      ? Column(children: _listItemRincian)
-                                      : Container(),
-                                ),
-                                DottedBorder(
-                                  color: Colors.grey,
-                                  dashPattern: [5, 5],
-                                  borderType: BorderType.RRect,
-                                  radius: Radius.circular(10),
-                                  strokeWidth: 1,
-                                  child: ClipRRect(
-                                    borderRadius:
-                                        BorderRadius.all(Radius.circular(10)),
-                                    child: Container(
-                                      height: 45,
-                                      child: RaisedButton(
-                                        shape: RoundedRectangleBorder(
-                                            borderRadius:
-                                                BorderRadius.circular(10)),
-                                        padding: EdgeInsets.all(0),
-                                        elevation: 0,
-                                        onPressed: () {
-                                          return showDialog(
-                                              context: context,
-                                              barrierColor: Colors.black45,
-                                              builder: (BuildContext context) {
-                                                return Dialog(
-                                                    shape:
-                                                        RoundedRectangleBorder(
-                                                            borderRadius:
-                                                                BorderRadius
-                                                                    .circular(
-                                                                        10)),
-                                                    child: FormRincianBiaya(
-                                                      jenisPengajuan:
-                                                          widget.jenisPengajuan,
-                                                    ));
-                                              });
-                                        },
-                                        child: Ink(
-                                          color: Colors.white,
-                                          child: Container(
-                                            alignment: Alignment.center,
-                                            child: Row(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.center,
-                                              children: [
-                                                Text(
-                                                  "Tambahkan Rincian Biaya ",
-                                                  style: GoogleFonts.montserrat(
-                                                      color: Colors.grey,
-                                                      fontWeight:
-                                                          FontWeight.w500),
-                                                ),
-                                                Icon(
-                                                  Icons.add_link,
-                                                  size: 20,
-                                                  color: Colors.grey,
-                                                ),
-                                              ],
+                        Container(
+                          padding: EdgeInsets.fromLTRB(15, 15, 15, 0),
+                          child: CustomCard(
+                            container: Container(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    "Rincian Biaya",
+                                    style: GoogleFonts.montserrat(
+                                        fontWeight: FontWeight.w700,
+                                        fontSize: 16,
+                                        color: Color(0xFF555555)),
+                                  ),
+                                  Container(
+                                    margin: EdgeInsets.only(bottom: 7),
+                                    child: (_listItemRincian.isNotEmpty)
+                                        ? Column(children: _listItemRincian)
+                                        : Container(),
+                                  ),
+                                  DottedBorder(
+                                    color: Colors.grey,
+                                    dashPattern: [5, 5],
+                                    borderType: BorderType.RRect,
+                                    radius: Radius.circular(10),
+                                    strokeWidth: 1,
+                                    child: ClipRRect(
+                                      borderRadius:
+                                          BorderRadius.all(Radius.circular(10)),
+                                      child: Container(
+                                        height: 45,
+                                        child: RaisedButton(
+                                          shape: RoundedRectangleBorder(
+                                              borderRadius:
+                                                  BorderRadius.circular(10)),
+                                          padding: EdgeInsets.all(0),
+                                          elevation: 0,
+                                          onPressed: () {
+                                            return showDialog(
+                                                context: context,
+                                                barrierColor: Colors.black45,
+                                                builder:
+                                                    (BuildContext context) {
+                                                  return Dialog(
+                                                      shape:
+                                                          RoundedRectangleBorder(
+                                                              borderRadius:
+                                                                  BorderRadius
+                                                                      .circular(
+                                                                          10)),
+                                                      child: FormRincianBiaya(
+                                                        jenisPengajuan: widget
+                                                            .jenisPengajuan,
+                                                      ));
+                                                });
+                                          },
+                                          child: Ink(
+                                            color: Colors.white,
+                                            child: Container(
+                                              alignment: Alignment.center,
+                                              child: Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.center,
+                                                children: [
+                                                  Text(
+                                                    "Tambahkan Rincian Biaya ",
+                                                    style:
+                                                        GoogleFonts.montserrat(
+                                                            color: Colors.grey,
+                                                            fontWeight:
+                                                                FontWeight
+                                                                    .w500),
+                                                  ),
+                                                  Icon(
+                                                    Icons.add_link,
+                                                    size: 20,
+                                                    color: Colors.grey,
+                                                  ),
+                                                ],
+                                              ),
                                             ),
                                           ),
                                         ),
                                       ),
                                     ),
                                   ),
-                                ),
-                              ],
+                                ],
+                              ),
                             ),
                           ),
                         ),
-                        CustomCard(
-                          container: Container(
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Container(
-                                  height: 20,
-                                  child: Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      Text(
-                                        "Total Biaya",
-                                        style: GoogleFonts.montserrat(
-                                            fontWeight: FontWeight.w700,
-                                            fontSize: 16,
-                                            color: Color(0xFF555555)),
-                                      ),
-                                      Text(
-                                        "Rp" +
-                                            NumberFormat.currency(
-                                                    locale: "eu", symbol: "")
-                                                .format(_totalBiaya),
-                                        style: GoogleFonts.montserrat(
-                                            fontWeight: FontWeight.w700,
-                                            fontSize: 13,
-                                            color: Color(0xFF555555)),
-                                      ),
-                                    ],
+                        Container(
+                          padding: EdgeInsets.fromLTRB(15, 15, 15, 15),
+                          child: CustomCard(
+                            container: Container(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Container(
+                                    height: 20,
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Text(
+                                          "Total Biaya",
+                                          style: GoogleFonts.montserrat(
+                                              fontWeight: FontWeight.w700,
+                                              fontSize: 16,
+                                              color: Color(0xFF555555)),
+                                        ),
+                                        Text(
+                                          "Rp" +
+                                              NumberFormat.currency(
+                                                      locale: "eu", symbol: "")
+                                                  .format(_totalBiaya),
+                                          style: GoogleFonts.montserrat(
+                                              fontWeight: FontWeight.w700,
+                                              fontSize: 15,
+                                              color: Color(0xFF555555)),
+                                        ),
+                                      ],
+                                    ),
                                   ),
-                                ),
-                                CustomTextFormField(
-                                  label: "Catatan",
-                                  controller: _catatanCtrl,
-                                  validation: [],
-                                  lines: 3,
-                                ),
-                              ],
+                                  Container(
+                                    margin: EdgeInsets.only(top: 7, bottom: 7),
+                                    child: TextFormField(
+                                        maxLines: 3,
+                                        controller: _catatanCtrl,
+                                        decoration: InputDecoration(
+                                          labelText: "Catatan",
+                                          isDense: true,
+                                          border: OutlineInputBorder(
+                                              borderRadius:
+                                                  BorderRadius.circular(10)),
+                                        )),
+                                  )
+                                ],
+                              ),
                             ),
                           ),
                         ),
@@ -501,36 +614,20 @@ class _CreatePengajuanState extends State<CreatePengajuan> {
                         elevation: 0,
                         onPressed: () {
                           if (_formKey.currentState.validate()) {
-                            if (DateFormat('MMMM d, yyyy', 'en_US')
-                                .parse(_tanggalSelesaiCtrl.text)
-                                .isBefore(DateFormat('MMMM d, yyyy', 'en_US')
-                                    .parse(_tanggalMulaiCtrl.text))) {
+                            if (_listRincianBiaya.isEmpty) {
                               Scaffold.of(context).showSnackBar(SnackBar(
                                   content: Text(
-                                      "Harap masukkan tanggal yang benar")));
+                                      "Harap lengkapi Rincian Biaya " +
+                                          widget.jenisPengajuan)));
+                            } else {
+                              _listPelaksanaCtrl.forEach((element) {
+                                pelaksana.add(element.text);
+                              });
+                              if (widget.jenisPengajuan == "Reimburse")
+                                _postReimburse();
+                              else
+                                _postKasbon();
                             }
-                            List<String> pelaksana = List<String>();
-                            _listPelaksanaCtrl.forEach((element) {
-                              pelaksana.add(element.text);
-                            });
-                            Reimburse reimburse = Reimburse(
-                                tujuan: _tujuanCtrl.text,
-                                idKategoriPengajuan: _selectedKategoriPengajuan
-                                    .idKategoriPengajuan,
-                                tglMulai: DateFormat.yMMMMd('en_US')
-                                    .parse(_tanggalMulaiCtrl.text),
-                                tglSelesai: DateFormat.yMMMMd('en_US')
-                                    .parse(_tanggalSelesaiCtrl.text),
-                                idPerusahaan: _selectedPerusahaan.idPerusahaan,
-                                idCabang: _selectedCabang.idCabang,
-                                jenisPencairan:
-                                    _selectedJenisPencairan.toLowerCase(),
-                                pelaksana: pelaksana,
-                                catatan: _catatanCtrl.text,
-                                rincianRealisasi: _listRincianRealisasi);
-                            print(reimburse.toJson());
-                            BlocProvider.of<CreatePengajuanBloc>(context).add(
-                                CreateReimburseEvent(reimburse: reimburse));
                           } else {
                             Scaffold.of(context).showSnackBar(SnackBar(
                                 content: Text(
@@ -569,8 +666,72 @@ class _CreatePengajuanState extends State<CreatePengajuan> {
     );
   }
 
+  _selectDate(BuildContext context, DateTime init, bool end) async {
+    DateTime newSelectedDate = await showDatePicker(
+        context: context,
+        initialDate: (init != null)
+            ? init
+            : (!end || _tglMulai == null)
+                ? DateTime.now()
+                : _tglMulai,
+        firstDate: (_tglMulai != null && end) ? _tglMulai : DateTime(1945),
+        lastDate: (_tglSelesai != null && !end) ? _tglSelesai : DateTime(2045),
+        builder: (BuildContext context, Widget child) {
+          return Theme(
+            data: ThemeData.light(),
+            child: child,
+          );
+        });
+    if (newSelectedDate != null) {
+      if (!end) {
+        _tglMulai = newSelectedDate;
+        _tanggalMulaiCtrl.text = DateFormat.yMMMMd('en_US').format(_tglMulai);
+      } else {
+        _tglSelesai = newSelectedDate;
+        _tanggalSelesaiCtrl.text =
+            DateFormat.yMMMMd('en_US').format(_tglSelesai);
+      }
+    }
+  }
+
+  _postReimburse() {
+    Reimburse reimburse = Reimburse(
+        tujuan: _tujuanCtrl.text,
+        idKategoriPengajuan: _selectedKategoriPengajuan.idKategoriPengajuan,
+        tglMulai: DateFormat.yMMMMd('en_US').parse(_tanggalMulaiCtrl.text),
+        tglSelesai: DateFormat.yMMMMd('en_US').parse(_tanggalSelesaiCtrl.text),
+        idPerusahaan: _selectedPerusahaan.idPerusahaan,
+        idDepartment: _selectedDepartment.idDepartment,
+        idCabang: _selectedCabang.idCabang,
+        jenisPencairan: _selectedJenisPencairan.toLowerCase(),
+        pelaksana: pelaksana,
+        catatan: _catatanCtrl.text,
+        rincianRealisasi: _listRincianBiaya.cast());
+    print(reimburse.toJson());
+    BlocProvider.of<CreatePengajuanBloc>(context)
+        .add(CreateReimburseEvent(reimburse: reimburse));
+  }
+
+  _postKasbon() {
+    Kasbon kasbon = Kasbon(
+        tujuan: _tujuanCtrl.text,
+        idKategoriPengajuan: _selectedKategoriPengajuan.idKategoriPengajuan,
+        tglMulai: DateFormat.yMMMMd('en_US').parse(_tanggalMulaiCtrl.text),
+        tglSelesai: DateFormat.yMMMMd('en_US').parse(_tanggalSelesaiCtrl.text),
+        idPerusahaan: _selectedPerusahaan.idPerusahaan,
+        idDepartment: _selectedDepartment.idDepartment,
+        idCabang: _selectedCabang.idCabang,
+        jenisPencairan: _selectedJenisPencairan.toLowerCase(),
+        pelaksana: pelaksana,
+        catatanPengajuan: _catatanCtrl.text,
+        rincianPengajuan: _listRincianBiaya.cast());
+    print(kasbon.toJson());
+    BlocProvider.of<CreatePengajuanBloc>(context)
+        .add(CreateKasbonEvent(kasbon: kasbon));
+  }
+
   List<Widget> _generateListFormPelaksana() {
-    List<Widget> list = List<Widget>();
+    List<Widget> list = [];
     for (int i = 0; i < _listPelaksanaCtrl.length; i++) {
       list.add(Container(
         margin: EdgeInsets.only(top: 7, bottom: 7),
@@ -610,79 +771,5 @@ class _CreatePengajuanState extends State<CreatePengajuan> {
       ));
     }
     return list;
-  }
-}
-
-class ItemRincian extends StatelessWidget {
-  final RincianRealisasi rincianRealisasi;
-  ItemRincian({this.rincianRealisasi});
-  @override
-  Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: () => showDialog(
-          context: context,
-          barrierColor: Colors.black45,
-          builder: (BuildContext context) {
-            return Dialog(
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(10)),
-                child: DetailRincianBiaya(
-                  jenisPengajuan: "Reimburse",
-                  rincianBiaya: rincianRealisasi,
-                ));
-          }),
-      child: Container(
-          margin: EdgeInsets.only(top: 7, bottom: 7),
-          padding: EdgeInsets.all(10),
-          decoration: BoxDecoration(
-              border: Border.all(
-                color: Colors.grey,
-              ),
-              borderRadius: BorderRadius.all(Radius.circular(10))),
-          child: Column(children: [
-            Container(
-              margin: EdgeInsets.only(bottom: 10),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(rincianRealisasi.kategoriBiaya.namaKategoriBiaya,
-                      style: GoogleFonts.montserrat(
-                          color: Color(0xFF555555),
-                          fontWeight: FontWeight.w600)),
-                  (rincianRealisasi.images.isNotEmpty)
-                      ? Container(
-                          child: Icon(
-                            Icons.attach_file,
-                            color: Color(0xFFA8A8A8),
-                          ),
-                        )
-                      : Container()
-                ],
-              ),
-            ),
-            Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                crossAxisAlignment: CrossAxisAlignment.end,
-                children: <Widget>[
-                  Container(
-                    width: MediaQuery.of(context).size.width / 2 - 40,
-                    child: Text(rincianRealisasi.namaItem,
-                        overflow: TextOverflow.ellipsis,
-                        maxLines: 2,
-                        style: GoogleFonts.montserrat()),
-                  ),
-                  Container(
-                      alignment: Alignment.centerRight,
-                      width: MediaQuery.of(context).size.width / 2 - 40,
-                      child: Text(
-                          "Rp" +
-                              NumberFormat.currency(locale: "eu", symbol: "")
-                                  .format(rincianRealisasi.total),
-                          overflow: TextOverflow.ellipsis,
-                          maxLines: 2,
-                          style: GoogleFonts.montserrat()))
-                ])
-          ])),
-    );
   }
 }

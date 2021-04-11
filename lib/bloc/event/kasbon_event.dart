@@ -7,6 +7,13 @@ class KasbonEvent extends BaseEvent {
   List<Object> get props => [];
 }
 
+class GetKasbonEvent extends BaseEvent {
+  final int id;
+  GetKasbonEvent({this.id});
+  @override
+  List<Object> get props => [];
+}
+
 class CancelKasbonEvent extends BaseEvent {
   int id;
   String catatan;

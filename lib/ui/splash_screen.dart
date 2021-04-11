@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:uang_saku/ui/main_page.dart';
 import 'package:uang_saku/ui/widgets/bottom_navbar.dart';
-import 'package:uang_saku/ui/widgets/details_pengajuan.dart';
+import 'package:uang_saku/ui/widgets/details_pengajuan_kasbon.dart';
 
 class SplashScreen extends StatelessWidget {
   // String token;

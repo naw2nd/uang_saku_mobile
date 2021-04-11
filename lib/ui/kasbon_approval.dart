@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:uang_saku/ui/list_approval.dart';
-import 'package:uang_saku/ui/widgets/details_pengajuan.dart';
+import 'package:uang_saku/ui/widgets/details_pengajuan_kasbon.dart';
 
 
 class KasbonApproval extends StatefulWidget {
@@ -17,7 +17,7 @@ class _KasbonApprovalState extends State<KasbonApproval> {
         children: <Widget>[
           Flexible(
             flex: 1,
-            child: DetailsPengajuan(
+            child: DetailsPengajuanKasbon(
               // judul: "Detail Pengajuan Kasbon",
               // mainColor: Colors.blue,
             ),
@@ -47,7 +47,7 @@ class _KasbonApprovalState extends State<KasbonApproval> {
           showDialog(
               context: context,
               builder: (BuildContext context) {
-                return NoteDialog();
+                // return NoteDialog();
               });
                     });
                   },

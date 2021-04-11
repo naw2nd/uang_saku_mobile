@@ -88,9 +88,9 @@ class _NotifikasiPageState extends State<NotifikasiPage> {
                     )
                   ],
                 ),
-               KasbonCard(),
-               LaporanCard()
-               
+                KasbonCard(),
+                //LaporanCard()
+
                 // Container(
                 //   padding: EdgeInsets.fromLTRB(10, 0, 10, 5),
                 //   child: Card(
@@ -193,7 +193,7 @@ class DeleteDialog extends StatelessWidget {
   Widget build(BuildContext context) {
     return Dialog(
         child: Container(
-          height: MediaQuery.of(context).size.width *0.5,
+      height: MediaQuery.of(context).size.width * 0.5,
       child: Padding(
         padding: EdgeInsets.all(10),
         child: Column(

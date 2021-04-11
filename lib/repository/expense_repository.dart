@@ -1,10 +1,10 @@
+import 'package:uang_saku/model/body_post_approval.dart';
 import 'package:uang_saku/model/kasbon.dart';
-import 'package:uang_saku/model/list_kasbon.dart';
 import 'package:uang_saku/model/multi_response.dart';
 import 'package:uang_saku/model/kategori_pengajuan.dart';
 import 'package:uang_saku/model/models.dart';
-import 'package:uang_saku/model/multi_response.dart';
 import 'package:uang_saku/model/reimburse.dart';
+import 'package:uang_saku/model/role_approval.dart';
 import 'package:uang_saku/model/token.dart';
 import 'package:uang_saku/model/single_response.dart';
 import 'package:uang_saku/model/user.dart';
@@ -13,7 +13,6 @@ import 'package:uang_saku/repository/remote/http_service.dart';
 import 'package:uang_saku/repository/repositores.dart';
 
 class ExpenseRepository implements ExpenseDataSource {
-  // RemoteDataSource remoteDataSource;
   HttpService remoteDataSource;
   ExpenseRepository({this.remoteDataSource});
 
@@ -57,11 +56,10 @@ class ExpenseRepository implements ExpenseDataSource {
   }
 
   @override
-  Future<SingleResponse<Kasbon>> deleteKasbon(int id,String catatan) async {
+  Future<SingleResponse<Kasbon>> deleteKasbon(int id, String catatan) async {
     remoteDataSource.getToken();
-    return await remoteDataSource.deleteKasbon(id,catatan);
+    return await remoteDataSource.deleteKasbon(id, catatan);
   }
-  
 
   @override
   setToken(String token) {
@@ -79,16 +77,27 @@ class ExpenseRepository implements ExpenseDataSource {
   }
 
   @override
-  Future<SingleResponse<Kasbon>> getKasbon() async {
-   remoteDataSource.getToken();
-   return await remoteDataSource.getKasbon();
+  Future<SingleResponse<Kasbon>> getKasbon(int id) async {
+    remoteDataSource.getToken();
+    return await remoteDataSource.getKasbon(id);
   }
 
- 
+  @override
+  Future<SingleResponse<Reimburse>> getReimburse(int id) async {
+    remoteDataSource.getToken();
+    return await remoteDataSource.getReimburse(id);
+  }
+
   @override
   Future<MultiResponse<Kasbon>> getListKasbon() async {
     remoteDataSource.getToken();
     return await remoteDataSource.getListKasbon();
+  }
+
+  @override
+  Future<MultiResponse<Reimburse>> getListReimburse() async {
+    remoteDataSource.getToken();
+    return await remoteDataSource.getListReimburse();
   }
 
   Future<MultiResponse<KategoriPengajuan>> getKategori() async {
@@ -100,6 +109,12 @@ class ExpenseRepository implements ExpenseDataSource {
   Future<MultiResponse<Perusahaan>> getPerusahaan() async {
     remoteDataSource.getToken();
     return await remoteDataSource.getPerusahaan();
+  }
+
+  @override
+  Future<MultiResponse<Department>> getDepartment() async {
+    remoteDataSource.getToken();
+    return await remoteDataSource.getDepartment();
   }
 
   @override
@@ -118,5 +133,48 @@ class ExpenseRepository implements ExpenseDataSource {
   Future<SingleResponse> postReimburse(Reimburse reimburse) async {
     remoteDataSource.getToken();
     return await remoteDataSource.postReimburse(reimburse);
+  }
+
+  @override
+  Future<SingleResponse> postKasbon(Kasbon kasbon) async {
+    remoteDataSource.getToken();
+    return await remoteDataSource.postKasbon(kasbon);
+  }
+
+  @override
+  Future<MultiResponse<RoleApproval>> getRoleApproval() async {
+    remoteDataSource.getToken();
+    return await remoteDataSource.getRoleApproval();
+  }
+
+  @override
+  Future<MultiResponse<Reimburse>> getApprovalReimburse(
+      int idRoleApproval, BodyGetApproval bodyApproval) async {
+    remoteDataSource.getToken();
+    return await remoteDataSource.getApprovalReimburse(
+        idRoleApproval, bodyApproval);
+  }
+
+  @override
+  Future<MultiResponse<Kasbon>> getApprovalKasbon(
+      int idRoleApproval, BodyGetApproval bodyApproval) async {
+    remoteDataSource.getToken();
+    return await remoteDataSource.getApprovalKasbon(
+        idRoleApproval, bodyApproval);
+  }
+
+  @override
+  Future<SingleResponse> postApprovalKasbon(
+      int idRoleApproval, BodyPostApproval bodyApproval) async {
+    remoteDataSource.getToken();
+    return await remoteDataSource.postApprovalKasbon(
+        idRoleApproval, bodyApproval);
+  }
+  @override
+  Future<SingleResponse> postApprovalReimburse(
+      int idRoleApproval, BodyPostApproval bodyApproval) async {
+    remoteDataSource.getToken();
+    return await remoteDataSource.postApprovalReimburse(
+        idRoleApproval, bodyApproval);
   }
 }

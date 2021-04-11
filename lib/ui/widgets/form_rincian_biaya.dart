@@ -1,6 +1,7 @@
 //import 'dart:html';
 import 'dart:io';
 import 'dart:convert';
+import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 
 import 'package:dotted_border/dotted_border.dart';
@@ -8,6 +9,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:uang_saku/bloc/bloc.dart';
 import 'package:uang_saku/bloc/create_rincian_biaya_bloc.dart';
 import 'package:uang_saku/bloc/event/create_pengajuan_event.dart';
 import 'package:uang_saku/bloc/state/base_state.dart';
@@ -25,17 +27,20 @@ class FormRincianBiaya extends StatefulWidget {
 
 class _FormRincianBiayaState extends State<FormRincianBiaya> {
   var _colorTheme;
-  List<File> _images = new List<File>();
+  List<File> _images = [];
   TextEditingController _namaBiayaCtrl = TextEditingController();
-  TextEditingController _biayaCtrl = TextEditingController();
   TextEditingController _catatanCtrl = TextEditingController();
+  TextEditingController _hargaCtrl = TextEditingController();
+  TextEditingController _jumlahCtrl = TextEditingController(text: "1");
   int _totalBiaya = 0;
   KategoriBiaya _selectedKategoriBiaya;
+  List<Image64> listImage64 = [];
+
   final _formKey = GlobalKey<FormState>();
 
   @override
   void initState() {
-    context.read<CreateRincianBiayaBloc>().add(InitRincianEvent());
+    context.read<CreateRincianBiayaBloc>().add(InitEvent());
 
     if (widget.jenisPengajuan == "Reimburse")
       _colorTheme = Color(0xFF3AE3CE);
@@ -47,28 +52,9 @@ class _FormRincianBiayaState extends State<FormRincianBiaya> {
     super.initState();
   }
 
-  getImage(String imageSource) async {
-    PickedFile image;
-    print("mulai");
-    if (imageSource == "Gallery")
-      image = await ImagePicker()
-          .getImage(source: ImageSource.gallery, imageQuality: 20);
-    else
-      image = await ImagePicker()
-          .getImage(source: ImageSource.camera, imageQuality: 20);
-    print("bisa");
-    setState(() {
-      if (image != null) {
-        _images.add(File(image.path));
-      } else {
-        print('No image selected.');
-      }
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
-    List<Widget> list = new List<Widget>();
+    List<Widget> list = [];
     _images.forEach((element) {
       list.add(GestureDetector(
         onTap: () => showDialog(
@@ -120,7 +106,7 @@ class _FormRincianBiayaState extends State<FormRincianBiaya> {
     return Container(
         padding: EdgeInsets.fromLTRB(15, 10, 15, 10),
         child: BlocBuilder<CreateRincianBiayaBloc, BaseState>(
-          builder: (_, state) {
+          builder: (context, state) {
             if (state is CreateRincianBiayaState)
               return SingleChildScrollView(
                 child: Form(
@@ -139,8 +125,8 @@ class _FormRincianBiayaState extends State<FormRincianBiaya> {
                                 color: Color(0xFF555555)),
                           ),
                           Container(
-                            width: 25,
-                            height: 25,
+                            width: 22,
+                            height: 22,
                             child: IconButton(
                                 padding: EdgeInsets.zero,
                                 icon: Icon(Icons.cancel_outlined,
@@ -185,24 +171,65 @@ class _FormRincianBiayaState extends State<FormRincianBiaya> {
                       ),
                       Container(
                         margin: EdgeInsets.only(top: 7, bottom: 7),
-                        child: TextFormField(
-                            keyboardType: TextInputType.number,
-                            controller: _biayaCtrl,
-                            validator: (value) {
-                              if (value == "") return "Harga biaya harus diisi";
-                              return null;
-                            },
-                            onChanged: (value) {
-                              setState(() {
-                                _totalBiaya = int.parse(value);
-                              });
-                            },
-                            decoration: InputDecoration(
-                              labelText: "Harga Biaya",
-                              isDense: true,
-                              border: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(10)),
-                            )),
+                        child: Row(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Flexible(
+                                flex: 15,
+                                child: TextFormField(
+                                    inputFormatters: [
+                                      FilteringTextInputFormatter.digitsOnly
+                                    ],
+                                    keyboardType: TextInputType.number,
+                                    controller: _hargaCtrl,
+                                    validator: (value) {
+                                      if (value == "")
+                                        return "Harga harus diisi";
+                                      return null;
+                                    },
+                                    onChanged: (value) {
+                                      setState(() {
+                                        _totalBiaya = int.parse(value) *
+                                            int.parse(_jumlahCtrl.text);
+                                      });
+                                    },
+                                    decoration: InputDecoration(
+                                      labelText: "Harga",
+                                      isDense: true,
+                                      border: OutlineInputBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(10)),
+                                    ))),
+                            Flexible(flex: 1, child: Container()),
+                            Flexible(
+                                flex: 15,
+                                child: TextFormField(
+                                    inputFormatters: [
+                                      FilteringTextInputFormatter.digitsOnly
+                                    ],
+                                    keyboardType: TextInputType.number,
+                                    controller: _jumlahCtrl,
+                                    validator: (value) {
+                                      if (value == "" || int.parse(value) == 0)
+                                        return "Jumlah harus diisi";
+                                      return null;
+                                    },
+                                    onChanged: (value) {
+                                      setState(() {
+                                        _totalBiaya = int.parse(value) *
+                                            int.parse(_hargaCtrl.text);
+                                      });
+                                    },
+                                    decoration: InputDecoration(
+                                      labelText: "Jumlah",
+                                      isDense: true,
+                                      border: OutlineInputBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(10)),
+                                    )))
+                          ],
+                        ),
                       ),
                       Wrap(
                         spacing: 10,
@@ -265,8 +292,18 @@ class _FormRincianBiayaState extends State<FormRincianBiaya> {
                           )
                         ],
                       ),
-                      CustomTextFormField(
-                          label: "Catatan", validation: [], lines: 3),
+                      Container(
+                        margin: EdgeInsets.only(top: 7, bottom: 7),
+                        child: TextFormField(
+                            maxLines: 3,
+                            controller: _catatanCtrl,
+                            decoration: InputDecoration(
+                              labelText: "Catatan",
+                              isDense: true,
+                              border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(10)),
+                            )),
+                      ),
                       Container(
                         height: 45,
                         child: RaisedButton(
@@ -277,24 +314,57 @@ class _FormRincianBiayaState extends State<FormRincianBiaya> {
                           onPressed: () {
                             if (_formKey.currentState.validate()) {
                               print("validated");
-                              List<Image64> listImage64 = List<Image64>();
                               _images.forEach((element) {
                                 listImage64
                                     .add(Image64(image: fileToBase64(element)));
                               });
-                              RincianRealisasi rincianRealisasi =
-                                  RincianRealisasi(
-                                      idKategoriBiaya: _selectedKategoriBiaya
-                                          .idKategoriBiaya,
-                                      namaItem: _namaBiayaCtrl.text,
-                                      keterangan: _catatanCtrl.text,
-                                      kategoriBiaya: _selectedKategoriBiaya,
-                                      images: listImage64,
-                                      total: _totalBiaya);
-                              BlocProvider.of<CreateRincianBiayaBloc>(context)
-                                  .add(AddRincianBiayaEvent(
-                                      rincianRealisasi: rincianRealisasi));
-                              Navigator.pop(context);
+                              if (widget.jenisPengajuan == "Reimburse") {
+                                if (_images.isNotEmpty) {
+                                  _addRincianRealisasi();
+                                  Navigator.pop(context);
+                                } else
+                                  showDialog(
+                                      context: context,
+                                      builder: (BuildContext context) {
+                                        return Dialog(
+                                            insetPadding: EdgeInsets.symmetric(
+                                                horizontal: 90),
+                                            shape: RoundedRectangleBorder(
+                                                borderRadius:
+                                                    BorderRadius.circular(10)),
+                                            child: Container(
+                                              padding: EdgeInsets.fromLTRB(
+                                                  15, 10, 15, 10),
+                                              child: Wrap(
+                                                children: [
+                                                  Container(
+                                                    padding:
+                                                        EdgeInsets.symmetric(
+                                                            vertical: 7),
+                                                    child: Text(
+                                                        "Rincian Biaya Reimburse wajib melampirkan foto / gambar",
+                                                        textAlign:
+                                                            TextAlign.center,
+                                                        style: GoogleFonts
+                                                            .montserrat()),
+                                                  ),
+                                                  Center(
+                                                    child: TextButton(
+                                                        onPressed: () {
+                                                          Navigator.pop(context);
+                                                        },
+                                                        child: Text("Ok",
+                                                            style: GoogleFonts
+                                                                .montserrat())),
+                                                  )
+                                                ],
+                                              ),
+                                            ));
+                                      });
+                              } else {
+                                _addRincianPengajuan();
+                                Navigator.pop(context);
+                              }
                             }
                           },
                           child: Container(
@@ -331,6 +401,32 @@ class _FormRincianBiayaState extends State<FormRincianBiaya> {
     return base64Encode(imageBytes);
   }
 
+  _addRincianRealisasi() {
+    RincianRealisasi rincianRealisasi = RincianRealisasi(
+        idKategoriBiaya: _selectedKategoriBiaya.idKategoriBiaya,
+        namaItem: _namaBiayaCtrl.text,
+        keterangan: _catatanCtrl.text,
+        kategoriBiaya: _selectedKategoriBiaya,
+        images: listImage64,
+        total: _totalBiaya);
+    BlocProvider.of<CreateRincianBiayaBloc>(context)
+        .add(AddRincianBiayaEvent(rincianBiaya: rincianRealisasi));
+  }
+
+  _addRincianPengajuan() {
+    RincianPengajuan rincianPengajuan = RincianPengajuan(
+        idKategoriBiaya: _selectedKategoriBiaya.idKategoriBiaya,
+        namaItem: _namaBiayaCtrl.text,
+        keterangan: _catatanCtrl.text,
+        kategoriBiaya: _selectedKategoriBiaya,
+        images: listImage64,
+        jumlahUnit: int.parse(_jumlahCtrl.text),
+        hargaSatuan: int.parse(_hargaCtrl.text),
+        total: _totalBiaya);
+    BlocProvider.of<CreateRincianBiayaBloc>(context)
+        .add(AddRincianBiayaEvent(rincianBiaya: rincianPengajuan));
+  }
+
   void _showPicker(context) {
     showModalBottomSheet(
         context: context,
@@ -343,14 +439,14 @@ class _FormRincianBiayaState extends State<FormRincianBiaya> {
                       leading: Icon(Icons.photo_library),
                       title: Text('Gallery'),
                       onTap: () {
-                        getImage("Gallery");
+                        _getImage("Gallery");
                         Navigator.of(context).pop();
                       }),
                   ListTile(
                     leading: Icon(Icons.photo_camera),
                     title: Text('Camera'),
                     onTap: () {
-                      getImage("Camera");
+                      _getImage("Camera");
                       Navigator.of(context).pop();
                     },
                   ),
@@ -359,5 +455,24 @@ class _FormRincianBiayaState extends State<FormRincianBiaya> {
             ),
           );
         });
+  }
+
+  _getImage(String imageSource) async {
+    PickedFile image;
+    print("mulai");
+    if (imageSource == "Gallery")
+      image = await ImagePicker()
+          .getImage(source: ImageSource.gallery, imageQuality: 20);
+    else
+      image = await ImagePicker()
+          .getImage(source: ImageSource.camera, imageQuality: 20);
+    print("bisa");
+    setState(() {
+      if (image != null) {
+        _images.add(File(image.path));
+      } else {
+        print('No image selected.');
+      }
+    });
   }
 }

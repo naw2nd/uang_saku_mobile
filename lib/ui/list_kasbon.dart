@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:uang_saku/ui/create_laporan.dart';
-import 'package:uang_saku/ui/details_approval.dart';
-import 'package:uang_saku/ui/widgets/card_list.dart';
-import 'package:uang_saku/ui/widgets/details_pengajuan.dart';
-import 'package:uang_saku/ui/widgets/filter_dialog.dart';
-import 'package:uang_saku/ui/widgets/bottom_navbar.dart';
-import 'package:uang_saku/ui/widgets/kasbon_card.dart';
-import 'package:uang_saku/ui/widgets/laporan_card.dart';
-import 'package:uang_saku/ui/widgets/main_dashboard_widgets.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:uang_saku/bloc/bloc.dart';
+import 'package:uang_saku/bloc/list_reimburse_bloc.dart';
+import 'package:uang_saku/bloc/state/list_reimburse_state.dart';
+import 'package:intl/intl.dart';
+import 'package:uang_saku/ui/widgets/details_pengajuan_kasbon.dart';
+
+import 'custom_widgets/custom_card.dart';
 
 class ListKasbon extends StatefulWidget {
   @override
@@ -15,132 +15,217 @@ class ListKasbon extends StatefulWidget {
 }
 
 class _ListKasbonState extends State<ListKasbon> {
-  FilterDialog filterDialog = new FilterDialog(
-    buttonSimpan: Color(0xFF358BFC),
-  );
-  TabBar myTabBar = TabBar(
-    labelStyle: TextStyle(
-        fontFamily: "Montserrat", fontWeight: FontWeight.w600, fontSize: 18),
-    tabs: <Widget>[Text("Kasbon"), Text("Laporan")],
-    indicatorColor: Color(0xFF358BFC),
-    labelColor: Colors.blue,
-  );
+  @override
+  void initState() {
+    BlocProvider.of<ListKasbonBloc>(context).add(InitEvent());
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      home: DefaultTabController(
-          length: 2,
-          child: Scaffold(
+        home: Scaffold(
             appBar: AppBar(
+              elevation: 0,
+              backgroundColor: Color(0xFF358BFC),
               centerTitle: true,
               title: Text(
                 "Kasbon",
-                style: TextStyle(
-                    fontFamily: "Montserrat",
-                    fontWeight: FontWeight.w900,
-                    fontSize: 20),
+                style: GoogleFonts.montserrat(
+                    fontWeight: FontWeight.w700, fontSize: 20),
               ),
-              leading: GestureDetector(
-                child: Icon(Icons.arrow_back),
-                onTap: () {
+              leading: IconButton(
+                icon: Icon(Icons.arrow_back),
+                onPressed: () {
                   Navigator.pop(context);
                 },
               ),
-              actions: <Widget>[
+              actions: [
                 IconButton(
                     icon: Icon(Icons.filter_list),
                     onPressed: () {
-                      showDialog(
-                          context: context,
-                          builder: (BuildContext context) {
-                            return FilterDialog(
-                              buttonSimpan: Color(0xFF358BFC),
-                            );
-                          });
+                      // showDialog(
+                      //     context: context,
+                      //     builder: (BuildContext context) {
+                      //       return FilterApproval();
+                      //     });
                     })
               ],
               bottom: PreferredSize(
-                  preferredSize: Size(50, 50),
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.only(
-                        topLeft: Radius.circular(15),
-                        topRight: Radius.circular(15)),
-                    child: Container(
-                        padding: EdgeInsets.fromLTRB(10, 0, 10, 0),
-                        color: Colors.white,
-                        height: 50,
-                        child: myTabBar),
-                  )),
-            ),
-            body: TabBarView(children: <Widget>[
-              Center(
-                child: ListView(
-                  children: <Widget>[
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: <Widget>[
-                        Container(
-                          padding: EdgeInsets.fromLTRB(20, 20, 0, 20),
-                          child: Text(
-                            "Minggu ini",
-                            style: TextStyle(
-                                fontFamily: "Montserrat",
-                                fontWeight: FontWeight.w700,
-                                fontSize: 18,
-                                color: Color(0xFF555555)),
-                          ),
-                        ),
-                        Padding(
-                          padding: EdgeInsets.fromLTRB(0, 0, 10, 0),
-                          child: TextButton(
-                              onPressed: () {},
-                              child: Text("Tandai sudah dibaca",
-                                  style: TextStyle(
-                                      color: Color(0xFFA8A8A8),
-                                      fontFamily: "Montserrat",
-                                      fontWeight: FontWeight.w600,
-                                      fontSize: 12))),
-                        )
-                      ],
-                    ),
-                    KasbonCard(),
-                  ],
+                preferredSize: Size(0, 15),
+                child: Container(
+                  height: 15,
+                  decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.only(
+                          topLeft: Radius.circular(15),
+                          topRight: Radius.circular(15))),
                 ),
               ),
-              ListView(
-                children: <Widget>[
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: <Widget>[
-                      Container(
-                        padding: EdgeInsets.fromLTRB(20, 20, 0, 20),
-                        child: Text(
+            ),
+            body: Column(
+              children: [
+                Container(
+                    padding: EdgeInsets.fromLTRB(15, 0, 15, 7),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
                           "Minggu ini",
-                          style: TextStyle(
-                              fontFamily: "Montserrat",
+                          style: GoogleFonts.montserrat(
                               fontWeight: FontWeight.w700,
                               fontSize: 18,
                               color: Color(0xFF555555)),
                         ),
-                      ),
-                      Padding(
-                        padding: EdgeInsets.fromLTRB(0, 0, 10, 0),
-                        child: TextButton(
+                        TextButton(
                             onPressed: () {},
                             child: Text("Tandai sudah dibaca",
-                                style: TextStyle(
+                                style: GoogleFonts.montserrat(
                                     color: Color(0xFFA8A8A8),
-                                    fontFamily: "Montserrat",
                                     fontWeight: FontWeight.w600,
                                     fontSize: 12))),
-                      )
-                    ],
-                  ),
-                  LaporanCard(),
-                ],
-              ),
-            ]),
-          )),
-    );
+                      ],
+                    )),
+                BlocBuilder<ListKasbonBloc, BaseState>(
+                    builder: (context, state) {
+                  if (state is ListKasbonState) {
+                    if (state.kasbon.isNotEmpty) {
+                      List<Widget> list = [];
+                      state.kasbon.forEach((element) {
+                        list.add(Container(
+                            margin: EdgeInsets.only(bottom: 10),
+                            padding: EdgeInsets.symmetric(horizontal: 15),
+                            child: GestureDetector(
+                              onTap: () {
+                                Navigator.push(context,
+                                    MaterialPageRoute(builder: (context) {
+                                  return DetailsPengajuanKasbon(
+                                      id: element.idPengajuanKasbon);
+                                }));
+                              },
+                              child: CustomCard(
+                                  container: Container(
+                                child: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Flexible(
+                                          flex: 2,
+                                          child: Image(
+                                            image: AssetImage(
+                                                "images/send-file-blue.png"),
+                                            width: 31,
+                                            height: 31,
+                                          )),
+                                      Flexible(
+                                        flex: 15,
+                                        child: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            Flexible(
+                                                flex: 10,
+                                                child: Column(
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.start,
+                                                  children: [
+                                                    Container(
+                                                        margin: EdgeInsets.only(
+                                                            bottom: 5),
+                                                        child: Text(
+                                                          element.tujuan,
+                                                          overflow: TextOverflow
+                                                              .ellipsis,
+                                                          style: GoogleFonts
+                                                              .roboto(
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .w800,
+                                                                  fontSize: 14),
+                                                        )),
+                                                    Text(
+                                                      "id kategori = " +
+                                                          element
+                                                              .idKategoriPengajuan
+                                                              .toString(),
+                                                      overflow:
+                                                          TextOverflow.ellipsis,
+                                                    )
+                                                  ],
+                                                )),
+                                            Flexible(
+                                                flex: 6,
+                                                child: Column(
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.end,
+                                                  children: [
+                                                    Container(
+                                                      margin: EdgeInsets.only(
+                                                          bottom: 5),
+                                                      child: Text(
+                                                        DateFormat.yMMMd()
+                                                            .format(element
+                                                                .tglPengajuan),
+                                                        overflow: TextOverflow
+                                                            .ellipsis,
+                                                        style: GoogleFonts
+                                                            .montserrat(
+                                                                fontSize: 12,
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .w600,
+                                                                color: Color(
+                                                                    0xFF6f96b0)),
+                                                      ),
+                                                    ),
+                                                    Text(
+                                                      "Rp" +
+                                                          NumberFormat.currency(
+                                                                  locale: "eu",
+                                                                  symbol: "")
+                                                              .format(element
+                                                                  .nominalPencairan),
+                                                      overflow:
+                                                          TextOverflow.ellipsis,
+                                                      style: GoogleFonts
+                                                          .montserrat(
+                                                              fontSize: 13,
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .w500,
+                                                              color: Color(
+                                                                  0xFF58b84b)),
+                                                    )
+                                                  ],
+                                                )),
+                                          ],
+                                        ),
+                                      )
+                                    ]),
+                              )),
+                            )));
+                      });
+                      return Expanded(
+                        child: ListView(
+                          children: list,
+                        ),
+                      );
+                    } else {
+                      return Container(
+                          padding: EdgeInsets.only(top: 200),
+                          alignment: Alignment.center,
+                          child: Text(
+                            "Approval yang menunggu disetujui masih Kosong",
+                            style: GoogleFonts.montserrat(),
+                          ));
+                    }
+                  } else
+                    return Container(
+                        padding: EdgeInsets.only(top: 200),
+                        alignment: Alignment.center,
+                        child: CircularProgressIndicator());
+                })
+              ],
+            )));
   }
 }

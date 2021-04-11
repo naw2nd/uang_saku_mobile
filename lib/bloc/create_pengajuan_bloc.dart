@@ -15,7 +15,8 @@ class CreatePengajuanBloc extends Bloc<BaseEvent, BaseState> {
 
   @override
   Stream<BaseState> mapEventToState(BaseEvent event) async* {
-    if (event is InitPengajuanEvent) {
+    if (event is InitEvent) {
+      yield (LoadingState());
       try {
         final MultiResponse<KategoriPengajuan> responseKategori =
             await expenseRepository.getKategori();
@@ -23,21 +24,41 @@ class CreatePengajuanBloc extends Bloc<BaseEvent, BaseState> {
         final MultiResponse<Perusahaan> responsePerusahaan =
             await expenseRepository.getPerusahaan();
 
+        final MultiResponse<Department> responseDepartment =
+            await expenseRepository.getDepartment();
+
         final MultiResponse<Cabang> responseCabang =
             await expenseRepository.getCabang();
 
         yield (CreatePengajuanState(
             listKategori: responseKategori.data,
             listCabang: responseCabang.data,
+            listDepartment: responseDepartment.data,
             listPerusahaan: responsePerusahaan.data));
       } catch (e) {
         yield ErrorState(message: "No Connection");
       }
     }
     if (event is CreateReimburseEvent) {
+      yield (LoadingState());
+      try {
+        final SingleResponse response =
+            await expenseRepository.postReimburse(event.reimburse);
+        print(response.message);
+        if (response.success) {
+          yield SuccesState(data: response.data);
+          print("berhasil");
+        } else {
+          yield ErrorState(message: response.message);
+        }
+      } catch (e) {
+        yield ErrorState(message: "No Connection");
+      }
+    }
+    if (event is CreateKasbonEvent) {
       try {
         final SingleResponse<String> response =
-            await expenseRepository.postReimburse(event.reimburse);
+            await expenseRepository.postKasbon(event.kasbon);
         print(response.message);
         if (response.success) {
           yield SuccesState<String>(data: response.data);

@@ -1,15 +1,11 @@
 import 'package:bloc/bloc.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:uang_saku/bloc/event/kasbon_event.dart';
-import 'package:uang_saku/bloc/event/list_kasbon_event.dart';
 import 'package:uang_saku/bloc/state/base_state.dart';
-import 'package:uang_saku/bloc/state/kasbon_state.dart';
 import 'package:uang_saku/bloc/state/list_kasbon_state.dart';
 import 'package:uang_saku/model/kasbon.dart';
-//import 'package:uang_saku/model/list_kasbon.dart';
+import 'package:uang_saku/model/models.dart';
 import 'package:uang_saku/model/multi_response.dart';
 import 'package:uang_saku/repository/expense_repository.dart';
-import 'package:uang_saku/ui/list_kasbon.dart';
 import 'event/base_event.dart';
 
 class ListKasbonBloc extends Bloc<BaseEvent, BaseState> {
@@ -19,18 +15,26 @@ class ListKasbonBloc extends Bloc<BaseEvent, BaseState> {
 
   @override
   Stream<BaseState> mapEventToState(BaseEvent event) async* {
-    if (event is ListKasbonEvent) {
+    if (event is InitEvent) {
       try {
-        print("listKasbon bloc");
         final MultiResponse<Kasbon> multiResponse =
             await expenseRepository.getListKasbon();
-        print("berhasil");
         if (multiResponse.success) {
-          print(multiResponse.message);
-          print(multiResponse.data);
           yield ListKasbonState(kasbon: multiResponse.data);
         } else {
           yield ErrorState(message: multiResponse.message);
+        }
+      } catch (e) {
+        yield ErrorState(message: "Tidak Terhubung");
+      }
+    } else if (event is GetKasbonEvent) {
+      try {
+        final SingleResponse<Kasbon> singleResponse =
+            await expenseRepository.getKasbon(event.id);
+        if (singleResponse.success) {
+          yield KasbonState(kasbon: singleResponse.data);
+        } else {
+          yield ErrorState(message: singleResponse.message);
         }
       } catch (e) {
         yield ErrorState(message: "Tidak Terhubung");

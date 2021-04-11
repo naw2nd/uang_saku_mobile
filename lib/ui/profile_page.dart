@@ -83,12 +83,10 @@ class _ProfilePageState extends State<ProfilePage> {
                               borderRadius: BorderRadius.only(
                                   topRight: Radius.circular(100),
                                   topLeft: Radius.circular(100))),
-                          padding:
-                              EdgeInsets.only(top: 100),
+                          padding: EdgeInsets.only(top: 100),
                           child: BlocBuilder<ProfileBloc, BaseState>(
                               builder: (_, state) {
                             if (state is ProfileState) {
-
                               return Column(
                                 children: <Widget>[
                                   Column(children: [
@@ -107,68 +105,73 @@ class _ProfilePageState extends State<ProfilePage> {
                                           color: Color(0xFF555555)),
                                     ),
                                   ]),
-                                  CustomCard(
-                                    container: Container(
-                                      child: Column(children: [
-                                        Container(
-                                          height: (state
-                                                  is ChangePasswordState)
-                                              ? 0
-                                              : 20,
-                                          child: Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.spaceBetween,
-                                            children: [
-                                              Text(
-                                                (state is EditProfileState)
-                                                    ? "Edit Profile"
-                                                    : "",
-                                                style: GoogleFonts.montserrat(
-                                                  fontSize: 14,
-                                                  color: Color(0xFF555555),
-                                                  fontWeight: FontWeight.w600,
-                                                ),
-                                              ),
-                                              FlatButton(
-                                                padding: EdgeInsets.all(0),
-                                                height: 17,
-                                                child: Text(
-                                                  (state
-                                                          is InitProfileState)
+                                  Container(
+                                    padding: EdgeInsets.fromLTRB(15, 15, 15, 15),
+                                    child: CustomCard(
+                                      container: Container(
+                                        child: Column(children: [
+                                          Container(
+                                            height:
+                                                (state is ChangePasswordState)
+                                                    ? 0
+                                                    : 20,
+                                            child: Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment
+                                                      .spaceBetween,
+                                              children: [
+                                                Text(
+                                                  (state is EditProfileState)
                                                       ? "Edit Profile"
-                                                      : (state
-                                                              is EditProfileState)
-                                                          ? "Change Password"
-                                                          : "",
+                                                      : "",
                                                   style: GoogleFonts.montserrat(
                                                     fontSize: 14,
-                                                    color: Color(0xFF358BFC),
+                                                    color: Color(0xFF555555),
                                                     fontWeight: FontWeight.w600,
                                                   ),
                                                 ),
-                                                onPressed: () {
-                                                  (state
-                                                          is InitProfileState)
-                                                      ? context
-                                                          .read<ProfileBloc>()
-                                                          .add(
-                                                              EditProfileEvent())
-                                                      : context
-                                                          .read<ProfileBloc>()
-                                                          .add(
-                                                              ChangePasswordEvent());
-                                                },
-                                              )
-                                            ],
+                                                FlatButton(
+                                                  padding: EdgeInsets.all(0),
+                                                  height: 17,
+                                                  child: Text(
+                                                    (state is InitProfileState)
+                                                        ? "Edit Profile"
+                                                        : (state
+                                                                is EditProfileState)
+                                                            ? "Change Password"
+                                                            : "",
+                                                    style:
+                                                        GoogleFonts.montserrat(
+                                                      fontSize: 14,
+                                                      color: Color(0xFF358BFC),
+                                                      fontWeight:
+                                                          FontWeight.w600,
+                                                    ),
+                                                  ),
+                                                  onPressed: () {
+                                                    (state is InitProfileState)
+                                                        ? context
+                                                            .read<ProfileBloc>()
+                                                            .add(
+                                                                EditProfileEvent())
+                                                        : context
+                                                            .read<ProfileBloc>()
+                                                            .add(
+                                                                ChangePasswordEvent());
+                                                  },
+                                                )
+                                              ],
+                                            ),
                                           ),
-                                        ),
-                                        (state is InitProfileState)
-                                            ? ProfileComponent(user: state.user)
-                                            : (state is EditProfileState)
-                                                ? ProfileEditComponent(
-                                                    user: state.user)
-                                                : ProfileChangePasswordComponent(),
-                                      ]),
+                                          (state is InitProfileState)
+                                              ? ProfileComponent(
+                                                  user: state.user)
+                                              : (state is EditProfileState)
+                                                  ? ProfileEditComponent(
+                                                      user: state.user)
+                                                  : ProfileChangePasswordComponent(),
+                                        ]),
+                                      ),
                                     ),
                                   ),
                                   (state is InitProfileState)
@@ -182,31 +185,40 @@ class _ProfilePageState extends State<ProfilePage> {
                                                   color: Color(0xFF555555)),
                                               textAlign: TextAlign.center,
                                             ),
-                                            CustomCard(
-                                              container: Container(
-                                                  child: Column(
-                                                crossAxisAlignment:
-                                                    CrossAxisAlignment.stretch,
-                                                children: [
-                                                  ProfileProperty(
-                                                      iconData: Icons.business,
-                                                      label:
-                                                          "Wahana Meditek Indonesia, Surabaya",
-                                                      value: "Staff divisi HR"),
-                                                  ProfileProperty(
-                                                      iconData: Icons.business,
-                                                      label:
-                                                          "Wahana Rizky Gumilang, Malang",
-                                                      value: "Staff divisi IT"),
-                                                ],
-                                              )),
+                                            Container(
+                                              padding: EdgeInsets.fromLTRB(
+                                                  15, 10, 15, 15),
+                                              child: CustomCard(
+                                                container: Container(
+                                                    child: Column(
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment
+                                                          .stretch,
+                                                  children: [
+                                                    ProfileProperty(
+                                                        iconData:
+                                                            Icons.business,
+                                                        label:
+                                                            "Wahana Meditek Indonesia, Surabaya",
+                                                        value:
+                                                            "Staff divisi HR"),
+                                                    ProfileProperty(
+                                                        iconData:
+                                                            Icons.business,
+                                                        label:
+                                                            "Wahana Rizky Gumilang, Malang",
+                                                        value:
+                                                            "Staff divisi IT"),
+                                                  ],
+                                                )),
+                                              ),
                                             ),
                                           ]),
                                         )
                                       : Container(),
-                                  // SizedBox(
-                                  //   height: 200,
-                                  // ),
+                                  SizedBox(
+                                    height: 50,
+                                  ),
                                 ],
                               );
                             } else {
@@ -227,7 +239,8 @@ class _ProfilePageState extends State<ProfilePage> {
                               image: (state is ProfileState)
                                   ? DecorationImage(
                                       fit: BoxFit.fill,
-                                      image: (state.user.jenisKelamin == "Perempuan")
+                                      image: (state.user.jenisKelamin ==
+                                              "Perempuan")
                                           ? AssetImage('images/woman.png')
                                           : AssetImage('images/man.png'))
                                   : null),

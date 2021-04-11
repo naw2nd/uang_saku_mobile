@@ -30,7 +30,7 @@ dependencies:
   flutter_chips_input: ^1.9.5
   percent_indicator: ^2.1.9+1
   image_picker: ^0.6.7+22
-  # image_picker: ^0.7.4
+  carousel_slider: ^3.0.0
   cupertino_icons: ^1.0.0
   dio: ^3.0.10
   fading_edge_scrollview: ^1.1.4
@@ -48,7 +48,7 @@ dependencies:
 dev_dependencies:
   flutter_test:
     sdk: flutter
-  intl: ^0.15.7
+  intl: ^0.16.0
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
@@ -71,12 +71,30 @@ flutter:
     - images/kasbon.png
     - images/reimburse.png
     - images/jumlah_approval.png
-    - images/nota.jpg
     - images/create.gif
     - images/Direktur.png
     - images/Supervisor.png
     - images/Korcab.png
     - images/Keuangan.png
+    - images/icon-approve-white.png
+    - images/icon-approve.png
+    - images/icon-coin.png
+    - images/icon-decline-white.png
+    - images/icon-decline.png
+    - images/icon-dollar-white.png
+    - images/icon-done.png
+    - images/icon-download.png
+    - images/icon-send.png
+    - images/paper-bill.png
+    - images/paper-clip.png
+    - images/paper-done.png
+    - images/send-file-blue.png
+    - images/send-file-cyan.png
+    - images/send-file-dark-blue.png
+    - images/send-file-decline.png
+    - images/send-file-download.png
+    - images/send-file-money.png
+
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.
