@@ -32,103 +32,84 @@ class HttpService {
     this.token = sharedPreferences.getString("token");
   }
 
+  logout() async {
+    await sharedPreferences.clear();
+  }
+
   Future<SingleResponse<Token>> login(String email, String password) async {
     String endPoint = "login";
-    SingleResponse<Token> singleResponseToken;
     try {
       Response response = await _dio
           .post(endPoint, data: {"email": email, "password": password});
-      print(response);
-      print("kene");
-      SingleResponse singleResponse = SingleResponse.fromJson(response.data);
-      if (singleResponse.success) {
-        singleResponseToken = SingleResponse<Token>(
-            success: singleResponse.success,
-            message: singleResponse.message,
-            data: Token.fromJson(singleResponse.data));
-        print(singleResponseToken.data.token);
-      } else {
-        singleResponseToken = SingleResponse<Token>(
-            success: singleResponse.success, message: singleResponse.message);
-      }
+      response.data["data"] = Token.fromJson(response.data["data"]);
+      SingleResponse<Token> singleResponse =
+          SingleResponse<Token>.fromJson(response.data);
+      return singleResponse;
     } on DioError catch (e) {
       print(e);
-      // throw Exception(e.message);
+      throw Exception(e.message);
     }
-
-    return singleResponseToken;
   }
 
   Future<SingleResponse<String>> forgetPassword(String email) async {
     String endPoint = "forgot-password";
-    SingleResponse<String> singleResponse;
     try {
       Response response = await _dio.post(endPoint, data: {"email": email});
-      print(response);
-      singleResponse = SingleResponse.fromJson(response.data);
+      SingleResponse<String> singleResponse =
+          SingleResponse.fromJson(response.data);
+      return singleResponse;
     } on DioError catch (e) {
       print(e.message);
       throw Exception(e.message);
     }
-    return singleResponse;
   }
 
   Future<SingleResponse<String>> verifiyOTP(String email, String otp) async {
     String endPoint = "verify-otp";
-    SingleResponse<String> singleResponse;
     try {
       Response response =
           await _dio.post(endPoint, data: {"email": email, "otp": otp});
       print(response);
-      singleResponse = SingleResponse.fromJson(response.data);
+      SingleResponse<String> singleResponse =
+          SingleResponse.fromJson(response.data);
+      return singleResponse;
     } on DioError catch (e) {
       print(e.message);
       throw Exception(e.message);
     }
-    return singleResponse;
   }
 
   Future<SingleResponse<String>> resetPassword(
       String email, String otp, String password) async {
     String endPoint = "reset-password";
-    SingleResponse<String> singleResponse;
     try {
       Response response = await _dio.post(endPoint,
           data: {"email": email, "otp": otp, "password": password});
-      print(response);
-      singleResponse = SingleResponse.fromJson(response.data);
+      SingleResponse<String> singleResponse =
+          SingleResponse.fromJson(response.data);
+      return singleResponse;
     } on DioError catch (e) {
       print(e.message);
       throw Exception(e.message);
     }
-    return singleResponse;
   }
 
   Future<SingleResponse<User>> getProfile() async {
     String endPoint = "user";
-    SingleResponse<User> singleResponseUser;
-
     try {
       Response response = await _dio.get(endPoint);
-      print(response);
-
-      SingleResponse singleResponse = SingleResponse.fromJson(response.data);
-      singleResponseUser = SingleResponse<User>(
-          success: singleResponse.success,
-          message: singleResponse.message,
-          data: User.fromJson(singleResponse.data));
-      print(singleResponseUser.data.username);
+      response.data["data"] = User.fromJson(response.data["data"]);
+      SingleResponse<User> singleResponse =
+          SingleResponse.fromJson(response.data);
+      return singleResponse;
     } on DioError catch (e) {
       print(e.message);
       throw Exception(e.message);
     }
-
-    return singleResponseUser;
   }
 
   Future<SingleResponse<String>> putUser(User user) async {
     String endPoint = "user";
-    SingleResponse<String> singleResponse;
     try {
       Response response = await _dio.put(endPoint, data: {
         "username": user.username,
@@ -139,30 +120,26 @@ class HttpService {
         "tempat_lahir": user.tempatLahir,
         "tgl_lahir": DateFormat('yyyy-MM-dd – kk:mm').format(user.tglLahir),
       });
-      print(response);
-      singleResponse = SingleResponse.fromJson(response.data);
+      SingleResponse<String> singleResponse =
+          SingleResponse.fromJson(response.data);
+      return singleResponse;
     } on DioError catch (e) {
       print(e.message);
       throw Exception(e.message);
     }
-
-    return singleResponse;
   }
 
   Future<SingleResponse> postPassword(String password) async {
     String endPoint = "change-password";
-    SingleResponse singleResponse;
     try {
       Response response =
           await _dio.post(endPoint, data: {"password": password});
-      print(response);
-      singleResponse = SingleResponse.fromJson(response.data);
+      SingleResponse singleResponse = SingleResponse.fromJson(response.data);
+      return singleResponse;
     } on DioError catch (e) {
       print(e.message);
       throw Exception(e.message);
     }
-
-    return singleResponse;
   }
 
   Future<SingleResponse<Kasbon>> getKasbon(int id) async {
@@ -223,10 +200,6 @@ class HttpService {
       print(e);
       throw Exception(e.message);
     }
-  }
-
-  logout() async {
-    await sharedPreferences.clear();
   }
 
   Future<SingleResponse<Kasbon>> deleteKasbon(int id, String catatan) async {
@@ -410,7 +383,7 @@ class HttpService {
       print(bodyApproval.toJson());
       Response response =
           await _dio.post(endpoint, data: bodyApproval.toJson());
-          print(response.data);
+      print(response.data);
       SingleResponse singleResponse = SingleResponse.fromJson(response.data);
       print(singleResponse.message);
       return singleResponse;
@@ -427,7 +400,7 @@ class HttpService {
       print(bodyApproval.toJson());
       Response response =
           await _dio.post(endpoint, data: bodyApproval.toJson());
-          print(response.data);
+      print(response.data);
       SingleResponse singleResponse = SingleResponse.fromJson(response.data);
       print(singleResponse);
       return singleResponse;

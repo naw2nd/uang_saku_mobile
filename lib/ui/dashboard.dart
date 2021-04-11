@@ -185,7 +185,7 @@ class _DashboardPageState extends State<DashboardPage> {
                               ],
                             ),
                           ),
-                          ListMenuApproval(mainContext: context),
+                          ListMenuApproval(),
                           ProgressPengajuan(),
                           Container(
                             padding: EdgeInsets.fromLTRB(15, 15, 15, 5),
@@ -432,9 +432,6 @@ class _ProgressPengajuanState extends State<ProgressPengajuan> {
 }
 
 class ListMenuApproval extends StatefulWidget {
-  final BuildContext mainContext;
-  ListMenuApproval({this.mainContext});
-  @override
   _ListMenuApprovalState createState() => _ListMenuApprovalState();
 }
 
@@ -442,7 +439,6 @@ class _ListMenuApprovalState extends State<ListMenuApproval> {
   @override
   void initState() {
     BlocProvider.of<RoleApprovalBloc>(context).add(InitEvent());
-
     super.initState();
   }
 
@@ -468,23 +464,23 @@ class _ListMenuApprovalState extends State<ListMenuApproval> {
                 ),
                 Container(
                     padding: EdgeInsets.only(top: 5),
-                    child: CarouselSlider(
-                      options: CarouselOptions(
-                        height: 150,
-                        enlargeCenterPage: true,
-                      ),
-                      items: state.roleApproval.map((i) {
-                        return Builder(
-                          builder: (BuildContext context) {
-                            return Container(
-                                child: MenuApproval(
-                              roleApproval: i,
-                              mainContext: widget.mainContext,
-                            ));
-                          },
-                        );
-                      }).toList(),
-                    ))
+                    child: (state.roleApproval.length == 1)
+                        ? Container(
+                          padding: EdgeInsets.symmetric(horizontal: 15),
+                          height: 145,
+                          child: MenuApproval(
+                              roleApproval: state.roleApproval.first,
+                            ),
+                        )
+                        : CarouselSlider(
+                            options: CarouselOptions(
+                              height: 145,
+                              enlargeCenterPage: true,
+                            ),
+                            items: state.roleApproval.map((i) {
+                              return MenuApproval(roleApproval: i);
+                            }).toList(),
+                          ))
               ]);
         }
       } else
@@ -497,16 +493,15 @@ class _ListMenuApprovalState extends State<ListMenuApproval> {
 }
 
 class MenuApproval extends StatelessWidget {
-  final BuildContext mainContext;
   final RoleApproval roleApproval;
-  MenuApproval({this.roleApproval, this.mainContext});
+  MenuApproval({this.roleApproval});
 
   @override
   Widget build(BuildContext context) {
     return Container(
       child: GestureDetector(
         onTap: () {
-          Navigator.push(mainContext, MaterialPageRoute(builder: (context) {
+          Navigator.push(context, MaterialPageRoute(builder: (context) {
             return ListApproval(
               idRoleApproval: roleApproval.idApproval,
               namaRoleApproval: roleApproval.namaApproval,

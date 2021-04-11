@@ -5,6 +5,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:uang_saku/bloc/bloc.dart';
 import 'package:uang_saku/bloc/profile_bloc.dart';
 import 'package:uang_saku/bloc/state/base_state.dart';
+import 'package:uang_saku/ui/bottom_navbar.dart';
 import 'package:uang_saku/ui/splash_screen.dart';
 import 'package:uang_saku/ui/custom_widgets/custom_card.dart';
 import 'package:uang_saku/ui/custom_widgets/profile_change_password_component.dart';
@@ -42,16 +43,28 @@ class _ProfilePageState extends State<ProfilePage> {
               child: ListView(controller: _controller, children: [
                 Container(
                   height: 40,
-                  padding: EdgeInsets.only(left: 15),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text("Profile",
-                          style: GoogleFonts.montserrat(
-                            fontWeight: FontWeight.w500,
-                            color: Colors.white,
-                            fontSize: 20,
-                          )),
+                      Row(
+                        children: [
+                          IconButton(
+                            padding: EdgeInsets.zero,
+                              icon: Icon(
+                                Icons.arrow_back_rounded,
+                                color: Colors.white,
+                              ),
+                              onPressed: () {
+                                Navigator.pop(context);
+                              }),
+                          Text("Profile",
+                              style: GoogleFonts.montserrat(
+                                fontWeight: FontWeight.w500,
+                                color: Colors.white,
+                                fontSize: 20,
+                              )),
+                        ],
+                      ),
                       IconButton(
                           icon: Icon(
                             Icons.exit_to_app,
@@ -88,7 +101,7 @@ class _ProfilePageState extends State<ProfilePage> {
                               builder: (_, state) {
                             if (state is ProfileState) {
                               return Column(
-                                children: <Widget>[
+                                children: [
                                   Column(children: [
                                     Text(
                                       state.user.username,

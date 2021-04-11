@@ -25,9 +25,14 @@ class _BottomNavbarState extends State<BottomNavbar> {
   ];
 
   void onItemTap(int index) {
-    setState(() {
-      _currentTab = index;
-    });
+    if (index == 4) {
+      Navigator.push(
+          context, MaterialPageRoute(builder: (context) => ProfilePage()));
+    } else {
+      setState(() {
+        _currentTab = index;
+      });
+    }
   }
 
   @override
@@ -90,9 +95,7 @@ class _BottomNavbarState extends State<BottomNavbar> {
                 label: ""),
             BottomNavigationBarItem(
                 icon: Icon(
-                  (_currentTab == 4)
-                      ? Icons.person
-                      : Icons.person_outline,
+                  (_currentTab == 4) ? Icons.person : Icons.person_outline,
                   color: Color(0xFF3AE3CE),
                 ),
                 label: "")
@@ -160,7 +163,8 @@ class _BottomNavbarState extends State<BottomNavbar> {
                               Navigator.of(context, rootNavigator: true).pop();
                               Navigator.push(context,
                                   MaterialPageRoute(builder: (context) {
-                                return CreatePengajuan(jenisPengajuan: "Kasbon");
+                                return CreatePengajuan(
+                                    jenisPengajuan: "Kasbon");
                               }));
                             },
                             shape: RoundedRectangleBorder(
@@ -202,7 +206,8 @@ class _BottomNavbarState extends State<BottomNavbar> {
                               Navigator.of(context, rootNavigator: true).pop();
                               Navigator.push(context,
                                   MaterialPageRoute(builder: (context) {
-                                return CreatePengajuan(jenisPengajuan: "Reimburse");
+                                return CreatePengajuan(
+                                    jenisPengajuan: "Reimburse");
                               }));
                             },
                             shape: RoundedRectangleBorder(

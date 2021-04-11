@@ -7,7 +7,7 @@ import 'dart:convert';
 
 import 'package:uang_saku/model/role.dart';
 import 'package:uang_saku/model/user_approval.dart';
-
+import "package:intl/intl.dart";
 User userFromJson(String str) => User.fromJson(json.decode(str));
 
 String userToJson(User data) => json.encode(data.toJson());
@@ -68,16 +68,7 @@ class User extends Equatable {
         "roles": List<dynamic>.from(roles.map((x) => x.toJson())),
         "approval": List<dynamic>.from(approval.map((x) => x.toJson())),
       };
-
-  bool isApproval() {
-    bool value = false;
-    roles.forEach((element) {
-      if (element.idRole == 2) value = true;
-    });
-
-    return value;
-  }
-
+      
   @override
   List<Object> get props => [
         idPegawai,
