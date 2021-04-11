@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:uang_saku/ui/widgets/card_list.dart';
-import 'package:uang_saku/ui/widgets/kasbon_card.dart';
-import 'package:uang_saku/ui/widgets/main_dashboard_widgets.dart';
+
+import 'card_list.dart';
+import 'main_dashboard_widgets.dart';
 
 class RiwayatPage extends StatefulWidget {
   @override

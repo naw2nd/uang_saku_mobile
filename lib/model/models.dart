@@ -6,7 +6,7 @@ export 'reimburse.dart';
 export 'additional_info.dart';
 export 'cabang.dart';
 export 'department.dart';
-export 'image.dart';
+export 'request_image_64.dart';
 export 'kategori_biaya.dart';
 export 'kategori_pengajuan.dart';
 export 'pegawai.dart';

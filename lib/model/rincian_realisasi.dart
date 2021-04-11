@@ -19,7 +19,7 @@ class RincianRealisasi {
   final int total;
   final String keterangan;
   final KategoriBiaya kategoriBiaya;
-  final List<Image64> images;
+  final List<RequestImage64> images;
 
   factory RincianRealisasi.fromJson(Map<String, dynamic> json) =>
       RincianRealisasi(
@@ -30,7 +30,7 @@ class RincianRealisasi {
         total: json["total"],
         keterangan: json["keterangan"],
         kategoriBiaya: KategoriBiaya.fromJson(json["kategori_biaya"]),
-        images: List<Image64>.from(json["images"].map((x) => Image64.fromJson(x))),
+        images: List<RequestImage64>.from(json["images"].map((x) => RequestImage64.fromJson(x))),
       );
 
   Map<String, dynamic> toJson() => {

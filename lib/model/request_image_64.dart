@@ -1,5 +1,5 @@
-class Image64 {
-  Image64({
+class RequestImage64 {
+  RequestImage64({
     this.idAttachmentRealisasiReimburse,
     this.idRincianRealisasi,
     this.image,
@@ -9,7 +9,7 @@ class Image64 {
   final int idRincianRealisasi;
   final String image;
 
-  factory Image64.fromJson(Map<String, dynamic> json) => Image64(
+  factory RequestImage64.fromJson(Map<String, dynamic> json) => RequestImage64(
         idAttachmentRealisasiReimburse:
             json["id_attachment_realisasi_reimburse"],
         idRincianRealisasi: json["id_rincian_realisasi"],

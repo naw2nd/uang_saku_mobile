@@ -34,7 +34,7 @@ class _FormRincianBiayaState extends State<FormRincianBiaya> {
   TextEditingController _jumlahCtrl = TextEditingController(text: "1");
   int _totalBiaya = 0;
   KategoriBiaya _selectedKategoriBiaya;
-  List<Image64> listImage64 = [];
+  List<RequestImage64> listImage64 = [];
 
   final _formKey = GlobalKey<FormState>();
 
@@ -316,7 +316,7 @@ class _FormRincianBiayaState extends State<FormRincianBiaya> {
                               print("validated");
                               _images.forEach((element) {
                                 listImage64
-                                    .add(Image64(image: fileToBase64(element)));
+                                    .add(RequestImage64(image: fileToBase64(element)));
                               });
                               if (widget.jenisPengajuan == "Reimburse") {
                                 if (_images.isNotEmpty) {

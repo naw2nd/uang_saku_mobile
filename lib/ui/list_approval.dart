@@ -10,7 +10,6 @@ import 'package:uang_saku/bloc/state/approval_state.dart';
 import 'package:uang_saku/model/models.dart';
 import 'package:uang_saku/ui/details_approval_kasbon.dart';
 import 'package:uang_saku/ui/details_approval_reimburse.dart';
-import 'package:uang_saku/ui/filter_approval.dart';
 
 import 'custom_widgets/custom_card.dart';
 import 'package:intl/intl.dart';
@@ -67,7 +66,7 @@ class _ListApprovalState extends State<ListApproval> {
                       showDialog(
                           context: context,
                           builder: (BuildContext context) {
-                            return FilterApproval();
+                            // return FilterApproval();
                           });
                     })
               ],

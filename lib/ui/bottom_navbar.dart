@@ -2,12 +2,12 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:uang_saku/ui/notifikasi.dart';
 import 'package:uang_saku/ui/profile_page.dart';
-import 'package:uang_saku/ui/riwayat.dart';
-import 'package:uang_saku/ui/widgets/create_pengajuan.dart';
+import 'package:uang_saku/ui/create_pengajuan.dart';
 
-import '../dashboard.dart';
+import 'belum kepakek/notifikasi.dart';
+import 'belum kepakek/riwayat.dart';
+import 'dashboard.dart';
 
 class BottomNavbar extends StatefulWidget {
   @override

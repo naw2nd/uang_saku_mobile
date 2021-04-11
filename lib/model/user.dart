@@ -5,6 +5,9 @@ import 'package:equatable/equatable.dart';
 
 import 'dart:convert';
 
+import 'package:uang_saku/model/role.dart';
+import 'package:uang_saku/model/user_approval.dart';
+
 User userFromJson(String str) => User.fromJson(json.decode(str));
 
 String userToJson(User data) => json.encode(data.toJson());
@@ -24,17 +27,17 @@ class User extends Equatable {
     this.approval,
   });
 
-  int idPegawai;
-  String namaPegawai;
-  String username;
-  String email;
-  String alamat;
-  String noTelp;
-  String tempatLahir;
-  DateTime tglLahir;
-  String jenisKelamin;
-  List<Role> roles;
-  List<UserApproval> approval;
+  final int idPegawai;
+  final String namaPegawai;
+  final String username;
+  final String email;
+  final String alamat;
+  final String noTelp;
+  final String tempatLahir;
+  final DateTime tglLahir;
+  final String jenisKelamin;
+  final List<Role> roles;
+  final List<UserApproval> approval;
 
   factory User.fromJson(Map<String, dynamic> json) => User(
         idPegawai: json["id_pegawai"],
@@ -89,52 +92,4 @@ class User extends Equatable {
         roles,
         approval,
       ];
-}
-
-class UserApproval {
-  UserApproval({
-    this.idApproval,
-    this.namaApproval,
-    this.status,
-  });
-
-  int idApproval;
-  String namaApproval;
-  int status;
-
-  factory UserApproval.fromJson(Map<String, dynamic> json) => UserApproval(
-        idApproval: json["id_approval"],
-        namaApproval: json["nama_approval"],
-        status: json["status"],
-      );
-
-  Map<String, dynamic> toJson() => {
-        "id_approval": idApproval,
-        "nama_approval": namaApproval,
-        "status": status,
-      };
-}
-
-class Role {
-  Role({
-    this.idRole,
-    this.namaRole,
-    this.status,
-  });
-
-  int idRole;
-  String namaRole;
-  int status;
-
-  factory Role.fromJson(Map<String, dynamic> json) => Role(
-        idRole: json["id_role"],
-        namaRole: json["nama_role"],
-        status: json["status"],
-      );
-
-  Map<String, dynamic> toJson() => {
-        "id_role": idRole,
-        "nama_role": namaRole,
-        "status": status,
-      };
 }

@@ -7,9 +7,9 @@ import 'package:uang_saku/bloc/profile_bloc.dart';
 import 'package:uang_saku/bloc/state/base_state.dart';
 import 'package:uang_saku/ui/splash_screen.dart';
 import 'package:uang_saku/ui/custom_widgets/custom_card.dart';
-import 'package:uang_saku/ui/component/profile_change_password_component.dart';
-import 'package:uang_saku/ui/component/profile_component.dart';
-import 'package:uang_saku/ui/component/profile_edit_component.dart';
+import 'package:uang_saku/ui/custom_widgets/profile_change_password_component.dart';
+import 'package:uang_saku/ui/custom_widgets/profile_component.dart';
+import 'package:uang_saku/ui/custom_widgets/profile_edit_component.dart';
 import 'package:uang_saku/ui/custom_widgets/profile_property.dart';
 
 class ProfilePage extends StatefulWidget {

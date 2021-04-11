@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:uang_saku/bloc/bloc.dart';
 import 'package:uang_saku/model/models.dart';
 import 'package:uang_saku/ui/login_page.dart';
-import 'package:uang_saku/ui/widgets/bottom_navbar.dart';
+import 'package:uang_saku/ui/bottom_navbar.dart';
 
 class MainPage extends StatefulWidget {
   @override

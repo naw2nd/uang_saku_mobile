@@ -15,8 +15,8 @@ import 'package:uang_saku/ui/custom_widgets/custom_text_form_field.dart';
 import 'package:uang_saku/ui/custom_widgets/item_rincian.dart';
 import 'package:uang_saku/ui/detail_rincian_biaya.dart';
 import 'package:uang_saku/ui/main_page.dart';
-import 'package:uang_saku/ui/widgets/bottom_navbar.dart';
-import 'package:uang_saku/ui/widgets/form_rincian_biaya.dart';
+import 'package:uang_saku/ui/bottom_navbar.dart';
+import 'package:uang_saku/ui/form_rincian_biaya.dart';
 import 'package:dotted_border/dotted_border.dart';
 import 'package:intl/intl.dart';
 

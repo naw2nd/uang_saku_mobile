@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:uang_saku/ui/widgets/bottom_navbar.dart';
-import 'package:uang_saku/ui/widgets/filter_dialog.dart';
+import 'package:uang_saku/ui/bottom_navbar.dart';
+
+import 'filter_dialog.dart';
 
 class DashboardWidgets extends StatefulWidget {
   final String judul;

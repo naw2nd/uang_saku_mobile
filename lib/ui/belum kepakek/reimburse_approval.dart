@@ -1,14 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:uang_saku/ui/list_approval.dart';
-import 'package:uang_saku/ui/widgets/details_pengajuan_kasbon.dart';
 
+import '../details_pengajuan_kasbon.dart';
 
-class KasbonApproval extends StatefulWidget {
+class ReimburseApproval extends StatefulWidget {
   @override
-  _KasbonApprovalState createState() => _KasbonApprovalState();
+  _ReimburseApprovalState createState() => _ReimburseApprovalState();
 }
 
-class _KasbonApprovalState extends State<KasbonApproval> {
+class _ReimburseApprovalState extends State<ReimburseApproval> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -18,8 +17,8 @@ class _KasbonApprovalState extends State<KasbonApproval> {
           Flexible(
             flex: 1,
             child: DetailsPengajuanKasbon(
-              // judul: "Detail Pengajuan Kasbon",
-              // mainColor: Colors.blue,
+              // judul: "Detail Pengajuan Reimburse",
+              // mainColor: Color(0xFF3AE3CE),
             ),
           ),
           Row(
