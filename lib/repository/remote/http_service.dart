@@ -202,7 +202,7 @@ class HttpService {
     }
   }
 
-  Future<SingleResponse<Kasbon>> deleteKasbon(int id, String catatan) async {
+  Future<SingleResponse<Kasbon>> cancelKasbon(int id, String catatan) async {
     String endpoint = "kasbon/1/cancel";
     SingleResponse<Kasbon> singleResponseKasbon;
 

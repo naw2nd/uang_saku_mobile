@@ -58,7 +58,7 @@ class ExpenseRepository implements ExpenseDataSource {
   @override
   Future<SingleResponse<Kasbon>> deleteKasbon(int id, String catatan) async {
     remoteDataSource.getToken();
-    return await remoteDataSource.deleteKasbon(id, catatan);
+    return await remoteDataSource.cancelKasbon(id, catatan);
   }
 
   @override
