@@ -23,7 +23,7 @@ class RincianPengajuan {
   int jumlahUnit;
   int hargaSatuan;
   int total;
-  dynamic keterangan;
+  String keterangan;
   List<RequestImage64> images;
   KategoriBiaya kategoriBiaya;
 
@@ -36,7 +36,7 @@ class RincianPengajuan {
         jumlahUnit: json["jumlah_unit"] as int,
         hargaSatuan: json["harga_satuan"] as int,
         total: json["total"] as int,
-        keterangan: json["keterangan"] as String,
+        keterangan: json["keterangan"],
         images: List<RequestImage64>.from(
             json["images"].map((x) => RequestImage64.fromJson(x))),
         kategoriBiaya: KategoriBiaya.fromJson(json["kategori_biaya"]),

@@ -56,9 +56,9 @@ class _DetailsApprovalReimburseState extends State<DetailsApprovalReimburse> {
         ),
         body: BlocConsumer<ReimburseBloc, BaseState>(
           listener: (context, state) {
-            if (state is SuccesState) {
+            if (state is SuccesState<String>) {
               Scaffold.of(context).showSnackBar(SnackBar(
-                content: Text("Reimburse berhasil disetujui"),
+                content: Text(state.data),
                 duration: Duration(seconds: 1),
               ));
               Timer(
@@ -97,7 +97,7 @@ class _DetailsApprovalReimburseState extends State<DetailsApprovalReimburse> {
                       color: Color(0xFF555555)),
                 ),
               ];
-              state.reimburse.statusApproval.all.forEach((element) {
+              state.reimburse.approval.all.forEach((element) {
                 listApproval.add(Container(
                     padding: EdgeInsets.fromLTRB(0, 10, 0, 0),
                     child: Row(
@@ -109,8 +109,8 @@ class _DetailsApprovalReimburseState extends State<DetailsApprovalReimburse> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
-                                    state.reimburse.statusApproval
-                                        .keterangan[element],
+                                    state
+                                        .reimburse.approval.keterangan[element],
                                     style: GoogleFonts.montserrat(
                                         fontSize: 15,
                                         fontWeight: FontWeight.w600,
@@ -127,13 +127,13 @@ class _DetailsApprovalReimburseState extends State<DetailsApprovalReimburse> {
                               decoration: BoxDecoration(
                                 borderRadius:
                                     BorderRadius.all(Radius.circular(15)),
-                                color: (state.reimburse.statusApproval.approved
+                                color: (state.reimburse.approval.approved
                                         .contains(element))
                                     ? Color(0xFF3AE3CE)
                                     : Color(0xFF555555),
                               ),
                               child: Text(
-                                  (state.reimburse.statusApproval.approved
+                                  (state.reimburse.approval.approved
                                           .contains(element))
                                       ? "Disetujui"
                                       : "Menunggu",
@@ -407,80 +407,88 @@ class _DetailsApprovalReimburseState extends State<DetailsApprovalReimburse> {
                       ),
                     ),
                   ),
-                  // Container(
-                  //   padding: EdgeInsets.fromLTRB(15, 10, 15, 5),
-                  //   child: Row(
-                  //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  //     children: [
-                  //       Flexible(
-                  //           flex: 15,
-                  //           child: Container(
-                  //             height: 40.0,
-                  //             child: RaisedButton(
-                  //               elevation: 2,
-                  //               onPressed: () {},
-                  //               shape: RoundedRectangleBorder(
-                  //                   borderRadius: BorderRadius.circular(10)),
-                  //               padding: EdgeInsets.all(0.0),
-                  //               child: Ink(
-                  //                 decoration: BoxDecoration(
-                  //                     color: Color(0xfff86565),
-                  //                     borderRadius: BorderRadius.circular(10)),
-                  //                 child: Container(
-                  //                   alignment: Alignment.center,
-                  //                   child: Text(
-                  //                     "Tolak",
-                  //                     style: GoogleFonts.montserrat(
-                  //                         fontWeight: FontWeight.w500,
-                  //                         fontSize: 18,
-                  //                         color: Colors.white),
-                  //                   ),
-                  //                 ),
-                  //               ),
-                  //             ),
-                  //           )),
-                  //       Flexible(
-                  //         flex: 1,
-                  //         child: Container(),
-                  //       ),
-                  //       Flexible(
-                  //           flex: 15,
-                  //           child: Container(
-                  //             height: 40.0,
-                  //             child: RaisedButton(
-                  //               elevation: 2,
-                  //               onPressed: () {
-                  //                 BlocProvider.of<ReimburseBloc>(context).add(
-                  //                     PostApprovalReimburseEvent(
-                  //                         idRoleApproval: widget.idRoleApproval,
-                  //                         bodyApproval: BodyPostApproval(
-                  //                             idPengajuanReimburse: widget.id,
-                  //                             catatan: "nocat",
-                  //                             status: "setuju")));
-                  //               },
-                  //               shape: RoundedRectangleBorder(
-                  //                   borderRadius: BorderRadius.circular(10)),
-                  //               padding: EdgeInsets.all(0.0),
-                  //               child: Ink(
-                  //                 decoration: BoxDecoration(
-                  //                     color: Color(0xFF3AE3CE),
-                  //                     borderRadius: BorderRadius.circular(10)),
-                  //                 child: Container(
-                  //                   alignment: Alignment.center,
-                  //                   child: Text(
-                  //                     "Setujui",
-                  //                     style: GoogleFonts.montserrat(
-                  //                         fontWeight: FontWeight.w500,
-                  //                         fontSize: 18,
-                  //                         color: Colors.white),
-                  //                   ),
-                  //                 ),
-                  //               ),
-                  //             ),
-                  //           )),
-                  //     ],
-                  //   ),
-                  // ),
+                  Container(
+                    padding: EdgeInsets.fromLTRB(15, 10, 15, 5),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Flexible(
+                            flex: 15,
+                            child: Container(
+                              height: 40.0,
+                              child: RaisedButton(
+                                elevation: 2,
+                                onPressed: () {
+                                  BlocProvider.of<ReimburseBloc>(context).add(
+                                      PostApprovalReimburseEvent(
+                                          idRoleApproval: widget.idRoleApproval,
+                                          bodyApproval: BodyPostApproval(
+                                              idPengajuanReimburse: widget.id,
+                                              catatan: "nocat",
+                                              status: "tolak")));
+                                },
+                                shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(10)),
+                                padding: EdgeInsets.all(0.0),
+                                child: Ink(
+                                  decoration: BoxDecoration(
+                                      color: Color(0xfff86565),
+                                      borderRadius: BorderRadius.circular(10)),
+                                  child: Container(
+                                    alignment: Alignment.center,
+                                    child: Text(
+                                      "Tolak",
+                                      style: GoogleFonts.montserrat(
+                                          fontWeight: FontWeight.w500,
+                                          fontSize: 18,
+                                          color: Colors.white),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            )),
+                        Flexible(
+                          flex: 1,
+                          child: Container(),
+                        ),
+                        Flexible(
+                            flex: 15,
+                            child: Container(
+                              height: 40.0,
+                              child: RaisedButton(
+                                elevation: 2,
+                                onPressed: () {
+                                  BlocProvider.of<ReimburseBloc>(context).add(
+                                      PostApprovalReimburseEvent(
+                                          idRoleApproval: widget.idRoleApproval,
+                                          bodyApproval: BodyPostApproval(
+                                              idPengajuanReimburse: widget.id,
+                                              catatan: "nocat",
+                                              status: "setuju")));
+                                },
+                                shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(10)),
+                                padding: EdgeInsets.all(0.0),
+                                child: Ink(
+                                  decoration: BoxDecoration(
+                                      color: Color(0xFF3AE3CE),
+                                      borderRadius: BorderRadius.circular(10)),
+                                  child: Container(
+                                    alignment: Alignment.center,
+                                    child: Text(
+                                      "Setujui",
+                                      style: GoogleFonts.montserrat(
+                                          fontWeight: FontWeight.w500,
+                                          fontSize: 18,
+                                          color: Colors.white),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            )),
+                      ],
+                    ),
+                  ),
                 ],
               );
             } else {

@@ -71,7 +71,7 @@ class _DetailsPengajuanKasbonState extends State<DetailsPengajuanKasbon> {
                       color: Color(0xFF555555)),
                 ),
               ];
-              state.kasbon.statusApproval.all.forEach((element) {
+              state.kasbon.approval.all.forEach((element) {
                 listApproval.add(Container(
                     padding: EdgeInsets.fromLTRB(0, 10, 0, 0),
                     child: Row(
@@ -83,7 +83,7 @@ class _DetailsPengajuanKasbonState extends State<DetailsPengajuanKasbon> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
-                                    state.kasbon.statusApproval
+                                    state.kasbon.approval
                                         .keterangan[element],
                                     style: GoogleFonts.montserrat(
                                         fontSize: 15,
@@ -101,13 +101,13 @@ class _DetailsPengajuanKasbonState extends State<DetailsPengajuanKasbon> {
                               decoration: BoxDecoration(
                                 borderRadius:
                                     BorderRadius.all(Radius.circular(15)),
-                                color: (state.kasbon.statusApproval.approved
+                                color: (state.kasbon.approval.approved
                                         .contains(element))
                                     ? Color(0xFF358BFC)
                                     : Color(0xFF555555),
                               ),
                               child: Text(
-                                  (state.kasbon.statusApproval.approved
+                                  (state.kasbon.approval.approved
                                           .contains(element))
                                       ? "Disetujui"
                                       : "Menunggu",

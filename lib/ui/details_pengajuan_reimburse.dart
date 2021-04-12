@@ -69,7 +69,7 @@ class _DetailsPengajuanReimburseState extends State<DetailsPengajuanReimburse> {
                       color: Color(0xFF555555)),
                 ),
               ];
-              state.reimburse.statusApproval.all.forEach((element) {
+              state.reimburse.approval.all.forEach((element) {
                 listApproval.add(Container(
                     padding: EdgeInsets.fromLTRB(0, 10, 0, 0),
                     child: Row(
@@ -81,7 +81,7 @@ class _DetailsPengajuanReimburseState extends State<DetailsPengajuanReimburse> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
-                                    state.reimburse.statusApproval
+                                    state.reimburse.approval
                                         .keterangan[element],
                                     style: GoogleFonts.montserrat(
                                         fontSize: 15,
@@ -99,13 +99,13 @@ class _DetailsPengajuanReimburseState extends State<DetailsPengajuanReimburse> {
                               decoration: BoxDecoration(
                                 borderRadius:
                                     BorderRadius.all(Radius.circular(15)),
-                                color: (state.reimburse.statusApproval.approved
+                                color: (state.reimburse.approval.approved
                                         .contains(element))
                                     ? Color(0xFF3AE3CE)
                                     : Color(0xFF555555),
                               ),
                               child: Text(
-                                  (state.reimburse.statusApproval.approved
+                                  (state.reimburse.approval.approved
                                           .contains(element))
                                       ? "Disetujui"
                                       : "Menunggu",

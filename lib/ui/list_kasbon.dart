@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:uang_saku/bloc/bloc.dart';
 import 'package:intl/intl.dart';
+import 'package:uang_saku/model/kategori_pengajuan.dart';
 import 'custom_widgets/custom_card.dart';
 import 'details_pengajuan_kasbon.dart';
 
@@ -12,6 +13,13 @@ class ListKasbon extends StatefulWidget {
 }
 
 class _ListKasbonState extends State<ListKasbon> {
+  List<String> cardIcon = [
+    "images/send-file-decline.png",
+    "images/send-file-blue.png",
+    "images/send-file-money.png",
+    "images/icon-done.png",
+  ];
+
   @override
   void initState() {
     BlocProvider.of<KasbonBloc>(context).add(KasbonEvent());
@@ -109,8 +117,8 @@ class _ListKasbonState extends State<ListKasbon> {
                                       Flexible(
                                           flex: 2,
                                           child: Image(
-                                            image: AssetImage(
-                                                "images/send-file-blue.png"),
+                                            image: AssetImage(cardIcon[
+                                                element.statusPengajuan]),
                                             width: 31,
                                             height: 31,
                                           )),
@@ -130,7 +138,8 @@ class _ListKasbonState extends State<ListKasbon> {
                                                         margin: EdgeInsets.only(
                                                             bottom: 5),
                                                         child: Text(
-                                                          element.tujuan,
+                                                          element
+                                                              .statusApproval,
                                                           overflow: TextOverflow
                                                               .ellipsis,
                                                           style: GoogleFonts
@@ -141,10 +150,7 @@ class _ListKasbonState extends State<ListKasbon> {
                                                                   fontSize: 14),
                                                         )),
                                                     Text(
-                                                      "id kategori = " +
-                                                          element
-                                                              .idKategoriPengajuan
-                                                              .toString(),
+                                                      element.tujuan,
                                                       overflow:
                                                           TextOverflow.ellipsis,
                                                     )

@@ -1,5 +1,5 @@
-class StatusApproval {
-  StatusApproval({
+class Approval {
+  Approval({
     this.all,
     this.active,
     this.approved,
@@ -9,7 +9,7 @@ class StatusApproval {
 
   List<int> all;
   int active;
-  List<dynamic> approved;
+  List<int> approved;
   List<int> progress;
   List<String> keterangan = [
     "",
@@ -18,17 +18,17 @@ class StatusApproval {
     "Keuangan",
     "Direktur"
   ];
-  factory StatusApproval.fromJson(Map<String, dynamic> json) => StatusApproval(
+  factory Approval.fromJson(Map<String, dynamic> json) => Approval(
         all: List<int>.from(json["all"].map((x) => x)),
         active: json["active"],
-        approved: List<dynamic>.from(json["approved"].map((x) => x)),
+        approved: List<int>.from(json["approved"].map((x) => x)),
         progress: List<int>.from(json["progress"].map((x) => x)),
       );
 
   Map<String, dynamic> toJson() => {
-        "all": List<dynamic>.from(all.map((x) => x)),
+        "all": List<int>.from(all.map((x) => x)),
         "active": active,
-        "approved": List<dynamic>.from(approved.map((x) => x)),
-        "progress": List<dynamic>.from(progress.map((x) => x)),
+        "approved": List<int>.from(approved.map((x) => x)),
+        "progress": List<int>.from(progress.map((x) => x)),
       };
 }
