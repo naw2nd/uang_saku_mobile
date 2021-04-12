@@ -202,28 +202,19 @@ class HttpService {
     }
   }
 
-  Future<SingleResponse<Kasbon>> cancelKasbon(int id, String catatan) async {
-    String endpoint = "kasbon/1/cancel";
-    SingleResponse<Kasbon> singleResponseKasbon;
+  Future<SingleResponse> cancelKasbon(int id, String catatan) async {
+    String endpoint = "kasbon/${id.toString()}/cancel";
 
     try {
       Response response =
           await _dio.post(endpoint, data: {"catatan": "sembarang", "id": 2});
       print(response.data);
       SingleResponse singleResponse = SingleResponse.fromJson(response.data);
-
-      singleResponseKasbon = SingleResponse<Kasbon>(
-          success: singleResponse.success,
-          message: singleResponse.message,
-          data: Kasbon.fromJson(singleResponse.data));
+      return singleResponse;
     } on DioError catch (e) {
       print(e);
       throw Exception(e);
-    } catch (e) {
-      print(e);
     }
-
-    return singleResponseKasbon;
   }
 
   Future<MultiResponse<KategoriPengajuan>> getKategori() async {

@@ -151,6 +151,7 @@ class _DetailsApprovalReimburseState extends State<DetailsApprovalReimburse> {
                 listRincian.add(ItemRincian(
                   jenisPengajuan: "Kasbon",
                   rincianBiaya: element,
+                  isGet: true,
                 ));
               });
               return ListView(
@@ -406,80 +407,80 @@ class _DetailsApprovalReimburseState extends State<DetailsApprovalReimburse> {
                       ),
                     ),
                   ),
-                  Container(
-                    padding: EdgeInsets.fromLTRB(15, 10, 15, 5),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Flexible(
-                            flex: 15,
-                            child: Container(
-                              height: 40.0,
-                              child: RaisedButton(
-                                elevation: 2,
-                                onPressed: () {},
-                                shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(10)),
-                                padding: EdgeInsets.all(0.0),
-                                child: Ink(
-                                  decoration: BoxDecoration(
-                                      color: Color(0xfff86565),
-                                      borderRadius: BorderRadius.circular(10)),
-                                  child: Container(
-                                    alignment: Alignment.center,
-                                    child: Text(
-                                      "Tolak",
-                                      style: GoogleFonts.montserrat(
-                                          fontWeight: FontWeight.w500,
-                                          fontSize: 18,
-                                          color: Colors.white),
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            )),
-                        Flexible(
-                          flex: 1,
-                          child: Container(),
-                        ),
-                        Flexible(
-                            flex: 15,
-                            child: Container(
-                              height: 40.0,
-                              child: RaisedButton(
-                                elevation: 2,
-                                onPressed: () {
-                                  BlocProvider.of<ReimburseBloc>(context)
-                                      .add(PostApprovalReimburseEvent(
-                                          idRoleApproval: widget.idRoleApproval,
-                                          bodyApproval: BodyPostApproval(
-                                              idPengajuanReimburse: widget.id,
-                                              catatan: "nocat",
-                                              status: "setuju")));
-                                },
-                                shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(10)),
-                                padding: EdgeInsets.all(0.0),
-                                child: Ink(
-                                  decoration: BoxDecoration(
-                                      color: Color(0xFF3AE3CE),
-                                      borderRadius: BorderRadius.circular(10)),
-                                  child: Container(
-                                    alignment: Alignment.center,
-                                    child: Text(
-                                      "Setujui",
-                                      style: GoogleFonts.montserrat(
-                                          fontWeight: FontWeight.w500,
-                                          fontSize: 18,
-                                          color: Colors.white),
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            )),
-                      ],
-                    ),
-                  ),
+                  // Container(
+                  //   padding: EdgeInsets.fromLTRB(15, 10, 15, 5),
+                  //   child: Row(
+                  //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  //     children: [
+                  //       Flexible(
+                  //           flex: 15,
+                  //           child: Container(
+                  //             height: 40.0,
+                  //             child: RaisedButton(
+                  //               elevation: 2,
+                  //               onPressed: () {},
+                  //               shape: RoundedRectangleBorder(
+                  //                   borderRadius: BorderRadius.circular(10)),
+                  //               padding: EdgeInsets.all(0.0),
+                  //               child: Ink(
+                  //                 decoration: BoxDecoration(
+                  //                     color: Color(0xfff86565),
+                  //                     borderRadius: BorderRadius.circular(10)),
+                  //                 child: Container(
+                  //                   alignment: Alignment.center,
+                  //                   child: Text(
+                  //                     "Tolak",
+                  //                     style: GoogleFonts.montserrat(
+                  //                         fontWeight: FontWeight.w500,
+                  //                         fontSize: 18,
+                  //                         color: Colors.white),
+                  //                   ),
+                  //                 ),
+                  //               ),
+                  //             ),
+                  //           )),
+                  //       Flexible(
+                  //         flex: 1,
+                  //         child: Container(),
+                  //       ),
+                  //       Flexible(
+                  //           flex: 15,
+                  //           child: Container(
+                  //             height: 40.0,
+                  //             child: RaisedButton(
+                  //               elevation: 2,
+                  //               onPressed: () {
+                  //                 BlocProvider.of<ReimburseBloc>(context).add(
+                  //                     PostApprovalReimburseEvent(
+                  //                         idRoleApproval: widget.idRoleApproval,
+                  //                         bodyApproval: BodyPostApproval(
+                  //                             idPengajuanReimburse: widget.id,
+                  //                             catatan: "nocat",
+                  //                             status: "setuju")));
+                  //               },
+                  //               shape: RoundedRectangleBorder(
+                  //                   borderRadius: BorderRadius.circular(10)),
+                  //               padding: EdgeInsets.all(0.0),
+                  //               child: Ink(
+                  //                 decoration: BoxDecoration(
+                  //                     color: Color(0xFF3AE3CE),
+                  //                     borderRadius: BorderRadius.circular(10)),
+                  //                 child: Container(
+                  //                   alignment: Alignment.center,
+                  //                   child: Text(
+                  //                     "Setujui",
+                  //                     style: GoogleFonts.montserrat(
+                  //                         fontWeight: FontWeight.w500,
+                  //                         fontSize: 18,
+                  //                         color: Colors.white),
+                  //                   ),
+                  //                 ),
+                  //               ),
+                  //             ),
+                  //           )),
+                  //     ],
+                  //   ),
+                  // ),
                 ],
               );
             } else {

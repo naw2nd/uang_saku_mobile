@@ -63,6 +63,15 @@ class KasbonBloc extends Bloc<BaseEvent, BaseState> {
       } catch (e) {
         yield ErrorState(message: "No Connection");
       }
+    } else if (event is CancelKasbonEvent) {
+      try {
+        print("event cancel kasbon");
+        final SingleResponse singleResponse =
+            await expenseRepository.cancelKasbon(event.id, event.catatan);
+        yield (SuccesState<String>(data: singleResponse.message));
+      } catch (e) {
+        yield ErrorState(message: "No Connection");
+      }
     } else {
       yield ErrorState(message: "Tidak ada event yang sesuai");
     }

@@ -122,6 +122,7 @@ class _DetailsApprovalKasbonState extends State<DetailsApprovalKasbon> {
                 listRincian.add(ItemRincian(
                   jenisPengajuan: "Kasbon",
                   rincianBiaya: element,
+                  isGet: true,
                 ));
               });
               return ListView(
@@ -414,9 +415,8 @@ class _DetailsApprovalKasbonState extends State<DetailsApprovalKasbon> {
                               child: RaisedButton(
                                 elevation: 2,
                                 onPressed: () {
-                                  BlocProvider.of<KasbonBloc>(
-                                          context)
-                                      .add(PostApprovalKasbonEvent(
+                                  BlocProvider.of<KasbonBloc>(context).add(
+                                      PostApprovalKasbonEvent(
                                           idRoleApproval: widget.idRoleApproval,
                                           bodyApproval: BodyPostApproval(
                                               idPengajuanKasbon: widget.id,

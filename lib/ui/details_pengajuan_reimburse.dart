@@ -123,6 +123,7 @@ class _DetailsPengajuanReimburseState extends State<DetailsPengajuanReimburse> {
                 listRincian.add(ItemRincian(
                   jenisPengajuan: "Reimburse",
                   rincianBiaya: element,
+                  isGet: true,
                 ));
               });
               return ListView(

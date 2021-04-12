@@ -2,13 +2,14 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-import '../detail_rincian_biaya.dart';
+import 'detail_rincian_biaya.dart';
 import 'package:intl/intl.dart';
 
 class ItemRincian extends StatelessWidget {
   final rincianBiaya;
   final String jenisPengajuan;
-  ItemRincian({this.rincianBiaya, this.jenisPengajuan});
+  final bool isGet;
+  ItemRincian({this.rincianBiaya, this.jenisPengajuan, this.isGet});
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
@@ -21,7 +22,7 @@ class ItemRincian extends StatelessWidget {
                     borderRadius: BorderRadius.circular(10)),
                 child: DetailRincianBiaya(
                   jenisPengajuan: jenisPengajuan,
-                  rincianBiaya: rincianBiaya,
+                  rincianBiaya: rincianBiaya, isGet: isGet,
                 ));
           }),
       child: Container(
