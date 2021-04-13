@@ -17,34 +17,34 @@ class DetailRincianBiaya extends StatefulWidget {
 class _DetailRincianBiayaState extends State<DetailRincianBiaya> {
   @override
   Widget build(BuildContext context) {
-    List<Widget> list = [];
-    widget.rincianBiaya.images.forEach((element) {
-      list.add(GestureDetector(
-        onTap: () => showDialog(
-            context: context,
-            barrierColor: Colors.black45,
-            builder: (BuildContext context) {
-              return Dialog(
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10)),
-                  child: Container(
-                      child: ClipRRect(
-                    child: Image.memory(base64Decode(element.image)),
-                  )));
-            }),
-        child: Container(
-          width: (MediaQuery.of(context).size.width - 120) / 2,
-          height: 200,
-          child: ClipRRect(
-            borderRadius: BorderRadius.circular(10),
-            child: FittedBox(
-              child: Image.memory(base64Decode(element.image)),
-              fit: BoxFit.cover,
-            ),
-          ),
-        ),
-      ));
-    });
+    // List<Widget> list = [];
+    // widget.rincianBiaya.images.forEach((element) {
+    //   list.add(GestureDetector(
+    //     onTap: () => showDialog(
+    //         context: context,
+    //         barrierColor: Colors.black45,
+    //         builder: (BuildContext context) {
+    //           return Dialog(
+    //               shape: RoundedRectangleBorder(
+    //                   borderRadius: BorderRadius.circular(10)),
+    //               child: Container(
+    //                   child: ClipRRect(
+    //                 child: Image.memory(base64Decode(element.image)),
+    //               )));
+    //         }),
+    //     child: Container(
+    //       width: (MediaQuery.of(context).size.width - 120) / 2,
+    //       height: 200,
+    //       child: ClipRRect(
+    //         borderRadius: BorderRadius.circular(10),
+    //         child: FittedBox(
+    //           child: Image.memory(base64Decode(element.image)),
+    //           fit: BoxFit.cover,
+    //         ),
+    //       ),
+    //     ),
+    //   ));
+    // });
 
     return Container(
         padding: EdgeInsets.fromLTRB(15, 10, 15, 10),
@@ -182,11 +182,11 @@ class _DetailRincianBiayaState extends State<DetailRincianBiaya> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text("Lampiran", style: GoogleFonts.montserrat()),
-                    Wrap(
-                      spacing: 10,
-                      runSpacing: 10,
-                      children: list,
-                    ),
+                    // Wrap(
+                    //   spacing: 10,
+                    //   runSpacing: 10,
+                    //   children: list,
+                    // ),
                   ],
                 )),
             Container(
@@ -196,7 +196,7 @@ class _DetailRincianBiayaState extends State<DetailRincianBiaya> {
                 children: [
                   Text("Catatan", style: GoogleFonts.montserrat()),
                   Text(
-                      (widget.rincianBiaya.keterangan != "")
+                      (widget.rincianBiaya.keterangan != null)
                           ? widget.rincianBiaya.keterangan
                           : "-",
                       style:

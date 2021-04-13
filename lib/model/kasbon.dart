@@ -7,7 +7,6 @@ import 'package:intl/intl.dart';
 import 'package:uang_saku/model/models.dart';
 import 'package:uang_saku/model/status_approval.dart';
 
-
 class Kasbon {
   Kasbon({
     this.idPengajuanKasbon,
@@ -87,8 +86,9 @@ class Kasbon {
         idKategoriPengajuan: json["id_kategori_pengajuan"],
         pelaksana: List<String>.from(json["pelaksana"].map((x) => x)),
         statusApproval: StatusApproval.fromJson(json["approval"]),
-        tglPengajuan: DateFormat('d MMM yyyy').parse(json["tgl_pengajuan"]),
-        tglPencairan: DateFormat('d MMM yyyy').parse(json["tgl_pencairan"]),
+        //tglPengajuan: DateFormat('d MMM yyyy').parse(json["tgl_pengajuan"]),
+        //: DateFormat('d MMM yyyy').parse(json["tgl_pencairan"]),
+        tglPengajuan: DateTime.parse(json["tgl_pengajuan"]),
         tglTotalan: DateTime.parse(json["tgl_totalan"]),
         tglMulai: DateTime.parse(json["tgl_mulai"]),
         tglSelesai: DateTime.parse(json["tgl_selesai"]),
