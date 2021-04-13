@@ -41,7 +41,7 @@ class _DetailsApprovalReimburseState extends State<DetailsApprovalReimburse> {
               borderRadius: BorderRadius.only(
                   bottomLeft: Radius.circular(15),
                   bottomRight: Radius.circular(15))),
-          backgroundColor: Color(0xFF3AE3CE),
+          backgroundColor: Color(0xFF2B4D66),
           title: Text("Detail Pengajuan Reimburse",
               style: GoogleFonts.montserrat(
                   fontSize: 18, fontWeight: FontWeight.w600)),
@@ -129,8 +129,8 @@ class _DetailsApprovalReimburseState extends State<DetailsApprovalReimburse> {
                                     BorderRadius.all(Radius.circular(15)),
                                 color: (state.reimburse.approval.approved
                                         .contains(element))
-                                    ? Color(0xFF3AE3CE)
-                                    : Color(0xFF555555),
+                                    ? Color(0xFF2B4D66)
+                                    : Color(0xAA555555),
                               ),
                               child: Text(
                                   (state.reimburse.approval.approved
@@ -180,7 +180,7 @@ class _DetailsApprovalReimburseState extends State<DetailsApprovalReimburse> {
                                         style: GoogleFonts.montserrat(
                                             fontSize: 15,
                                             fontWeight: FontWeight.w600,
-                                            color: Color(0xFF3AE3CE))),
+                                            color: Color(0xFF2B4D66))),
                                     Container(
                                       padding: EdgeInsets.fromLTRB(0, 7, 0, 0),
                                       child: Text("Tanggal Pengajuan",
@@ -351,7 +351,7 @@ class _DetailsApprovalReimburseState extends State<DetailsApprovalReimburse> {
                                     decoration: BoxDecoration(
                                         borderRadius: BorderRadius.all(
                                             Radius.circular(15)),
-                                        color: Color(0xFF3AE3CE)),
+                                        color: Color(0xFF2B4D66)),
                                     child: Text(
                                       (state.reimburse.jenisPencairan == "cash")
                                           ? "Terima Cash"
@@ -471,7 +471,7 @@ class _DetailsApprovalReimburseState extends State<DetailsApprovalReimburse> {
                                 padding: EdgeInsets.all(0.0),
                                 child: Ink(
                                   decoration: BoxDecoration(
-                                      color: Color(0xFF3AE3CE),
+                                      color: Color(0xFF2B4D66),
                                       borderRadius: BorderRadius.circular(10)),
                                   child: Container(
                                     alignment: Alignment.center,

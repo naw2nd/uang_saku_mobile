@@ -38,7 +38,7 @@ class _DetailsApprovalKasbonState extends State<DetailsApprovalKasbon> {
               borderRadius: BorderRadius.only(
                   bottomLeft: Radius.circular(15),
                   bottomRight: Radius.circular(15))),
-          backgroundColor: Color(0xFF358BFC),
+          backgroundColor: Color(0xFF2B4D66),
           title: Text("Detail Pengajuan Kasbon",
               style: GoogleFonts.montserrat(
                   fontSize: 18, fontWeight: FontWeight.w600)),
@@ -124,8 +124,8 @@ class _DetailsApprovalKasbonState extends State<DetailsApprovalKasbon> {
                                     BorderRadius.all(Radius.circular(15)),
                                 color: (state.kasbon.approval.approved
                                         .contains(element))
-                                    ? Color(0xFF358BFC)
-                                    : Color(0xFF555555),
+                                    ? Color(0xFF2B4D66)
+                                    : Color(0xAA555555),
                               ),
                               child: Text(
                                   (state.kasbon.approval.approved
@@ -175,7 +175,7 @@ class _DetailsApprovalKasbonState extends State<DetailsApprovalKasbon> {
                                         style: GoogleFonts.montserrat(
                                             fontSize: 15,
                                             fontWeight: FontWeight.w600,
-                                            color: Color(0xFF358BFC))),
+                                            color: Color(0xFF2B4D66))),
                                     Container(
                                       padding: EdgeInsets.fromLTRB(0, 7, 0, 0),
                                       child: Text("Tanggal Pengajuan",
@@ -342,7 +342,7 @@ class _DetailsApprovalKasbonState extends State<DetailsApprovalKasbon> {
                                     decoration: BoxDecoration(
                                         borderRadius: BorderRadius.all(
                                             Radius.circular(15)),
-                                        color: Color(0xFF358BFC)),
+                                        color: Color(0xFF2B4D66)),
                                     child: Text(
                                       (state.kasbon.jenisPencairan == "cash")
                                           ? "Terima Cash"
@@ -462,7 +462,7 @@ class _DetailsApprovalKasbonState extends State<DetailsApprovalKasbon> {
                                 padding: EdgeInsets.all(0.0),
                                 child: Ink(
                                   decoration: BoxDecoration(
-                                      color: Color(0xFF358BFC),
+                                      color: Color(0xFF2B4D66),
                                       borderRadius: BorderRadius.circular(10)),
                                   child: Container(
                                     alignment: Alignment.center,
