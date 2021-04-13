@@ -13,7 +13,7 @@ import 'package:uang_saku/model/models.dart';
 import 'package:uang_saku/ui/custom_widgets/custom_card.dart';
 import 'package:uang_saku/ui/custom_widgets/custom_text_form_field.dart';
 import 'package:uang_saku/ui/custom_widgets/item_rincian.dart';
-import 'package:uang_saku/ui/detail_rincian_biaya.dart';
+import 'package:uang_saku/ui/custom_widgets/detail_rincian_biaya.dart';
 import 'package:uang_saku/ui/main_page.dart';
 import 'package:uang_saku/ui/bottom_navbar.dart';
 import 'package:uang_saku/ui/form_rincian_biaya.dart';

@@ -40,27 +40,24 @@ class ReimburseBloc extends Bloc<BaseEvent, BaseState> {
       } catch (e) {
         yield ErrorState(message: "Tidak Terhubung");
       }
-    } else if (event is PostApprovalReimburseEvent) {
-      try {
-        yield SuccesState<String>(data: "Success update pengajuan");
-      } catch (e) {
-        yield ErrorState(message: "Tidak Terhubung");
-      }
     } else if (event is GetApprovalPengajuanEvent) {
       yield (LoadingState());
       try {
         print("init event approval reimburse");
+        final MultiResponse<KategoriPengajuan> responseKategori =
+            await expenseRepository.getKategori();
         final MultiResponse<Reimburse> responseApprovalPengajuan =
             await expenseRepository.getApprovalReimburse(
                 event.idRoleApproval, event.bodyApproval);
         yield (ListApprovalPengajuanState(
-            listApprovalPengajuan: responseApprovalPengajuan.data));
+            listApprovalPengajuan: responseApprovalPengajuan.data,
+            listKategoriPengajuan: responseKategori.data));
       } catch (e) {
         yield ErrorState(message: "No Connection");
       }
     } else if (event is PostApprovalReimburseEvent) {
+      print("post event approval reimburse");
       try {
-        print("post event approval reimburse");
         final SingleResponse singleResponse = await expenseRepository
             .postApprovalReimburse(event.idRoleApproval, event.bodyApproval);
         yield (SuccesState<String>(data: singleResponse.message));

@@ -41,7 +41,7 @@ class _DetailsApprovalReimburseState extends State<DetailsApprovalReimburse> {
               borderRadius: BorderRadius.only(
                   bottomLeft: Radius.circular(15),
                   bottomRight: Radius.circular(15))),
-          backgroundColor: Color(0xFF3AE3CE),
+          backgroundColor: Color(0xFF2B4D66),
           title: Text("Detail Pengajuan Reimburse",
               style: GoogleFonts.montserrat(
                   fontSize: 18, fontWeight: FontWeight.w600)),
@@ -56,9 +56,9 @@ class _DetailsApprovalReimburseState extends State<DetailsApprovalReimburse> {
         ),
         body: BlocConsumer<ReimburseBloc, BaseState>(
           listener: (context, state) {
-            if (state is SuccesState) {
+            if (state is SuccesState<String>) {
               Scaffold.of(context).showSnackBar(SnackBar(
-                content: Text("Reimburse berhasil disetujui"),
+                content: Text(state.data),
                 duration: Duration(seconds: 1),
               ));
               Timer(
@@ -97,7 +97,7 @@ class _DetailsApprovalReimburseState extends State<DetailsApprovalReimburse> {
                       color: Color(0xFF555555)),
                 ),
               ];
-              state.reimburse.statusApproval.all.forEach((element) {
+              state.reimburse.approval.all.forEach((element) {
                 listApproval.add(Container(
                     padding: EdgeInsets.fromLTRB(0, 10, 0, 0),
                     child: Row(
@@ -109,8 +109,8 @@ class _DetailsApprovalReimburseState extends State<DetailsApprovalReimburse> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
-                                    state.reimburse.statusApproval
-                                        .keterangan[element],
+                                    state
+                                        .reimburse.approval.keterangan[element],
                                     style: GoogleFonts.montserrat(
                                         fontSize: 15,
                                         fontWeight: FontWeight.w600,
@@ -127,13 +127,13 @@ class _DetailsApprovalReimburseState extends State<DetailsApprovalReimburse> {
                               decoration: BoxDecoration(
                                 borderRadius:
                                     BorderRadius.all(Radius.circular(15)),
-                                color: (state.reimburse.statusApproval.approved
+                                color: (state.reimburse.approval.approved
                                         .contains(element))
-                                    ? Color(0xFF3AE3CE)
-                                    : Color(0xFF555555),
+                                    ? Color(0xFF2B4D66)
+                                    : Color(0xAA555555),
                               ),
                               child: Text(
-                                  (state.reimburse.statusApproval.approved
+                                  (state.reimburse.approval.approved
                                           .contains(element))
                                       ? "Disetujui"
                                       : "Menunggu",
@@ -151,6 +151,7 @@ class _DetailsApprovalReimburseState extends State<DetailsApprovalReimburse> {
                 listRincian.add(ItemRincian(
                   jenisPengajuan: "Kasbon",
                   rincianBiaya: element,
+                  isGet: true,
                 ));
               });
               return ListView(
@@ -179,7 +180,7 @@ class _DetailsApprovalReimburseState extends State<DetailsApprovalReimburse> {
                                         style: GoogleFonts.montserrat(
                                             fontSize: 15,
                                             fontWeight: FontWeight.w600,
-                                            color: Color(0xFF3AE3CE))),
+                                            color: Color(0xFF2B4D66))),
                                     Container(
                                       padding: EdgeInsets.fromLTRB(0, 7, 0, 0),
                                       child: Text("Tanggal Pengajuan",
@@ -350,7 +351,7 @@ class _DetailsApprovalReimburseState extends State<DetailsApprovalReimburse> {
                                     decoration: BoxDecoration(
                                         borderRadius: BorderRadius.all(
                                             Radius.circular(15)),
-                                        color: Color(0xFF3AE3CE)),
+                                        color: Color(0xFF2B4D66)),
                                     child: Text(
                                       (state.reimburse.jenisPencairan == "cash")
                                           ? "Terima Cash"
@@ -417,7 +418,15 @@ class _DetailsApprovalReimburseState extends State<DetailsApprovalReimburse> {
                               height: 40.0,
                               child: RaisedButton(
                                 elevation: 2,
-                                onPressed: () {},
+                                onPressed: () {
+                                  BlocProvider.of<ReimburseBloc>(context).add(
+                                      PostApprovalReimburseEvent(
+                                          idRoleApproval: widget.idRoleApproval,
+                                          bodyApproval: BodyPostApproval(
+                                              idPengajuanReimburse: widget.id,
+                                              catatan: "nocat",
+                                              status: "tolak")));
+                                },
                                 shape: RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(10)),
                                 padding: EdgeInsets.all(0.0),
@@ -449,8 +458,8 @@ class _DetailsApprovalReimburseState extends State<DetailsApprovalReimburse> {
                               child: RaisedButton(
                                 elevation: 2,
                                 onPressed: () {
-                                  BlocProvider.of<ReimburseBloc>(context)
-                                      .add(PostApprovalReimburseEvent(
+                                  BlocProvider.of<ReimburseBloc>(context).add(
+                                      PostApprovalReimburseEvent(
                                           idRoleApproval: widget.idRoleApproval,
                                           bodyApproval: BodyPostApproval(
                                               idPengajuanReimburse: widget.id,
@@ -462,7 +471,7 @@ class _DetailsApprovalReimburseState extends State<DetailsApprovalReimburse> {
                                 padding: EdgeInsets.all(0.0),
                                 child: Ink(
                                   decoration: BoxDecoration(
-                                      color: Color(0xFF3AE3CE),
+                                      color: Color(0xFF2B4D66),
                                       borderRadius: BorderRadius.circular(10)),
                                   child: Container(
                                     alignment: Alignment.center,

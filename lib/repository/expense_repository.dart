@@ -56,7 +56,7 @@ class ExpenseRepository implements ExpenseDataSource {
   }
 
   @override
-  Future<SingleResponse<Kasbon>> deleteKasbon(int id, String catatan) async {
+  Future<SingleResponse> cancelKasbon(int id, String catatan) async {
     remoteDataSource.getToken();
     return await remoteDataSource.cancelKasbon(id, catatan);
   }
@@ -170,6 +170,7 @@ class ExpenseRepository implements ExpenseDataSource {
     return await remoteDataSource.postApprovalKasbon(
         idRoleApproval, bodyApproval);
   }
+
   @override
   Future<SingleResponse> postApprovalReimburse(
       int idRoleApproval, BodyPostApproval bodyApproval) async {

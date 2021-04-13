@@ -57,11 +57,11 @@ class CreatePengajuanBloc extends Bloc<BaseEvent, BaseState> {
     }
     if (event is CreateKasbonEvent) {
       try {
-        final SingleResponse<String> response =
+        final SingleResponse response =
             await expenseRepository.postKasbon(event.kasbon);
         print(response.message);
         if (response.success) {
-          yield SuccesState<String>(data: response.data);
+          yield SuccesState<String>(data: response.message);
         } else {
           yield ErrorState(message: response.message);
         }

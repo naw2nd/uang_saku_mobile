@@ -15,8 +15,8 @@ class GetKasbonEvent extends BaseEvent {
 }
 
 class CancelKasbonEvent extends BaseEvent {
-  int id;
-  String catatan;
+  final int id;
+  final String catatan;
   CancelKasbonEvent({this.id, this.catatan});
   @override
   List<Object> get props => [id, catatan];

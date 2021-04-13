@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:uang_saku/ui/detail_rincian_approval.dart';
-import 'package:uang_saku/ui/detail_rincian_biaya.dart';
+import 'package:uang_saku/ui/custom_widgets/detail_rincian_biaya.dart';
 import 'package:percent_indicator/percent_indicator.dart';
 
 class DetailLaporan extends StatefulWidget {

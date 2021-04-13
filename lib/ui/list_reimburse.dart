@@ -15,6 +15,13 @@ class ListReimburse extends StatefulWidget {
 }
 
 class _ListReimburseState extends State<ListReimburse> {
+  List<String> cardIcon = [
+    "images/send-file-decline.png",
+    "images/send-file-cyan.png",
+    "images/send-file-money.png",
+    "images/icon-done.png",
+  ];
+
   @override
   void initState() {
     BlocProvider.of<ReimburseBloc>(context).add(ReimburseEvent());
@@ -113,8 +120,8 @@ class _ListReimburseState extends State<ListReimburse> {
                                       Flexible(
                                           flex: 2,
                                           child: Image(
-                                            image: AssetImage(
-                                                "images/send-file-cyan.png"),
+                                            image: AssetImage(cardIcon[
+                                                element.statusPengajuan]),
                                             width: 31,
                                             height: 31,
                                           )),
@@ -134,7 +141,8 @@ class _ListReimburseState extends State<ListReimburse> {
                                                         margin: EdgeInsets.only(
                                                             bottom: 5),
                                                         child: Text(
-                                                          element.tujuan,
+                                                          element
+                                                              .statusApproval,
                                                           overflow: TextOverflow
                                                               .ellipsis,
                                                           style: GoogleFonts
@@ -145,10 +153,7 @@ class _ListReimburseState extends State<ListReimburse> {
                                                                   fontSize: 14),
                                                         )),
                                                     Text(
-                                                      "id kategori = " +
-                                                          element
-                                                              .idKategoriPengajuan
-                                                              .toString(),
+                                                      element.tujuan,
                                                       overflow:
                                                           TextOverflow.ellipsis,
                                                     )

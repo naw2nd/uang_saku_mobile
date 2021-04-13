@@ -42,9 +42,7 @@ class _ListApprovalState extends State<ListApproval> {
     super.initState();
   }
 
-initEvent(){
-  
-}
+  initEvent() {}
 
   @override
   Widget build(BuildContext context) {
@@ -127,6 +125,9 @@ initEvent(){
                           )),
                       BlocBuilder<KasbonBloc, BaseState>(builder: (_, state) {
                         if (state is ListApprovalPengajuanState) {
+                          List<KategoriPengajuan> kategori =
+                              state.listKategoriPengajuan;
+
                           if (state.listApprovalPengajuan.isNotEmpty) {
                             List<Widget> list = [];
                             state.listApprovalPengajuan.forEach((element) {
@@ -141,7 +142,8 @@ initEvent(){
                                             id: element.idPengajuanKasbon,
                                             idRoleApproval:
                                                 widget.idRoleApproval);
-                                      }))..whenComplete(() => initState());
+                                      }))
+                                        ..whenComplete(() => initState());
                                     },
                                     child: CustomCard(
                                         container: Container(
@@ -188,10 +190,12 @@ initEvent(){
                                                                         14),
                                                               )),
                                                           Text(
-                                                            "id kategori = " +
-                                                                element
-                                                                    .idKategoriPengajuan
-                                                                    .toString(),
+                                                            kategori
+                                                                .singleWhere((e) =>
+                                                                    e.idKategoriPengajuan ==
+                                                                    element
+                                                                        .idKategoriPengajuan)
+                                                                .namaKategoriPengajuan,
                                                             overflow:
                                                                 TextOverflow
                                                                     .ellipsis,
@@ -300,6 +304,8 @@ initEvent(){
                       BlocBuilder<ReimburseBloc, BaseState>(
                           builder: (_, state) {
                         if (state is ListApprovalPengajuanState) {
+                          List<KategoriPengajuan> kategori =
+                              state.listKategoriPengajuan;
                           if (state.listApprovalPengajuan.isNotEmpty) {
                             List<Widget> list = [];
                             state.listApprovalPengajuan.forEach((element) {
@@ -315,7 +321,8 @@ initEvent(){
                                               id: element.idPengajuanReimburse,
                                               idRoleApproval:
                                                   widget.idRoleApproval);
-                                        }))..whenComplete(() => initState());
+                                        }))
+                                          ..whenComplete(() => initState());
                                       },
                                       child: CustomCard(
                                           container: Container(
@@ -364,10 +371,12 @@ initEvent(){
                                                                             14),
                                                                   )),
                                                               Text(
-                                                                "id kategori = " +
+                                                                kategori
+                                                                .singleWhere((e) =>
+                                                                    e.idKategoriPengajuan ==
                                                                     element
-                                                                        .idKategoriPengajuan
-                                                                        .toString(),
+                                                                        .idKategoriPengajuan)
+                                                                .namaKategoriPengajuan,
                                                                 overflow:
                                                                     TextOverflow
                                                                         .ellipsis,
