@@ -190,8 +190,11 @@ class _ListApprovalState extends State<ListApproval> {
                                                                         14),
                                                               )),
                                                           Text(
-                                                            kategori[element
-                                                                    .idKategoriPengajuan]
+                                                            kategori
+                                                                .singleWhere((e) =>
+                                                                    e.idKategoriPengajuan ==
+                                                                    element
+                                                                        .idKategoriPengajuan)
                                                                 .namaKategoriPengajuan,
                                                             overflow:
                                                                 TextOverflow
@@ -368,9 +371,12 @@ class _ListApprovalState extends State<ListApproval> {
                                                                             14),
                                                                   )),
                                                               Text(
-                                                                kategori[element
-                                                                        .idKategoriPengajuan]
-                                                                    .namaKategoriPengajuan,
+                                                                kategori
+                                                                .singleWhere((e) =>
+                                                                    e.idKategoriPengajuan ==
+                                                                    element
+                                                                        .idKategoriPengajuan)
+                                                                .namaKategoriPengajuan,
                                                                 overflow:
                                                                     TextOverflow
                                                                         .ellipsis,

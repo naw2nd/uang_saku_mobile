@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -22,7 +21,8 @@ class ItemRincian extends StatelessWidget {
                     borderRadius: BorderRadius.circular(10)),
                 child: DetailRincianBiaya(
                   jenisPengajuan: jenisPengajuan,
-                  rincianBiaya: rincianBiaya, isGet: isGet,
+                  rincianBiaya: rincianBiaya,
+                  isGet: (isGet != null) ? isGet : false,
                 ));
           }),
       child: Container(
