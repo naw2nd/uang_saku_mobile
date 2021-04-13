@@ -46,11 +46,14 @@ class KasbonBloc extends Bloc<BaseEvent, BaseState> {
       yield (LoadingState());
       try {
         print("init event approval kasbon");
+        final MultiResponse<KategoriPengajuan> responseKategori =
+            await expenseRepository.getKategori();
         final MultiResponse<Kasbon> responseApprovalKasbon =
             await expenseRepository.getApprovalKasbon(
                 event.idRoleApproval, event.bodyApproval);
         yield (ListApprovalPengajuanState(
-            listApprovalPengajuan: responseApprovalKasbon.data));
+            listApprovalPengajuan: responseApprovalKasbon.data,
+            listKategoriPengajuan: responseKategori.data));
       } catch (e) {
         yield ErrorState(message: "No Connection");
       }
@@ -59,6 +62,17 @@ class KasbonBloc extends Bloc<BaseEvent, BaseState> {
         print("post event approval kasbon");
         final SingleResponse singleResponse = await expenseRepository
             .postApprovalKasbon(event.idRoleApproval, event.bodyApproval);
+        print("====================");
+        print(singleResponse.message);
+        yield (SuccesState<String>(data: singleResponse.message));
+      } catch (e) {
+        yield ErrorState(message: "No Connection");
+      }
+    } else if (event is CancelKasbonEvent) {
+      try {
+        print("event cancel kasbon");
+        final SingleResponse singleResponse =
+            await expenseRepository.cancelKasbon(event.id, event.catatan);
         yield (SuccesState<String>(data: singleResponse.message));
       } catch (e) {
         yield ErrorState(message: "No Connection");

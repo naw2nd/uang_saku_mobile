@@ -5,8 +5,7 @@
 import 'dart:convert';
 import 'package:intl/intl.dart';
 import 'package:uang_saku/model/models.dart';
-import 'package:uang_saku/model/status_approval.dart';
-
+import 'package:uang_saku/model/approval.dart';
 
 class Kasbon {
   Kasbon({
@@ -22,6 +21,7 @@ class Kasbon {
     this.tglMulai,
     this.tglSelesai,
     this.nomorPengajuan,
+    this.approval,
     this.statusApproval,
     this.statusPengajuan,
     this.statusPertanggungjawaban,
@@ -45,39 +45,40 @@ class Kasbon {
     this.rincianRealisasi,
   });
 
-  int idPengajuanKasbon;
-  int idPegawai;
-  int idDepartment;
-  int idCabang;
-  int idKategoriPengajuan;
-  List<String> pelaksana;
-  DateTime tglPengajuan;
-  dynamic tglPencairan;
-  DateTime tglTotalan;
-  DateTime tglMulai;
-  DateTime tglSelesai;
-  String nomorPengajuan;
-  StatusApproval statusApproval;
-  int statusPengajuan;
-  int statusPertanggungjawaban;
-  int statusPencairan;
-  String jenisPencairan;
-  String tujuan;
-  String catatanPengajuan;
-  dynamic catatanLaporan;
-  dynamic catatanPencairan;
-  int nominalPencairan;
-  dynamic nominalRealisasi;
-  dynamic nominalSelisih;
-  List<AdditionalInfo> additionalInfo;
-  int idPerusahaan;
-  Pegawai pegawai;
-  Perusahaan perusahaan;
-  Department department;
-  Cabang cabang;
-  KategoriPengajuan kategoriPengajuan;
-  List<RincianPengajuan> rincianPengajuan;
-  List<dynamic> rincianRealisasi;
+  final int idPengajuanKasbon;
+  final int idPegawai;
+  final int idDepartment;
+  final int idCabang;
+  final int idKategoriPengajuan;
+  final List<String> pelaksana;
+  final DateTime tglPengajuan;
+  final DateTime tglPencairan;
+  final DateTime tglTotalan;
+  final DateTime tglMulai;
+  final DateTime tglSelesai;
+  final String nomorPengajuan;
+  final Approval approval;
+  final String statusApproval;
+  final int statusPengajuan;
+  final int statusPertanggungjawaban;
+  final int statusPencairan;
+  final String jenisPencairan;
+  final String tujuan;
+  final String catatanPengajuan;
+  final String catatanLaporan;
+  final String catatanPencairan;
+  final int nominalPencairan;
+  final int nominalRealisasi;
+  final int nominalSelisih;
+  final List<AdditionalInfo> additionalInfo;
+  final int idPerusahaan;
+  final Pegawai pegawai;
+  final Perusahaan perusahaan;
+  final Department department;
+  final Cabang cabang;
+  final KategoriPengajuan kategoriPengajuan;
+  final List<RincianPengajuan> rincianPengajuan;
+  final List<RincianRealisasi> rincianRealisasi;
 
   factory Kasbon.fromJson(Map<String, dynamic> json) => Kasbon(
         idPengajuanKasbon: json["id_pengajuan_kasbon"],
@@ -86,9 +87,10 @@ class Kasbon {
         idCabang: json["id_cabang"],
         idKategoriPengajuan: json["id_kategori_pengajuan"],
         pelaksana: List<String>.from(json["pelaksana"].map((x) => x)),
-        statusApproval: StatusApproval.fromJson(json["approval"]),
-        tglPengajuan: DateFormat('d MMM yyyy').parse(json["tgl_pengajuan"]),
-        tglPencairan: DateFormat('d MMM yyyy').parse(json["tgl_pencairan"]),
+        approval: Approval.fromJson(json["approval"]),
+        statusApproval: json["status_approval"],
+        tglPengajuan: DateTime.parse(json["tgl_pengajuan"]),
+        // tglPencairan: DateTime.parse(json["tgl_pencairan"]),
         tglTotalan: DateTime.parse(json["tgl_totalan"]),
         tglMulai: DateTime.parse(json["tgl_mulai"]),
         tglSelesai: DateTime.parse(json["tgl_selesai"]),
@@ -97,7 +99,7 @@ class Kasbon {
         statusPertanggungjawaban: json["status_pertanggungjawaban"],
         statusPencairan: json["status_pencairan"],
         jenisPencairan: json["jenis_pencairan"],
-        tujuan: json["tujuan"] as String,
+        tujuan: json["tujuan"],
         catatanPengajuan: json["catatan_pengajuan"],
         catatanLaporan: json["catatan_laporan"],
         catatanPencairan: json["catatan_pencairan"],
@@ -118,7 +120,7 @@ class Kasbon {
                 .map((x) => RincianPengajuan.fromJson(x)))
             : [],
         rincianRealisasi: (json["rincian_realisasi"] != null)
-            ? List<dynamic>.from(json["rincian_realisasi"].map((x) => x))
+            ? List<RincianRealisasi>.from(json["rincian_realisasi"].map((x) => x))
             : [],
       );
 
@@ -128,7 +130,7 @@ class Kasbon {
         "id_department": idDepartment,
         "id_cabang": idCabang,
         "id_kategori_pengajuan": idKategoriPengajuan,
-        "pelaksana": List<dynamic>.from(pelaksana.map((x) => x)),
+        "pelaksana": List<String>.from(pelaksana.map((x) => x)),
         // "approval": (approval != null) ? approval.toJson() : null,
         // "tgl_pengajuan": DateFormat("yyyy-MM-dd").format(DateTime.now()),
         // "tgl_pencairan": (tglPencairan != null)
@@ -142,7 +144,7 @@ class Kasbon {
         "tgl_selesai":
             "${tglSelesai.year.toString().padLeft(4, '0')}-${tglSelesai.month.toString().padLeft(2, '0')}-${tglSelesai.day.toString().padLeft(2, '0')}",
         "nomor_pengajuan": nomorPengajuan,
-        "status_approval": statusApproval,
+        "status_approval": approval,
         "status_pengajuan": statusPengajuan,
         "status_pertanggungjawaban": statusPertanggungjawaban,
         "status_pencairan": statusPencairan,
@@ -170,6 +172,6 @@ class Kasbon {
 
   @override
   String toString() {
-    return '{ ${this.tujuan},${this.tglPengajuan},${this.statusApproval} }';
+    return '{ ${this.tujuan},${this.tglPengajuan},${this.approval} }';
   }
 }

@@ -3,7 +3,7 @@
 //     final reimburse = reimburseFromJson(jsonString);
 
 import 'dart:convert';
-import 'package:uang_saku/model/status_approval.dart';
+import 'package:uang_saku/model/approval.dart';
 
 import 'models.dart';
 import 'package:equatable/equatable.dart';
@@ -17,6 +17,7 @@ class Reimburse {
     this.idCabang,
     this.idKategoriPengajuan,
     this.pelaksana,
+    this.approval,
     this.statusApproval,
     this.tglPengajuan,
     this.tglPencairan,
@@ -46,9 +47,10 @@ class Reimburse {
   final int idCabang;
   final int idKategoriPengajuan;
   final List<String> pelaksana;
-  final StatusApproval statusApproval;
+  final Approval approval;
+  final String statusApproval;
   final DateTime tglPengajuan;
-  final dynamic tglPencairan;
+  final DateTime tglPencairan;
   final DateTime tglMulai;
   final DateTime tglSelesai;
   final String nomorPengajuan;
@@ -57,7 +59,7 @@ class Reimburse {
   final String jenisPencairan;
   final String tujuan;
   final String catatan;
-  final dynamic catatanPencairan;
+  final String catatanPencairan;
   final int nominalRealisasi;
   final List<AdditionalInfo> additionalInfo;
   final int idPerusahaan;
@@ -75,16 +77,17 @@ class Reimburse {
         idCabang: json["id_cabang"],
         idKategoriPengajuan: json["id_kategori_pengajuan"],
         pelaksana: List<String>.from(json["pelaksana"].map((x) => x)),
-        statusApproval: StatusApproval.fromJson(json["approval"]),
-        tglPengajuan: DateFormat('d MMM yyyy').parse(json["tgl_pengajuan"]),
-        tglPencairan: DateFormat('d MMM yyyy').parse(json["tgl_pencairan"]),
+        approval: Approval.fromJson(json["approval"]),
+        statusApproval: json["status_approval"],
+        tglPengajuan: DateTime.parse(json["tgl_pengajuan"]),
+        // tglPencairan: DateTime.parse(json["tgl_pencairan"]),
         tglMulai: DateTime.parse(json["tgl_mulai"]),
         tglSelesai: DateTime.parse(json["tgl_selesai"]),
         nomorPengajuan: json["nomor_pengajuan"],
         statusPengajuan: json["status_pengajuan"],
         statusPencairan: json["status_pencairan"],
         jenisPencairan: json["jenis_pencairan"],
-        tujuan: json["tujuan"] as String,
+        tujuan: json["tujuan"],
         catatan: json["catatan"],
         catatanPencairan: json["catatan_pencairan"],
         nominalRealisasi: json["nominal_realisasi"],
@@ -116,8 +119,8 @@ class Reimburse {
         "id_department": idDepartment,
         "id_cabang": idCabang,
         "id_kategori_pengajuan": idKategoriPengajuan,
-        "pelaksana": List<dynamic>.from(pelaksana.map((x) => x)),
-        "approval": statusApproval,
+        "pelaksana": List<String>.from(pelaksana.map((x) => x)),
+        "approval": approval,
         "tgl_pengajuan": DateFormat("yyyy-MM-dd").format(DateTime.now()),
         "tgl_pencairan": tglPencairan,
         "tgl_mulai":
@@ -147,7 +150,7 @@ class Reimburse {
 
   @override
   String toString() {
-    return '{ ${this.tujuan},${this.tglPengajuan},${this.statusApproval} }';
+    return '{ ${this.tujuan},${this.tglPengajuan},${this.approval} }';
   }
 
   // @override

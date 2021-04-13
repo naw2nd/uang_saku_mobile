@@ -1,3 +1,5 @@
+import 'package:uang_saku/model/models.dart';
+
 import 'kategori_biaya.dart';
 
 class RincianPengajuan {
@@ -21,8 +23,8 @@ class RincianPengajuan {
   int jumlahUnit;
   int hargaSatuan;
   int total;
-  dynamic keterangan;
-  List<dynamic> images;
+  String keterangan;
+  List<RequestImage64> images;
   KategoriBiaya kategoriBiaya;
 
   factory RincianPengajuan.fromJson(Map<String, dynamic> json) =>
@@ -34,8 +36,9 @@ class RincianPengajuan {
         jumlahUnit: json["jumlah_unit"] as int,
         hargaSatuan: json["harga_satuan"] as int,
         total: json["total"] as int,
-        keterangan: json["keterangan"] as String,
-        images: List<dynamic>.from(json["images"].map((x) => x)),
+        keterangan: json["keterangan"],
+        images: List<RequestImage64>.from(
+            json["images"].map((x) => RequestImage64.fromJson(x))),
         kategoriBiaya: KategoriBiaya.fromJson(json["kategori_biaya"]),
       );
 

@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -8,6 +10,8 @@ import 'package:intl/intl.dart';
 import 'package:uang_saku/model/body_post_approval.dart';
 import 'package:uang_saku/ui/custom_widgets/custom_card.dart';
 import 'package:uang_saku/ui/custom_widgets/item_rincian.dart';
+
+import 'bottom_navbar.dart';
 
 class DetailsApprovalKasbon extends StatefulWidget {
   final int id;
@@ -34,7 +38,7 @@ class _DetailsApprovalKasbonState extends State<DetailsApprovalKasbon> {
               borderRadius: BorderRadius.only(
                   bottomLeft: Radius.circular(15),
                   bottomRight: Radius.circular(15))),
-          backgroundColor: Color(0xFF358BFC),
+          backgroundColor: Color(0xFF2B4D66),
           title: Text("Detail Pengajuan Kasbon",
               style: GoogleFonts.montserrat(
                   fontSize: 18, fontWeight: FontWeight.w600)),
@@ -47,7 +51,29 @@ class _DetailsApprovalKasbonState extends State<DetailsApprovalKasbon> {
                 })
           ],
         ),
-        body: BlocBuilder<KasbonBloc, BaseState>(
+        body: BlocConsumer<KasbonBloc, BaseState>(
+          listener: (context, state) {
+            if (state is SuccesState<String>) {
+              Scaffold.of(context).showSnackBar(SnackBar(
+                content: Text(state.data),
+                duration: Duration(seconds: 1),
+              ));
+              Timer(
+                  Duration(seconds: 2),
+                  () => Navigator.pushReplacement(context,
+                          MaterialPageRoute(builder: (context) {
+                        return BottomNavbar();
+                      })));
+              // Navigator.of(context, rootNavigator: true).pop(context));
+            } else if (state is ErrorState) {
+              Scaffold.of(context)
+                  .showSnackBar(SnackBar(content: Text(state.message)));
+              Timer(
+                  Duration(seconds: 2),
+                  () =>
+                      Navigator.of(context, rootNavigator: true).pop(context));
+            }
+          },
           builder: (_, state) {
             if (state is KasbonState) {
               List<Widget> listPelaksana = [];
@@ -68,7 +94,7 @@ class _DetailsApprovalKasbonState extends State<DetailsApprovalKasbon> {
                       color: Color(0xFF555555)),
                 ),
               ];
-              state.kasbon.statusApproval.all.forEach((element) {
+              state.kasbon.approval.all.forEach((element) {
                 listApproval.add(Container(
                     padding: EdgeInsets.fromLTRB(0, 10, 0, 0),
                     child: Row(
@@ -79,9 +105,7 @@ class _DetailsApprovalKasbonState extends State<DetailsApprovalKasbon> {
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Text(
-                                    state.kasbon.statusApproval
-                                        .keterangan[element],
+                                Text(state.kasbon.approval.keterangan[element],
                                     style: GoogleFonts.montserrat(
                                         fontSize: 15,
                                         fontWeight: FontWeight.w600,
@@ -98,13 +122,13 @@ class _DetailsApprovalKasbonState extends State<DetailsApprovalKasbon> {
                               decoration: BoxDecoration(
                                 borderRadius:
                                     BorderRadius.all(Radius.circular(15)),
-                                color: (state.kasbon.statusApproval.approved
+                                color: (state.kasbon.approval.approved
                                         .contains(element))
-                                    ? Color(0xFF358BFC)
-                                    : Color(0xFF555555),
+                                    ? Color(0xFF2B4D66)
+                                    : Color(0xAA555555),
                               ),
                               child: Text(
-                                  (state.kasbon.statusApproval.approved
+                                  (state.kasbon.approval.approved
                                           .contains(element))
                                       ? "Disetujui"
                                       : "Menunggu",
@@ -122,6 +146,7 @@ class _DetailsApprovalKasbonState extends State<DetailsApprovalKasbon> {
                 listRincian.add(ItemRincian(
                   jenisPengajuan: "Kasbon",
                   rincianBiaya: element,
+                  isGet: true,
                 ));
               });
               return ListView(
@@ -150,7 +175,7 @@ class _DetailsApprovalKasbonState extends State<DetailsApprovalKasbon> {
                                         style: GoogleFonts.montserrat(
                                             fontSize: 15,
                                             fontWeight: FontWeight.w600,
-                                            color: Color(0xFF358BFC))),
+                                            color: Color(0xFF2B4D66))),
                                     Container(
                                       padding: EdgeInsets.fromLTRB(0, 7, 0, 0),
                                       child: Text("Tanggal Pengajuan",
@@ -317,7 +342,7 @@ class _DetailsApprovalKasbonState extends State<DetailsApprovalKasbon> {
                                     decoration: BoxDecoration(
                                         borderRadius: BorderRadius.all(
                                             Radius.circular(15)),
-                                        color: Color(0xFF358BFC)),
+                                        color: Color(0xFF2B4D66)),
                                     child: Text(
                                       (state.kasbon.jenisPencairan == "cash")
                                           ? "Terima Cash"
@@ -382,7 +407,16 @@ class _DetailsApprovalKasbonState extends State<DetailsApprovalKasbon> {
                               height: 40.0,
                               child: RaisedButton(
                                 elevation: 2,
-                                onPressed: () {},
+                                onPressed: () {
+                                  BlocProvider.of<KasbonBloc>(context).add(
+                                      PostApprovalKasbonEvent(
+                                          idRoleApproval: widget.idRoleApproval,
+                                          bodyApproval: BodyPostApproval(
+                                              idPengajuanKasbon: widget.id,
+                                              catatan: "nocat",
+                                              status: "tolak",
+                                              tipe: "pengajuan")));
+                                },
                                 shape: RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(10)),
                                 padding: EdgeInsets.all(0.0),
@@ -414,9 +448,8 @@ class _DetailsApprovalKasbonState extends State<DetailsApprovalKasbon> {
                               child: RaisedButton(
                                 elevation: 2,
                                 onPressed: () {
-                                  BlocProvider.of<KasbonBloc>(
-                                          context)
-                                      .add(PostApprovalKasbonEvent(
+                                  BlocProvider.of<KasbonBloc>(context).add(
+                                      PostApprovalKasbonEvent(
                                           idRoleApproval: widget.idRoleApproval,
                                           bodyApproval: BodyPostApproval(
                                               idPengajuanKasbon: widget.id,
@@ -429,7 +462,7 @@ class _DetailsApprovalKasbonState extends State<DetailsApprovalKasbon> {
                                 padding: EdgeInsets.all(0.0),
                                 child: Ink(
                                   decoration: BoxDecoration(
-                                      color: Color(0xFF358BFC),
+                                      color: Color(0xFF2B4D66),
                                       borderRadius: BorderRadius.circular(10)),
                                   child: Container(
                                     alignment: Alignment.center,

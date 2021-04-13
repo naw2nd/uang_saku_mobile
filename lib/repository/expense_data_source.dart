@@ -16,7 +16,7 @@ abstract class ExpenseDataSource {
   Future<SingleResponse<Reimburse>> getReimburse(int id);
   Future<MultiResponse<Kasbon>> getListKasbon();
   Future<MultiResponse<Reimburse>> getListReimburse();
-  Future<SingleResponse<Kasbon>> deleteKasbon(int id, String catatan);
+  Future<SingleResponse> cancelKasbon(int id, String catatan);
   setToken(String token);
   getToken();
   logout();

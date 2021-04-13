@@ -9,7 +9,8 @@ import 'package:uang_saku/bloc/event/create_pengajuan_event.dart';
 class DetailRincianBiaya extends StatefulWidget {
   final String jenisPengajuan;
   final rincianBiaya;
-  DetailRincianBiaya({this.jenisPengajuan, this.rincianBiaya});
+  final bool isGet;
+  DetailRincianBiaya({this.jenisPengajuan, this.rincianBiaya, this.isGet});
   @override
   _DetailRincianBiayaState createState() => _DetailRincianBiayaState();
 }
@@ -29,7 +30,9 @@ class _DetailRincianBiayaState extends State<DetailRincianBiaya> {
                       borderRadius: BorderRadius.circular(10)),
                   child: Container(
                       child: ClipRRect(
-                    child: Image.memory(base64Decode(element.image)),
+                    child: (widget.isGet)
+                        ? Image.network(element.image)
+                        : Image.memory(base64Decode(element.image)),
                   )));
             }),
         child: Container(
@@ -38,7 +41,9 @@ class _DetailRincianBiayaState extends State<DetailRincianBiaya> {
           child: ClipRRect(
             borderRadius: BorderRadius.circular(10),
             child: FittedBox(
-              child: Image.memory(base64Decode(element.image)),
+              child: (widget.isGet)
+                  ? Image.network(element.image)
+                  : Image.memory(base64Decode(element.image)),
               fit: BoxFit.cover,
             ),
           ),
@@ -62,70 +67,75 @@ class _DetailRincianBiayaState extends State<DetailRincianBiaya> {
                       fontSize: 16,
                       color: Color(0xFF555555)),
                 ),
-                Container(
-                  width: 20,
-                  height: 20,
-                  child: IconButton(
-                      padding: EdgeInsets.zero,
-                      icon:
-                          Icon(Icons.delete_rounded, color: Color(0xFF555555)),
-                      onPressed: () {
-                        showDialog(
-                            context: context,
-                            builder: (BuildContext context) {
-                              return Dialog(
-                                  insetPadding:
-                                      EdgeInsets.symmetric(horizontal: 90),
-                                  shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(10)),
-                                  child: Container(
-                                    padding:
-                                        EdgeInsets.fromLTRB(15, 10, 15, 10),
-                                    child: Wrap(
-                                      children: [
-                                        Container(
-                                          padding:
-                                              EdgeInsets.symmetric(vertical: 7),
-                                          child: Text(
-                                              "Apakah anda yakin untuk menghapus Rincian Biaya " +
-                                                  widget.jenisPengajuan +
-                                                  " ini ?",
-                                              textAlign: TextAlign.center,
-                                              style: GoogleFonts.montserrat()),
-                                        ),
-                                        Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceEvenly,
-                                          children: [
-                                            TextButton(
-                                                onPressed: () {
-                                                  BlocProvider.of<
-                                                              CreateRincianBiayaBloc>(
-                                                          context)
-                                                      .add(DeleteRincianBiayaEvent(
-                                                          rincianBiaya: widget
-                                                              .rincianBiaya));
-                                                  Navigator.pop(context);
-                                                  Navigator.pop(context);
-                                                },
-                                                child: Text("Ya",
+                (widget.isGet)
+                    ? Container()
+                    : Container(
+                        width: 20,
+                        height: 20,
+                        child: IconButton(
+                            padding: EdgeInsets.zero,
+                            icon: Icon(Icons.delete_rounded,
+                                color: Color(0xFF555555)),
+                            onPressed: () {
+                              showDialog(
+                                  context: context,
+                                  builder: (BuildContext context) {
+                                    return Dialog(
+                                        insetPadding: EdgeInsets.symmetric(
+                                            horizontal: 90),
+                                        shape: RoundedRectangleBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(10)),
+                                        child: Container(
+                                          padding: EdgeInsets.fromLTRB(
+                                              15, 10, 15, 10),
+                                          child: Wrap(
+                                            children: [
+                                              Container(
+                                                padding: EdgeInsets.symmetric(
+                                                    vertical: 7),
+                                                child: Text(
+                                                    "Apakah anda yakin untuk menghapus Rincian Biaya " +
+                                                        widget.jenisPengajuan +
+                                                        " ini ?",
+                                                    textAlign: TextAlign.center,
                                                     style: GoogleFonts
-                                                        .montserrat())),
-                                            TextButton(
-                                                onPressed: () {
-                                                  Navigator.pop(context);
-                                                },
-                                                child: Text("Tidak",
-                                                    style: GoogleFonts
-                                                        .montserrat()))
-                                          ],
-                                        ),
-                                      ],
-                                    ),
-                                  ));
-                            });
-                      }),
-                )
+                                                        .montserrat()),
+                                              ),
+                                              Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment
+                                                        .spaceEvenly,
+                                                children: [
+                                                  TextButton(
+                                                      onPressed: () {
+                                                        BlocProvider.of<
+                                                                    CreateRincianBiayaBloc>(
+                                                                context)
+                                                            .add(DeleteRincianBiayaEvent(
+                                                                rincianBiaya: widget
+                                                                    .rincianBiaya));
+                                                        Navigator.pop(context);
+                                                        Navigator.pop(context);
+                                                      },
+                                                      child: Text("Ya",
+                                                          style: GoogleFonts
+                                                              .montserrat())),
+                                                  TextButton(
+                                                      onPressed: () {
+                                                        Navigator.pop(context);
+                                                      },
+                                                      child: Text("Tidak",
+                                                          style: GoogleFonts
+                                                              .montserrat()))
+                                                ],
+                                              ),
+                                            ],
+                                          ),
+                                        ));
+                                  });
+                            }),
+                      )
               ],
             ),
             Container(
@@ -196,7 +206,7 @@ class _DetailRincianBiayaState extends State<DetailRincianBiaya> {
                 children: [
                   Text("Catatan", style: GoogleFonts.montserrat()),
                   Text(
-                      (widget.rincianBiaya.keterangan != "")
+                      (widget.rincianBiaya.keterangan != null)
                           ? widget.rincianBiaya.keterangan
                           : "-",
                       style:

@@ -17,7 +17,6 @@ class DetailsPengajuanKasbon extends StatefulWidget {
 }
 
 class _DetailsPengajuanKasbonState extends State<DetailsPengajuanKasbon> {
-
   @override
   void initState() {
     BlocProvider.of<KasbonBloc>(context).add(GetKasbonEvent(id: widget.id));
@@ -46,7 +45,12 @@ class _DetailsPengajuanKasbonState extends State<DetailsPengajuanKasbon> {
                 })
           ],
         ),
-        body: BlocBuilder<KasbonBloc, BaseState>(
+        body: BlocConsumer<KasbonBloc, BaseState>(
+          listener: (_, state) {
+            if (state is SuccesState<String>) {
+              Navigator.pop(context);
+            }
+          },
           builder: (_, state) {
             if (state is KasbonState) {
               List<Widget> listPelaksana = [];
@@ -67,7 +71,7 @@ class _DetailsPengajuanKasbonState extends State<DetailsPengajuanKasbon> {
                       color: Color(0xFF555555)),
                 ),
               ];
-              state.kasbon.statusApproval.all.forEach((element) {
+              state.kasbon.approval.all.forEach((element) {
                 listApproval.add(Container(
                     padding: EdgeInsets.fromLTRB(0, 10, 0, 0),
                     child: Row(
@@ -79,7 +83,7 @@ class _DetailsPengajuanKasbonState extends State<DetailsPengajuanKasbon> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
-                                    state.kasbon.statusApproval
+                                    state.kasbon.approval
                                         .keterangan[element],
                                     style: GoogleFonts.montserrat(
                                         fontSize: 15,
@@ -97,16 +101,17 @@ class _DetailsPengajuanKasbonState extends State<DetailsPengajuanKasbon> {
                               decoration: BoxDecoration(
                                 borderRadius:
                                     BorderRadius.all(Radius.circular(15)),
-                                color: (state.kasbon.statusApproval.approved
+                                color: (state.kasbon.approval.approved
                                         .contains(element))
                                     ? Color(0xFF358BFC)
                                     : Color(0xFF555555),
                               ),
                               child: Text(
-                                  (state.kasbon.statusApproval.approved
+                                  (state.kasbon.approval.approved
                                           .contains(element))
                                       ? "Disetujui"
-                                      : "Menunggu",overflow: TextOverflow.ellipsis,
+                                      : "Menunggu",
+                                  overflow: TextOverflow.ellipsis,
                                   style: GoogleFonts.montserrat(
                                       fontSize: 16,
                                       fontWeight: FontWeight.w500,
@@ -120,6 +125,7 @@ class _DetailsPengajuanKasbonState extends State<DetailsPengajuanKasbon> {
                 listRincian.add(ItemRincian(
                   jenisPengajuan: "Kasbon",
                   rincianBiaya: element,
+                  isGet: true,
                 ));
               });
               return ListView(
@@ -380,7 +386,10 @@ class _DetailsPengajuanKasbonState extends State<DetailsPengajuanKasbon> {
                               height: 40.0,
                               child: RaisedButton(
                                 elevation: 2,
-                                onPressed: () {},
+                                onPressed: () {
+                                  BlocProvider.of<KasbonBloc>(context)
+                                      .add(CancelKasbonEvent(id: widget.id));
+                                },
                                 shape: RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(10)),
                                 padding: EdgeInsets.all(0.0),
@@ -401,37 +410,37 @@ class _DetailsPengajuanKasbonState extends State<DetailsPengajuanKasbon> {
                                 ),
                               ),
                             )),
-                        Flexible(
-                          flex: 1,
-                          child: Container(),
-                        ),
-                        Flexible(
-                            flex: 15,
-                            child: Container(
-                              height: 40.0,
-                              child: RaisedButton(
-                                elevation: 2,
-                                onPressed: () {},
-                                shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(10)),
-                                padding: EdgeInsets.all(0.0),
-                                child: Ink(
-                                  decoration: BoxDecoration(
-                                      color: Color(0xFF358BFC),
-                                      borderRadius: BorderRadius.circular(10)),
-                                  child: Container(
-                                    alignment: Alignment.center,
-                                    child: Text(
-                                      "Update",
-                                      style: GoogleFonts.montserrat(
-                                          fontWeight: FontWeight.w500,
-                                          fontSize: 18,
-                                          color: Colors.white),
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            )),
+                        // Flexible(
+                        //   flex: 1,
+                        //   child: Container(),
+                        // ),
+                        // Flexible(
+                        //     flex: 15,
+                        //     child: Container(
+                        //       height: 40.0,
+                        //       child: RaisedButton(
+                        //         elevation: 2,
+                        //         onPressed: () {},
+                        //         shape: RoundedRectangleBorder(
+                        //             borderRadius: BorderRadius.circular(10)),
+                        //         padding: EdgeInsets.all(0.0),
+                        //         child: Ink(
+                        //           decoration: BoxDecoration(
+                        //               color: Color(0xFF358BFC),
+                        //               borderRadius: BorderRadius.circular(10)),
+                        //           child: Container(
+                        //             alignment: Alignment.center,
+                        //             child: Text(
+                        //               "Update",
+                        //               style: GoogleFonts.montserrat(
+                        //                   fontWeight: FontWeight.w500,
+                        //                   fontSize: 18,
+                        //                   color: Colors.white),
+                        //             ),
+                        //           ),
+                        //         ),
+                        //       ),
+                        //     )),
                       ],
                     ),
                   ),

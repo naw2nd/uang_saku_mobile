@@ -1,4 +1,5 @@
 import 'package:uang_saku/bloc/bloc.dart';
+import 'package:uang_saku/model/kategori_pengajuan.dart';
 import 'package:uang_saku/model/reimburse.dart';
 import 'package:uang_saku/model/role_approval.dart';
 
@@ -8,9 +9,12 @@ class RoleApprovalState extends BaseState {
   @override
   List<Object> get props => [this.roleApproval];
 }
+
 class ListApprovalPengajuanState extends BaseState {
   final List listApprovalPengajuan;
-  ListApprovalPengajuanState({this.listApprovalPengajuan});
+  final List<KategoriPengajuan> listKategoriPengajuan;
+  ListApprovalPengajuanState(
+      {this.listApprovalPengajuan, this.listKategoriPengajuan});
   @override
   List<Object> get props => [this.listApprovalPengajuan];
 }
