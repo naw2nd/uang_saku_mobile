@@ -19,11 +19,15 @@ class _ListKasbonState extends State<ListKasbon> {
     "images/send-file-money.png",
     "images/icon-done.png",
   ];
-
+  
   @override
   void initState() {
-    BlocProvider.of<KasbonBloc>(context).add(KasbonEvent());
+    initEvent();
     super.initState();
+  }
+
+  initEvent() {
+    BlocProvider.of<KasbonBloc>(context).add(KasbonEvent());
   }
 
   @override
@@ -106,7 +110,7 @@ class _ListKasbonState extends State<ListKasbon> {
                                   return DetailsPengajuanKasbon(
                                       id: element.idPengajuanKasbon);
                                 }))
-                                  ..whenComplete(() => initState());
+                                  ..whenComplete(() => initEvent());
                               },
                               child: CustomCard(
                                   container: Container(

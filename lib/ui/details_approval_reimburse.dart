@@ -74,7 +74,7 @@ class _DetailsApprovalReimburseState extends State<DetailsApprovalReimburse> {
               Timer(
                   Duration(seconds: 2),
                   () =>
-                      Navigator.of(context, rootNavigator: true).pop(context));
+                      Navigator.of(context).pop(context));
             }
           },
           builder: (context, state) {

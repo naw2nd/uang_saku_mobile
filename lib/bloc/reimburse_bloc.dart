@@ -64,6 +64,20 @@ class ReimburseBloc extends Bloc<BaseEvent, BaseState> {
       } catch (e) {
         yield ErrorState(message: "No Connection");
       }
+    } else if (event is UpdateReimburseEvent) {
+      try {
+        final SingleResponse response =
+            await expenseRepository.putReimburse(event.reimburse, event.id);
+        print(response.message);
+        if (response.success) {
+          yield SuccesState(data: response.data);
+          print("berhasil");
+        } else {
+          yield ErrorState(message: response.message);
+        }
+      } catch (e) {
+        yield ErrorState(message: "No Connection");
+      }
     } else {
       yield ErrorState(message: "Tidak ada event yang sesuai");
     }

@@ -30,9 +30,14 @@ class _DashboardPageState extends State<DashboardPage> {
 
   @override
   void initState() {
-    BlocProvider.of<RoleApprovalBloc>(context).add(InitEvent());
-
+    initEvent();
     super.initState();
+  }
+
+  initEvent() {
+    setState(() {
+      BlocProvider.of<RoleApprovalBloc>(context).add(InitEvent());
+    });
   }
 
   @override
@@ -235,7 +240,7 @@ class _DashboardPageState extends State<DashboardPage> {
                                                         );
                                                       }))
                                                         ..whenComplete(
-                                                            () => initState());
+                                                            () => initEvent());
                                                     },
                                                     child: MenuApproval(
                                                       roleApproval: state
@@ -264,7 +269,7 @@ class _DashboardPageState extends State<DashboardPage> {
                                                           );
                                                         }))
                                                           ..whenComplete(() =>
-                                                              initState());
+                                                              initEvent());
                                                       },
                                                       child: MenuApproval(
                                                           roleApproval: i),

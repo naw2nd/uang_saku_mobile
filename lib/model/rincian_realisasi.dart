@@ -3,6 +3,7 @@ import 'models.dart';
 class RincianRealisasi {
   RincianRealisasi({
     this.idRincianRealisasiReimburse,
+    this.action,
     this.idPengajuanReimburse,
     this.idKategoriBiaya,
     this.namaItem,
@@ -13,6 +14,7 @@ class RincianRealisasi {
   });
 
   final int idRincianRealisasiReimburse;
+  String action;
   final int idPengajuanReimburse;
   final int idKategoriBiaya;
   final String namaItem;
@@ -37,6 +39,7 @@ class RincianRealisasi {
         "id_rincian_realisasi_reimburse": idRincianRealisasiReimburse,
         "id_pengajuan_reimburse": idPengajuanReimburse,
         "id_kategori_biaya": idKategoriBiaya,
+        "action": action ?? "",
         "nama_item": namaItem,
         "total": total,
         "keterangan": keterangan,

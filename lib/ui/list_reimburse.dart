@@ -21,11 +21,14 @@ class _ListReimburseState extends State<ListReimburse> {
     "images/send-file-money.png",
     "images/icon-done.png",
   ];
-
   @override
   void initState() {
-    BlocProvider.of<ReimburseBloc>(context).add(ReimburseEvent());
+    initEvent();
     super.initState();
+  }
+
+  initEvent() {
+    BlocProvider.of<ReimburseBloc>(context).add(ReimburseEvent());
   }
 
   @override
@@ -109,7 +112,7 @@ class _ListReimburseState extends State<ListReimburse> {
                                   return DetailsPengajuanReimburse(
                                       id: element.idPengajuanReimburse);
                                 }))
-                                  ..whenComplete(() => initState());
+                                  ..whenComplete(() => initEvent());
                               },
                               child: CustomCard(
                                   container: Container(
@@ -160,7 +163,7 @@ class _ListReimburseState extends State<ListReimburse> {
                                                   ],
                                                 )),
                                             Flexible(
-                                                flex: 6,
+                                                flex: 5,
                                                 child: Column(
                                                   crossAxisAlignment:
                                                       CrossAxisAlignment.end,

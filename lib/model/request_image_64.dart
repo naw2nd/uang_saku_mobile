@@ -1,13 +1,15 @@
 class RequestImage64 {
   RequestImage64({
     this.idAttachmentRealisasiReimburse,
+    this.action,
     this.idRincianRealisasi,
     this.image,
   });
 
   final int idAttachmentRealisasiReimburse;
+  String action;
   final int idRincianRealisasi;
-  final String image;
+  String image;
 
   factory RequestImage64.fromJson(Map<String, dynamic> json) => RequestImage64(
         idAttachmentRealisasiReimburse:
@@ -18,6 +20,7 @@ class RequestImage64 {
 
   Map<String, dynamic> toJson() => {
         "id_attachment_realisasi_reimburse": idAttachmentRealisasiReimburse,
+        "action": action ?? "",
         "id_rincian_realisasi": idRincianRealisasi,
         "image": image,
       };

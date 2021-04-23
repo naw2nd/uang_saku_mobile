@@ -8,6 +8,8 @@ import 'package:uang_saku/ui/custom_widgets/custom_card.dart';
 import 'package:uang_saku/ui/custom_widgets/item_rincian.dart';
 import 'package:uang_saku/ui/detail_rincian_approval.dart';
 
+import 'update_pengajuan.dart';
+
 class DetailsPengajuanKasbon extends StatefulWidget {
   final int id;
   DetailsPengajuanKasbon({this.id});
@@ -82,9 +84,7 @@ class _DetailsPengajuanKasbonState extends State<DetailsPengajuanKasbon> {
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Text(
-                                    state.kasbon.approval
-                                        .keterangan[element],
+                                Text(state.kasbon.approval.keterangan[element],
                                     style: GoogleFonts.montserrat(
                                         fontSize: 15,
                                         fontWeight: FontWeight.w600,
@@ -375,6 +375,37 @@ class _DetailsPengajuanKasbonState extends State<DetailsPengajuanKasbon> {
                       ),
                     ),
                   ),
+                  (state.kasbon.statusPengajuan == 0)
+                      ? Container(
+                          padding: EdgeInsets.fromLTRB(15, 15, 15, 0),
+                          child: Container(
+                              height: 42.0,
+                              child: RaisedButton(
+                                  elevation: 2,
+                                  onPressed: () {
+                                    Navigator.of(context).push(
+                                        MaterialPageRoute(builder: (context) {
+                                      return UpdatePengajuan(
+                                          jenisPengajuan: "Kasbon",
+                                          pengajuan: state.kasbon);
+                                    }));
+                                  },
+                                  shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(10)),
+                                  padding: EdgeInsets.all(0.0),
+                                  child: Ink(
+                                      decoration: BoxDecoration(
+                                          color: Color(0xFF358BFC),
+                                          borderRadius:
+                                              BorderRadius.circular(10)),
+                                      child: Container(
+                                          alignment: Alignment.center,
+                                          child: Text("Update",
+                                              style: GoogleFonts.montserrat(
+                                                  fontWeight: FontWeight.w500,
+                                                  fontSize: 20,
+                                                  color: Colors.white)))))))
+                      : Container(),
                   Container(
                     padding: EdgeInsets.fromLTRB(15, 10, 15, 5),
                     child: Row(
@@ -383,7 +414,7 @@ class _DetailsPengajuanKasbonState extends State<DetailsPengajuanKasbon> {
                         Flexible(
                             flex: 15,
                             child: Container(
-                              height: 40.0,
+                              height: 42.0,
                               child: RaisedButton(
                                 elevation: 2,
                                 onPressed: () {
@@ -403,142 +434,16 @@ class _DetailsPengajuanKasbonState extends State<DetailsPengajuanKasbon> {
                                       "Batalkan",
                                       style: GoogleFonts.montserrat(
                                           fontWeight: FontWeight.w500,
-                                          fontSize: 18,
+                                          fontSize: 20,
                                           color: Colors.white),
                                     ),
                                   ),
                                 ),
                               ),
                             )),
-                        // Flexible(
-                        //   flex: 1,
-                        //   child: Container(),
-                        // ),
-                        // Flexible(
-                        //     flex: 15,
-                        //     child: Container(
-                        //       height: 40.0,
-                        //       child: RaisedButton(
-                        //         elevation: 2,
-                        //         onPressed: () {},
-                        //         shape: RoundedRectangleBorder(
-                        //             borderRadius: BorderRadius.circular(10)),
-                        //         padding: EdgeInsets.all(0.0),
-                        //         child: Ink(
-                        //           decoration: BoxDecoration(
-                        //               color: Color(0xFF358BFC),
-                        //               borderRadius: BorderRadius.circular(10)),
-                        //           child: Container(
-                        //             alignment: Alignment.center,
-                        //             child: Text(
-                        //               "Update",
-                        //               style: GoogleFonts.montserrat(
-                        //                   fontWeight: FontWeight.w500,
-                        //                   fontSize: 18,
-                        //                   color: Colors.white),
-                        //             ),
-                        //           ),
-                        //         ),
-                        //       ),
-                        //     )),
                       ],
                     ),
                   ),
-                  // Row(
-                  //   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  //   children: <Widget>[
-                  //     RaisedButton(
-                  //       onPressed: () {
-                  //         showDialog(
-                  //             context: context,
-                  //             builder: (BuildContext context) {
-                  //               return AlertDialog(
-                  //                 title: Text("Tinggalkan Catatan"),
-                  //                 content: TextField(
-                  //                   maxLines: 3,
-                  //                   decoration: const InputDecoration(
-                  //                     hintStyle:
-                  //                         TextStyle(color: Colors.black45),
-                  //                     errorStyle:
-                  //                         TextStyle(color: Colors.redAccent),
-                  //                     border: OutlineInputBorder(),
-                  //                     labelText: 'Catatan',
-                  //                   ),
-                  //                   onTap: () {},
-                  //                   //controller: tanggalSelesai,
-                  //                 ),
-                  //                 actions: <Widget>[
-                  //                   FlatButton(
-                  //                     child: Text("Cancel"),
-                  //                     onPressed: () {
-                  //                       Navigator.pop(context);
-                  //                     },
-                  //                   ),
-                  //                   FlatButton(
-                  //                     child: Text("Upload"),
-                  //                     onPressed: () {
-                  //                       showDialog(
-                  //                           context: context,
-                  //                           builder: (BuildContext context) {
-                  //                             return AlertDialog(
-                  //                               content: Text(
-                  //                                   "Apakah anda yakin ingin membatalkan pengajaun ini?"),
-                  //                               actions: <Widget>[
-                  //                                 FlatButton(
-                  //                                   child: Text("Tidak"),
-                  //                                   onPressed: () {
-                  //                                     Navigator.pop(context);
-                  //                                   },
-                  //                                 ),
-                  //                                 FlatButton(
-                  //                                   child: Text("Ya"),
-                  //                                   onPressed: () {
-                  //                                     // (state
-                  //                                     //     is CancelKasbonState);
-                  //                                     // context
-                  //                                     //     .read<KasbonBloc>()
-                  //                                     //     .add(
-                  //                                     //         CancelKasbonEvent());
-                  //                                     // return Navigator.push(
-                  //                                     //     context,
-                  //                                     //     MaterialPageRoute(
-                  //                                     //         builder:
-                  //                                     //             (context) {
-                  //                                     //   return DetailsPengajuan();
-                  //                                     // }));
-                  //                                   },
-                  //                                 )
-                  //                               ],
-                  //                             );
-                  //                           });
-                  //                     },
-                  //                   )
-                  //                 ],
-                  //               );
-                  //             });
-                  //       },
-                  //       child: Text(
-                  //         "Batal",
-                  //         style: GoogleFonts.montserrat(
-                  //             color: Colors.white,
-                  //             fontSize: 20,
-                  //             fontWeight: FontWeight.w600),
-                  //       ),
-                  //       color: Colors.red,
-                  //     ),
-                  //     RaisedButton(
-                  //       onPressed: () {},
-                  //       child: Text(
-                  //         "Update",
-                  //         style: GoogleFonts.montserrat(
-                  //             color: Colors.white,
-                  //             fontSize: 20,
-                  //             fontWeight: FontWeight.w600),
-                  //       ),
-                  //       color: Colors.blue,
-                  //     ),
-                  //   ],
-                  // )
                 ],
               );
             } else {

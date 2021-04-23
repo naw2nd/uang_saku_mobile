@@ -77,6 +77,20 @@ class KasbonBloc extends Bloc<BaseEvent, BaseState> {
       } catch (e) {
         yield ErrorState(message: "No Connection");
       }
+    } else if (event is UpdateKasbonEvent) {
+      try {
+        final SingleResponse response =
+            await expenseRepository.putKasbon(event.kasbon, event.id);
+        print(response.message);
+        if (response.success) {
+          yield SuccesState(data: response.data);
+          print("berhasil");
+        } else {
+          yield ErrorState(message: response.message);
+        }
+      } catch (e) {
+        yield ErrorState(message: "No Connection");
+      }
     } else {
       yield ErrorState(message: "Tidak ada event yang sesuai");
     }

@@ -3,7 +3,7 @@ import 'package:equatable/equatable.dart';
 class SingleResponse<T> extends Equatable {
   final bool success;
   final String message;
-  final T data;
+  T data;
 
   SingleResponse({this.success, this.message, this.data});
 

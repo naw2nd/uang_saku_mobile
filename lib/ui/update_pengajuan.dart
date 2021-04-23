@@ -7,6 +7,7 @@ import 'package:uang_saku/bloc/bloc.dart';
 import 'package:uang_saku/bloc/create_pengajuan_bloc.dart';
 import 'package:uang_saku/bloc/create_rincian_biaya_bloc.dart';
 import 'package:uang_saku/bloc/event/create_pengajuan_event.dart';
+import 'package:uang_saku/bloc/reimburse_bloc.dart';
 import 'package:uang_saku/bloc/state/base_state.dart';
 import 'package:uang_saku/bloc/state/create_pengajuan_state.dart';
 import 'package:uang_saku/model/models.dart';
@@ -20,14 +21,15 @@ import 'package:uang_saku/ui/custom_widgets/form_rincian_biaya.dart';
 import 'package:dotted_border/dotted_border.dart';
 import 'package:intl/intl.dart';
 
-class CreatePengajuan extends StatefulWidget {
+class UpdatePengajuan extends StatefulWidget {
   final String jenisPengajuan;
-  CreatePengajuan({this.jenisPengajuan});
+  final pengajuan;
+  UpdatePengajuan({this.jenisPengajuan, this.pengajuan});
   @override
-  _CreatePengajuanState createState() => _CreatePengajuanState();
+  _UpdatePengajuanState createState() => _UpdatePengajuanState();
 }
 
-class _CreatePengajuanState extends State<CreatePengajuan> {
+class _UpdatePengajuanState extends State<UpdatePengajuan> {
   var _colorTheme;
   List<String> _listJenisPencairan = ["Cash", "Transfer"];
   List<String> pelaksana = [];
@@ -54,14 +56,30 @@ class _CreatePengajuanState extends State<CreatePengajuan> {
     BlocProvider.of<CreatePengajuanBloc>(context).add(InitEvent());
     BlocProvider.of<CreateRincianBiayaBloc>(context).add(EmptyEvent());
 
-    if (widget.jenisPengajuan == "Reimburse")
+    if (widget.jenisPengajuan == "Reimburse") {
       _colorTheme = Color(0xFF3AE3CE);
-    else if (widget.jenisPengajuan == "Kasbon")
+      if (widget.pengajuan.catatan != "")
+        _catatanCtrl.text = widget.pengajuan.catatan;
+      _listRincianBiaya = widget.pengajuan.rincianRealisasi;
+      _totalBiaya = widget.pengajuan.nominalRealisasi;
+    } else if (widget.jenisPengajuan == "Kasbon") {
       _colorTheme = Color(0xFF358BFC);
-    else
+      _catatanCtrl.text = widget.pengajuan.catatanPengajuan;
+      _listRincianBiaya = widget.pengajuan.rincianPengajuan;
+      _totalBiaya = widget.pengajuan.nominalPencairan;
+    } else
       _colorTheme = Color(0xFF2B4D66);
 
-    _listPelaksanaCtrl.add(TextEditingController());
+    _tujuanCtrl.text = widget.pengajuan.tujuan;
+    _tglMulai = widget.pengajuan.tglMulai;
+    _tanggalMulaiCtrl.text = DateFormat.yMMMMd('en_US').format(_tglMulai);
+    _tglSelesai = widget.pengajuan.tglSelesai;
+    _tanggalSelesaiCtrl.text = DateFormat.yMMMMd('en_US').format(_tglSelesai);
+    pelaksana = widget.pengajuan.pelaksana;
+
+    pelaksana.forEach((element) {
+      _listPelaksanaCtrl.add(TextEditingController(text: element));
+    });
     _listPelakasana = _generateListFormPelaksana();
     super.initState();
   }
@@ -113,6 +131,29 @@ class _CreatePengajuanState extends State<CreatePengajuan> {
             }
           }, builder: (context, state) {
             if (state is CreatePengajuanState) {
+              _selectedKategoriPengajuan = state.listKategori.singleWhere(
+                  (element) => element.idKategoriPengajuan ==
+                          widget.pengajuan.idKategoriPengajuan
+                      ? true
+                      : false);
+              _selectedPerusahaan = state.listPerusahaan.singleWhere(
+                  (element) =>
+                      element.idPerusahaan == widget.pengajuan.idPerusahaan
+                          ? true
+                          : false);
+              _selectedDepartment = state.listDepartment.singleWhere(
+                  (element) =>
+                      element.idDepartment == widget.pengajuan.idDepartment
+                          ? true
+                          : false);
+              _selectedCabang = state.listCabang.singleWhere((element) =>
+                  element.idCabang == widget.pengajuan.idCabang ? true : false);
+              print(widget.pengajuan.jenisPencairan);
+              _selectedJenisPencairan = _listJenisPencairan.singleWhere(
+                  (element) => element.toUpperCase() ==
+                          widget.pengajuan.jenisPencairan.toUpperCase()
+                      ? true
+                      : false);
               return Column(
                 children: [
                   Container(
@@ -433,8 +474,8 @@ class _CreatePengajuanState extends State<CreatePengajuan> {
                         _totalBiaya += stateRincian.rincianBiaya.total;
                       }
                     } else if (stateRincian is EmptyState) {
-                      _listRincianBiaya.clear();
-                      _totalBiaya = 0;
+                      // _listRincianBiaya.clear();
+                      // _totalBiaya = 0;
                     } else if (stateRincian is DeleteRincianBiayaState) {
                       _totalBiaya -= stateRincian.rincianBiaya.total;
                       _listRincianBiaya.remove(stateRincian.rincianBiaya);
@@ -442,7 +483,7 @@ class _CreatePengajuanState extends State<CreatePengajuan> {
                     _listRincianBiaya.forEach((element) {
                       _listItemRincian.add(ItemRincian(
                         jenisPengajuan: widget.jenisPengajuan,
-                        rincianBiaya: element,
+                        rincianBiaya: element, //isGet: true,
                       ));
                     });
                     return Column(
@@ -593,65 +634,34 @@ class _CreatePengajuanState extends State<CreatePengajuan> {
                     );
                   }),
                   Container(
-                    decoration: BoxDecoration(
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.grey.withOpacity(0.3),
-                          spreadRadius: 1,
-                          blurRadius: 2,
-                          offset: Offset(0, 2),
-                        ),
-                      ],
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                    margin: EdgeInsets.fromLTRB(10, 0, 10, 20),
-                    height: 45,
-                    child: Builder(
-                      builder: (context) => RaisedButton(
-                        shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(10)),
-                        padding: EdgeInsets.all(0),
-                        elevation: 0,
-                        onPressed: () {
-                          if (_formKey.currentState.validate()) {
-                            if (_listRincianBiaya.isEmpty) {
-                              Scaffold.of(context).showSnackBar(SnackBar(
-                                  content: Text(
-                                      "Harap lengkapi Rincian Biaya " +
-                                          widget.jenisPengajuan)));
-                            } else {
-                              _listPelaksanaCtrl.forEach((element) {
-                                pelaksana.add(element.text);
-                              });
-                              if (widget.jenisPengajuan == "Reimburse")
-                                _postReimburse();
-                              else
-                                _postKasbon();
-                            }
-                          } else {
-                            Scaffold.of(context).showSnackBar(SnackBar(
-                                content: Text(
-                                    "Harap lengkapi form yang masih kosong")));
-                          }
-                        },
-                        child: Container(
-                          child: Ink(
-                            decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(10),
-                                color: _colorTheme),
-                            child: Container(
-                              alignment: Alignment.center,
-                              child: Text("Kirim " + widget.jenisPengajuan,
-                                  style: GoogleFonts.montserrat(
-                                      color: Colors.white,
-                                      fontSize: 22,
-                                      fontWeight: FontWeight.w500)),
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
+                      padding: EdgeInsets.fromLTRB(15, 0, 15, 5),
+                      child: Container(
+                          height: 42.0,
+                          child: RaisedButton(
+                              elevation: 2,
+                              onPressed: () {
+                                Navigator.of(context)
+                                    .push(MaterialPageRoute(builder: (context) {
+                                  // return UpdatePengajuan(
+                                  //     jenisPengajuan: "Reimburse",
+                                  //     pengajuan: state.reimburse);
+                                }));
+                              },
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(10)),
+                              padding: EdgeInsets.all(0.0),
+                              child: Ink(
+                                  decoration: BoxDecoration(
+                                      color: _colorTheme,
+                                      borderRadius: BorderRadius.circular(10)),
+                                  child: Container(
+                                      alignment: Alignment.center,
+                                      child: Text(
+                                          "Update " + widget.jenisPengajuan,
+                                          style: GoogleFonts.montserrat(
+                                              fontWeight: FontWeight.w500,
+                                              fontSize: 20,
+                                              color: Colors.white)))))))
                 ],
               );
             } else {

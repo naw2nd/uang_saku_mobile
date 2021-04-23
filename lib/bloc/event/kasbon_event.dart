@@ -24,8 +24,9 @@ class CancelKasbonEvent extends BaseEvent {
 
 class UpdateKasbonEvent extends BaseEvent {
   final Kasbon kasbon;
+  final int id;
   @override
-  UpdateKasbonEvent({this.kasbon});
+  UpdateKasbonEvent({this.kasbon, this.id});
   List<Object> get props => [kasbon];
 }
 
