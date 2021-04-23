@@ -120,8 +120,8 @@ class Kasbon {
                 .map((x) => RincianPengajuan.fromJson(x)))
             : [],
         rincianRealisasi: (json["rincian_realisasi"] != null)
-            ? List<RincianRealisasi>.from(
-                json["rincian_realisasi"].map((x) => x))
+            ? List<RincianRealisasi>.from(json["rincian_realisasi"]
+                .map((x) => RincianRealisasi.fromJson(x)))
             : [],
       );
 

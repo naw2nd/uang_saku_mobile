@@ -49,7 +49,7 @@ class _ProfilePageState extends State<ProfilePage> {
                       Row(
                         children: [
                           IconButton(
-                            padding: EdgeInsets.zero,
+                              padding: EdgeInsets.zero,
                               icon: Icon(
                                 Icons.arrow_back_rounded,
                                 color: Colors.white,
@@ -119,7 +119,8 @@ class _ProfilePageState extends State<ProfilePage> {
                                     ),
                                   ]),
                                   Container(
-                                    padding: EdgeInsets.fromLTRB(15, 15, 15, 15),
+                                    padding:
+                                        EdgeInsets.fromLTRB(15, 15, 15, 15),
                                     child: CustomCard(
                                       container: Container(
                                         child: Column(children: [

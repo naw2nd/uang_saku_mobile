@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:uang_saku/bloc/bloc.dart';
 import 'package:uang_saku/bloc/login_bloc.dart';
 import 'package:uang_saku/ui/custom_widgets/custom_text_form_field.dart';
@@ -16,7 +17,25 @@ class _LoginPageState extends State<LoginPage> {
   final _formKey = GlobalKey<FormState>();
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
-  bool remember = false;
+  bool checkValue = false;
+
+  SharedPreferences sharedPreferences;
+
+  //rememberMe
+  //bool get rememberMe => _isRememberMe;
+
+  @override
+  void initState() {
+    super.initState();
+    getCredential();
+  }
+
+  // @override
+  // void initState() {
+  //   //_controllerEmail = TextEditingController(text: widget?.email ?? "");
+  //   _loadUserEmail();
+  //   super.initState();
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -57,19 +76,20 @@ class _LoginPageState extends State<LoginPage> {
                               height: 30,
                               width: 30,
                               child: Checkbox(
-                                value: remember,
-                                onChanged: (value) {
-                                  setState(() {
-                                    remember = value;
-                                  });
-                                },
+                                value: checkValue,
+                                onChanged: _onChanged,
+                                //  (value) {
+                                //   setState(() {
+                                //     remember = value;
+                                //   });
+                                // },
                               ),
                             ),
                             Text(
                               "Remember Me",
                               style: TextStyle(
                                   fontFamily: "Montserrat",
-                                  fontWeight: (!remember)
+                                  fontWeight: (!checkValue)
                                       ? FontWeight.w500
                                       : FontWeight.w600),
                             ),
@@ -154,5 +174,66 @@ class _LoginPageState extends State<LoginPage> {
         ),
       )),
     );
+  }
+
+  // void handleRememberMe(bool value) {
+  //   print("handle remember me");
+  //   _isRememberMe = value;
+  //   SharedPreferences.getInstance()
+  //       .then((prefs) => prefs.setBool("remember_me", value));
+  //   setState(() {});
+  // }
+
+  // // untuk load user Email
+  // void _loadUserEmail() async {
+  //   print("Load Email");
+  //   try {
+  //     SharedPreferences _prefs = await SharedPreferences.getInstance();
+  //     var _email = _prefs.getString("saved_email") ?? "";
+  //     var _remeberMe = _prefs.getBool("remember_me") ?? false;
+  //     print(_remeberMe);
+  //     print(_email);
+  //     if (_remeberMe) {
+  //       emailController.text = _email ?? "";
+  //     }
+  //   } catch (e) {
+  //     print(e);
+  //   }
+  // }
+
+  _onChanged(bool value) async {
+    sharedPreferences = await SharedPreferences.getInstance();
+    setState(() {
+      checkValue = value;
+      sharedPreferences.setBool("check", checkValue);
+      sharedPreferences.setString("email", emailController.text);
+      print(emailController.text);
+      sharedPreferences.setString("password", passwordController.text);
+      print(passwordController.text);
+      sharedPreferences.commit();
+      getCredential();
+    });
+  }
+
+  getCredential() async {
+    sharedPreferences = await SharedPreferences.getInstance();
+    setState(() {
+      checkValue = sharedPreferences.getBool("check");
+      print(checkValue);
+      if (checkValue != null) {
+        if (checkValue) {
+          emailController.text = sharedPreferences.getString("email");
+          print(emailController.text);
+          passwordController.text = sharedPreferences.getString("password");
+          print(passwordController.text);
+        } else {
+          emailController.clear();
+          passwordController.clear();
+          sharedPreferences.clear();
+        }
+      } else {
+        checkValue = false;
+      }
+    });
   }
 }
