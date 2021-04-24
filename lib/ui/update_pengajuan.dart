@@ -7,6 +7,7 @@ import 'package:uang_saku/bloc/bloc.dart';
 import 'package:uang_saku/bloc/create_pengajuan_bloc.dart';
 import 'package:uang_saku/bloc/create_rincian_biaya_bloc.dart';
 import 'package:uang_saku/bloc/event/create_pengajuan_event.dart';
+import 'package:uang_saku/bloc/event/reimburse_event.dart';
 import 'package:uang_saku/bloc/reimburse_bloc.dart';
 import 'package:uang_saku/bloc/state/base_state.dart';
 import 'package:uang_saku/bloc/state/create_pengajuan_state.dart';
@@ -50,6 +51,7 @@ class _UpdatePengajuanState extends State<UpdatePengajuan> {
   DateTime _tglMulai;
   DateTime _tglSelesai;
   final _formKey = GlobalKey<FormState>();
+  List deletedRincianBiaya = [];
 
   @override
   void initState() {
@@ -478,6 +480,12 @@ class _UpdatePengajuanState extends State<UpdatePengajuan> {
                       // _totalBiaya = 0;
                     } else if (stateRincian is DeleteRincianBiayaState) {
                       _totalBiaya -= stateRincian.rincianBiaya.total;
+                      stateRincian.rincianBiaya.action = "delete";
+                      if (widget.jenisPengajuan == "Reimburse")
+                        deletedRincianBiaya.add(stateRincian.rincianBiaya);
+                      else
+                        deletedRincianBiaya.add(stateRincian.rincianBiaya);
+
                       _listRincianBiaya.remove(stateRincian.rincianBiaya);
                     }
                     _listRincianBiaya.forEach((element) {
@@ -640,12 +648,7 @@ class _UpdatePengajuanState extends State<UpdatePengajuan> {
                           child: RaisedButton(
                               elevation: 2,
                               onPressed: () {
-                                Navigator.of(context)
-                                    .push(MaterialPageRoute(builder: (context) {
-                                  // return UpdatePengajuan(
-                                  //     jenisPengajuan: "Reimburse",
-                                  //     pengajuan: state.reimburse);
-                                }));
+                                _putReimburse();
                               },
                               shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(10)),
@@ -704,9 +707,11 @@ class _UpdatePengajuanState extends State<UpdatePengajuan> {
     }
   }
 
-  _postReimburse() {
+  _putReimburse() {
     Reimburse reimburse = Reimburse(
         tujuan: _tujuanCtrl.text,
+        idPegawai: widget.pengajuan.idPegawai,
+        idPengajuanReimburse: widget.pengajuan.idPengajuanReimburse,
         idKategoriPengajuan: _selectedKategoriPengajuan.idKategoriPengajuan,
         tglMulai: DateFormat.yMMMMd('en_US').parse(_tanggalMulaiCtrl.text),
         tglSelesai: DateFormat.yMMMMd('en_US').parse(_tanggalSelesaiCtrl.text),
@@ -717,9 +722,10 @@ class _UpdatePengajuanState extends State<UpdatePengajuan> {
         pelaksana: pelaksana,
         catatan: _catatanCtrl.text,
         rincianRealisasi: _listRincianBiaya.cast());
+    reimburse.rincianRealisasi.addAll(deletedRincianBiaya.cast());
     print(reimburse.toJson());
-    BlocProvider.of<CreatePengajuanBloc>(context)
-        .add(CreateReimburseEvent(reimburse: reimburse));
+    BlocProvider.of<ReimburseBloc>(context).add(UpdateReimburseEvent(
+        reimburse: reimburse, id: reimburse.idPengajuanReimburse));
   }
 
   _postKasbon() {

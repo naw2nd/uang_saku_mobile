@@ -309,7 +309,7 @@ class HttpService {
   }
 
   Future<SingleResponse> putReimburse(Reimburse reimburse, int id) async {
-    String endPoint = "reimburse/${id.toString()}";
+    String endPoint = "reimburse/${reimburse.idPengajuanReimburse.toString()}";
     try {
       Response response = await _dio.put(endPoint, data: reimburse.toJson());
       print(response);

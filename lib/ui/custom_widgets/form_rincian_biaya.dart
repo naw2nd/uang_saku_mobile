@@ -316,7 +316,7 @@ class _FormRincianBiayaState extends State<FormRincianBiaya> {
                               print("validated");
                               _images.forEach((element) {
                                 listImage64
-                                    .add(RequestImage64(image: fileToBase64(element)));
+                                    .add(RequestImage64(image: fileToBase64(element), action: "new"));
                               });
                               if (widget.jenisPengajuan == "Reimburse") {
                                 if (_images.isNotEmpty) {
@@ -408,6 +408,7 @@ class _FormRincianBiayaState extends State<FormRincianBiaya> {
         keterangan: _catatanCtrl.text,
         kategoriBiaya: _selectedKategoriBiaya,
         images: listImage64,
+        action: "new",
         total: _totalBiaya);
     BlocProvider.of<CreateRincianBiayaBloc>(context)
         .add(AddRincianBiayaEvent(rincianBiaya: rincianRealisasi));

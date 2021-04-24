@@ -32,18 +32,20 @@ class RincianRealisasi {
         total: json["total"],
         keterangan: json["keterangan"],
         kategoriBiaya: KategoriBiaya.fromJson(json["kategori_biaya"]),
-        images: List<RequestImage64>.from(json["images"].map((x) => RequestImage64.fromJson(x))),
+        images: List<RequestImage64>.from(
+            json["images"].map((x) => RequestImage64.fromJson(x))),
       );
 
   Map<String, dynamic> toJson() => {
         "id_rincian_realisasi_reimburse": idRincianRealisasiReimburse,
         "id_pengajuan_reimburse": idPengajuanReimburse,
         "id_kategori_biaya": idKategoriBiaya,
-        "action": action ?? "",
+        "action": action,
         "nama_item": namaItem,
         "total": total,
         "keterangan": keterangan,
-        "kategori_biaya": kategoriBiaya.toJson(),
-        "images": List<dynamic>.from(images.map((x) => x.toJson())),
+        // "kategori_biaya": kategoriBiaya.toJson(),
+        "images":
+            (images != null) ? List<dynamic>.from(images.map((x) => x)) : "",
       };
 }

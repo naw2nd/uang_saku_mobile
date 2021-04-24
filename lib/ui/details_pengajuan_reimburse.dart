@@ -396,6 +396,7 @@ class _DetailsPengajuanReimburseState extends State<DetailsPengajuanReimburse> {
                                         MaterialPageRoute(builder: (context) {
                                       Reimburse reimburse;
                                       reimburse = convertImage(state.reimburse);
+                                      print(reimburse.toJson());
                                       return UpdatePengajuan(
                                           jenisPengajuan: "Reimburse",
                                           pengajuan: reimburse);
@@ -434,8 +435,10 @@ class _DetailsPengajuanReimburseState extends State<DetailsPengajuanReimburse> {
   Reimburse convertImage(Reimburse reimburse) {
     for (int i = 0; i < reimburse.rincianRealisasi.length; i++) {
       for (int j = 0; j < reimburse.rincianRealisasi[i].images.length; j++) {
-        imgUrltoFile(reimburse.rincianRealisasi[i].images[j].image).then(
-            (value) => reimburse.rincianRealisasi[i].images[j].image = value);
+        if (reimburse.rincianRealisasi[i].images[j].action == null)
+          imgUrltoFile(reimburse.rincianRealisasi[i].images[j].image).then(
+              (value) => reimburse.rincianRealisasi[i].images[j].image = value);
+        reimburse.rincianRealisasi[i].images[j].action = "update";
       }
     }
     return reimburse;
