@@ -1,14 +1,19 @@
+import 'dart:convert';
+import 'dart:typed_data';
+
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:uang_saku/bloc/bloc.dart';
 import 'package:uang_saku/bloc/event/kasbon_event.dart';
 import 'package:intl/intl.dart';
+import 'package:uang_saku/model/kasbon.dart';
 import 'package:uang_saku/ui/custom_widgets/custom_card.dart';
 import 'package:uang_saku/ui/custom_widgets/item_rincian.dart';
 import 'package:uang_saku/ui/detail_rincian_approval.dart';
 
-import 'update_pengajuan.dart';
+import 'update_pengajuan_kasbon.dart';
 
 class DetailsPengajuanKasbon extends StatefulWidget {
   final int id;
@@ -385,9 +390,11 @@ class _DetailsPengajuanKasbonState extends State<DetailsPengajuanKasbon> {
                                   onPressed: () {
                                     Navigator.of(context).push(
                                         MaterialPageRoute(builder: (context) {
-                                      return UpdatePengajuan(
-                                          jenisPengajuan: "Kasbon",
-                                          pengajuan: state.kasbon);
+                                      Kasbon kasbon;
+                                      kasbon = convertImage(state.kasbon);
+                                      print(kasbon.toJson());
+                                      return UpdatePengajuanKasbon(
+                                          pengajuan: kasbon);
                                     }));
                                   },
                                   shape: RoundedRectangleBorder(
@@ -456,5 +463,25 @@ class _DetailsPengajuanKasbonState extends State<DetailsPengajuanKasbon> {
         ),
       ),
     );
+  }
+
+  Kasbon convertImage(Kasbon kasbon) {
+    for (int i = 0; i < kasbon.rincianPengajuan.length; i++) {
+      for (int j = 0; j < kasbon.rincianPengajuan[i].images.length; j++) {
+        kasbon.rincianPengajuan[i].action = "update";
+        if (kasbon.rincianPengajuan[i].images[j].action == null)
+          imgUrltoFile(kasbon.rincianPengajuan[i].images[j].image).then(
+              (value) => kasbon.rincianPengajuan[i].images[j].image = value);
+        kasbon.rincianPengajuan[i].images[j].action = "update";
+      }
+    }
+    return kasbon;
+  }
+
+  Future<String> imgUrltoFile(String img) async {
+    final ByteData imageData =
+        await NetworkAssetBundle(Uri.parse(img)).load("");
+    final List<int> bytes = imageData.buffer.asUint8List();
+    return base64Encode(bytes);
   }
 }

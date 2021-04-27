@@ -421,6 +421,7 @@ class _FormRincianBiayaState extends State<FormRincianBiaya> {
         keterangan: _catatanCtrl.text,
         kategoriBiaya: _selectedKategoriBiaya,
         images: listImage64,
+        action: "new",
         jumlahUnit: int.parse(_jumlahCtrl.text),
         hargaSatuan: int.parse(_hargaCtrl.text),
         total: _totalBiaya);

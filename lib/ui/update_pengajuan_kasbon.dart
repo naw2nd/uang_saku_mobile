@@ -15,23 +15,20 @@ import 'package:uang_saku/model/models.dart';
 import 'package:uang_saku/ui/custom_widgets/custom_card.dart';
 import 'package:uang_saku/ui/custom_widgets/custom_text_form_field.dart';
 import 'package:uang_saku/ui/custom_widgets/item_rincian.dart';
-import 'package:uang_saku/ui/custom_widgets/detail_rincian_biaya.dart';
-import 'package:uang_saku/ui/main_page.dart';
 import 'package:uang_saku/ui/bottom_navbar.dart';
 import 'package:uang_saku/ui/custom_widgets/form_rincian_biaya.dart';
 import 'package:dotted_border/dotted_border.dart';
 import 'package:intl/intl.dart';
 
-class UpdatePengajuan extends StatefulWidget {
-  final String jenisPengajuan;
+class UpdatePengajuanKasbon extends StatefulWidget {
   final pengajuan;
-  UpdatePengajuan({this.jenisPengajuan, this.pengajuan});
+  UpdatePengajuanKasbon({this.pengajuan});
   @override
-  _UpdatePengajuanState createState() => _UpdatePengajuanState();
+  _UpdatePengajuanKasbonState createState() => _UpdatePengajuanKasbonState();
 }
 
-class _UpdatePengajuanState extends State<UpdatePengajuan> {
-  var _colorTheme;
+class _UpdatePengajuanKasbonState extends State<UpdatePengajuanKasbon> {
+  var _colorTheme = Color(0xFF358BFC);
   List<String> _listJenisPencairan = ["Cash", "Transfer"];
   List<String> pelaksana = [];
   List<TextEditingController> _listPelaksanaCtrl = [];
@@ -55,22 +52,13 @@ class _UpdatePengajuanState extends State<UpdatePengajuan> {
 
   @override
   void initState() {
-    BlocProvider.of<CreatePengajuanBloc>(context).add(InitEvent());
+    BlocProvider.of<KasbonBloc>(context).add(GetFormAttributeKasbon());
     BlocProvider.of<CreateRincianBiayaBloc>(context).add(EmptyEvent());
 
-    if (widget.jenisPengajuan == "Reimburse") {
-      _colorTheme = Color(0xFF3AE3CE);
-      if (widget.pengajuan.catatan != "")
-        _catatanCtrl.text = widget.pengajuan.catatan;
-      _listRincianBiaya = widget.pengajuan.rincianRealisasi;
-      _totalBiaya = widget.pengajuan.nominalRealisasi;
-    } else if (widget.jenisPengajuan == "Kasbon") {
-      _colorTheme = Color(0xFF358BFC);
-      _catatanCtrl.text = widget.pengajuan.catatanPengajuan;
-      _listRincianBiaya = widget.pengajuan.rincianPengajuan;
-      _totalBiaya = widget.pengajuan.nominalPencairan;
-    } else
-      _colorTheme = Color(0xFF2B4D66);
+    _catatanCtrl.text = widget.pengajuan.catatanPengajuan;
+    _listRincianBiaya = widget.pengajuan.rincianPengajuan;
+    _totalBiaya = widget.pengajuan.nominalPencairan;
+    _colorTheme = Color(0xFF2B4D66);
 
     _tujuanCtrl.text = widget.pengajuan.tujuan;
     _tglMulai = widget.pengajuan.tglMulai;
@@ -96,7 +84,7 @@ class _UpdatePengajuanState extends State<UpdatePengajuan> {
                   bottomLeft: Radius.circular(15),
                   bottomRight: Radius.circular(15))),
           backgroundColor: _colorTheme,
-          title: Text("Form Pengajuan " + widget.jenisPengajuan,
+          title: Text("Form Pengajuan Kasbon",
               style: GoogleFonts.montserrat(
                   fontSize: 18, fontWeight: FontWeight.w600)),
           actions: [
@@ -110,12 +98,11 @@ class _UpdatePengajuanState extends State<UpdatePengajuan> {
         body: SingleChildScrollView(
             child: Form(
           key: _formKey,
-          child: BlocConsumer<CreatePengajuanBloc, BaseState>(
+          child: BlocConsumer<KasbonBloc, BaseState>(
               listener: (context, state) {
             if (state is SuccesState) {
-              Scaffold.of(context).showSnackBar(SnackBar(
-                  content:
-                      Text(widget.jenisPengajuan + " berhasil dikirimkan")));
+              Scaffold.of(context).showSnackBar(
+                  SnackBar(content: Text("Kasbon berhasil dikirimkan")));
               Timer(
                   Duration(seconds: 2),
                   () => Navigator.pushReplacement(context,
@@ -132,7 +119,7 @@ class _UpdatePengajuanState extends State<UpdatePengajuan> {
                       Navigator.of(context, rootNavigator: true).pop(context));
             }
           }, builder: (context, state) {
-            if (state is CreatePengajuanState) {
+            if (state is FormAttributeStateKasbon) {
               _selectedKategoriPengajuan = state.listKategori.singleWhere(
                   (element) => element.idKategoriPengajuan ==
                           widget.pengajuan.idKategoriPengajuan
@@ -481,16 +468,14 @@ class _UpdatePengajuanState extends State<UpdatePengajuan> {
                     } else if (stateRincian is DeleteRincianBiayaState) {
                       _totalBiaya -= stateRincian.rincianBiaya.total;
                       stateRincian.rincianBiaya.action = "delete";
-                      if (widget.jenisPengajuan == "Reimburse")
-                        deletedRincianBiaya.add(stateRincian.rincianBiaya);
-                      else
-                        deletedRincianBiaya.add(stateRincian.rincianBiaya);
+                      stateRincian.rincianBiaya.total = 0;
+                      deletedRincianBiaya.add(stateRincian.rincianBiaya);
 
                       _listRincianBiaya.remove(stateRincian.rincianBiaya);
                     }
                     _listRincianBiaya.forEach((element) {
                       _listItemRincian.add(ItemRincian(
-                        jenisPengajuan: widget.jenisPengajuan,
+                        jenisPengajuan: "Kasbon",
                         rincianBiaya: element, //isGet: true,
                       ));
                     });
@@ -547,8 +532,7 @@ class _UpdatePengajuanState extends State<UpdatePengajuan> {
                                                                       .circular(
                                                                           10)),
                                                       child: FormRincianBiaya(
-                                                        jenisPengajuan: widget
-                                                            .jenisPengajuan,
+                                                        jenisPengajuan: "Kasbon",
                                                       ));
                                                 });
                                           },
@@ -648,7 +632,7 @@ class _UpdatePengajuanState extends State<UpdatePengajuan> {
                           child: RaisedButton(
                               elevation: 2,
                               onPressed: () {
-                                _putReimburse();
+                                _putKasbon();
                               },
                               shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(10)),
@@ -660,7 +644,7 @@ class _UpdatePengajuanState extends State<UpdatePengajuan> {
                                   child: Container(
                                       alignment: Alignment.center,
                                       child: Text(
-                                          "Update " + widget.jenisPengajuan,
+                                          "Update Kasbon",
                                           style: GoogleFonts.montserrat(
                                               fontWeight: FontWeight.w500,
                                               fontSize: 20,
@@ -728,9 +712,10 @@ class _UpdatePengajuanState extends State<UpdatePengajuan> {
         reimburse: reimburse, id: reimburse.idPengajuanReimburse));
   }
 
-  _postKasbon() {
+  _putKasbon() {
     Kasbon kasbon = Kasbon(
         tujuan: _tujuanCtrl.text,
+        idPengajuanKasbon: widget.pengajuan.idPengajuanKasbon,
         idKategoriPengajuan: _selectedKategoriPengajuan.idKategoriPengajuan,
         tglMulai: DateFormat.yMMMMd('en_US').parse(_tanggalMulaiCtrl.text),
         tglSelesai: DateFormat.yMMMMd('en_US').parse(_tanggalSelesaiCtrl.text),
@@ -741,9 +726,11 @@ class _UpdatePengajuanState extends State<UpdatePengajuan> {
         pelaksana: pelaksana,
         catatanPengajuan: _catatanCtrl.text,
         rincianPengajuan: _listRincianBiaya.cast());
+    kasbon.rincianPengajuan.addAll(deletedRincianBiaya.cast());
     print(kasbon.toJson());
-    BlocProvider.of<CreatePengajuanBloc>(context)
-        .add(CreateKasbonEvent(kasbon: kasbon));
+    print("oi");
+    BlocProvider.of<KasbonBloc>(context)
+        .add(UpdateKasbonEvent(kasbon: kasbon, id: kasbon.idPengajuanKasbon));
   }
 
   List<Widget> _generateListFormPelaksana() {

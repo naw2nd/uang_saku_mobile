@@ -2,7 +2,13 @@ import 'package:uang_saku/bloc/bloc.dart';
 import 'package:uang_saku/bloc/event/base_event.dart';
 import 'package:uang_saku/model/kasbon.dart';
 
-class KasbonEvent extends BaseEvent {
+
+class GetFormAttributeKasbon extends BaseEvent {
+  @override
+  List<Object> get props => [];
+}
+
+class GetListKasbonEvent extends BaseEvent {
   @override
   List<Object> get props => [];
 }

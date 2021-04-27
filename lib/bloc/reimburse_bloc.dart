@@ -16,7 +16,30 @@ class ReimburseBloc extends Bloc<BaseEvent, BaseState> {
 
   @override
   Stream<BaseState> mapEventToState(BaseEvent event) async* {
-    if (event is ReimburseEvent) {
+    if (event is GetFormAttributeReimburse) {
+      yield (LoadingState());
+      try {
+        final MultiResponse<KategoriPengajuan> responseKategori =
+            await expenseRepository.getKategori();
+
+        final MultiResponse<Perusahaan> responsePerusahaan =
+            await expenseRepository.getPerusahaan();
+
+        final MultiResponse<Department> responseDepartment =
+            await expenseRepository.getDepartment();
+
+        final MultiResponse<Cabang> responseCabang =
+            await expenseRepository.getCabang();
+
+        yield (FormAttributeStateReimburse(
+            listKategori: responseKategori.data,
+            listCabang: responseCabang.data,
+            listDepartment: responseDepartment.data,
+            listPerusahaan: responsePerusahaan.data));
+      } catch (e) {
+        yield ErrorState(message: "No Connection");
+      }
+    } else if (event is GetListReimburseEvent) {
       try {
         final MultiResponse<Reimburse> multiResponse =
             await expenseRepository.getListReimburse();

@@ -28,7 +28,7 @@ class _ListReimburseState extends State<ListReimburse> {
   }
 
   initEvent() {
-    BlocProvider.of<ReimburseBloc>(context).add(ReimburseEvent());
+    BlocProvider.of<ReimburseBloc>(context).add(GetListReimburseEvent());
   }
 
   @override

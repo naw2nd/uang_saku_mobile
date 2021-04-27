@@ -27,7 +27,7 @@ class _ListKasbonState extends State<ListKasbon> {
   }
 
   initEvent() {
-    BlocProvider.of<KasbonBloc>(context).add(KasbonEvent());
+    BlocProvider.of<KasbonBloc>(context).add(GetListKasbonEvent());
   }
 
   @override

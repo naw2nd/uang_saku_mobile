@@ -5,7 +5,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:uang_saku/ui/profile_page.dart';
 import 'package:uang_saku/ui/create_pengajuan.dart';
 
-import 'belum kepakek/notifikasi.dart';
+import 'notifikasi.dart';
 import 'belum kepakek/riwayat.dart';
 import 'dashboard.dart';
 

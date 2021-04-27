@@ -18,7 +18,30 @@ class KasbonBloc extends Bloc<BaseEvent, BaseState> {
 
   @override
   Stream<BaseState> mapEventToState(BaseEvent event) async* {
-    if (event is KasbonEvent) {
+    if (event is GetFormAttributeKasbon) {
+      yield (LoadingState());
+      try {
+        final MultiResponse<KategoriPengajuan> responseKategori =
+            await expenseRepository.getKategori();
+
+        final MultiResponse<Perusahaan> responsePerusahaan =
+            await expenseRepository.getPerusahaan();
+
+        final MultiResponse<Department> responseDepartment =
+            await expenseRepository.getDepartment();
+
+        final MultiResponse<Cabang> responseCabang =
+            await expenseRepository.getCabang();
+
+        yield (FormAttributeStateKasbon(
+            listKategori: responseKategori.data,
+            listCabang: responseCabang.data,
+            listDepartment: responseDepartment.data,
+            listPerusahaan: responsePerusahaan.data));
+      } catch (e) {
+        yield ErrorState(message: "No Connection");
+      }
+    } else if (event is GetListKasbonEvent) {
       try {
         final MultiResponse<Kasbon> multiResponse =
             await expenseRepository.getListKasbon();
@@ -79,6 +102,7 @@ class KasbonBloc extends Bloc<BaseEvent, BaseState> {
       }
     } else if (event is UpdateKasbonEvent) {
       try {
+        print("benae");
         final SingleResponse response =
             await expenseRepository.putKasbon(event.kasbon, event.id);
         print(response.message);

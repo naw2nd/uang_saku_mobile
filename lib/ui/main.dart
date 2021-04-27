@@ -1,3 +1,4 @@
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:uang_saku/bloc/bloc.dart';
@@ -18,7 +19,7 @@ void main() {
 class MyApp extends StatelessWidget {
   final ExpenseRepository expenseRepository =
       ExpenseRepository(remoteDataSource: HttpService());
-
+  FirebaseMessaging messaging = FirebaseMessaging();
   @override
   Widget build(BuildContext context) {
     return MultiBlocProvider(

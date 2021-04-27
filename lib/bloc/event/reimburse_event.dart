@@ -1,8 +1,11 @@
 import 'package:uang_saku/model/models.dart';
 
 import 'base_event.dart';
-
-class ReimburseEvent extends BaseEvent {
+class GetFormAttributeReimburse extends BaseEvent {
+  @override
+  List<Object> get props => [];
+}
+class GetListReimburseEvent extends BaseEvent {
   @override
   List<Object> get props => [];
 }

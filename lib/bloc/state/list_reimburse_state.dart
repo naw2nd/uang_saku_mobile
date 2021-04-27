@@ -17,3 +17,22 @@ class ReimburseState extends BaseState {
   @override
   List<Object> get props => [reimburse];
 }
+
+class FormAttributeStateReimburse extends BaseState {
+  final List<KategoriPengajuan> listKategori;
+  final List<Perusahaan> listPerusahaan;
+  final List<Department> listDepartment;
+  final List<Cabang> listCabang;
+  FormAttributeStateReimburse(
+      {this.listCabang,
+      this.listPerusahaan,
+      this.listKategori,
+      this.listDepartment});
+  @override
+  List<Object> get props => [
+        this.listKategori,
+        this.listPerusahaan,
+        this.listCabang,
+        this.listDepartment
+      ];
+}

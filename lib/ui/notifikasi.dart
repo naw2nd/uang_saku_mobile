@@ -1,6 +1,7 @@
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 
-import 'card_list.dart';
+import 'belum kepakek/card_list.dart';
 
 class NotifikasiPage extends StatefulWidget {
   @override
@@ -9,7 +10,6 @@ class NotifikasiPage extends StatefulWidget {
 
 class _NotifikasiPageState extends State<NotifikasiPage> {
   // final Widget child;
-
   @override
   Widget build(BuildContext context) {
     return Container(

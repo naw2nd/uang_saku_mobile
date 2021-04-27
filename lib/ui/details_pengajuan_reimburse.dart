@@ -14,7 +14,7 @@ import 'package:uang_saku/model/models.dart';
 import 'package:uang_saku/model/reimburse.dart';
 import 'package:uang_saku/ui/custom_widgets/custom_card.dart';
 import 'package:uang_saku/ui/custom_widgets/item_rincian.dart';
-import 'package:uang_saku/ui/update_pengajuan.dart';
+import 'package:uang_saku/ui/update_pengajuan_reimburse.dart';
 
 class DetailsPengajuanReimburse extends StatefulWidget {
   final int id;
@@ -397,8 +397,7 @@ class _DetailsPengajuanReimburseState extends State<DetailsPengajuanReimburse> {
                                       Reimburse reimburse;
                                       reimburse = convertImage(state.reimburse);
                                       print(reimburse.toJson());
-                                      return UpdatePengajuan(
-                                          jenisPengajuan: "Reimburse",
+                                      return UpdatePengajuanReimburse(
                                           pengajuan: reimburse);
                                     }));
                                   },
@@ -435,6 +434,7 @@ class _DetailsPengajuanReimburseState extends State<DetailsPengajuanReimburse> {
   Reimburse convertImage(Reimburse reimburse) {
     for (int i = 0; i < reimburse.rincianRealisasi.length; i++) {
       for (int j = 0; j < reimburse.rincianRealisasi[i].images.length; j++) {
+        reimburse.rincianRealisasi[i].action = "update";
         if (reimburse.rincianRealisasi[i].images[j].action == null)
           imgUrltoFile(reimburse.rincianRealisasi[i].images[j].image).then(
               (value) => reimburse.rincianRealisasi[i].images[j].image = value);
