@@ -12,14 +12,54 @@ import 'package:uang_saku/repository/expense_repository.dart';
 import 'package:uang_saku/repository/remote/http_service.dart';
 import 'package:uang_saku/ui/splash_screen.dart';
 
+Future<dynamic> myBackgroundMessageHandler(Map<String, dynamic> message) async {
+  // if (message.containsKey('data')) {
+  //   // Handle data message
+  //   final dynamic data = message['data'];
+  // }
+
+  // if (message.containsKey('notification')) {
+  //   // Handle notification message
+  //   final dynamic notification = message['notification'];
+  // }
+  print("background");
+  // Or do other work.
+}
+
 void main() {
   runApp(MyApp());
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
+  @override
+  _MyAppState createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
   final ExpenseRepository expenseRepository =
       ExpenseRepository(remoteDataSource: HttpService());
-  FirebaseMessaging messaging = FirebaseMessaging();
+
+  final FirebaseMessaging _firebaseMessaging = FirebaseMessaging();
+  @override
+  void initState() {
+    _firebaseMessaging.configure(
+      onMessage: (Map<String, dynamic> message) async {
+        print("onMessage: $message");
+        // _showItemDialog(message);
+      },
+      // onBackgroundMessage: myBackgroundMessageHandler,
+      onLaunch: (Map<String, dynamic> message) async {
+        print("onLaunch: $message");
+        // _navigateToItemDetail(message);
+      },
+      onResume: (Map<String, dynamic> message) async {
+        print("onResume: $message");
+        // _navigateToItemDetail(message);
+      },
+    );
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return MultiBlocProvider(
