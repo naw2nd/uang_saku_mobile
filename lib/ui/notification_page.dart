@@ -20,7 +20,7 @@ class _NotificationPageState extends State<NotificationPage> {
     "images/send-file-cyan.png",
     "images/icon-done.png",
   ];
-  
+
   @override
   void initState() {
     notifikasi.add(Notifikasi(

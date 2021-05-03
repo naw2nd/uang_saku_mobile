@@ -92,6 +92,7 @@ class _UpdatePengajuanReimburseState extends State<UpdatePengajuanReimburse> {
                 icon: Icon(Icons.cancel_outlined),
                 onPressed: () {
                   Navigator.pop(context);
+                  Navigator.pop(context);
                 })
           ],
         ),

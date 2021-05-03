@@ -92,6 +92,7 @@ class _UpdatePengajuanKasbonState extends State<UpdatePengajuanKasbon> {
                 icon: Icon(Icons.cancel_outlined),
                 onPressed: () {
                   Navigator.pop(context);
+                  Navigator.pop(context);
                 })
           ],
         ),
@@ -689,27 +690,6 @@ class _UpdatePengajuanKasbonState extends State<UpdatePengajuanKasbon> {
             DateFormat.yMMMMd('en_US').format(_tglSelesai);
       }
     }
-  }
-
-  _putReimburse() {
-    Reimburse reimburse = Reimburse(
-        tujuan: _tujuanCtrl.text,
-        idPegawai: widget.pengajuan.idPegawai,
-        idPengajuanReimburse: widget.pengajuan.idPengajuanReimburse,
-        idKategoriPengajuan: _selectedKategoriPengajuan.idKategoriPengajuan,
-        tglMulai: DateFormat.yMMMMd('en_US').parse(_tanggalMulaiCtrl.text),
-        tglSelesai: DateFormat.yMMMMd('en_US').parse(_tanggalSelesaiCtrl.text),
-        idPerusahaan: _selectedPerusahaan.idPerusahaan,
-        idDepartment: _selectedDepartment.idDepartment,
-        idCabang: _selectedCabang.idCabang,
-        jenisPencairan: _selectedJenisPencairan.toLowerCase(),
-        pelaksana: pelaksana,
-        catatan: _catatanCtrl.text,
-        rincianRealisasi: _listRincianBiaya.cast());
-    reimburse.rincianRealisasi.addAll(deletedRincianBiaya.cast());
-    print(reimburse.toJson());
-    BlocProvider.of<ReimburseBloc>(context).add(UpdateReimburseEvent(
-        reimburse: reimburse, id: reimburse.idPengajuanReimburse));
   }
 
   _putKasbon() {

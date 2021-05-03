@@ -18,7 +18,7 @@ class RincianRealisasi {
   final int idPengajuanReimburse;
   final int idKategoriBiaya;
   final String namaItem;
-  final int total;
+  int total;
   final String keterangan;
   final KategoriBiaya kategoriBiaya;
   final List<RequestImage64> images;
