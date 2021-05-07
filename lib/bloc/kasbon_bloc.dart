@@ -34,7 +34,10 @@ class KasbonBloc extends Bloc<BaseEvent, BaseState> {
       try {
         final SingleResponse<Kasbon> singleResponse =
             await expenseRepository.getKasbon(event.id);
+        print("Berhasil get kasbon");
         if (singleResponse.success) {
+          print("Sukses");
+          print(singleResponse.data);
           yield KasbonState(kasbon: singleResponse.data);
         } else {
           yield ErrorState(message: singleResponse.message);

@@ -1,29 +1,42 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:uang_saku/ui/custom_widgets/detail_rincian_laporan.dart';
+import 'package:uang_saku/model/kasbon.dart';
 
+import '../form_edit_rincian_biaya.dart';
+import '../form_rincian_biaya.dart';
 import 'detail_rincian_biaya.dart';
 import 'package:intl/intl.dart';
 
-class ItemLaporan extends StatelessWidget {
-  final rincianLaporan;
+class ItemPengajuan extends StatelessWidget {
+  final Kasbon kasbon;
+  final rincianPengajuan;
   final String jenisPengajuan;
   final bool isGet;
-  ItemLaporan({this.rincianLaporan, this.jenisPengajuan, this.isGet});
+  ItemPengajuan(
+      {this.rincianPengajuan, this.jenisPengajuan, this.isGet, this.kasbon});
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () => showDialog(
           context: context,
+          barrierColor: Colors.black45,
           builder: (BuildContext context) {
             return Dialog(
                 shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(10)),
-                child: DetailRincianLaporan(
-                  jenisPengajuan: jenisPengajuan,
-                  rincianLaporan: rincianLaporan,
-                  isGet: (isGet != null) ? isGet : false,
+                child: FormEditRincianBiaya(
+                  jenisPengajuan: "Kasbon",
+                  kasbon: kasbon,
+                  rincianPengajuan: rincianPengajuan,
                 ));
+            // return Dialog(
+            //     shape: RoundedRectangleBorder(
+            //         borderRadius: BorderRadius.circular(10)),
+            //     child: DetailRincianBiaya(
+            //       jenisPengajuan: jenisPengajuan,
+            //       rincianBiaya: rincianPengajuan,
+            //       isGet: (isGet != null) ? isGet : false,
+            //     ));
           }),
       child: Container(
           margin: EdgeInsets.only(top: 7, bottom: 7),
@@ -39,11 +52,11 @@ class ItemLaporan extends StatelessWidget {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text(rincianLaporan.kategoriBiaya.namaKategoriBiaya,
+                  Text(rincianPengajuan.kategoriBiaya.namaKategoriBiaya,
                       style: GoogleFonts.montserrat(
                           color: Color(0xFF555555),
                           fontWeight: FontWeight.w600)),
-                  (rincianLaporan.images.isNotEmpty)
+                  (rincianPengajuan.images.isNotEmpty)
                       ? Container(
                           child: Icon(
                             Icons.attach_file,
@@ -60,7 +73,7 @@ class ItemLaporan extends StatelessWidget {
                 children: [
                   Flexible(
                     flex: 6,
-                    child: Text(rincianLaporan.namaItem,
+                    child: Text(rincianPengajuan.namaItem,
                         overflow: TextOverflow.ellipsis,
                         style: GoogleFonts.montserrat()),
                   ),
@@ -69,27 +82,11 @@ class ItemLaporan extends StatelessWidget {
                       child: Text(
                           "Rp" +
                               NumberFormat.currency(locale: "eu", symbol: "")
-                                  .format(rincianLaporan.total),
+                                  .format(rincianPengajuan.total),
                           overflow: TextOverflow.ellipsis,
                           style: GoogleFonts.montserrat()))
                 ])
           ])),
-    )
-
-        // showDialog(
-        //     context: context,
-        //     barrierColor: Colors.black45,
-        //     builder: (BuildContext context) {
-        //       return Dialog(
-        //           shape: RoundedRectangleBorder(
-        //               borderRadius: BorderRadius.circular(10)),
-        //           child: DetailRincianBiaya(
-        //             jenisPengajuan: jenisPengajuan,
-        //             rincianBiaya: rincianBiaya,
-        //             isGet: (isGet != null) ? isGet : false,
-        //           ));
-        //     }),
-
-        ;
+    );
   }
 }

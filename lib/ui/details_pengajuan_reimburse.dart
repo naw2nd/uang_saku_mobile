@@ -81,8 +81,8 @@ class _DetailsPengajuanReimburseState extends State<DetailsPengajuanReimburse> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
-                                    state.reimburse.approval
-                                        .keterangan[element],
+                                    state
+                                        .reimburse.approval.keterangan[element],
                                     style: GoogleFonts.montserrat(
                                         fontSize: 15,
                                         fontWeight: FontWeight.w600,
@@ -377,27 +377,32 @@ class _DetailsPengajuanReimburseState extends State<DetailsPengajuanReimburse> {
                       ),
                     ),
                   ),
-                  Container(
-                      padding: EdgeInsets.fromLTRB(15, 10, 15, 5),
-                      child: Container(
-                          height: 40.0,
-                          child: RaisedButton(
-                              elevation: 2,
-                              onPressed: () {},
-                              shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(10)),
-                              padding: EdgeInsets.all(0.0),
-                              child: Ink(
-                                  decoration: BoxDecoration(
-                                      color: Color(0xFF3AE3CE),
+                  state.reimburse.statusApproval != "Dana Sudah Dicairkan"
+                      ? Container(
+                          padding: EdgeInsets.fromLTRB(15, 10, 15, 5),
+                          child: Container(
+                              height: 40.0,
+                              child: RaisedButton(
+                                  elevation: 2,
+                                  onPressed: () {},
+                                  shape: RoundedRectangleBorder(
                                       borderRadius: BorderRadius.circular(10)),
-                                  child: Container(
-                                      alignment: Alignment.center,
-                                      child: Text("Update",
-                                          style: GoogleFonts.montserrat(
-                                              fontWeight: FontWeight.w500,
-                                              fontSize: 18,
-                                              color: Colors.white))))))),
+                                  padding: EdgeInsets.all(0.0),
+                                  child: Ink(
+                                      decoration: BoxDecoration(
+                                          color: Color(0xFF3AE3CE),
+                                          borderRadius:
+                                              BorderRadius.circular(10)),
+                                      child: Container(
+                                          alignment: Alignment.center,
+                                          child: Text("Update",
+                                              style: GoogleFonts.montserrat(
+                                                  fontWeight: FontWeight.w500,
+                                                  fontSize: 18,
+                                                  color: Colors.white)))))))
+                      : Container(
+                          margin: EdgeInsets.fromLTRB(0, 5, 0, 5),
+                        ),
                   // Row(
                   //   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   //   children: <Widget>[

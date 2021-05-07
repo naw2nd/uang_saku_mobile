@@ -108,21 +108,31 @@ class Kasbon {
         nominalSelisih: json["nominal_selisih"],
         // additionalInfo: List<AdditionalInfo>.from(
         //     json["additional_info"].map((x) => AdditionalInfo.fromJson(x))),
-        idPerusahaan: json["id_perusahaan"],
-        pegawai: Pegawai.fromJson(json["pegawai"]),
-        perusahaan: Perusahaan.fromJson(json["perusahaan"]),
-        department: Department.fromJson(json["department"]),
-        cabang: Cabang.fromJson(json["cabang"]),
+        pegawai: (json["pegawai"] == null)
+            ? null
+            : Pegawai.fromJson(json["pegawai"]),
+        perusahaan: (json["perusahaan"] == null)
+            ? null
+            : Perusahaan.fromJson(json["perusahaan"]),
+        department: (json["department"] == null)
+            ? null
+            : Department.fromJson(json["department"]),
+        cabang: json["cabang"] == null ? null : Cabang.fromJson(json["cabang"]),
+        // idPerusahaan: json["id_perusahaan"],
+        // pegawai: Pegawai.fromJson(json["pegawai"]),
+        // perusahaan: Perusahaan.fromJson(json["perusahaan"]),
+        // department: Department.fromJson(json["department"]),
+        // cabang: Cabang.fromJson(json["cabang"]),
         kategoriPengajuan:
             KategoriPengajuan.fromJson(json["kategori_pengajuan"]),
         rincianPengajuan: (json["rincian_pengajuan"] != null)
             ? List<RincianPengajuan>.from(json["rincian_pengajuan"]
                 .map((x) => RincianPengajuan.fromJson(x)))
-            : [],
+            : null,
         rincianRealisasi: (json["rincian_realisasi"] != null)
             ? List<RincianRealisasi>.from(json["rincian_realisasi"]
                 .map((x) => RincianRealisasi.fromJson(x)))
-            : [],
+            : null,
       );
 
   Map<String, dynamic> toJson() => {
@@ -168,7 +178,9 @@ class Kasbon {
         // "kategori_pengajuan": kategoriPengajuan.toJson(),
         "rincian_pengajuan":
             List<dynamic>.from(rincianPengajuan.map((x) => x.toJson())),
-        // "rincian_realisasi": List<dynamic>.from(rincianRealisasi.map((x) => x)),
+        "rincian_realisasi": (additionalInfo != null)
+            ? List<dynamic>.from(rincianRealisasi.map((x) => x.toJson()))
+            : null,
       };
 
   @override

@@ -14,7 +14,7 @@ class HttpService {
   SharedPreferences sharedPreferences;
   String token = "";
 
-  final baseURL = "http://192.168.0.101:8000/api/v1/";
+  final baseURL = "http://192.168.0.108:8000/api/v1/";
 
   HttpService() {
     _dio = Dio(BaseOptions(baseUrl: baseURL));
@@ -33,7 +33,15 @@ class HttpService {
   }
 
   logout() async {
-    await sharedPreferences.clear();
+    //await sharedPreferences.clear();
+    //await sharedPreferences.getKeys();
+    sharedPreferences.remove("token");
+    //   for (String key in sharedPreferences.getKeys()) {
+    //     if (key == "token" ) {
+    //       sharedPreferences.remove(key);
+    //     }
+    //   }
+    // }
   }
 
   Future<SingleResponse<Token>> login(String email, String password) async {

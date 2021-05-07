@@ -19,8 +19,9 @@ import 'package:uang_saku/model/models.dart';
 import 'package:uang_saku/ui/custom_widgets/custom_text_form_field.dart';
 
 class FormRincianBiaya extends StatefulWidget {
+  final Kasbon kasbon;
   final String jenisPengajuan;
-  FormRincianBiaya({this.jenisPengajuan});
+  FormRincianBiaya({this.jenisPengajuan, this.kasbon});
   @override
   _FormRincianBiayaState createState() => _FormRincianBiayaState();
 }
@@ -315,8 +316,8 @@ class _FormRincianBiayaState extends State<FormRincianBiaya> {
                             if (_formKey.currentState.validate()) {
                               print("validated");
                               _images.forEach((element) {
-                                listImage64
-                                    .add(RequestImage64(image: fileToBase64(element)));
+                                listImage64.add(RequestImage64(
+                                    image: fileToBase64(element)));
                               });
                               if (widget.jenisPengajuan == "Reimburse") {
                                 if (_images.isNotEmpty) {
@@ -351,7 +352,8 @@ class _FormRincianBiayaState extends State<FormRincianBiaya> {
                                                   Center(
                                                     child: TextButton(
                                                         onPressed: () {
-                                                          Navigator.pop(context);
+                                                          Navigator.pop(
+                                                              context);
                                                         },
                                                         child: Text("Ok",
                                                             style: GoogleFonts

@@ -26,6 +26,15 @@ class AddRincianBiayaEvent extends BaseEvent {
   List<Object> get props => [this.rincianBiaya];
 }
 
+class EditRincianBiayaEvent extends BaseEvent {
+  final rincianBiaya;
+  EditRincianBiayaEvent({
+    this.rincianBiaya,
+  });
+  @override
+  List<Object> get props => [this.rincianBiaya];
+}
+
 class DeleteRincianBiayaEvent extends BaseEvent {
   final rincianBiaya;
   DeleteRincianBiayaEvent({

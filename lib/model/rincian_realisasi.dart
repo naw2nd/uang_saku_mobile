@@ -1,4 +1,5 @@
 import 'models.dart';
+import 'kategori_biaya.dart';
 
 class RincianRealisasi {
   RincianRealisasi({
@@ -30,7 +31,8 @@ class RincianRealisasi {
         total: json["total"],
         keterangan: json["keterangan"],
         kategoriBiaya: KategoriBiaya.fromJson(json["kategori_biaya"]),
-        images: List<RequestImage64>.from(json["images"].map((x) => RequestImage64.fromJson(x))),
+        images: List<RequestImage64>.from(
+            json["images"].map((x) => RequestImage64.fromJson(x))),
       );
 
   Map<String, dynamic> toJson() => {

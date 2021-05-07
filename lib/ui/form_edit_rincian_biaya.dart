@@ -18,20 +18,23 @@ import 'package:uang_saku/model/kategori_biaya.dart';
 import 'package:uang_saku/model/models.dart';
 import 'package:uang_saku/ui/custom_widgets/custom_text_form_field.dart';
 
-class FormRincianLaporan extends StatefulWidget {
+class FormEditRincianBiaya extends StatefulWidget {
+  final Kasbon kasbon;
+  final RincianPengajuan rincianPengajuan;
   final String jenisPengajuan;
-  FormRincianLaporan({this.jenisPengajuan});
+  FormEditRincianBiaya(
+      {this.jenisPengajuan, this.kasbon, this.rincianPengajuan});
   @override
-  _FormRincianLaporanState createState() => _FormRincianLaporanState();
+  _FormEditRincianBiayaState createState() => _FormEditRincianBiayaState();
 }
 
-class _FormRincianLaporanState extends State<FormRincianLaporan> {
+class _FormEditRincianBiayaState extends State<FormEditRincianBiaya> {
   var _colorTheme;
   List<File> _images = [];
-  TextEditingController _namaLaporanCtrl = TextEditingController();
+  TextEditingController _namaBiayaCtrl = TextEditingController();
   TextEditingController _catatanCtrl = TextEditingController();
-  TextEditingController _totalCtrl = TextEditingController();
-  //TextEditingController _jumlahCtrl = TextEditingController(text: "1");
+  TextEditingController _hargaCtrl = TextEditingController();
+  TextEditingController _jumlahCtrl = TextEditingController(text: "1");
   int _totalBiaya = 0;
   KategoriBiaya _selectedKategoriBiaya;
   List<RequestImage64> listImage64 = [];
@@ -46,10 +49,19 @@ class _FormRincianLaporanState extends State<FormRincianLaporan> {
       _colorTheme = Color(0xFF3AE3CE);
     else if (widget.jenisPengajuan == "Kasbon")
       _colorTheme = Color(0xFF358BFC);
-    else if (widget.jenisPengajuan == "Laporan")
-      _colorTheme = Color(0xFF358BFC);
     else
       _colorTheme = Color(0xFF2B4D66);
+
+    _namaBiayaCtrl =
+        TextEditingController(text: widget.rincianPengajuan.namaItem);
+    _catatanCtrl =
+        TextEditingController(text: widget.rincianPengajuan.keterangan);
+    _hargaCtrl = TextEditingController(
+        text: widget.rincianPengajuan.hargaSatuan.toString());
+    _jumlahCtrl = TextEditingController(
+        text: widget.rincianPengajuan.jumlahUnit.toString());
+    //_selectedKategoriBiaya =
+    //  KategoriBiaya(idKategoriBiaya: widget.rincianPengajuan.idKategoriBiaya);
 
     super.initState();
   }
@@ -142,7 +154,7 @@ class _FormRincianLaporanState extends State<FormRincianLaporan> {
                       CustomTextFormField(
                         label: "Nama Biaya",
                         validation: ["required"],
-                        controller: _namaLaporanCtrl,
+                        controller: _namaBiayaCtrl,
                       ),
                       Container(
                         margin: EdgeInsets.only(top: 7, bottom: 7),
@@ -173,27 +185,65 @@ class _FormRincianLaporanState extends State<FormRincianLaporan> {
                       ),
                       Container(
                         margin: EdgeInsets.only(top: 7, bottom: 7),
-                        child: TextFormField(
-                            inputFormatters: [
-                              FilteringTextInputFormatter.digitsOnly
-                            ],
-                            keyboardType: TextInputType.number,
-                            controller: _totalCtrl,
-                            validator: (value) {
-                              if (value == "") return "Harga harus diisi";
-                              return null;
-                            },
-                            onChanged: (value) {
-                              setState(() {
-                                _totalBiaya = int.parse(_totalCtrl.text);
-                              });
-                            },
-                            decoration: InputDecoration(
-                              labelText: "Harga",
-                              isDense: true,
-                              border: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(10)),
-                            )),
+                        child: Row(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Flexible(
+                                flex: 15,
+                                child: TextFormField(
+                                    inputFormatters: [
+                                      FilteringTextInputFormatter.digitsOnly
+                                    ],
+                                    keyboardType: TextInputType.number,
+                                    controller: _hargaCtrl,
+                                    validator: (value) {
+                                      if (value == "")
+                                        return "Harga harus diisi";
+                                      return null;
+                                    },
+                                    onChanged: (value) {
+                                      setState(() {
+                                        _totalBiaya = int.parse(value) *
+                                            int.parse(_jumlahCtrl.text);
+                                      });
+                                    },
+                                    decoration: InputDecoration(
+                                      labelText: "Harga",
+                                      isDense: true,
+                                      border: OutlineInputBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(10)),
+                                    ))),
+                            Flexible(flex: 1, child: Container()),
+                            Flexible(
+                                flex: 15,
+                                child: TextFormField(
+                                    inputFormatters: [
+                                      FilteringTextInputFormatter.digitsOnly
+                                    ],
+                                    keyboardType: TextInputType.number,
+                                    controller: _jumlahCtrl,
+                                    validator: (value) {
+                                      if (value == "" || int.parse(value) == 0)
+                                        return "Jumlah harus diisi";
+                                      return null;
+                                    },
+                                    onChanged: (value) {
+                                      setState(() {
+                                        _totalBiaya = int.parse(value) *
+                                            int.parse(_hargaCtrl.text);
+                                      });
+                                    },
+                                    decoration: InputDecoration(
+                                      labelText: "Jumlah",
+                                      isDense: true,
+                                      border: OutlineInputBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(10)),
+                                    )))
+                          ],
+                        ),
                       ),
                       Wrap(
                         spacing: 10,
@@ -369,7 +419,7 @@ class _FormRincianLaporanState extends State<FormRincianLaporan> {
   _addRincianRealisasi() {
     RincianRealisasi rincianRealisasi = RincianRealisasi(
         idKategoriBiaya: _selectedKategoriBiaya.idKategoriBiaya,
-        namaItem: _namaLaporanCtrl.text,
+        namaItem: _namaBiayaCtrl.text,
         keterangan: _catatanCtrl.text,
         kategoriBiaya: _selectedKategoriBiaya,
         images: listImage64,
@@ -381,12 +431,12 @@ class _FormRincianLaporanState extends State<FormRincianLaporan> {
   _addRincianPengajuan() {
     RincianPengajuan rincianPengajuan = RincianPengajuan(
         idKategoriBiaya: _selectedKategoriBiaya.idKategoriBiaya,
-        namaItem: _namaLaporanCtrl.text,
+        namaItem: _namaBiayaCtrl.text,
         keterangan: _catatanCtrl.text,
         kategoriBiaya: _selectedKategoriBiaya,
         images: listImage64,
-        //jumlahUnit: int.parse(_jumlahCtrl.text),
-        hargaSatuan: int.parse(_totalCtrl.text),
+        jumlahUnit: int.parse(_jumlahCtrl.text),
+        hargaSatuan: int.parse(_hargaCtrl.text),
         total: _totalBiaya);
     BlocProvider.of<CreateRincianBiayaBloc>(context)
         .add(AddRincianBiayaEvent(rincianBiaya: rincianPengajuan));

@@ -208,7 +208,7 @@ class _LoginPageState extends State<LoginPage> {
       sharedPreferences.setBool("check", checkValue);
       sharedPreferences.setString("email", emailController.text);
       print(emailController.text);
-      sharedPreferences.setString("password", passwordController.text);
+      //sharedPreferences.setString("password", passwordController.text);
       print(passwordController.text);
       sharedPreferences.commit();
       getCredential();
@@ -224,8 +224,8 @@ class _LoginPageState extends State<LoginPage> {
         if (checkValue) {
           emailController.text = sharedPreferences.getString("email");
           print(emailController.text);
-          passwordController.text = sharedPreferences.getString("password");
-          print(passwordController.text);
+          //passwordController.text = sharedPreferences.getString("password");
+          //print(passwordController.text);
         } else {
           emailController.clear();
           passwordController.clear();
