@@ -41,12 +41,24 @@ class HttpService {
     try {
       Response response = await _dio
           .post(endPoint, data: {"email": email, "password": password});
-      print(response.data);
-      print(response.data["data"]);
       if (response.data["data"] != null)
         response.data["data"] = Token.fromJson(response.data["data"]);
       SingleResponse<Token> singleResponse =
           SingleResponse<Token>.fromJson(response.data);
+      return singleResponse;
+    } on DioError catch (e) {
+      print(e);
+      throw Exception(e.message);
+    }
+  }
+
+  Future<SingleResponse<String>> postFcmToken(String token) async {
+    String endPoint = "token";
+    try {
+      Response response = await _dio
+          .post(endPoint, data: {"token": token});
+      SingleResponse<String> singleResponse =
+          SingleResponse<String>.fromJson(response.data);
       return singleResponse;
     } on DioError catch (e) {
       print(e);

@@ -5,6 +5,7 @@ import 'package:uang_saku/model/role_approval.dart';
 
 abstract class ExpenseDataSource {
   Future<SingleResponse<Token>> login(String email, String password);
+  Future<SingleResponse<String>> postFcmToken(String token);
   Future<SingleResponse<String>> forgetPassword(String email);
   Future<SingleResponse<String>> verifyOtp(String email, String otp);
   Future<SingleResponse<String>> resetPassword(

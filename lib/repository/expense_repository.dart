@@ -21,6 +21,10 @@ class ExpenseRepository implements ExpenseDataSource {
     return await remoteDataSource.login(email, password);
   }
 
+  Future<SingleResponse<String>> postFcmToken(String token) async {
+    return await remoteDataSource.postFcmToken(token);
+  }
+
   @override
   Future<SingleResponse<String>> forgetPassword(String email) async {
     return await remoteDataSource.forgetPassword(email);
