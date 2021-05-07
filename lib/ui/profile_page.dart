@@ -5,6 +5,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:uang_saku/bloc/bloc.dart';
 import 'package:uang_saku/bloc/profile_bloc.dart';
 import 'package:uang_saku/bloc/state/base_state.dart';
+import 'package:uang_saku/repository/db_helper.dart';
 import 'package:uang_saku/ui/bottom_navbar.dart';
 import 'package:uang_saku/ui/splash_screen.dart';
 import 'package:uang_saku/ui/custom_widgets/custom_card.dart';
@@ -20,6 +21,7 @@ class ProfilePage extends StatefulWidget {
 
 class _ProfilePageState extends State<ProfilePage> {
   final _controller = ScrollController();
+  DbHelper dbHelper = DbHelper();
 
   @override
   void initState() {
@@ -72,6 +74,7 @@ class _ProfilePageState extends State<ProfilePage> {
                           ),
                           onPressed: () {
                             context.read<LoginBloc>().add(LogoutEvent());
+                            dbHelper.drop();
                             Navigator.pushReplacement(
                                 context,
                                 MaterialPageRoute(

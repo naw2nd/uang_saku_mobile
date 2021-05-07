@@ -1,11 +1,17 @@
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:overlay_support/overlay_support.dart';
 import 'package:uang_saku/model/notifikasi.dart';
+import 'package:uang_saku/repository/db_helper.dart';
 
 import 'belum kepakek/card_list.dart';
 import 'custom_widgets/custom_card.dart';
 import 'package:intl/intl.dart';
+
+Future<dynamic> myBackgroundMessageHandler(Map<String, dynamic> message) async {
+  print("background");
+}
 
 class NotificationPage extends StatefulWidget {
   @override
@@ -14,33 +20,13 @@ class NotificationPage extends StatefulWidget {
 
 class _NotificationPageState extends State<NotificationPage> {
   List<Notifikasi> notifikasi = [];
-  List<String> cardIcon = [
-    "images/send-file-decline.png",
-    "images/send-file-blue.png",
-    "images/send-file-cyan.png",
-    "images/icon-done.png",
-  ];
-
-  @override
-  void initState() {
-    notifikasi.add(Notifikasi(
-        title: "Kasbon Terikirim",
-        isRead: false,
-        message: "Perjalaanan Dinas",
-        time: DateTime.now(),
-        type: 1));
-    notifikasi.add(Notifikasi(
-        title: "Reimburse Terikirim",
-        isRead: false,
-        message: "Makan makan",
-        time: DateTime.now(),
-        type: 2));
-    super.initState();
-  }
+  DbHelper dbHelper = DbHelper();
 
   @override
   Widget build(BuildContext context) {
-    print(notifikasi.length);
+    dbHelper.getContactList().then((value) => setState(() {
+          notifikasi = value;
+        }));
     return Scaffold(
         appBar: AppBar(
           elevation: 0,
@@ -56,7 +42,15 @@ class _NotificationPageState extends State<NotificationPage> {
             style: GoogleFonts.montserrat(
                 fontWeight: FontWeight.w700, fontSize: 25),
           ),
-          actions: [IconButton(icon: Icon(Icons.delete), onPressed: () {})],
+          actions: [
+            IconButton(
+                icon: Icon(Icons.delete),
+                onPressed: () {
+                  dbHelper.drop().then((value) => setState(() {
+                        notifikasi.clear();
+                      }));
+                })
+          ],
           bottom: PreferredSize(
             preferredSize: Size(0, 16),
             child: Container(
@@ -84,7 +78,7 @@ class _NotificationPageState extends State<NotificationPage> {
                     ),
                     TextButton(
                         onPressed: () {},
-                        child: Text("Tandai sudah dibaca",
+                        child: Text("", //"Tandai sudah dibaca",
                             style: GoogleFonts.montserrat(
                                 color: Color(0xFFA8A8A8),
                                 fontWeight: FontWeight.w600,
@@ -94,7 +88,6 @@ class _NotificationPageState extends State<NotificationPage> {
             child: ListView.builder(
                 itemCount: notifikasi.length,
                 itemBuilder: (context, i) {
-                  print("ruhkjg");
                   return Container(
                       margin: EdgeInsets.only(bottom: 10),
                       padding: EdgeInsets.symmetric(horizontal: 15),
@@ -107,12 +100,7 @@ class _NotificationPageState extends State<NotificationPage> {
                               children: [
                                 Flexible(
                                     flex: 2,
-                                    child: Image(
-                                      image: AssetImage(
-                                          cardIcon[notifikasi[i].type]),
-                                      width: 31,
-                                      height: 31,
-                                    )),
+                                    child: Icon(Icons.message_outlined, color: Color(0xFF358BFC), size: 25,)),
                                 Flexible(
                                   flex: 15,
                                   child: Row(
@@ -164,6 +152,15 @@ class _NotificationPageState extends State<NotificationPage> {
                                                       color: Color(0xFF6f96b0)),
                                                 ),
                                               ),
+                                              Text(
+                                                DateFormat("HH:mm")
+                                                    .format(notifikasi[i].time),
+                                                overflow: TextOverflow.ellipsis,
+                                                style: GoogleFonts.montserrat(
+                                                    fontSize: 13,
+                                                    fontWeight: FontWeight.w500,
+                                                    color: Color(0xFF58b84b)),
+                                              )
                                             ],
                                           )),
                                     ],
