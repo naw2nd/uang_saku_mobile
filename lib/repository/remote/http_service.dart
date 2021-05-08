@@ -33,7 +33,15 @@ class HttpService {
   }
 
   logout() async {
-    await sharedPreferences.clear();
+    //await sharedPreferences.clear();
+    //await sharedPreferences.getKeys();
+    sharedPreferences.remove("token");
+    //   for (String key in sharedPreferences.getKeys()) {
+    //     if (key == "token" ) {
+    //       sharedPreferences.remove(key);
+    //     }
+    //   }
+    // }
   }
 
   Future<SingleResponse<Token>> login(String email, String password) async {

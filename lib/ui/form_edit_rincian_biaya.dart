@@ -18,15 +18,17 @@ import 'package:uang_saku/model/kategori_biaya.dart';
 import 'package:uang_saku/model/models.dart';
 import 'package:uang_saku/ui/custom_widgets/custom_text_form_field.dart';
 
-class FormRincianBiaya extends StatefulWidget {
+class FormEditRincianBiaya extends StatefulWidget {
   final Kasbon kasbon;
+  final RincianPengajuan rincianPengajuan;
   final String jenisPengajuan;
-  FormRincianBiaya({this.jenisPengajuan, this.kasbon});
+  FormEditRincianBiaya(
+      {this.jenisPengajuan, this.kasbon, this.rincianPengajuan});
   @override
-  _FormRincianBiayaState createState() => _FormRincianBiayaState();
+  _FormEditRincianBiayaState createState() => _FormEditRincianBiayaState();
 }
 
-class _FormRincianBiayaState extends State<FormRincianBiaya> {
+class _FormEditRincianBiayaState extends State<FormEditRincianBiaya> {
   var _colorTheme;
   List<File> _images = [];
   TextEditingController _namaBiayaCtrl = TextEditingController();
@@ -49,6 +51,17 @@ class _FormRincianBiayaState extends State<FormRincianBiaya> {
       _colorTheme = Color(0xFF358BFC);
     else
       _colorTheme = Color(0xFF2B4D66);
+
+    _namaBiayaCtrl =
+        TextEditingController(text: widget.rincianPengajuan.namaItem);
+    _catatanCtrl =
+        TextEditingController(text: widget.rincianPengajuan.keterangan);
+    _hargaCtrl = TextEditingController(
+        text: widget.rincianPengajuan.hargaSatuan.toString());
+    _jumlahCtrl = TextEditingController(
+        text: widget.rincianPengajuan.jumlahUnit.toString());
+    //_selectedKategoriBiaya =
+    //  KategoriBiaya(idKategoriBiaya: widget.rincianPengajuan.idKategoriBiaya);
 
     super.initState();
   }
@@ -316,8 +329,8 @@ class _FormRincianBiayaState extends State<FormRincianBiaya> {
                             if (_formKey.currentState.validate()) {
                               print("validated");
                               _images.forEach((element) {
-                                listImage64
-                                    .add(RequestImage64(image: fileToBase64(element), action: "new"));
+                                listImage64.add(RequestImage64(
+                                    image: fileToBase64(element)));
                               });
                               if (widget.jenisPengajuan == "Reimburse") {
                                 if (_images.isNotEmpty) {
@@ -410,7 +423,6 @@ class _FormRincianBiayaState extends State<FormRincianBiaya> {
         keterangan: _catatanCtrl.text,
         kategoriBiaya: _selectedKategoriBiaya,
         images: listImage64,
-        action: "new",
         total: _totalBiaya);
     BlocProvider.of<CreateRincianBiayaBloc>(context)
         .add(AddRincianBiayaEvent(rincianBiaya: rincianRealisasi));
@@ -423,7 +435,6 @@ class _FormRincianBiayaState extends State<FormRincianBiaya> {
         keterangan: _catatanCtrl.text,
         kategoriBiaya: _selectedKategoriBiaya,
         images: listImage64,
-        action: "new",
         jumlahUnit: int.parse(_jumlahCtrl.text),
         hargaSatuan: int.parse(_hargaCtrl.text),
         total: _totalBiaya);

@@ -12,6 +12,7 @@ import 'package:uang_saku/bloc/state/create_pengajuan_state.dart';
 import 'package:uang_saku/model/models.dart';
 import 'package:uang_saku/ui/custom_widgets/custom_card.dart';
 import 'package:uang_saku/ui/custom_widgets/custom_text_form_field.dart';
+import 'package:uang_saku/ui/custom_widgets/item_pengajuan.dart';
 import 'package:uang_saku/ui/custom_widgets/item_rincian.dart';
 import 'package:uang_saku/ui/custom_widgets/detail_rincian_biaya.dart';
 import 'package:uang_saku/ui/main_page.dart';
@@ -440,9 +441,9 @@ class _CreatePengajuanState extends State<CreatePengajuan> {
                       _listRincianBiaya.remove(stateRincian.rincianBiaya);
                     }
                     _listRincianBiaya.forEach((element) {
-                      _listItemRincian.add(ItemRincian(
+                      _listItemRincian.add(ItemPengajuan(
                         jenisPengajuan: widget.jenisPengajuan,
-                        rincianBiaya: element,
+                        rincianPengajuan: element,
                       ));
                     });
                     return Column(
@@ -627,6 +628,7 @@ class _CreatePengajuanState extends State<CreatePengajuan> {
                                 _postReimburse();
                               else
                                 _postKasbon();
+                              print("bisa");
                             }
                           } else {
                             Scaffold.of(context).showSnackBar(SnackBar(

@@ -6,20 +6,20 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:uang_saku/bloc/create_rincian_biaya_bloc.dart';
 import 'package:uang_saku/bloc/event/create_pengajuan_event.dart';
 
-class DetailRincianBiaya extends StatefulWidget {
+class DetailRincianLaporan extends StatefulWidget {
   final String jenisPengajuan;
-  final rincianBiaya;
+  final rincianLaporan;
   final bool isGet;
-  DetailRincianBiaya({this.jenisPengajuan, this.rincianBiaya, this.isGet});
+  DetailRincianLaporan({this.jenisPengajuan, this.rincianLaporan, this.isGet});
   @override
-  _DetailRincianBiayaState createState() => _DetailRincianBiayaState();
+  _DetailRincianLaporanState createState() => _DetailRincianLaporanState();
 }
 
-class _DetailRincianBiayaState extends State<DetailRincianBiaya> {
+class _DetailRincianLaporanState extends State<DetailRincianLaporan> {
   @override
   Widget build(BuildContext context) {
     List<Widget> list = [];
-    widget.rincianBiaya.images.forEach((element) {
+    widget.rincianLaporan.images.forEach((element) {
       list.add(GestureDetector(
         onTap: () => showDialog(
             context: context,
@@ -61,7 +61,7 @@ class _DetailRincianBiayaState extends State<DetailRincianBiaya> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
-                  "Rincian Biaya " + widget.jenisPengajuan,
+                  "Rincian  " + widget.jenisPengajuan,
                   style: GoogleFonts.montserrat(
                       fontWeight: FontWeight.w600,
                       fontSize: 16,
@@ -114,7 +114,7 @@ class _DetailRincianBiayaState extends State<DetailRincianBiaya> {
                                                                 context)
                                                             .add(DeleteRincianBiayaEvent(
                                                                 rincianBiaya: widget
-                                                                    .rincianBiaya));
+                                                                    .rincianLaporan));
                                                         Navigator.pop(context);
                                                         Navigator.pop(context);
                                                       },
@@ -144,7 +144,7 @@ class _DetailRincianBiayaState extends State<DetailRincianBiaya> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text("Nama Biaya", style: GoogleFonts.montserrat()),
-                  Text(widget.rincianBiaya.namaItem,
+                  Text(widget.rincianLaporan.namaItem,
                       style:
                           GoogleFonts.montserrat(fontWeight: FontWeight.w500))
                 ],
@@ -156,7 +156,7 @@ class _DetailRincianBiayaState extends State<DetailRincianBiaya> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text("Kategori Biaya", style: GoogleFonts.montserrat()),
-                  Text(widget.rincianBiaya.kategoriBiaya.namaKategoriBiaya,
+                  Text(widget.rincianLaporan.kategoriBiaya.namaKategoriBiaya,
                       style:
                           GoogleFonts.montserrat(fontWeight: FontWeight.w500))
                 ],
@@ -169,20 +169,28 @@ class _DetailRincianBiayaState extends State<DetailRincianBiaya> {
                 children: [
                   Text("Harga Total", style: GoogleFonts.montserrat()),
                   Text(
-                      ((widget.jenisPengajuan == "Kasbon")
-                              ? "Rp" +
-                                  NumberFormat.currency(
-                                          locale: "eu", symbol: "")
-                                      .format(widget.rincianBiaya.hargaSatuan) +
-                                  "x @" +
-                                  widget.rincianBiaya.jumlahUnit.toString() +
-                                  " = "
-                              : "") +
-                          "Rp" +
-                          NumberFormat.currency(locale: "eu", symbol: "")
-                              .format(widget.rincianBiaya.total),
-                      style:
-                          GoogleFonts.montserrat(fontWeight: FontWeight.w500))
+                    (widget.jenisPengajuan == "Laporan")
+                        ? "Rp" +
+                            NumberFormat.currency(locale: "eu", symbol: "")
+                                .format(widget.rincianLaporan.total)
+                        : "",
+                    // Text(
+                    //     ((widget.jenisPengajuan == "Kasbon")
+                    //             ? "Rp" +
+                    //                 NumberFormat.currency(
+                    //                         locale: "eu", symbol: "")
+                    //                     .format(
+                    //                         widget.rincianLaporan.hargaSatuan) +
+                    //                 "x @" +
+                    //                 widget.rincianLaporan.jumlahUnit.toString() +
+                    //                 " = "
+                    //             : "") +
+                    //         "Rp" +
+                    //         NumberFormat.currency(locale: "eu", symbol: "")
+                    //             .format(widget.rincianLaporan.total),
+                    //     style:
+                    //         GoogleFonts.montserrat(fontWeight: FontWeight.w500))
+                  )
                 ],
               ),
             ),
@@ -206,8 +214,8 @@ class _DetailRincianBiayaState extends State<DetailRincianBiaya> {
                 children: [
                   Text("Catatan", style: GoogleFonts.montserrat()),
                   Text(
-                      (widget.rincianBiaya.keterangan != null)
-                          ? widget.rincianBiaya.keterangan
+                      (widget.rincianLaporan.keterangan != null)
+                          ? widget.rincianLaporan.keterangan
                           : "-",
                       style:
                           GoogleFonts.montserrat(fontWeight: FontWeight.w500))
