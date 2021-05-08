@@ -22,6 +22,7 @@ class ExpenseRepository implements ExpenseDataSource {
   }
 
   Future<SingleResponse<String>> postFcmToken(String token) async {
+    remoteDataSource.getToken();
     return await remoteDataSource.postFcmToken(token);
   }
 

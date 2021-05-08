@@ -155,8 +155,7 @@ class _NotificationPageState extends State<NotificationPage> {
                                                 margin:
                                                     EdgeInsets.only(bottom: 5),
                                                 child: Text(
-                                                  DateFormat.yMMMd().format(
-                                                      notifikasi[i].time),
+                                                  notifikasi[i].day,
                                                   overflow:
                                                       TextOverflow.ellipsis,
                                                   style: GoogleFonts.montserrat(
@@ -167,8 +166,7 @@ class _NotificationPageState extends State<NotificationPage> {
                                                 ),
                                               ),
                                               Text(
-                                                DateFormat("HH:mm")
-                                                    .format(notifikasi[i].time),
+                                                notifikasi[i].time,
                                                 overflow: TextOverflow.ellipsis,
                                                 style: GoogleFonts.montserrat(
                                                     fontSize: 13,

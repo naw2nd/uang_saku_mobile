@@ -52,25 +52,37 @@ class _MyAppState extends State<MyApp> {
     _firebaseMessaging.configure(
       onMessage: (Map<String, dynamic> message) async {
         print("onMessage: $message");
-        popUpNotification(message);
+        Notifikasi notifikasi = Notifikasi(
+            day: DateFormat.yMMMd().format(DateTime.now()),
+            time: DateFormat("HH:mm").format(DateTime.now()),
+            title: message['notification']['title'],
+            message: message['notification']['body']);
+        popUpNotification(notifikasi);
       },
       onBackgroundMessage: myBackgroundMessageHandler,
       onLaunch: (Map<String, dynamic> message) async {
         print("onLaunch: $message");
-        popUpNotification(message);
+        Notifikasi notifikasi = Notifikasi(
+            day: DateFormat.yMMMd().format(DateTime.now()),
+            time: DateFormat("HH:mm").format(DateTime.now()),
+            title: message['data']['title'],
+            message: message['data']['body']);
+        popUpNotification(notifikasi);
       },
       onResume: (Map<String, dynamic> message) async {
         print("onResume: $message");
-        popUpNotification(message);
+        Notifikasi notifikasi = Notifikasi(
+            day: DateFormat.yMMMd().format(DateTime.now()),
+            time: DateFormat("HH:mm").format(DateTime.now()),
+            title: message['data']['title'],
+            message: message['data']['body']);
+        popUpNotification(notifikasi);
       },
     );
     super.initState();
   }
 
-  popUpNotification(Map<String, dynamic> message) async {
-    Notifikasi notifikasi = Notifikasi(
-        title: message['notification']['title'],
-        message: message['notification']['body']);
+  popUpNotification(Notifikasi notifikasi) async {
     await dbHelper.insert(notifikasi);
     showOverlayNotification((context) {
       return SafeArea(
@@ -126,8 +138,7 @@ class _MyAppState extends State<MyApp> {
                                   Container(
                                     margin: EdgeInsets.only(bottom: 5),
                                     child: Text(
-                                      DateFormat.yMMMd()
-                                          .format(notifikasi.time),
+                                      notifikasi.day,
                                       overflow: TextOverflow.ellipsis,
                                       style: GoogleFonts.montserrat(
                                           fontSize: 12,
@@ -136,7 +147,7 @@ class _MyAppState extends State<MyApp> {
                                     ),
                                   ),
                                   Text(
-                                    DateFormat("HH:mm").format(notifikasi.time),
+                                    notifikasi.time,
                                     overflow: TextOverflow.ellipsis,
                                     style: GoogleFonts.montserrat(
                                         fontSize: 13,

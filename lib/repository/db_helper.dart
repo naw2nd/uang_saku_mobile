@@ -41,7 +41,9 @@ class DbHelper {
       CREATE TABLE notifikasi (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         title TEXT,
-        message TEXT
+        message TEXT,
+        day TEXT,
+        time TEXT
       )
     ''');
   }
