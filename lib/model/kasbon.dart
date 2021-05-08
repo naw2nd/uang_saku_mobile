@@ -118,7 +118,7 @@ class Kasbon {
             ? null
             : Department.fromJson(json["department"]),
         cabang: json["cabang"] == null ? null : Cabang.fromJson(json["cabang"]),
-        // idPerusahaan: json["id_perusahaan"],
+        idPerusahaan: json["id_perusahaan"],
         // pegawai: Pegawai.fromJson(json["pegawai"]),
         // perusahaan: Perusahaan.fromJson(json["perusahaan"]),
         // department: Department.fromJson(json["department"]),

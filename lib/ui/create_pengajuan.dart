@@ -441,9 +441,9 @@ class _CreatePengajuanState extends State<CreatePengajuan> {
                       _listRincianBiaya.remove(stateRincian.rincianBiaya);
                     }
                     _listRincianBiaya.forEach((element) {
-                      _listItemRincian.add(ItemPengajuan(
+                      _listItemRincian.add(ItemRincian(
                         jenisPengajuan: widget.jenisPengajuan,
-                        rincianPengajuan: element,
+                        rincianBiaya: element,
                       ));
                     });
                     return Column(

@@ -466,142 +466,98 @@ class _DetailsPengajuanKasbonState extends State<DetailsPengajuanKasbon> {
                     ),
                   ),
                   //List Laporan
-                  Container(
-                    padding: EdgeInsets.fromLTRB(15, 15, 15, 0),
-                    child: CustomCard(
-                      container: Container(
-                        padding: EdgeInsets.symmetric(vertical: 5),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              "Rincian Laporan",
-                              style: GoogleFonts.montserrat(
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.w500,
-                                  color: Color(0xFF555555)),
-                            ),
-                            listLaporan.isNotEmpty
-                                ? Container(
-                                    padding:
-                                        EdgeInsets.only(top: 5, bottom: 10),
-                                    child: Column(children: listLaporan))
-                                : DottedBorder(
-                                    color: Colors.grey,
-                                    dashPattern: [5, 5],
-                                    borderType: BorderType.RRect,
-                                    radius: Radius.circular(10),
-                                    strokeWidth: 1,
-                                    child: ClipRRect(
-                                      borderRadius:
-                                          BorderRadius.all(Radius.circular(10)),
-                                      child: Container(
-                                        height: 45,
-                                        child: RaisedButton(
-                                          shape: RoundedRectangleBorder(
-                                              borderRadius:
-                                                  BorderRadius.circular(10)),
-                                          padding: EdgeInsets.all(0),
-                                          elevation: 0,
-                                          onPressed: () {
-                                            return showDialog(
-                                                context: context,
-                                                barrierColor: Colors.black45,
-                                                builder:
-                                                    (BuildContext context) {
-                                                  return Dialog(
-                                                      shape:
-                                                          RoundedRectangleBorder(
-                                                              borderRadius:
-                                                                  BorderRadius
-                                                                      .circular(
-                                                                          10)),
-                                                      child: FormRincianLaporan(
-                                                        jenisPengajuan:
-                                                            "Laporan",
-                                                      ));
-                                                });
-                                          },
-                                          child: Ink(
-                                            color: Colors.white,
-                                            child: Container(
-                                              alignment: Alignment.center,
-                                              child: Row(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment.center,
-                                                children: [
-                                                  Text(
-                                                    "Tambahkan Laporan ",
-                                                    style:
-                                                        GoogleFonts.montserrat(
-                                                            color: Colors.grey,
-                                                            fontWeight:
-                                                                FontWeight
-                                                                    .w500),
-                                                  ),
-                                                  Icon(
-                                                    Icons.file_present,
-                                                    size: 20,
-                                                    color: Colors.grey,
-                                                  ),
-                                                ],
-                                              ),
-                                            ),
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ),
-                  state.kasbon.statusApproval != "Pengajuan Kasbon Selesai"
-                      ? Container(
-                          padding: EdgeInsets.fromLTRB(15, 10, 15, 5),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Flexible(
-                                  flex: 15,
-                                  child: Container(
-                                    height: 40.0,
-                                    child: RaisedButton(
-                                      elevation: 2,
-                                      onPressed: () {
-                                        BlocProvider.of<KasbonBloc>(context)
-                                            .add(CancelKasbonEvent(
-                                                id: widget.id));
-                                      },
-                                      shape: RoundedRectangleBorder(
-                                          borderRadius:
-                                              BorderRadius.circular(10)),
-                                      padding: EdgeInsets.all(0.0),
-                                      child: Ink(
-                                        decoration: BoxDecoration(
-                                            color: Color(0xfff54949),
-                                            borderRadius:
-                                                BorderRadius.circular(10)),
-                                        child: Container(
-                                          alignment: Alignment.center,
-                                          child: Text(
-                                            "Batalkan",
-                                            style: GoogleFonts.montserrat(
-                                                fontWeight: FontWeight.w500,
-                                                fontSize: 18,
-                                                color: Colors.white),
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                  )),
-                            ],
-                          ),
-                        )
-                      : Container(
-                          margin: EdgeInsets.fromLTRB(0, 5, 0, 5),
-                        ),
+                  // Container(
+                  //   padding: EdgeInsets.fromLTRB(15, 15, 15, 0),
+                  //   child: CustomCard(
+                  //     container: Container(
+                  //       padding: EdgeInsets.symmetric(vertical: 5),
+                  //       child: Column(
+                  //         crossAxisAlignment: CrossAxisAlignment.start,
+                  //         children: [
+                  //           Text(
+                  //             "Rincian Laporan",
+                  //             style: GoogleFonts.montserrat(
+                  //                 fontSize: 16,
+                  //                 fontWeight: FontWeight.w500,
+                  //                 color: Color(0xFF555555)),
+                  //           ),
+                  //           listLaporan.isNotEmpty
+                  //               ? Container(
+                  //                   padding:
+                  //                       EdgeInsets.only(top: 5, bottom: 10),
+                  //                   child: Column(children: listLaporan))
+                  //               : DottedBorder(
+                  //                   color: Colors.grey,
+                  //                   dashPattern: [5, 5],
+                  //                   borderType: BorderType.RRect,
+                  //                   radius: Radius.circular(10),
+                  //                   strokeWidth: 1,
+                  //                   child: ClipRRect(
+                  //                     borderRadius:
+                  //                         BorderRadius.all(Radius.circular(10)),
+                  //                     child: Container(
+                  //                       height: 45,
+                  //                       child: RaisedButton(
+                  //                         shape: RoundedRectangleBorder(
+                  //                             borderRadius:
+                  //                                 BorderRadius.circular(10)),
+                  //                         padding: EdgeInsets.all(0),
+                  //                         elevation: 0,
+                  //                         onPressed: () {
+                  //                           return showDialog(
+                  //                               context: context,
+                  //                               barrierColor: Colors.black45,
+                  //                               builder:
+                  //                                   (BuildContext context) {
+                  //                                 return Dialog(
+                  //                                     shape:
+                  //                                         RoundedRectangleBorder(
+                  //                                             borderRadius:
+                  //                                                 BorderRadius
+                  //                                                     .circular(
+                  //                                                         10)),
+                  //                                     child: FormRincianLaporan(
+                  //                                       jenisPengajuan:
+                  //                                           "Laporan",
+                  //                                     ));
+                  //                               });
+                  //                         },
+                  //                         child: Ink(
+                  //                           color: Colors.white,
+                  //                           child: Container(
+                  //                             alignment: Alignment.center,
+                  //                             child: Row(
+                  //                               mainAxisAlignment:
+                  //                                   MainAxisAlignment.center,
+                  //                               children: [
+                  //                                 Text(
+                  //                                   "Tambahkan Laporan ",
+                  //                                   style:
+                  //                                       GoogleFonts.montserrat(
+                  //                                           color: Colors.grey,
+                  //                                           fontWeight:
+                  //                                               FontWeight
+                  //                                                   .w500),
+                  //                                 ),
+                  //                                 Icon(
+                  //                                   Icons.file_present,
+                  //                                   size: 20,
+                  //                                   color: Colors.grey,
+                  //                                 ),
+                  //                               ],
+                  //                             ),
+                  //                           ),
+                  //                         ),
+                  //                       ),
+                  //                     ),
+                  //                   ),
+                  //                 ),
+                  //         ],
+                  //       ),
+                  //     ),
+                  //   ),
+                  // ),
+                
                 ],
               );
             } else {

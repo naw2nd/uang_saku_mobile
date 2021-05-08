@@ -3,8 +3,6 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:uang_saku/model/kasbon.dart';
 
 import '../form_edit_rincian_biaya.dart';
-import '../form_rincian_biaya.dart';
-import 'detail_rincian_biaya.dart';
 import 'package:intl/intl.dart';
 
 class ItemPengajuan extends StatelessWidget {

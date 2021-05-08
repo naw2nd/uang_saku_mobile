@@ -192,11 +192,11 @@ class _DetailRincianBiayaState extends State<DetailRincianBiaya> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text("Lampiran", style: GoogleFonts.montserrat()),
-                    // Wrap(
-                    //   spacing: 10,
-                    //   runSpacing: 10,
-                    //   children: list,
-                    // ),
+                    Wrap(
+                      spacing: 10,
+                      runSpacing: 10,
+                      children: list,
+                    ),
                   ],
                 )),
             Container(

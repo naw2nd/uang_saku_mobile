@@ -74,145 +74,164 @@ class _ListReimburseState extends State<ListReimburse> {
               ),
             ),
             body: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Container(
-                    padding: EdgeInsets.fromLTRB(15, 0, 15, 7),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(
-                          "Minggu ini",
-                          style: GoogleFonts.montserrat(
-                              fontWeight: FontWeight.w700,
-                              fontSize: 18,
-                              color: Color(0xFF555555)),
-                        ),
-                        TextButton(
-                            onPressed: () {},
-                            child: Text("Tandai sudah dibaca",
-                                style: GoogleFonts.montserrat(
-                                    color: Color(0xFFA8A8A8),
-                                    fontWeight: FontWeight.w600,
-                                    fontSize: 12))),
-                      ],
-                    )),
+                  padding: EdgeInsets.fromLTRB(15, 0, 15, 10),
+                  child: Text(
+                    "Active Reimburse",
+                    style: GoogleFonts.montserrat(
+                        fontWeight: FontWeight.w700,
+                        fontSize: 18,
+                        color: Color(0xFF555555)),
+                  ),
+                ),
+                // Container(
+                //     padding: EdgeInsets.fromLTRB(15, 0, 15, 7),
+                //     child: Row(
+                //       mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                //       children: [
+                //         Text(
+                //           "Minggu ini",
+                //           style: GoogleFonts.montserrat(
+                //               fontWeight: FontWeight.w700,
+                //               fontSize: 18,
+                //               color: Color(0xFF555555)),
+                //         ),
+                //         TextButton(
+                //             onPressed: () {},
+                //             child: Text("Tandai sudah dibaca",
+                //                 style: GoogleFonts.montserrat(
+                //                     color: Color(0xFFA8A8A8),
+                //                     fontWeight: FontWeight.w600,
+                //                     fontSize: 12))),
+                //       ],
+                //     )),
                 BlocBuilder<ReimburseBloc, BaseState>(
                     builder: (context, state) {
                   if (state is ListReimburseState) {
                     if (state.reimburse.isNotEmpty) {
                       List<Widget> list = [];
                       state.reimburse.forEach((element) {
-                        list.add(Container(
-                            margin: EdgeInsets.only(bottom: 10),
-                            padding: EdgeInsets.symmetric(horizontal: 15),
-                            child: GestureDetector(
-                              onTap: () {
-                                Navigator.push(context,
-                                    MaterialPageRoute(builder: (context) {
-                                  return DetailsPengajuanReimburse(
-                                      id: element.idPengajuanReimburse);
-                                }))
-                                  ..whenComplete(() => initEvent());
-                              },
-                              child: CustomCard(
-                                  container: Container(
-                                child: Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      Flexible(
-                                          flex: 2,
-                                          child: Image(
-                                            image: AssetImage(cardIcon[
-                                                element.statusPengajuan]),
-                                            width: 31,
-                                            height: 31,
-                                          )),
-                                      Flexible(
-                                        flex: 15,
-                                        child: Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceBetween,
-                                          children: [
-                                            Flexible(
-                                                flex: 10,
-                                                child: Column(
-                                                  crossAxisAlignment:
-                                                      CrossAxisAlignment.start,
-                                                  children: [
-                                                    Container(
+                        if (element.statusPencairan == 0)
+                          list.add(Container(
+                              margin: EdgeInsets.only(bottom: 10),
+                              padding: EdgeInsets.symmetric(horizontal: 15),
+                              child: GestureDetector(
+                                onTap: () {
+                                  Navigator.push(context,
+                                      MaterialPageRoute(builder: (context) {
+                                    return DetailsPengajuanReimburse(
+                                        id: element.idPengajuanReimburse);
+                                  }))
+                                    ..whenComplete(() => initEvent());
+                                },
+                                child: CustomCard(
+                                    container: Container(
+                                  child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Flexible(
+                                            flex: 2,
+                                            child: Image(
+                                              image: AssetImage(cardIcon[
+                                                  element.statusPengajuan]),
+                                              width: 31,
+                                              height: 31,
+                                            )),
+                                        Flexible(
+                                          flex: 15,
+                                          child: Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceBetween,
+                                            children: [
+                                              Flexible(
+                                                  flex: 10,
+                                                  child: Column(
+                                                    crossAxisAlignment:
+                                                        CrossAxisAlignment
+                                                            .start,
+                                                    children: [
+                                                      Container(
+                                                          margin:
+                                                              EdgeInsets.only(
+                                                                  bottom: 5),
+                                                          child: Text(
+                                                            element
+                                                                .statusApproval,
+                                                            overflow:
+                                                                TextOverflow
+                                                                    .ellipsis,
+                                                            style: GoogleFonts
+                                                                .roboto(
+                                                                    fontWeight:
+                                                                        FontWeight
+                                                                            .w800,
+                                                                    fontSize:
+                                                                        14),
+                                                          )),
+                                                      Text(
+                                                        element.tujuan,
+                                                        overflow: TextOverflow
+                                                            .ellipsis,
+                                                      )
+                                                    ],
+                                                  )),
+                                              Flexible(
+                                                  flex: 5,
+                                                  child: Column(
+                                                    crossAxisAlignment:
+                                                        CrossAxisAlignment.end,
+                                                    children: [
+                                                      Container(
                                                         margin: EdgeInsets.only(
                                                             bottom: 5),
                                                         child: Text(
-                                                          element
-                                                              .statusApproval,
+                                                          DateFormat.yMMMd()
+                                                              .format(element
+                                                                  .tglPengajuan),
                                                           overflow: TextOverflow
                                                               .ellipsis,
                                                           style: GoogleFonts
-                                                              .roboto(
+                                                              .montserrat(
+                                                                  fontSize: 12,
                                                                   fontWeight:
                                                                       FontWeight
-                                                                          .w800,
-                                                                  fontSize: 14),
-                                                        )),
-                                                    Text(
-                                                      element.tujuan,
-                                                      overflow:
-                                                          TextOverflow.ellipsis,
-                                                    )
-                                                  ],
-                                                )),
-                                            Flexible(
-                                                flex: 5,
-                                                child: Column(
-                                                  crossAxisAlignment:
-                                                      CrossAxisAlignment.end,
-                                                  children: [
-                                                    Container(
-                                                      margin: EdgeInsets.only(
-                                                          bottom: 5),
-                                                      child: Text(
-                                                        DateFormat.yMMMd()
-                                                            .format(element
-                                                                .tglPengajuan),
+                                                                          .w600,
+                                                                  color: Color(
+                                                                      0xFF6f96b0)),
+                                                        ),
+                                                      ),
+                                                      Text(
+                                                        "Rp" +
+                                                            NumberFormat
+                                                                    .currency(
+                                                                        locale:
+                                                                            "eu",
+                                                                        symbol:
+                                                                            "")
+                                                                .format(element
+                                                                    .nominalRealisasi),
                                                         overflow: TextOverflow
                                                             .ellipsis,
                                                         style: GoogleFonts
                                                             .montserrat(
-                                                                fontSize: 12,
+                                                                fontSize: 13,
                                                                 fontWeight:
                                                                     FontWeight
-                                                                        .w600,
+                                                                        .w500,
                                                                 color: Color(
-                                                                    0xFF6f96b0)),
-                                                      ),
-                                                    ),
-                                                    Text(
-                                                      "Rp" +
-                                                          NumberFormat.currency(
-                                                                  locale: "eu",
-                                                                  symbol: "")
-                                                              .format(element
-                                                                  .nominalRealisasi),
-                                                      overflow:
-                                                          TextOverflow.ellipsis,
-                                                      style: GoogleFonts
-                                                          .montserrat(
-                                                              fontSize: 13,
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .w500,
-                                                              color: Color(
-                                                                  0xFF58b84b)),
-                                                    )
-                                                  ],
-                                                )),
-                                          ],
-                                        ),
-                                      )
-                                    ]),
-                              )),
-                            )));
+                                                                    0xFF58b84b)),
+                                                      )
+                                                    ],
+                                                  )),
+                                            ],
+                                          ),
+                                        )
+                                      ]),
+                                )),
+                              )));
                       });
                       return Expanded(
                         child: ListView(
@@ -220,19 +239,21 @@ class _ListReimburseState extends State<ListReimburse> {
                         ),
                       );
                     } else {
-                      return Container(
-                          padding: EdgeInsets.only(top: 200),
-                          alignment: Alignment.center,
-                          child: Text(
-                            "Approval yang menunggu disetujui masih Kosong",
-                            style: GoogleFonts.montserrat(),
-                          ));
+                      return Expanded(
+                        child: Container(
+                            alignment: Alignment.center,
+                            child: Text(
+                              "Tidak ada Reimburse yang masih aktif",
+                              style: GoogleFonts.montserrat(),
+                            )),
+                      );
                     }
                   } else
-                    return Container(
-                        padding: EdgeInsets.only(top: 200),
-                        alignment: Alignment.center,
-                        child: CircularProgressIndicator());
+                    return Expanded(
+                      child: Container(
+                          alignment: Alignment.center,
+                          child: CircularProgressIndicator()),
+                    );
                 })
               ],
             )));

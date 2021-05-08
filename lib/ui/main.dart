@@ -71,7 +71,7 @@ class _MyAppState extends State<MyApp> {
     Notifikasi notifikasi = Notifikasi(
         title: message['notification']['title'],
         message: message['notification']['body']);
-    await dbHelper.insert(notifikasi).then((value) => setState(() {}));
+    await dbHelper.insert(notifikasi);
     showOverlayNotification((context) {
       return SafeArea(
         child: DefaultTextStyle(

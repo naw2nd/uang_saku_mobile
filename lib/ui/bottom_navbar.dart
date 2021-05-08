@@ -6,7 +6,7 @@ import 'package:uang_saku/ui/profile_page.dart';
 import 'package:uang_saku/ui/create_pengajuan.dart';
 
 import 'notification_page.dart';
-import 'belum kepakek/riwayat.dart';
+import 'riwayat.dart';
 import 'dashboard.dart';
 
 class BottomNavbar extends StatefulWidget {

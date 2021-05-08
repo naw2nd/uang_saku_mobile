@@ -202,33 +202,39 @@ class _FormRincianBiayaState extends State<FormRincianBiaya> {
                                           borderRadius:
                                               BorderRadius.circular(10)),
                                     ))),
-                            Flexible(flex: 1, child: Container()),
                             Flexible(
-                                flex: 15,
-                                child: TextFormField(
-                                    inputFormatters: [
-                                      FilteringTextInputFormatter.digitsOnly
-                                    ],
-                                    keyboardType: TextInputType.number,
-                                    controller: _jumlahCtrl,
-                                    validator: (value) {
-                                      if (value == "" || int.parse(value) == 0)
-                                        return "Jumlah harus diisi";
-                                      return null;
-                                    },
-                                    onChanged: (value) {
-                                      setState(() {
-                                        _totalBiaya = int.parse(value) *
-                                            int.parse(_hargaCtrl.text);
-                                      });
-                                    },
-                                    decoration: InputDecoration(
-                                      labelText: "Jumlah",
-                                      isDense: true,
-                                      border: OutlineInputBorder(
-                                          borderRadius:
-                                              BorderRadius.circular(10)),
-                                    )))
+                                flex:
+                                    (widget.jenisPengajuan == "Kasbon") ? 1 : 0,
+                                child: Container()),
+                            (widget.jenisPengajuan == "Kasbon")
+                                ? Flexible(
+                                    flex: 15,
+                                    child: TextFormField(
+                                        inputFormatters: [
+                                          FilteringTextInputFormatter.digitsOnly
+                                        ],
+                                        keyboardType: TextInputType.number,
+                                        controller: _jumlahCtrl,
+                                        validator: (value) {
+                                          if (value == "" ||
+                                              int.parse(value) == 0)
+                                            return "Jumlah harus diisi";
+                                          return null;
+                                        },
+                                        onChanged: (value) {
+                                          setState(() {
+                                            _totalBiaya = int.parse(value) *
+                                                int.parse(_hargaCtrl.text);
+                                          });
+                                        },
+                                        decoration: InputDecoration(
+                                          labelText: "Jumlah",
+                                          isDense: true,
+                                          border: OutlineInputBorder(
+                                              borderRadius:
+                                                  BorderRadius.circular(10)),
+                                        )))
+                                : Container()
                           ],
                         ),
                       ),
@@ -316,8 +322,9 @@ class _FormRincianBiayaState extends State<FormRincianBiaya> {
                             if (_formKey.currentState.validate()) {
                               print("validated");
                               _images.forEach((element) {
-                                listImage64
-                                    .add(RequestImage64(image: fileToBase64(element), action: "new"));
+                                listImage64.add(RequestImage64(
+                                    image: fileToBase64(element),
+                                    action: "new"));
                               });
                               if (widget.jenisPengajuan == "Reimburse") {
                                 if (_images.isNotEmpty) {

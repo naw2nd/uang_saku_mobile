@@ -63,27 +63,37 @@ class _NotificationPageState extends State<NotificationPage> {
             ),
           ),
         ),
-        body: Column(children: [
+        body: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
           Container(
-              padding: EdgeInsets.fromLTRB(15, 0, 15, 0),
-              child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      "Minggu ini",
-                      style: GoogleFonts.montserrat(
-                          fontWeight: FontWeight.w700,
-                          fontSize: 18,
-                          color: Color(0xFF555555)),
-                    ),
-                    TextButton(
-                        onPressed: () {},
-                        child: Text("", //"Tandai sudah dibaca",
-                            style: GoogleFonts.montserrat(
-                                color: Color(0xFFA8A8A8),
-                                fontWeight: FontWeight.w600,
-                                fontSize: 12))),
-                  ])),
+            padding: EdgeInsets.fromLTRB(15, 0, 15, 10),
+            child: Text(
+              "Minggu ini",
+              style: GoogleFonts.montserrat(
+                  fontWeight: FontWeight.w700,
+                  fontSize: 18,
+                  color: Color(0xFF555555)),
+            ),
+          ),
+          // Container(
+          //     padding: EdgeInsets.fromLTRB(15, 0, 15, 0),
+          //     child: Row(
+          //         mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          //         children: [
+          //           Text(
+          //             "Minggu ini",
+          //             style: GoogleFonts.montserrat(
+          //                 fontWeight: FontWeight.w700,
+          //                 fontSize: 18,
+          //                 color: Color(0xFF555555)),
+          //           ),
+          //           TextButton(
+          //               onPressed: () {},
+          //               child: Text("", //"Tandai sudah dibaca",
+          //                   style: GoogleFonts.montserrat(
+          //                       color: Color(0xFFA8A8A8),
+          //                       fontWeight: FontWeight.w600,
+          //                       fontSize: 12))),
+          //         ])),
           Expanded(
             child: ListView.builder(
                 itemCount: notifikasi.length,
@@ -100,7 +110,11 @@ class _NotificationPageState extends State<NotificationPage> {
                               children: [
                                 Flexible(
                                     flex: 2,
-                                    child: Icon(Icons.message_outlined, color: Color(0xFF358BFC), size: 25,)),
+                                    child: Icon(
+                                      Icons.message_outlined,
+                                      color: Color(0xFF358BFC),
+                                      size: 25,
+                                    )),
                                 Flexible(
                                   flex: 15,
                                   child: Row(
