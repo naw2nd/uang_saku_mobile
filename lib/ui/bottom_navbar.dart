@@ -5,8 +5,8 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:uang_saku/ui/profile_page.dart';
 import 'package:uang_saku/ui/create_pengajuan.dart';
 
-import 'belum kepakek/notifikasi.dart';
-import 'belum kepakek/riwayat.dart';
+import 'notification_page.dart';
+import 'riwayat.dart';
 import 'dashboard.dart';
 
 class BottomNavbar extends StatefulWidget {
@@ -20,7 +20,7 @@ class _BottomNavbarState extends State<BottomNavbar> {
     DashboardPage(),
     RiwayatPage(),
     DashboardPage(),
-    NotifikasiPage(),
+    NotificationPage(),
     ProfilePage()
   ];
 

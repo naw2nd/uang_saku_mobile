@@ -33,7 +33,15 @@ class HttpService {
   }
 
   logout() async {
-    await sharedPreferences.clear();
+    //await sharedPreferences.clear();
+    //await sharedPreferences.getKeys();
+    sharedPreferences.remove("token");
+    //   for (String key in sharedPreferences.getKeys()) {
+    //     if (key == "token" ) {
+    //       sharedPreferences.remove(key);
+    //     }
+    //   }
+    // }
   }
 
   Future<SingleResponse<Token>> login(String email, String password) async {
@@ -41,9 +49,24 @@ class HttpService {
     try {
       Response response = await _dio
           .post(endPoint, data: {"email": email, "password": password});
-      response.data["data"] = Token.fromJson(response.data["data"]);
+      if (response.data["data"] != null)
+        response.data["data"] = Token.fromJson(response.data["data"]);
       SingleResponse<Token> singleResponse =
           SingleResponse<Token>.fromJson(response.data);
+      return singleResponse;
+    } on DioError catch (e) {
+      print(e);
+      throw Exception(e.message);
+    }
+  }
+
+  Future<SingleResponse<String>> postFcmToken(String token) async {
+    String endPoint = "token";
+    try {
+      Response response = await _dio
+          .post(endPoint, data: {"token": token});
+      SingleResponse<String> singleResponse =
+          SingleResponse<String>.fromJson(response.data);
       return singleResponse;
     } on DioError catch (e) {
       print(e);
@@ -305,10 +328,34 @@ class HttpService {
     }
   }
 
+  Future<SingleResponse> putReimburse(Reimburse reimburse, int id) async {
+    String endPoint = "reimburse/${reimburse.idPengajuanReimburse.toString()}";
+    try {
+      Response response = await _dio.put(endPoint, data: reimburse.toJson());
+      print(response);
+      print(response.data);
+      return SingleResponse.fromJson(response.data);
+    } on DioError catch (e) {
+      print(e.message);
+      throw Exception(e.message);
+    }
+  }
+
   Future<SingleResponse> postKasbon(Kasbon kasbon) async {
     String endPoint = "kasbon";
     try {
       Response response = await _dio.post(endPoint, data: kasbon.toJson());
+      return SingleResponse.fromJson(response.data);
+    } on DioError catch (e) {
+      print(e.message);
+      throw Exception(e.message);
+    }
+  }
+
+  Future<SingleResponse> putKasbon(Kasbon kasbon, int id) async {
+    String endPoint = "kasbon/${id.toString()}";
+    try {
+      Response response = await _dio.put(endPoint, data: kasbon.toJson());
       return SingleResponse.fromJson(response.data);
     } on DioError catch (e) {
       print(e.message);

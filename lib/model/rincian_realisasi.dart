@@ -1,8 +1,10 @@
 import 'models.dart';
+import 'kategori_biaya.dart';
 
 class RincianRealisasi {
   RincianRealisasi({
     this.idRincianRealisasiReimburse,
+    this.action,
     this.idPengajuanReimburse,
     this.idKategoriBiaya,
     this.namaItem,
@@ -13,10 +15,11 @@ class RincianRealisasi {
   });
 
   final int idRincianRealisasiReimburse;
+  String action;
   final int idPengajuanReimburse;
   final int idKategoriBiaya;
   final String namaItem;
-  final int total;
+  int total;
   final String keterangan;
   final KategoriBiaya kategoriBiaya;
   final List<RequestImage64> images;
@@ -30,17 +33,20 @@ class RincianRealisasi {
         total: json["total"],
         keterangan: json["keterangan"],
         kategoriBiaya: KategoriBiaya.fromJson(json["kategori_biaya"]),
-        images: List<RequestImage64>.from(json["images"].map((x) => RequestImage64.fromJson(x))),
+        images: List<RequestImage64>.from(
+            json["images"].map((x) => RequestImage64.fromJson(x))),
       );
 
   Map<String, dynamic> toJson() => {
         "id_rincian_realisasi_reimburse": idRincianRealisasiReimburse,
         "id_pengajuan_reimburse": idPengajuanReimburse,
         "id_kategori_biaya": idKategoriBiaya,
+        "action": action,
         "nama_item": namaItem,
         "total": total,
         "keterangan": keterangan,
-        "kategori_biaya": kategoriBiaya.toJson(),
-        "images": List<dynamic>.from(images.map((x) => x.toJson())),
+        // "kategori_biaya": kategoriBiaya.toJson(),
+        "images":
+            (images != null) ? List<dynamic>.from(images.map((x) => x)) : "",
       };
 }

@@ -16,7 +16,30 @@ class ReimburseBloc extends Bloc<BaseEvent, BaseState> {
 
   @override
   Stream<BaseState> mapEventToState(BaseEvent event) async* {
-    if (event is ReimburseEvent) {
+    if (event is GetFormAttributeReimburse) {
+      yield (LoadingState());
+      try {
+        final MultiResponse<KategoriPengajuan> responseKategori =
+            await expenseRepository.getKategori();
+
+        final MultiResponse<Perusahaan> responsePerusahaan =
+            await expenseRepository.getPerusahaan();
+
+        final MultiResponse<Department> responseDepartment =
+            await expenseRepository.getDepartment();
+
+        final MultiResponse<Cabang> responseCabang =
+            await expenseRepository.getCabang();
+
+        yield (FormAttributeStateReimburse(
+            listKategori: responseKategori.data,
+            listCabang: responseCabang.data,
+            listDepartment: responseDepartment.data,
+            listPerusahaan: responsePerusahaan.data));
+      } catch (e) {
+        yield ErrorState(message: "No Connection");
+      }
+    } else if (event is GetListReimburseEvent) {
       try {
         final MultiResponse<Reimburse> multiResponse =
             await expenseRepository.getListReimburse();
@@ -61,6 +84,20 @@ class ReimburseBloc extends Bloc<BaseEvent, BaseState> {
         final SingleResponse singleResponse = await expenseRepository
             .postApprovalReimburse(event.idRoleApproval, event.bodyApproval);
         yield (SuccesState<String>(data: singleResponse.message));
+      } catch (e) {
+        yield ErrorState(message: "No Connection");
+      }
+    } else if (event is UpdateReimburseEvent) {
+      try {
+        final SingleResponse response =
+            await expenseRepository.putReimburse(event.reimburse, event.id);
+        print(response.message);
+        if (response.success) {
+          yield SuccesState(data: response.data);
+          print("berhasil");
+        } else {
+          yield ErrorState(message: response.message);
+        }
       } catch (e) {
         yield ErrorState(message: "No Connection");
       }

@@ -22,8 +22,12 @@ class _ListKasbonState extends State<ListKasbon> {
 
   @override
   void initState() {
-    BlocProvider.of<KasbonBloc>(context).add(KasbonEvent());
+    initEvent();
     super.initState();
+  }
+
+  initEvent() {
+    BlocProvider.of<KasbonBloc>(context).add(GetListKasbonEvent());
   }
 
   @override
@@ -68,163 +72,317 @@ class _ListKasbonState extends State<ListKasbon> {
                 ),
               ),
             ),
-            body: Column(
+            body: ListView(
+              // crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Container(
-                    padding: EdgeInsets.fromLTRB(15, 0, 15, 7),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(
-                          "Minggu ini",
-                          style: GoogleFonts.montserrat(
-                              fontWeight: FontWeight.w700,
-                              fontSize: 18,
-                              color: Color(0xFF555555)),
-                        ),
-                        TextButton(
-                            onPressed: () {},
-                            child: Text("Tandai sudah dibaca",
-                                style: GoogleFonts.montserrat(
-                                    color: Color(0xFFA8A8A8),
-                                    fontWeight: FontWeight.w600,
-                                    fontSize: 12))),
-                      ],
-                    )),
+                  padding: EdgeInsets.fromLTRB(15, 0, 15, 10),
+                  child: Text(
+                    "Active Kasbon",
+                    style: GoogleFonts.montserrat(
+                        fontWeight: FontWeight.w700,
+                        fontSize: 18,
+                        color: Color(0xFF555555)),
+                  ),
+                ),
                 BlocBuilder<KasbonBloc, BaseState>(builder: (context, state) {
                   if (state is ListKasbonState) {
                     if (state.kasbon.isNotEmpty) {
                       List<Widget> list = [];
                       state.kasbon.forEach((element) {
-                        list.add(Container(
-                            margin: EdgeInsets.only(bottom: 10),
-                            padding: EdgeInsets.symmetric(horizontal: 15),
-                            child: GestureDetector(
-                              onTap: () {
-                                Navigator.push(context,
-                                    MaterialPageRoute(builder: (context) {
-                                  return DetailsPengajuanKasbon(
-                                      id: element.idPengajuanKasbon);
-                                }))
-                                  ..whenComplete(() => initState());
-                              },
-                              child: CustomCard(
-                                  container: Container(
-                                child: Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      Flexible(
-                                          flex: 2,
-                                          child: Image(
-                                            image: AssetImage(cardIcon[
-                                                element.statusPengajuan]),
-                                            width: 31,
-                                            height: 31,
-                                          )),
-                                      Flexible(
-                                        flex: 15,
-                                        child: Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceBetween,
-                                          children: [
-                                            Flexible(
-                                                flex: 10,
-                                                child: Column(
-                                                  crossAxisAlignment:
-                                                      CrossAxisAlignment.start,
-                                                  children: [
-                                                    Container(
+                        if (element.statusPencairan == 0)
+                          list.add(Container(
+                              margin: EdgeInsets.only(bottom: 10),
+                              padding: EdgeInsets.symmetric(horizontal: 15),
+                              child: GestureDetector(
+                                onTap: () {
+                                  Navigator.push(context,
+                                      MaterialPageRoute(builder: (context) {
+                                    return DetailsPengajuanKasbon(
+                                        id: element.idPengajuanKasbon);
+                                  }))
+                                    ..whenComplete(() => initEvent());
+                                },
+                                child: CustomCard(
+                                    container: Container(
+                                  child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Flexible(
+                                            flex: 2,
+                                            child: Image(
+                                              image: AssetImage(cardIcon[
+                                                  element.statusPengajuan]),
+                                              width: 31,
+                                              height: 31,
+                                            )),
+                                        Flexible(
+                                          flex: 15,
+                                          child: Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceBetween,
+                                            children: [
+                                              Flexible(
+                                                  flex: 10,
+                                                  child: Column(
+                                                    crossAxisAlignment:
+                                                        CrossAxisAlignment
+                                                            .start,
+                                                    children: [
+                                                      Container(
+                                                          margin:
+                                                              EdgeInsets.only(
+                                                                  bottom: 5),
+                                                          child: Text(
+                                                            element
+                                                                .statusApproval,
+                                                            overflow:
+                                                                TextOverflow
+                                                                    .ellipsis,
+                                                            style: GoogleFonts
+                                                                .roboto(
+                                                                    fontWeight:
+                                                                        FontWeight
+                                                                            .w800,
+                                                                    fontSize:
+                                                                        14),
+                                                          )),
+                                                      Text(
+                                                        element.tujuan,
+                                                        overflow: TextOverflow
+                                                            .ellipsis,
+                                                      )
+                                                    ],
+                                                  )),
+                                              Flexible(
+                                                  flex: 6,
+                                                  child: Column(
+                                                    crossAxisAlignment:
+                                                        CrossAxisAlignment.end,
+                                                    children: [
+                                                      Container(
                                                         margin: EdgeInsets.only(
                                                             bottom: 5),
                                                         child: Text(
-                                                          element
-                                                              .statusApproval,
+                                                          DateFormat.yMMMd()
+                                                              .format(element
+                                                                  .tglPengajuan),
                                                           overflow: TextOverflow
                                                               .ellipsis,
                                                           style: GoogleFonts
-                                                              .roboto(
+                                                              .montserrat(
+                                                                  fontSize: 12,
                                                                   fontWeight:
                                                                       FontWeight
-                                                                          .w800,
-                                                                  fontSize: 14),
-                                                        )),
-                                                    Text(
-                                                      element.tujuan,
-                                                      overflow:
-                                                          TextOverflow.ellipsis,
-                                                    )
-                                                  ],
-                                                )),
-                                            Flexible(
-                                                flex: 6,
-                                                child: Column(
-                                                  crossAxisAlignment:
-                                                      CrossAxisAlignment.end,
-                                                  children: [
-                                                    Container(
-                                                      margin: EdgeInsets.only(
-                                                          bottom: 5),
-                                                      child: Text(
-                                                        DateFormat.yMMMd()
-                                                            .format(element
-                                                                .tglPengajuan),
+                                                                          .w600,
+                                                                  color: Color(
+                                                                      0xFF6f96b0)),
+                                                        ),
+                                                      ),
+                                                      Text(
+                                                        "Rp" +
+                                                            NumberFormat
+                                                                    .currency(
+                                                                        locale:
+                                                                            "eu",
+                                                                        symbol:
+                                                                            "")
+                                                                .format(element
+                                                                    .nominalPencairan),
                                                         overflow: TextOverflow
                                                             .ellipsis,
                                                         style: GoogleFonts
                                                             .montserrat(
-                                                                fontSize: 12,
+                                                                fontSize: 13,
                                                                 fontWeight:
                                                                     FontWeight
-                                                                        .w600,
+                                                                        .w500,
                                                                 color: Color(
-                                                                    0xFF6f96b0)),
-                                                      ),
-                                                    ),
-                                                    Text(
-                                                      "Rp" +
-                                                          NumberFormat.currency(
-                                                                  locale: "eu",
-                                                                  symbol: "")
-                                                              .format(element
-                                                                  .nominalPencairan),
-                                                      overflow:
-                                                          TextOverflow.ellipsis,
-                                                      style: GoogleFonts
-                                                          .montserrat(
-                                                              fontSize: 13,
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .w500,
-                                                              color: Color(
-                                                                  0xFF58b84b)),
-                                                    )
-                                                  ],
-                                                )),
-                                          ],
-                                        ),
-                                      )
-                                    ]),
-                              )),
-                            )));
+                                                                    0xFF58b84b)),
+                                                      )
+                                                    ],
+                                                  )),
+                                            ],
+                                          ),
+                                        )
+                                      ]),
+                                )),
+                              )));
                       });
-                      return Expanded(
-                        child: ListView(
-                          children: list,
-                        ),
+                      return Column(
+                        children: list,
                       );
                     } else {
                       return Container(
-                          padding: EdgeInsets.only(top: 200),
                           alignment: Alignment.center,
                           child: Text(
-                            "Approval yang menunggu disetujui masih Kosong",
+                            "Tidak ada kasbon yang masih aktif",
                             style: GoogleFonts.montserrat(),
                           ));
                     }
                   } else
                     return Container(
-                        padding: EdgeInsets.only(top: 200),
+                        alignment: Alignment.center,
+                        child: CircularProgressIndicator());
+                }),
+                Container(
+                  padding: EdgeInsets.fromLTRB(15, 15, 15, 10),
+                  child: Text(
+                    "Active Laporan",
+                    style: GoogleFonts.montserrat(
+                        fontWeight: FontWeight.w700,
+                        fontSize: 18,
+                        color: Color(0xFF555555)),
+                  ),
+                ),
+                BlocBuilder<KasbonBloc, BaseState>(builder: (context, state) {
+                  if (state is ListKasbonState) {
+                    if (state.kasbon.isNotEmpty) {
+                      List<Widget> list = [];
+                      state.kasbon.forEach((element) {
+                        if (element.statusPertanggungjawaban == 0 &&
+                            element.statusPencairan == 1)
+                          list.add(Container(
+                              margin: EdgeInsets.only(bottom: 10),
+                              padding: EdgeInsets.symmetric(horizontal: 15),
+                              child: GestureDetector(
+                                onTap: () {
+                                  Navigator.push(context,
+                                      MaterialPageRoute(builder: (context) {
+                                    return DetailsPengajuanKasbon(
+                                        id: element.idPengajuanKasbon);
+                                  }))
+                                    ..whenComplete(() => initEvent());
+                                },
+                                child: CustomCard(
+                                    container: Container(
+                                  child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Flexible(
+                                            flex: 2,
+                                            child: Image(
+                                              image: AssetImage(cardIcon[
+                                                  element.statusPengajuan]),
+                                              width: 31,
+                                              height: 31,
+                                            )),
+                                        Flexible(
+                                          flex: 15,
+                                          child: Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceBetween,
+                                            children: [
+                                              Flexible(
+                                                  flex: 10,
+                                                  child: Column(
+                                                    crossAxisAlignment:
+                                                        CrossAxisAlignment
+                                                            .start,
+                                                    children: [
+                                                      Container(
+                                                          margin:
+                                                              EdgeInsets.only(
+                                                                  bottom: 5),
+                                                          child: Text(
+                                                            element
+                                                                .statusApproval,
+                                                            overflow:
+                                                                TextOverflow
+                                                                    .ellipsis,
+                                                            style: GoogleFonts
+                                                                .roboto(
+                                                                    fontWeight:
+                                                                        FontWeight
+                                                                            .w800,
+                                                                    fontSize:
+                                                                        14),
+                                                          )),
+                                                      Text(
+                                                        element.tujuan,
+                                                        overflow: TextOverflow
+                                                            .ellipsis,
+                                                      )
+                                                    ],
+                                                  )),
+                                              Flexible(
+                                                  flex: 6,
+                                                  child: Column(
+                                                    crossAxisAlignment:
+                                                        CrossAxisAlignment.end,
+                                                    children: [
+                                                      Container(
+                                                        margin: EdgeInsets.only(
+                                                            bottom: 5),
+                                                        child: Text(
+                                                          DateFormat.yMMMd()
+                                                              .format(element
+                                                                  .tglPengajuan),
+                                                          overflow: TextOverflow
+                                                              .ellipsis,
+                                                          style: GoogleFonts
+                                                              .montserrat(
+                                                                  fontSize: 12,
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .w600,
+                                                                  color: Color(
+                                                                      0xFF6f96b0)),
+                                                        ),
+                                                      ),
+                                                      Text(
+                                                        "Rp" +
+                                                            NumberFormat
+                                                                    .currency(
+                                                                        locale:
+                                                                            "eu",
+                                                                        symbol:
+                                                                            "")
+                                                                .format(element
+                                                                    .nominalPencairan),
+                                                        overflow: TextOverflow
+                                                            .ellipsis,
+                                                        style: GoogleFonts
+                                                            .montserrat(
+                                                                fontSize: 13,
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .w500,
+                                                                color: Color(
+                                                                    0xFF58b84b)),
+                                                      )
+                                                    ],
+                                                  )),
+                                            ],
+                                          ),
+                                        )
+                                      ]),
+                                )),
+                              )));
+                      });
+                      if (list.isNotEmpty)
+                        return Column(
+                          children: list,
+                        );
+                      else
+                        return Container(
+                            alignment: Alignment.center,
+                            child: Text(
+                              "Tidak ada Laporan yang masih aktif",
+                              style: GoogleFonts.montserrat(),
+                            ));
+                    } else {
+                      return Container(
+                          alignment: Alignment.center,
+                          child: Text(
+                            "Tidak ada Laporan yang masih aktif",
+                            style: GoogleFonts.montserrat(),
+                          ));
+                    }
+                  } else
+                    return Container(
                         alignment: Alignment.center,
                         child: CircularProgressIndicator());
                 })

@@ -7,29 +7,28 @@ import 'package:uang_saku/bloc/bloc.dart';
 import 'package:uang_saku/bloc/create_pengajuan_bloc.dart';
 import 'package:uang_saku/bloc/create_rincian_biaya_bloc.dart';
 import 'package:uang_saku/bloc/event/create_pengajuan_event.dart';
+import 'package:uang_saku/bloc/event/reimburse_event.dart';
+import 'package:uang_saku/bloc/reimburse_bloc.dart';
 import 'package:uang_saku/bloc/state/base_state.dart';
 import 'package:uang_saku/bloc/state/create_pengajuan_state.dart';
 import 'package:uang_saku/model/models.dart';
 import 'package:uang_saku/ui/custom_widgets/custom_card.dart';
 import 'package:uang_saku/ui/custom_widgets/custom_text_form_field.dart';
-import 'package:uang_saku/ui/custom_widgets/item_pengajuan.dart';
 import 'package:uang_saku/ui/custom_widgets/item_rincian.dart';
-import 'package:uang_saku/ui/custom_widgets/detail_rincian_biaya.dart';
-import 'package:uang_saku/ui/main_page.dart';
 import 'package:uang_saku/ui/bottom_navbar.dart';
 import 'package:uang_saku/ui/custom_widgets/form_rincian_biaya.dart';
 import 'package:dotted_border/dotted_border.dart';
 import 'package:intl/intl.dart';
 
-class CreatePengajuan extends StatefulWidget {
-  final String jenisPengajuan;
-  CreatePengajuan({this.jenisPengajuan});
+class UpdatePengajuanKasbon extends StatefulWidget {
+  final pengajuan;
+  UpdatePengajuanKasbon({this.pengajuan});
   @override
-  _CreatePengajuanState createState() => _CreatePengajuanState();
+  _UpdatePengajuanKasbonState createState() => _UpdatePengajuanKasbonState();
 }
 
-class _CreatePengajuanState extends State<CreatePengajuan> {
-  var _colorTheme;
+class _UpdatePengajuanKasbonState extends State<UpdatePengajuanKasbon> {
+  var _colorTheme = Color(0xFF358BFC);
   List<String> _listJenisPencairan = ["Cash", "Transfer"];
   List<String> pelaksana = [];
   List<TextEditingController> _listPelaksanaCtrl = [];
@@ -49,20 +48,28 @@ class _CreatePengajuanState extends State<CreatePengajuan> {
   DateTime _tglMulai;
   DateTime _tglSelesai;
   final _formKey = GlobalKey<FormState>();
+  List deletedRincianBiaya = [];
 
   @override
   void initState() {
-    BlocProvider.of<CreatePengajuanBloc>(context).add(InitEvent());
+    BlocProvider.of<KasbonBloc>(context).add(GetFormAttributeKasbon());
     BlocProvider.of<CreateRincianBiayaBloc>(context).add(EmptyEvent());
 
-    if (widget.jenisPengajuan == "Reimburse")
-      _colorTheme = Color(0xFF3AE3CE);
-    else if (widget.jenisPengajuan == "Kasbon")
-      _colorTheme = Color(0xFF358BFC);
-    else
-      _colorTheme = Color(0xFF2B4D66);
+    _catatanCtrl.text = widget.pengajuan.catatanPengajuan;
+    _listRincianBiaya = widget.pengajuan.rincianPengajuan;
+    _totalBiaya = widget.pengajuan.nominalPencairan;
+    _colorTheme = Color(0xFF2B4D66);
 
-    _listPelaksanaCtrl.add(TextEditingController());
+    _tujuanCtrl.text = widget.pengajuan.tujuan;
+    _tglMulai = widget.pengajuan.tglMulai;
+    _tanggalMulaiCtrl.text = DateFormat.yMMMMd('en_US').format(_tglMulai);
+    _tglSelesai = widget.pengajuan.tglSelesai;
+    _tanggalSelesaiCtrl.text = DateFormat.yMMMMd('en_US').format(_tglSelesai);
+    pelaksana = widget.pengajuan.pelaksana;
+
+    pelaksana.forEach((element) {
+      _listPelaksanaCtrl.add(TextEditingController(text: element));
+    });
     _listPelakasana = _generateListFormPelaksana();
     super.initState();
   }
@@ -77,7 +84,7 @@ class _CreatePengajuanState extends State<CreatePengajuan> {
                   bottomLeft: Radius.circular(15),
                   bottomRight: Radius.circular(15))),
           backgroundColor: _colorTheme,
-          title: Text("Form Pengajuan " + widget.jenisPengajuan,
+          title: Text("Form Pengajuan Kasbon",
               style: GoogleFonts.montserrat(
                   fontSize: 18, fontWeight: FontWeight.w600)),
           actions: [
@@ -85,18 +92,18 @@ class _CreatePengajuanState extends State<CreatePengajuan> {
                 icon: Icon(Icons.cancel_outlined),
                 onPressed: () {
                   Navigator.pop(context);
+                  Navigator.pop(context);
                 })
           ],
         ),
         body: SingleChildScrollView(
             child: Form(
           key: _formKey,
-          child: BlocConsumer<CreatePengajuanBloc, BaseState>(
+          child: BlocConsumer<KasbonBloc, BaseState>(
               listener: (context, state) {
             if (state is SuccesState) {
-              Scaffold.of(context).showSnackBar(SnackBar(
-                  content:
-                      Text(widget.jenisPengajuan + " berhasil dikirimkan")));
+              Scaffold.of(context).showSnackBar(
+                  SnackBar(content: Text("Kasbon berhasil dikirimkan")));
               Timer(
                   Duration(seconds: 2),
                   () => Navigator.pushReplacement(context,
@@ -113,7 +120,30 @@ class _CreatePengajuanState extends State<CreatePengajuan> {
                       Navigator.of(context, rootNavigator: true).pop(context));
             }
           }, builder: (context, state) {
-            if (state is CreatePengajuanState) {
+            if (state is FormAttributeStateKasbon) {
+              _selectedKategoriPengajuan = state.listKategori.singleWhere(
+                  (element) => element.idKategoriPengajuan ==
+                          widget.pengajuan.idKategoriPengajuan
+                      ? true
+                      : false);
+              _selectedPerusahaan = state.listPerusahaan.singleWhere(
+                  (element) =>
+                      element.idPerusahaan == widget.pengajuan.idPerusahaan
+                          ? true
+                          : false);
+              _selectedDepartment = state.listDepartment.singleWhere(
+                  (element) =>
+                      element.idDepartment == widget.pengajuan.idDepartment
+                          ? true
+                          : false);
+              _selectedCabang = state.listCabang.singleWhere((element) =>
+                  element.idCabang == widget.pengajuan.idCabang ? true : false);
+              print(widget.pengajuan.jenisPencairan);
+              _selectedJenisPencairan = _listJenisPencairan.singleWhere(
+                  (element) => element.toUpperCase() ==
+                          widget.pengajuan.jenisPencairan.toUpperCase()
+                      ? true
+                      : false);
               return Column(
                 children: [
                   Container(
@@ -434,16 +464,20 @@ class _CreatePengajuanState extends State<CreatePengajuan> {
                         _totalBiaya += stateRincian.rincianBiaya.total;
                       }
                     } else if (stateRincian is EmptyState) {
-                      _listRincianBiaya.clear();
-                      _totalBiaya = 0;
+                      // _listRincianBiaya.clear();
+                      // _totalBiaya = 0;
                     } else if (stateRincian is DeleteRincianBiayaState) {
                       _totalBiaya -= stateRincian.rincianBiaya.total;
+                      stateRincian.rincianBiaya.action = "delete";
+                      stateRincian.rincianBiaya.total = 0;
+                      deletedRincianBiaya.add(stateRincian.rincianBiaya);
+
                       _listRincianBiaya.remove(stateRincian.rincianBiaya);
                     }
                     _listRincianBiaya.forEach((element) {
                       _listItemRincian.add(ItemRincian(
-                        jenisPengajuan: widget.jenisPengajuan,
-                        rincianBiaya: element,
+                        jenisPengajuan: "Kasbon",
+                        rincianBiaya: element, //isGet: true,
                       ));
                     });
                     return Column(
@@ -499,8 +533,7 @@ class _CreatePengajuanState extends State<CreatePengajuan> {
                                                                       .circular(
                                                                           10)),
                                                       child: FormRincianBiaya(
-                                                        jenisPengajuan: widget
-                                                            .jenisPengajuan,
+                                                        jenisPengajuan: "Kasbon",
                                                       ));
                                                 });
                                           },
@@ -594,66 +627,29 @@ class _CreatePengajuanState extends State<CreatePengajuan> {
                     );
                   }),
                   Container(
-                    decoration: BoxDecoration(
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.grey.withOpacity(0.3),
-                          spreadRadius: 1,
-                          blurRadius: 2,
-                          offset: Offset(0, 2),
-                        ),
-                      ],
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                    margin: EdgeInsets.fromLTRB(10, 0, 10, 20),
-                    height: 45,
-                    child: Builder(
-                      builder: (context) => RaisedButton(
-                        shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(10)),
-                        padding: EdgeInsets.all(0),
-                        elevation: 0,
-                        onPressed: () {
-                          if (_formKey.currentState.validate()) {
-                            if (_listRincianBiaya.isEmpty) {
-                              Scaffold.of(context).showSnackBar(SnackBar(
-                                  content: Text(
-                                      "Harap lengkapi Rincian Biaya " +
-                                          widget.jenisPengajuan)));
-                            } else {
-                              _listPelaksanaCtrl.forEach((element) {
-                                pelaksana.add(element.text);
-                              });
-                              if (widget.jenisPengajuan == "Reimburse")
-                                _postReimburse();
-                              else
-                                _postKasbon();
-                              print("bisa");
-                            }
-                          } else {
-                            Scaffold.of(context).showSnackBar(SnackBar(
-                                content: Text(
-                                    "Harap lengkapi form yang masih kosong")));
-                          }
-                        },
-                        child: Container(
-                          child: Ink(
-                            decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(10),
-                                color: _colorTheme),
-                            child: Container(
-                              alignment: Alignment.center,
-                              child: Text("Kirim " + widget.jenisPengajuan,
-                                  style: GoogleFonts.montserrat(
-                                      color: Colors.white,
-                                      fontSize: 22,
-                                      fontWeight: FontWeight.w500)),
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
+                      padding: EdgeInsets.fromLTRB(15, 0, 15, 5),
+                      child: Container(
+                          height: 42.0,
+                          child: RaisedButton(
+                              elevation: 2,
+                              onPressed: () {
+                                _putKasbon();
+                              },
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(10)),
+                              padding: EdgeInsets.all(0.0),
+                              child: Ink(
+                                  decoration: BoxDecoration(
+                                      color: _colorTheme,
+                                      borderRadius: BorderRadius.circular(10)),
+                                  child: Container(
+                                      alignment: Alignment.center,
+                                      child: Text(
+                                          "Update Kasbon",
+                                          style: GoogleFonts.montserrat(
+                                              fontWeight: FontWeight.w500,
+                                              fontSize: 20,
+                                              color: Colors.white)))))))
                 ],
               );
             } else {
@@ -696,27 +692,10 @@ class _CreatePengajuanState extends State<CreatePengajuan> {
     }
   }
 
-  _postReimburse() {
-    Reimburse reimburse = Reimburse(
-        tujuan: _tujuanCtrl.text,
-        idKategoriPengajuan: _selectedKategoriPengajuan.idKategoriPengajuan,
-        tglMulai: DateFormat.yMMMMd('en_US').parse(_tanggalMulaiCtrl.text),
-        tglSelesai: DateFormat.yMMMMd('en_US').parse(_tanggalSelesaiCtrl.text),
-        idPerusahaan: _selectedPerusahaan.idPerusahaan,
-        idDepartment: _selectedDepartment.idDepartment,
-        idCabang: _selectedCabang.idCabang,
-        jenisPencairan: _selectedJenisPencairan.toLowerCase(),
-        pelaksana: pelaksana,
-        catatan: _catatanCtrl.text,
-        rincianRealisasi: _listRincianBiaya.cast());
-    print(reimburse.toJson());
-    BlocProvider.of<CreatePengajuanBloc>(context)
-        .add(CreateReimburseEvent(reimburse: reimburse));
-  }
-
-  _postKasbon() {
+  _putKasbon() {
     Kasbon kasbon = Kasbon(
         tujuan: _tujuanCtrl.text,
+        idPengajuanKasbon: widget.pengajuan.idPengajuanKasbon,
         idKategoriPengajuan: _selectedKategoriPengajuan.idKategoriPengajuan,
         tglMulai: DateFormat.yMMMMd('en_US').parse(_tanggalMulaiCtrl.text),
         tglSelesai: DateFormat.yMMMMd('en_US').parse(_tanggalSelesaiCtrl.text),
@@ -727,9 +706,11 @@ class _CreatePengajuanState extends State<CreatePengajuan> {
         pelaksana: pelaksana,
         catatanPengajuan: _catatanCtrl.text,
         rincianPengajuan: _listRincianBiaya.cast());
+    kasbon.rincianPengajuan.addAll(deletedRincianBiaya.cast());
     print(kasbon.toJson());
-    BlocProvider.of<CreatePengajuanBloc>(context)
-        .add(CreateKasbonEvent(kasbon: kasbon));
+    print("oi");
+    BlocProvider.of<KasbonBloc>(context)
+        .add(UpdateKasbonEvent(kasbon: kasbon, id: kasbon.idPengajuanKasbon));
   }
 
   List<Widget> _generateListFormPelaksana() {

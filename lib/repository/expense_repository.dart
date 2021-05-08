@@ -21,6 +21,10 @@ class ExpenseRepository implements ExpenseDataSource {
     return await remoteDataSource.login(email, password);
   }
 
+  Future<SingleResponse<String>> postFcmToken(String token) async {
+    return await remoteDataSource.postFcmToken(token);
+  }
+
   @override
   Future<SingleResponse<String>> forgetPassword(String email) async {
     return await remoteDataSource.forgetPassword(email);
@@ -139,6 +143,18 @@ class ExpenseRepository implements ExpenseDataSource {
   Future<SingleResponse> postKasbon(Kasbon kasbon) async {
     remoteDataSource.getToken();
     return await remoteDataSource.postKasbon(kasbon);
+  }
+
+  @override
+  Future<SingleResponse> putReimburse(Reimburse reimburse, int id) async {
+    remoteDataSource.getToken();
+    return await remoteDataSource.putReimburse(reimburse, id);
+  }
+
+  @override
+  Future<SingleResponse> putKasbon(Kasbon kasbon, int id) async {
+    remoteDataSource.getToken();
+    return await remoteDataSource.putKasbon(kasbon, id);
   }
 
   @override

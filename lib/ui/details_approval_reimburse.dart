@@ -32,6 +32,9 @@ class _DetailsApprovalReimburseState extends State<DetailsApprovalReimburse> {
     super.initState();
   }
 
+  TextEditingController _catatanCtrl = TextEditingController();
+  final _formKey = GlobalKey<FormState>();
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -49,7 +52,6 @@ class _DetailsApprovalReimburseState extends State<DetailsApprovalReimburse> {
             IconButton(
                 icon: Icon(Icons.cancel_outlined),
                 onPressed: () {
-                  BlocProvider.of<ReimburseBloc>(context).add(InitEvent());
                   Navigator.pop(context);
                 })
           ],
@@ -71,10 +73,8 @@ class _DetailsApprovalReimburseState extends State<DetailsApprovalReimburse> {
             } else if (state is ErrorState) {
               Scaffold.of(context)
                   .showSnackBar(SnackBar(content: Text(state.message)));
-              Timer(
-                  Duration(seconds: 2),
-                  () =>
-                      Navigator.of(context, rootNavigator: true).pop(context));
+              Timer(Duration(seconds: 2),
+                  () => Navigator.of(context).pop(context));
             }
           },
           builder: (context, state) {
@@ -419,13 +419,108 @@ class _DetailsApprovalReimburseState extends State<DetailsApprovalReimburse> {
                               child: RaisedButton(
                                 elevation: 2,
                                 onPressed: () {
-                                  BlocProvider.of<ReimburseBloc>(context).add(
-                                      PostApprovalReimburseEvent(
-                                          idRoleApproval: widget.idRoleApproval,
-                                          bodyApproval: BodyPostApproval(
-                                              idPengajuanReimburse: widget.id,
-                                              catatan: "nocat",
-                                              status: "tolak")));
+                                  showDialog(
+                                      context: context,
+                                      builder: (BuildContext context) {
+                                        return Dialog(
+                                            shape: RoundedRectangleBorder(
+                                                borderRadius:
+                                                    BorderRadius.circular(10)),
+                                            child: Container(
+                                              padding: EdgeInsets.all(10),
+                                              child: Form(
+                                                key: _formKey,
+                                                child: Wrap(
+                                                  alignment:
+                                                      WrapAlignment.center,
+                                                  children: [
+                                                    Container(
+                                                      margin: EdgeInsets.only(
+                                                          top: 7, bottom: 7),
+                                                      child: TextFormField(
+                                                          maxLines: 3,
+                                                          controller:
+                                                              _catatanCtrl,
+                                                          validator: (value) {
+                                                            if (value == "")
+                                                              return "Catatan Wajib diisi";
+                                                            else
+                                                              return null;
+                                                          },
+                                                          decoration:
+                                                              InputDecoration(
+                                                            labelText:
+                                                                "Catatan (Wajib)",
+                                                            isDense: true,
+                                                            border: OutlineInputBorder(
+                                                                borderRadius:
+                                                                    BorderRadius
+                                                                        .circular(
+                                                                            10)),
+                                                          )),
+                                                    ),
+                                                    Container(
+                                                      height: 40.0,
+                                                      child: RaisedButton(
+                                                        elevation: 2,
+                                                        onPressed: () {
+                                                          if (_formKey
+                                                              .currentState
+                                                              .validate()) {
+                                                            BlocProvider.of<ReimburseBloc>(context).add(PostApprovalReimburseEvent(
+                                                                idRoleApproval:
+                                                                    widget
+                                                                        .idRoleApproval,
+                                                                bodyApproval: BodyPostApproval(
+                                                                    idPengajuanReimburse:
+                                                                        widget
+                                                                            .id,
+                                                                    catatan:
+                                                                        _catatanCtrl
+                                                                            .text,
+                                                                    status:
+                                                                        "tolak")));
+                                                            Navigator.pop(
+                                                                context);
+                                                          }
+                                                        },
+                                                        shape: RoundedRectangleBorder(
+                                                            borderRadius:
+                                                                BorderRadius
+                                                                    .circular(
+                                                                        10)),
+                                                        padding:
+                                                            EdgeInsets.all(0.0),
+                                                        child: Ink(
+                                                          decoration: BoxDecoration(
+                                                              color: Color(
+                                                                  0xfff86565),
+                                                              borderRadius:
+                                                                  BorderRadius
+                                                                      .circular(
+                                                                          10)),
+                                                          child: Container(
+                                                            alignment: Alignment
+                                                                .center,
+                                                            child: Text(
+                                                              "Tolak",
+                                                              style: GoogleFonts.montserrat(
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .w500,
+                                                                  fontSize: 18,
+                                                                  color: Colors
+                                                                      .white),
+                                                            ),
+                                                          ),
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  ],
+                                                ),
+                                              ),
+                                            ));
+                                      });
                                 },
                                 shape: RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(10)),
@@ -458,13 +553,98 @@ class _DetailsApprovalReimburseState extends State<DetailsApprovalReimburse> {
                               child: RaisedButton(
                                 elevation: 2,
                                 onPressed: () {
-                                  BlocProvider.of<ReimburseBloc>(context).add(
-                                      PostApprovalReimburseEvent(
-                                          idRoleApproval: widget.idRoleApproval,
-                                          bodyApproval: BodyPostApproval(
-                                              idPengajuanReimburse: widget.id,
-                                              catatan: "nocat",
-                                              status: "setuju")));
+                                  showDialog(
+                                      context: context,
+                                      builder: (BuildContext context) {
+                                        return Dialog(
+                                            shape: RoundedRectangleBorder(
+                                                borderRadius:
+                                                    BorderRadius.circular(10)),
+                                            child: Container(
+                                              padding: EdgeInsets.all(10),
+                                              child: Wrap(
+                                                alignment: WrapAlignment.center,
+                                                children: [
+                                                  Container(
+                                                    margin: EdgeInsets.only(
+                                                        top: 7, bottom: 7),
+                                                    child: TextField(
+                                                        maxLines: 3,
+                                                        controller:
+                                                            _catatanCtrl,
+                                                        decoration:
+                                                            InputDecoration(
+                                                          labelText:
+                                                              "Catatan (Optional)",
+                                                          isDense: true,
+                                                          border: OutlineInputBorder(
+                                                              borderRadius:
+                                                                  BorderRadius
+                                                                      .circular(
+                                                                          10)),
+                                                        )),
+                                                  ),
+                                                  Container(
+                                                    height: 40.0,
+                                                    child: RaisedButton(
+                                                      elevation: 2,
+                                                      onPressed: () {
+                                                        BlocProvider.of<ReimburseBloc>(
+                                                                context)
+                                                            .add(PostApprovalReimburseEvent(
+                                                                idRoleApproval:
+                                                                    widget
+                                                                        .idRoleApproval,
+                                                                bodyApproval: BodyPostApproval(
+                                                                    idPengajuanReimburse:
+                                                                        widget
+                                                                            .id,
+                                                                    catatan:
+                                                                        _catatanCtrl
+                                                                            .text,
+                                                                    status:
+                                                                        "setuju")));
+                                                        Navigator.pop(context);
+                                                      },
+                                                      shape:
+                                                          RoundedRectangleBorder(
+                                                              borderRadius:
+                                                                  BorderRadius
+                                                                      .circular(
+                                                                          10)),
+                                                      padding:
+                                                          EdgeInsets.all(0.0),
+                                                      child: Ink(
+                                                        decoration: BoxDecoration(
+                                                            color: Color(
+                                                                0xFF2B4D66),
+                                                            borderRadius:
+                                                                BorderRadius
+                                                                    .circular(
+                                                                        10)),
+                                                        child: Container(
+                                                          alignment:
+                                                              Alignment.center,
+                                                          child: Text(
+                                                            "Setujui",
+                                                            style: GoogleFonts
+                                                                .montserrat(
+                                                                    fontWeight:
+                                                                        FontWeight
+                                                                            .w500,
+                                                                    fontSize:
+                                                                        18,
+                                                                    color: Colors
+                                                                        .white),
+                                                          ),
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                            ));
+                                      });
                                 },
                                 shape: RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(10)),

@@ -5,6 +5,7 @@ import 'kategori_biaya.dart';
 class RincianPengajuan {
   RincianPengajuan({
     this.idRincianPengajuanKasbon,
+    this.action,
     this.idPengajuanKasbon,
     this.idKategoriBiaya,
     this.namaItem,
@@ -17,6 +18,7 @@ class RincianPengajuan {
   });
 
   int idRincianPengajuanKasbon;
+  String action;
   int idPengajuanKasbon;
   int idKategoriBiaya;
   String namaItem;
@@ -44,6 +46,7 @@ class RincianPengajuan {
 
   Map<String, dynamic> toJson() => {
         "id_rincian_pengajuan_kasbon": idRincianPengajuanKasbon,
+        "action": action ?? "",
         "id_pengajuan_kasbon": idPengajuanKasbon,
         "id_kategori_biaya": idKategoriBiaya,
         "nama_item": namaItem,

@@ -5,6 +5,7 @@ import 'package:uang_saku/model/role_approval.dart';
 
 abstract class ExpenseDataSource {
   Future<SingleResponse<Token>> login(String email, String password);
+  Future<SingleResponse<String>> postFcmToken(String token);
   Future<SingleResponse<String>> forgetPassword(String email);
   Future<SingleResponse<String>> verifyOtp(String email, String otp);
   Future<SingleResponse<String>> resetPassword(
@@ -27,6 +28,8 @@ abstract class ExpenseDataSource {
   Future<MultiResponse<KategoriBiaya>> getKategoriBiaya();
   Future<SingleResponse> postReimburse(Reimburse reimburse);
   Future<SingleResponse> postKasbon(Kasbon kasbon);
+  Future<SingleResponse> putReimburse(Reimburse reimburse, int id);
+  Future<SingleResponse> putKasbon(Kasbon kasbon, int id);
   Future<MultiResponse<RoleApproval>> getRoleApproval();
   Future<MultiResponse<Reimburse>> getApprovalReimburse(
       int idRoleApproval, BodyGetApproval bodyApproval);

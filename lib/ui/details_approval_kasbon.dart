@@ -29,6 +29,9 @@ class _DetailsApprovalKasbonState extends State<DetailsApprovalKasbon> {
     super.initState();
   }
 
+  TextEditingController _catatanCtrl = TextEditingController();
+  final _formKey = GlobalKey<FormState>();
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -408,14 +411,110 @@ class _DetailsApprovalKasbonState extends State<DetailsApprovalKasbon> {
                               child: RaisedButton(
                                 elevation: 2,
                                 onPressed: () {
-                                  BlocProvider.of<KasbonBloc>(context).add(
-                                      PostApprovalKasbonEvent(
-                                          idRoleApproval: widget.idRoleApproval,
-                                          bodyApproval: BodyPostApproval(
-                                              idPengajuanKasbon: widget.id,
-                                              catatan: "nocat",
-                                              status: "tolak",
-                                              tipe: "pengajuan")));
+                                  showDialog(
+                                      context: context,
+                                      builder: (BuildContext context) {
+                                        return Dialog(
+                                            shape: RoundedRectangleBorder(
+                                                borderRadius:
+                                                    BorderRadius.circular(10)),
+                                            child: Container(
+                                              padding: EdgeInsets.all(10),
+                                              child: Form(
+                                                key: _formKey,
+                                                child: Wrap(
+                                                  alignment:
+                                                      WrapAlignment.center,
+                                                  children: [
+                                                    Container(
+                                                      margin: EdgeInsets.only(
+                                                          top: 7, bottom: 7),
+                                                      child: TextFormField(
+                                                          maxLines: 3,
+                                                          controller:
+                                                              _catatanCtrl,
+                                                          validator: (value) {
+                                                            if (value == "")
+                                                              return "Catatan Wajib diisi";
+                                                            else
+                                                              return null;
+                                                          },
+                                                          decoration:
+                                                              InputDecoration(
+                                                            labelText:
+                                                                "Catatan (Wajib)",
+                                                            isDense: true,
+                                                            border: OutlineInputBorder(
+                                                                borderRadius:
+                                                                    BorderRadius
+                                                                        .circular(
+                                                                            10)),
+                                                          )),
+                                                    ),
+                                                    Container(
+                                                      height: 40.0,
+                                                      child: RaisedButton(
+                                                        elevation: 2,
+                                                        onPressed: () {
+                                                          if (_formKey
+                                                              .currentState
+                                                              .validate()) {
+                                                            BlocProvider.of<KasbonBloc>(context).add(PostApprovalKasbonEvent(
+                                                                idRoleApproval:
+                                                                    widget
+                                                                        .idRoleApproval,
+                                                                bodyApproval: BodyPostApproval(
+                                                                    idPengajuanKasbon:
+                                                                        widget
+                                                                            .id,
+                                                                    catatan:
+                                                                        _catatanCtrl
+                                                                            .text,
+                                                                    status:
+                                                                        "tolak",
+                                                                    tipe:
+                                                                        "pengajuan")));
+                                                            Navigator.pop(
+                                                                context);
+                                                          }
+                                                        },
+                                                        shape: RoundedRectangleBorder(
+                                                            borderRadius:
+                                                                BorderRadius
+                                                                    .circular(
+                                                                        10)),
+                                                        padding:
+                                                            EdgeInsets.all(0.0),
+                                                        child: Ink(
+                                                          decoration: BoxDecoration(
+                                                              color: Color(
+                                                                  0xfff86565),
+                                                              borderRadius:
+                                                                  BorderRadius
+                                                                      .circular(
+                                                                          10)),
+                                                          child: Container(
+                                                            alignment: Alignment
+                                                                .center,
+                                                            child: Text(
+                                                              "Tolak",
+                                                              style: GoogleFonts.montserrat(
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .w500,
+                                                                  fontSize: 18,
+                                                                  color: Colors
+                                                                      .white),
+                                                            ),
+                                                          ),
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  ],
+                                                ),
+                                              ),
+                                            ));
+                                      });
                                 },
                                 shape: RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(10)),
@@ -448,14 +547,102 @@ class _DetailsApprovalKasbonState extends State<DetailsApprovalKasbon> {
                               child: RaisedButton(
                                 elevation: 2,
                                 onPressed: () {
-                                  BlocProvider.of<KasbonBloc>(context).add(
-                                      PostApprovalKasbonEvent(
-                                          idRoleApproval: widget.idRoleApproval,
-                                          bodyApproval: BodyPostApproval(
-                                              idPengajuanKasbon: widget.id,
-                                              catatan: "nocat",
-                                              status: "setuju",
-                                              tipe: "pengajuan")));
+                                  showDialog(
+                                      context: context,
+                                      builder: (BuildContext context) {
+                                        return Dialog(
+                                            shape: RoundedRectangleBorder(
+                                                borderRadius:
+                                                    BorderRadius.circular(10)),
+                                            child: Container(
+                                              padding: EdgeInsets.all(10),
+                                              child: Wrap(
+                                                alignment: WrapAlignment.center,
+                                                children: [
+                                                  Container(
+                                                    margin: EdgeInsets.only(
+                                                        top: 7, bottom: 7),
+                                                    child: TextField(
+                                                        maxLines: 3,
+                                                        controller:
+                                                            _catatanCtrl,
+                                                        decoration:
+                                                            InputDecoration(
+                                                          labelText:
+                                                              "Catatan (Optional)",
+                                                          isDense: true,
+                                                          border: OutlineInputBorder(
+                                                              borderRadius:
+                                                                  BorderRadius
+                                                                      .circular(
+                                                                          10)),
+                                                        )),
+                                                  ),
+                                                  Container(
+                                                    height: 40.0,
+                                                    child: RaisedButton(
+                                                      elevation: 2,
+                                                      onPressed: () {
+                                                        BlocProvider
+                                                                .of<
+                                                                        KasbonBloc>(
+                                                                    context)
+                                                            .add(PostApprovalKasbonEvent(
+                                                                idRoleApproval:
+                                                                    widget
+                                                                        .idRoleApproval,
+                                                                bodyApproval: BodyPostApproval(
+                                                                    idPengajuanKasbon:
+                                                                        widget
+                                                                            .id,
+                                                                    catatan:
+                                                                        _catatanCtrl
+                                                                            .text,
+                                                                    status:
+                                                                        "setuju",
+                                                                    tipe:
+                                                                        "pengajuan")));
+                                                        Navigator.pop(context);
+                                                      },
+                                                      shape:
+                                                          RoundedRectangleBorder(
+                                                              borderRadius:
+                                                                  BorderRadius
+                                                                      .circular(
+                                                                          10)),
+                                                      padding:
+                                                          EdgeInsets.all(0.0),
+                                                      child: Ink(
+                                                        decoration: BoxDecoration(
+                                                            color: Color(
+                                                                0xFF2B4D66),
+                                                            borderRadius:
+                                                                BorderRadius
+                                                                    .circular(
+                                                                        10)),
+                                                        child: Container(
+                                                          alignment:
+                                                              Alignment.center,
+                                                          child: Text(
+                                                            "Setujui",
+                                                            style: GoogleFonts
+                                                                .montserrat(
+                                                                    fontWeight:
+                                                                        FontWeight
+                                                                            .w500,
+                                                                    fontSize:
+                                                                        18,
+                                                                    color: Colors
+                                                                        .white),
+                                                          ),
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                            ));
+                                      });
                                 },
                                 shape: RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(10)),
@@ -480,101 +667,6 @@ class _DetailsApprovalKasbonState extends State<DetailsApprovalKasbon> {
                       ],
                     ),
                   ),
-                  // Row(
-                  //   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  //   children: <Widget>[
-                  //     RaisedButton(
-                  //       onPressed: () {
-                  //         showDialog(
-                  //             context: context,
-                  //             builder: (BuildContext context) {
-                  //               return AlertDialog(
-                  //                 title: Text("Tinggalkan Catatan"),
-                  //                 content: TextField(
-                  //                   maxLines: 3,
-                  //                   decoration: const InputDecoration(
-                  //                     hintStyle:
-                  //                         TextStyle(color: Colors.black45),
-                  //                     errorStyle:
-                  //                         TextStyle(color: Colors.redAccent),
-                  //                     border: OutlineInputBorder(),
-                  //                     labelText: 'Catatan',
-                  //                   ),
-                  //                   onTap: () {},
-                  //                   //controller: tanggalSelesai,
-                  //                 ),
-                  //                 actions: <Widget>[
-                  //                   FlatButton(
-                  //                     child: Text("Cancel"),
-                  //                     onPressed: () {
-                  //                       Navigator.pop(context);
-                  //                     },
-                  //                   ),
-                  //                   FlatButton(
-                  //                     child: Text("Upload"),
-                  //                     onPressed: () {
-                  //                       showDialog(
-                  //                           context: context,
-                  //                           builder: (BuildContext context) {
-                  //                             return AlertDialog(
-                  //                               content: Text(
-                  //                                   "Apakah anda yakin ingin membatalkan pengajaun ini?"),
-                  //                               actions: <Widget>[
-                  //                                 FlatButton(
-                  //                                   child: Text("Tidak"),
-                  //                                   onPressed: () {
-                  //                                     Navigator.pop(context);
-                  //                                   },
-                  //                                 ),
-                  //                                 FlatButton(
-                  //                                   child: Text("Ya"),
-                  //                                   onPressed: () {
-                  //                                     // (state
-                  //                                     //     is CancelKasbonState);
-                  //                                     // context
-                  //                                     //     .read<KasbonBloc>()
-                  //                                     //     .add(
-                  //                                     //         CancelKasbonEvent());
-                  //                                     // return Navigator.push(
-                  //                                     //     context,
-                  //                                     //     MaterialPageRoute(
-                  //                                     //         builder:
-                  //                                     //             (context) {
-                  //                                     //   return DetailsPengajuan();
-                  //                                     // }));
-                  //                                   },
-                  //                                 )
-                  //                               ],
-                  //                             );
-                  //                           });
-                  //                     },
-                  //                   )
-                  //                 ],
-                  //               );
-                  //             });
-                  //       },
-                  //       child: Text(
-                  //         "Batal",
-                  //         style: GoogleFonts.montserrat(
-                  //             color: Colors.white,
-                  //             fontSize: 20,
-                  //             fontWeight: FontWeight.w600),
-                  //       ),
-                  //       color: Colors.red,
-                  //     ),
-                  //     RaisedButton(
-                  //       onPressed: () {},
-                  //       child: Text(
-                  //         "Update",
-                  //         style: GoogleFonts.montserrat(
-                  //             color: Colors.white,
-                  //             fontSize: 20,
-                  //             fontWeight: FontWeight.w600),
-                  //       ),
-                  //       color: Colors.blue,
-                  //     ),
-                  //   ],
-                  // )
                 ],
               );
             } else {

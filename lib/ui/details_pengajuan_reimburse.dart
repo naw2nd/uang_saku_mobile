@@ -1,4 +1,8 @@
+import 'dart:convert';
+import 'dart:typed_data';
+
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:uang_saku/bloc/bloc.dart';
@@ -6,8 +10,11 @@ import 'package:intl/intl.dart';
 import 'package:uang_saku/bloc/event/reimburse_event.dart';
 import 'package:uang_saku/bloc/reimburse_bloc.dart';
 import 'package:uang_saku/bloc/state/list_reimburse_state.dart';
+import 'package:uang_saku/model/models.dart';
+import 'package:uang_saku/model/reimburse.dart';
 import 'package:uang_saku/ui/custom_widgets/custom_card.dart';
 import 'package:uang_saku/ui/custom_widgets/item_rincian.dart';
+import 'package:uang_saku/ui/update_pengajuan_reimburse.dart';
 
 class DetailsPengajuanReimburse extends StatefulWidget {
   final int id;
@@ -81,8 +88,8 @@ class _DetailsPengajuanReimburseState extends State<DetailsPengajuanReimburse> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
-                                    state.reimburse.approval
-                                        .keterangan[element],
+                                    state
+                                        .reimburse.approval.keterangan[element],
                                     style: GoogleFonts.montserrat(
                                         fontSize: 15,
                                         fontWeight: FontWeight.w600,
@@ -377,122 +384,39 @@ class _DetailsPengajuanReimburseState extends State<DetailsPengajuanReimburse> {
                       ),
                     ),
                   ),
-                  Container(
-                      padding: EdgeInsets.fromLTRB(15, 10, 15, 5),
-                      child: Container(
-                          height: 40.0,
-                          child: RaisedButton(
-                              elevation: 2,
-                              onPressed: () {},
-                              shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(10)),
-                              padding: EdgeInsets.all(0.0),
-                              child: Ink(
-                                  decoration: BoxDecoration(
-                                      color: Color(0xFF3AE3CE),
+                  (state.reimburse.statusPengajuan == 0)
+                      ? Container(
+                          padding: EdgeInsets.fromLTRB(15, 10, 15, 5),
+                          child: Container(
+                              height: 45.0,
+                              child: RaisedButton(
+                                  elevation: 2,
+                                  onPressed: () {
+                                    Navigator.of(context).push(
+                                        MaterialPageRoute(builder: (context) {
+                                      Reimburse reimburse;
+                                      reimburse = convertImage(state.reimburse);
+                                      print(reimburse.toJson());
+                                      return UpdatePengajuanReimburse(
+                                          pengajuan: reimburse);
+                                    }));
+                                  },
+                                  shape: RoundedRectangleBorder(
                                       borderRadius: BorderRadius.circular(10)),
-                                  child: Container(
-                                      alignment: Alignment.center,
-                                      child: Text("Update",
-                                          style: GoogleFonts.montserrat(
-                                              fontWeight: FontWeight.w500,
-                                              fontSize: 18,
-                                              color: Colors.white))))))),
-                  // Row(
-                  //   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  //   children: <Widget>[
-                  //     RaisedButton(
-                  //       onPressed: () {
-                  //         showDialog(
-                  //             context: context,
-                  //             builder: (BuildContext context) {
-                  //               return AlertDialog(
-                  //                 title: Text("Tinggalkan Catatan"),
-                  //                 content: TextField(
-                  //                   maxLines: 3,
-                  //                   decoration: const InputDecoration(
-                  //                     hintStyle:
-                  //                         TextStyle(color: Colors.black45),
-                  //                     errorStyle:
-                  //                         TextStyle(color: Colors.redAccent),
-                  //                     border: OutlineInputBorder(),
-                  //                     labelText: 'Catatan',
-                  //                   ),
-                  //                   onTap: () {},
-                  //                   //controller: tanggalSelesai,
-                  //                 ),
-                  //                 actions: <Widget>[
-                  //                   FlatButton(
-                  //                     child: Text("Cancel"),
-                  //                     onPressed: () {
-                  //                       Navigator.pop(context);
-                  //                     },
-                  //                   ),
-                  //                   FlatButton(
-                  //                     child: Text("Upload"),
-                  //                     onPressed: () {
-                  //                       showDialog(
-                  //                           context: context,
-                  //                           builder: (BuildContext context) {
-                  //                             return AlertDialog(
-                  //                               content: Text(
-                  //                                   "Apakah anda yakin ingin membatalkan pengajaun ini?"),
-                  //                               actions: <Widget>[
-                  //                                 FlatButton(
-                  //                                   child: Text("Tidak"),
-                  //                                   onPressed: () {
-                  //                                     Navigator.pop(context);
-                  //                                   },
-                  //                                 ),
-                  //                                 FlatButton(
-                  //                                   child: Text("Ya"),
-                  //                                   onPressed: () {
-                  //                                     // (state
-                  //                                     //     is CancelReimburseState);
-                  //                                     // context
-                  //                                     //     .read<ReimburseBloc>()
-                  //                                     //     .add(
-                  //                                     //         CancelReimburseEvent());
-                  //                                     // return Navigator.push(
-                  //                                     //     context,
-                  //                                     //     MaterialPageRoute(
-                  //                                     //         builder:
-                  //                                     //             (context) {
-                  //                                     //   return DetailsPengajuan();
-                  //                                     // }));
-                  //                                   },
-                  //                                 )
-                  //                               ],
-                  //                             );
-                  //                           });
-                  //                     },
-                  //                   )
-                  //                 ],
-                  //               );
-                  //             });
-                  //       },
-                  //       child: Text(
-                  //         "Batal",
-                  //         style: GoogleFonts.montserrat(
-                  //             color: Colors.white,
-                  //             fontSize: 20,
-                  //             fontWeight: FontWeight.w600),
-                  //       ),
-                  //       color: Colors.red,
-                  //     ),
-                  //     RaisedButton(
-                  //       onPressed: () {},
-                  //       child: Text(
-                  //         "Update",
-                  //         style: GoogleFonts.montserrat(
-                  //             color: Colors.white,
-                  //             fontSize: 20,
-                  //             fontWeight: FontWeight.w600),
-                  //       ),
-                  //       color: Colors.blue,
-                  //     ),
-                  //   ],
-                  // )
+                                  padding: EdgeInsets.all(0.0),
+                                  child: Ink(
+                                      decoration: BoxDecoration(
+                                          color: Color(0xFF3AE3CE),
+                                          borderRadius:
+                                              BorderRadius.circular(10)),
+                                      child: Container(
+                                          alignment: Alignment.center,
+                                          child: Text("Update",
+                                              style: GoogleFonts.montserrat(
+                                                  fontWeight: FontWeight.w500,
+                                                  fontSize: 22,
+                                                  color: Colors.white)))))))
+                      : Container(height: 20)
                 ],
               );
             } else {
@@ -505,5 +429,25 @@ class _DetailsPengajuanReimburseState extends State<DetailsPengajuanReimburse> {
         ),
       ),
     );
+  }
+
+  Reimburse convertImage(Reimburse reimburse) {
+    for (int i = 0; i < reimburse.rincianRealisasi.length; i++) {
+      for (int j = 0; j < reimburse.rincianRealisasi[i].images.length; j++) {
+        reimburse.rincianRealisasi[i].action = "update";
+        if (reimburse.rincianRealisasi[i].images[j].action == null)
+          imgUrltoFile(reimburse.rincianRealisasi[i].images[j].image).then(
+              (value) => reimburse.rincianRealisasi[i].images[j].image = value);
+        reimburse.rincianRealisasi[i].images[j].action = "update";
+      }
+    }
+    return reimburse;
+  }
+
+  Future<String> imgUrltoFile(String img) async {
+    final ByteData imageData =
+        await NetworkAssetBundle(Uri.parse(img)).load("");
+    final List<int> bytes = imageData.buffer.asUint8List();
+    return base64Encode(bytes);
   }
 }

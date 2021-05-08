@@ -22,15 +22,13 @@ class ListApproval extends StatefulWidget {
 }
 
 class _ListApprovalState extends State<ListApproval> {
-  // @override
-  // void didChangeDependencies() {
-  //   initState();
-  //   // TODO: implement didChangeDependencies
-  //   super.didChangeDependencies();
-  // }
   @override
   void initState() {
-    print("init event");
+    initEvent();
+    super.initState();
+  }
+
+  initEvent() {
     BlocProvider.of<KasbonBloc>(context).add(GetApprovalPengajuanEvent(
         idRoleApproval: widget.idRoleApproval,
         bodyApproval: BodyGetApproval(status: "aktif", tipe: "pengajuan"),
@@ -39,10 +37,7 @@ class _ListApprovalState extends State<ListApproval> {
         idRoleApproval: widget.idRoleApproval,
         bodyApproval: BodyGetApproval(status: "aktif", tipe: "pengajuan"),
         jenisPengajuan: "Reimburse"));
-    super.initState();
   }
-
-  initEvent() {}
 
   @override
   Widget build(BuildContext context) {
@@ -143,7 +138,7 @@ class _ListApprovalState extends State<ListApproval> {
                                             idRoleApproval:
                                                 widget.idRoleApproval);
                                       }))
-                                        ..whenComplete(() => initState());
+                                        ..whenComplete(() => initEvent());
                                     },
                                     child: CustomCard(
                                         container: Container(
@@ -322,7 +317,7 @@ class _ListApprovalState extends State<ListApproval> {
                                               idRoleApproval:
                                                   widget.idRoleApproval);
                                         }))
-                                          ..whenComplete(() => initState());
+                                          ..whenComplete(() => initEvent());
                                       },
                                       child: CustomCard(
                                           container: Container(
@@ -372,11 +367,11 @@ class _ListApprovalState extends State<ListApproval> {
                                                                   )),
                                                               Text(
                                                                 kategori
-                                                                .singleWhere((e) =>
-                                                                    e.idKategoriPengajuan ==
-                                                                    element
-                                                                        .idKategoriPengajuan)
-                                                                .namaKategoriPengajuan,
+                                                                    .singleWhere((e) =>
+                                                                        e.idKategoriPengajuan ==
+                                                                        element
+                                                                            .idKategoriPengajuan)
+                                                                    .namaKategoriPengajuan,
                                                                 overflow:
                                                                     TextOverflow
                                                                         .ellipsis,

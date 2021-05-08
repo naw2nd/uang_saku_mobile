@@ -29,6 +29,13 @@ class CreateRincianBiayaState extends BaseState {
   List<Object> get props => [this.listKategoriBiaya];
 }
 
+class EditRincianBiayaState extends BaseState {
+  final rincianBiaya;
+  EditRincianBiayaState({this.rincianBiaya});
+  @override
+  List<Object> get props => [this.rincianBiaya];
+}
+
 class RincianBiayaState extends BaseState {
   final rincianBiaya;
   RincianBiayaState({

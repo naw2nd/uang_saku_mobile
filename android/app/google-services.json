@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "131384275976",
+    "project_id": "uangsaku-mobile",
+    "storage_bucket": "uangsaku-mobile.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:131384275976:android:bb19af0c0d747e98c24dbd",
+        "android_client_info": {
+          "package_name": "com.example.uang_saku"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "131384275976-me95qhrcrj83l5ee8olt3e01gnanl6h4.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCtgGeLwR5w7AbR9ah2ac2EcxvFoonZ5U0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "131384275976-me95qhrcrj83l5ee8olt3e01gnanl6h4.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

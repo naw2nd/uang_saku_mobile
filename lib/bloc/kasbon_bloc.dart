@@ -18,7 +18,30 @@ class KasbonBloc extends Bloc<BaseEvent, BaseState> {
 
   @override
   Stream<BaseState> mapEventToState(BaseEvent event) async* {
-    if (event is KasbonEvent) {
+    if (event is GetFormAttributeKasbon) {
+      yield (LoadingState());
+      try {
+        final MultiResponse<KategoriPengajuan> responseKategori =
+            await expenseRepository.getKategori();
+
+        final MultiResponse<Perusahaan> responsePerusahaan =
+            await expenseRepository.getPerusahaan();
+
+        final MultiResponse<Department> responseDepartment =
+            await expenseRepository.getDepartment();
+
+        final MultiResponse<Cabang> responseCabang =
+            await expenseRepository.getCabang();
+
+        yield (FormAttributeStateKasbon(
+            listKategori: responseKategori.data,
+            listCabang: responseCabang.data,
+            listDepartment: responseDepartment.data,
+            listPerusahaan: responsePerusahaan.data));
+      } catch (e) {
+        yield ErrorState(message: "No Connection");
+      }
+    } else if (event is GetListKasbonEvent) {
       try {
         final MultiResponse<Kasbon> multiResponse =
             await expenseRepository.getListKasbon();
@@ -34,7 +57,10 @@ class KasbonBloc extends Bloc<BaseEvent, BaseState> {
       try {
         final SingleResponse<Kasbon> singleResponse =
             await expenseRepository.getKasbon(event.id);
+        print("Berhasil get kasbon");
         if (singleResponse.success) {
+          print("Sukses");
+          print(singleResponse.data);
           yield KasbonState(kasbon: singleResponse.data);
         } else {
           yield ErrorState(message: singleResponse.message);
@@ -74,6 +100,21 @@ class KasbonBloc extends Bloc<BaseEvent, BaseState> {
         final SingleResponse singleResponse =
             await expenseRepository.cancelKasbon(event.id, event.catatan);
         yield (SuccesState<String>(data: singleResponse.message));
+      } catch (e) {
+        yield ErrorState(message: "No Connection");
+      }
+    } else if (event is UpdateKasbonEvent) {
+      try {
+        print("benae");
+        final SingleResponse response =
+            await expenseRepository.putKasbon(event.kasbon, event.id);
+        print(response.message);
+        if (response.success) {
+          yield SuccesState(data: response.data);
+          print("berhasil");
+        } else {
+          yield ErrorState(message: response.message);
+        }
       } catch (e) {
         yield ErrorState(message: "No Connection");
       }

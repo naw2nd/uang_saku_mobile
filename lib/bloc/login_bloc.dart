@@ -1,3 +1,4 @@
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:uang_saku/bloc/bloc.dart';
 import 'package:uang_saku/bloc/event/base_event.dart';
 import 'package:uang_saku/bloc/state/base_state.dart';
@@ -18,11 +19,16 @@ class LoginBloc extends Bloc<BaseEvent, BaseState> {
       try {
         final SingleResponse<Token> response =
             await expenseRepository.login(event.email, event.password);
-        print(response);
-          print(response.message.toString());
 
         if (response.success) {
           expenseRepository.setToken(response.data.token);
+
+          await FirebaseMessaging().getToken().then((value) async {
+            final SingleResponse<String> fcmTokenResponse =
+                await expenseRepository.postFcmToken(value);
+            print(fcmTokenResponse.message);
+            print(value);
+          });
           yield SuccesState<Token>(data: response.data);
           // expenseRepository.getToken();
         } else {
