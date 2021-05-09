@@ -14,7 +14,7 @@ class HttpService {
   SharedPreferences sharedPreferences;
   String token = "";
 
-  final baseURL = "http://192.168.1.8:8000/api/v1/";
+  final baseURL = "http://192.168.1.25:8000/api/v1/";
 
   HttpService() {
     _dio = Dio(BaseOptions(baseUrl: baseURL));
@@ -63,8 +63,7 @@ class HttpService {
   Future<SingleResponse<String>> postFcmToken(String token) async {
     String endPoint = "token";
     try {
-      Response response = await _dio
-          .post(endPoint, data: {"token": token});
+      Response response = await _dio.post(endPoint, data: {"token": token});
       SingleResponse<String> singleResponse =
           SingleResponse<String>.fromJson(response.data);
       return singleResponse;

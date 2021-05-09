@@ -2,7 +2,6 @@ import 'package:uang_saku/bloc/bloc.dart';
 import 'package:uang_saku/bloc/event/base_event.dart';
 import 'package:uang_saku/model/kasbon.dart';
 
-
 class GetFormAttributeKasbon extends BaseEvent {
   @override
   List<Object> get props => [];
@@ -36,7 +35,11 @@ class UpdateKasbonEvent extends BaseEvent {
   List<Object> get props => [kasbon];
 }
 
-// class  UpdateKasbonEvent extends BaseEvent {
-//   @override
-//   List<Object> get props => [];
-// }
+class CreateLaporanEvent extends BaseEvent {
+  final Kasbon kasbon;
+  //final String catatan_realisasi;
+  final int id;
+  CreateLaporanEvent({this.kasbon, this.id});
+  @override
+  List<Object> get props => [this.kasbon, this.id];
+}
