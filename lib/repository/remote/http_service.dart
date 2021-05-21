@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:dio/dio.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:uang_saku/model/body_post_approval.dart';
+import 'package:uang_saku/model/laporan.dart';
 import 'package:uang_saku/model/models.dart';
 import 'package:uang_saku/model/multi_response.dart';
 import 'package:uang_saku/model/role_approval.dart';
@@ -14,7 +15,7 @@ class HttpService {
   SharedPreferences sharedPreferences;
   String token = "";
 
-  final baseURL = "http://192.168.1.25:8000/api/v1/";
+  final baseURL = "http://192.168.1.11:8000/api/v1/";
 
   HttpService() {
     _dio = Dio(BaseOptions(baseUrl: baseURL));
@@ -351,6 +352,17 @@ class HttpService {
     }
   }
 
+  Future<SingleResponse> postLaporan(Laporan laporan,  int idPengajuanKasbon) async {
+    String endPoint = "kasbon/"+idPengajuanKasbon.toString()+"/laporan";
+    try {
+      Response response = await _dio.post(endPoint, data: laporan.toJson());
+      return SingleResponse.fromJson(response.data);
+    } on DioError catch (e) {
+      print(e.message);
+      throw Exception(e.message);
+    }
+  }
+
   Future<SingleResponse> putKasbon(Kasbon kasbon, int id) async {
     String endPoint = "kasbon/${id.toString()}";
     try {
@@ -406,6 +418,7 @@ class HttpService {
           response.data["data"].map((x) => Kasbon.fromJson(x)));
       MultiResponse<Kasbon> multiResponse =
           MultiResponse.fromJson(response.data);
+          print(multiResponse.data);
       return multiResponse;
     } on DioError catch (e) {
       print(e);

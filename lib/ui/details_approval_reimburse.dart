@@ -149,7 +149,7 @@ class _DetailsApprovalReimburseState extends State<DetailsApprovalReimburse> {
               List<Widget> listRincian = [];
               state.reimburse.rincianRealisasi.forEach((element) {
                 listRincian.add(ItemRincian(
-                  jenisPengajuan: "Kasbon",
+                  jenisPengajuan: "Reimburse",
                   rincianBiaya: element,
                   isGet: true,
                 ));

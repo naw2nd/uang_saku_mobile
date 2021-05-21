@@ -1,6 +1,5 @@
 import 'package:bloc/bloc.dart';
 import 'package:uang_saku/bloc/event/kasbon_event.dart';
-import 'package:uang_saku/bloc/event/reimburse_event.dart';
 import 'package:uang_saku/bloc/state/base_state.dart';
 import 'package:uang_saku/bloc/state/list_kasbon_state.dart';
 import 'package:uang_saku/model/kasbon.dart';
@@ -12,10 +11,10 @@ import 'event/base_event.dart';
 import 'event/laporan_event.dart';
 import 'state/approval_state.dart';
 
-class KasbonBloc extends Bloc<BaseEvent, BaseState> {
+class LaporanBloc extends Bloc<BaseEvent, BaseState> {
   ExpenseRepository expenseRepository;
 
-  KasbonBloc({this.expenseRepository}) : super(LoadingState());
+  LaporanBloc({this.expenseRepository}) : super(LoadingState());
 
   @override
   Stream<BaseState> mapEventToState(BaseEvent event) async* {
@@ -58,10 +57,7 @@ class KasbonBloc extends Bloc<BaseEvent, BaseState> {
       try {
         final SingleResponse<Kasbon> singleResponse =
             await expenseRepository.getKasbon(event.id);
-        print("Berhasil get kasbon");
         if (singleResponse.success) {
-          print("Sukses");
-          print(singleResponse.data);
           yield KasbonState(kasbon: singleResponse.data);
         } else {
           yield ErrorState(message: singleResponse.message);
@@ -85,7 +81,6 @@ class KasbonBloc extends Bloc<BaseEvent, BaseState> {
       }
     } else if (event is PostApprovalKasbonEvent) {
       try {
-        print("post event approval kasbon");
         final SingleResponse singleResponse = await expenseRepository
             .postApprovalKasbon(event.idRoleApproval, event.bodyApproval);
         yield (SuccesState<String>(data: singleResponse.message));
@@ -106,18 +101,6 @@ class KasbonBloc extends Bloc<BaseEvent, BaseState> {
             await expenseRepository.putKasbon(event.kasbon, event.id);
         if (response.success) {
           yield SuccesState(data: response.data);
-        } else {
-          yield ErrorState(message: response.message);
-        }
-      } catch (e) {
-        yield ErrorState(message: "No Connection");
-      }
-    } else if (event is CreateLaporanEvent) {
-      try {
-        final SingleResponse response = await expenseRepository.postLaporan(
-            event.laporan, event.idPengajuanKasbon);
-        if (response.success) {
-          yield SuccesState<String>(data: response.message);
         } else {
           yield ErrorState(message: response.message);
         }

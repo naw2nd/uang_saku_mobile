@@ -16,7 +16,8 @@ import 'bottom_navbar.dart';
 class DetailsApprovalKasbon extends StatefulWidget {
   final int id;
   final int idRoleApproval;
-  DetailsApprovalKasbon({this.id, this.idRoleApproval});
+  final String jenisPengajuan;
+  DetailsApprovalKasbon({this.id, this.idRoleApproval, this.jenisPengajuan});
 
   @override
   _DetailsApprovalKasbonState createState() => _DetailsApprovalKasbonState();
@@ -42,7 +43,7 @@ class _DetailsApprovalKasbonState extends State<DetailsApprovalKasbon> {
                   bottomLeft: Radius.circular(15),
                   bottomRight: Radius.circular(15))),
           backgroundColor: Color(0xFF2B4D66),
-          title: Text("Detail Pengajuan Kasbon",
+          title: Text("Detail Pengajuan " + widget.jenisPengajuan,
               style: GoogleFonts.montserrat(
                   fontSize: 18, fontWeight: FontWeight.w600)),
           actions: [
@@ -144,10 +145,18 @@ class _DetailsApprovalKasbonState extends State<DetailsApprovalKasbon> {
                       ],
                     )));
               });
-              List<Widget> listRincian = [];
+              List<Widget> listRincianPengajuan = [];
               state.kasbon.rincianPengajuan.forEach((element) {
-                listRincian.add(ItemRincian(
+                listRincianPengajuan.add(ItemRincian(
                   jenisPengajuan: "Kasbon",
+                  rincianBiaya: element,
+                  isGet: true,
+                ));
+              });
+              List<Widget> listRincianRealisasi = [];
+              state.kasbon.rincianRealisasi.forEach((element) {
+                listRincianRealisasi.add(ItemRincian(
+                  jenisPengajuan: "Laporan",
                   rincianBiaya: element,
                   isGet: true,
                 ));
@@ -359,7 +368,7 @@ class _DetailsApprovalKasbonState extends State<DetailsApprovalKasbon> {
                                 ]),
                             Container(
                                 padding: EdgeInsets.only(top: 5, bottom: 10),
-                                child: Column(children: listRincian)),
+                                child: Column(children: listRincianPengajuan)),
                             Row(
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceBetween,
@@ -399,6 +408,72 @@ class _DetailsApprovalKasbonState extends State<DetailsApprovalKasbon> {
                       ),
                     ),
                   ),
+                  if (widget.jenisPengajuan == "Laporan")
+                    Container(
+                      padding: EdgeInsets.fromLTRB(15, 15, 15, 0),
+                      child: CustomCard(
+                        container: Container(
+                          padding: EdgeInsets.symmetric(vertical: 5),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Text(
+                                      "Laporan Rincian Biaya",
+                                      style: GoogleFonts.montserrat(
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.w500,
+                                          color: Color(0xFF555555)),
+                                    ),
+                                  ]),
+                              Container(
+                                  padding: EdgeInsets.only(top: 5, bottom: 10),
+                                  child:
+                                      Column(children: listRincianRealisasi)),
+                              Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Text(
+                                      "Total Biaya",
+                                      style: GoogleFonts.montserrat(
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.w500,
+                                          color: Color(0xFF555555)),
+                                    ),
+                                    Text(
+                                      "Rp" +
+                                          NumberFormat.currency(
+                                                  locale: "eu", symbol: "")
+                                              .format(state
+                                                  .kasbon.nominalRealisasi),
+                                      style: GoogleFonts.montserrat(
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.w500,
+                                          color: Color(0xFF555555)),
+                                    ),
+                                  ]),
+                              Container(
+                                padding: EdgeInsets.fromLTRB(0, 5, 0, 0),
+                                child: Text("Catatan",
+                                    style: GoogleFonts.montserrat()),
+                              ),
+                              Text(
+                                  (state.kasbon.catatanLaporan != null)
+                                      ? state.kasbon.catatanLaporan
+                                      : "Tidak ada catatan",
+                                  style: GoogleFonts.montserrat(
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.w500,
+                                      color: Color(0xff555555)))
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
                   Container(
                     padding: EdgeInsets.fromLTRB(15, 10, 15, 5),
                     child: Row(
@@ -472,8 +547,10 @@ class _DetailsApprovalKasbonState extends State<DetailsApprovalKasbon> {
                                                                             .text,
                                                                     status:
                                                                         "tolak",
-                                                                    tipe:
-                                                                        "pengajuan")));
+                                                                    tipe: (widget.jenisPengajuan ==
+                                                                            "Laporan")
+                                                                        ? "laporan"
+                                                                        : "pengajuan")));
                                                             Navigator.pop(
                                                                 context);
                                                           }
@@ -583,25 +660,22 @@ class _DetailsApprovalKasbonState extends State<DetailsApprovalKasbon> {
                                                     child: RaisedButton(
                                                       elevation: 2,
                                                       onPressed: () {
-                                                        BlocProvider
-                                                                .of<
-                                                                        KasbonBloc>(
-                                                                    context)
-                                                            .add(PostApprovalKasbonEvent(
-                                                                idRoleApproval:
-                                                                    widget
-                                                                        .idRoleApproval,
-                                                                bodyApproval: BodyPostApproval(
-                                                                    idPengajuanKasbon:
-                                                                        widget
-                                                                            .id,
-                                                                    catatan:
-                                                                        _catatanCtrl
-                                                                            .text,
-                                                                    status:
-                                                                        "setuju",
-                                                                    tipe:
-                                                                        "pengajuan")));
+                                                        BlocProvider.of<KasbonBloc>(context).add(PostApprovalKasbonEvent(
+                                                            idRoleApproval: widget
+                                                                .idRoleApproval,
+                                                            bodyApproval: BodyPostApproval(
+                                                                idPengajuanKasbon:
+                                                                    widget.id,
+                                                                catatan:
+                                                                    _catatanCtrl
+                                                                        .text,
+                                                                status:
+                                                                    "setuju",
+                                                                tipe: (widget
+                                                                            .jenisPengajuan ==
+                                                                        "Laporan")
+                                                                    ? "laporan"
+                                                                    : "pengajuan")));
                                                         Navigator.pop(context);
                                                       },
                                                       shape:

@@ -1,4 +1,5 @@
 import 'package:uang_saku/model/body_post_approval.dart';
+import 'package:uang_saku/model/laporan.dart';
 import 'package:uang_saku/model/models.dart';
 import 'package:uang_saku/model/multi_response.dart';
 import 'package:uang_saku/model/role_approval.dart';
@@ -28,6 +29,7 @@ abstract class ExpenseDataSource {
   Future<MultiResponse<KategoriBiaya>> getKategoriBiaya();
   Future<SingleResponse> postReimburse(Reimburse reimburse);
   Future<SingleResponse> postKasbon(Kasbon kasbon);
+  Future<SingleResponse> postLaporan(Laporan laporan, int idPengajuanKasbon);
   Future<SingleResponse> putReimburse(Reimburse reimburse, int id);
   Future<SingleResponse> putKasbon(Kasbon kasbon, int id);
   Future<MultiResponse<RoleApproval>> getRoleApproval();
