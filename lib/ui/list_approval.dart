@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:uang_saku/bloc/bloc.dart';
 import 'package:uang_saku/bloc/event/approval_event.dart';
+import 'package:uang_saku/bloc/laporan_bloc.dart';
 import 'package:uang_saku/bloc/reimburse_bloc.dart';
 import 'package:uang_saku/bloc/state/approval_state.dart';
 import 'package:uang_saku/model/models.dart';
@@ -37,13 +38,17 @@ class _ListApprovalState extends State<ListApproval> {
         idRoleApproval: widget.idRoleApproval,
         bodyApproval: BodyGetApproval(status: "aktif", tipe: "pengajuan"),
         jenisPengajuan: "Reimburse"));
+    BlocProvider.of<LaporanBloc>(context).add(GetApprovalPengajuanEvent(
+        idRoleApproval: widget.idRoleApproval,
+        bodyApproval: BodyGetApproval(status: "aktif", tipe: "laporan"),
+        jenisPengajuan: "Reimburse"));
   }
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       home: DefaultTabController(
-          length: 2,
+          length: 3,
           child: Scaffold(
             appBar: AppBar(
               backgroundColor: Color(0xFF2B4D66),
@@ -83,8 +88,12 @@ class _ListApprovalState extends State<ListApproval> {
                         child: TabBar(
                           dragStartBehavior: DragStartBehavior.down,
                           labelStyle: GoogleFonts.montserrat(
-                              fontWeight: FontWeight.w600, fontSize: 18),
-                          tabs: [Text("Kasbon"), Text("Reimburse")],
+                              fontWeight: FontWeight.w600, fontSize: 16),
+                          tabs: [
+                            Text("Kasbon"),
+                            Text("Reimburse"),
+                            Text("Laporan")
+                          ],
                           indicatorColor: Color(0xFF2B4D66),
                           indicatorWeight: 2,
                           unselectedLabelColor: Color(0x772B4D66),
@@ -136,7 +145,8 @@ class _ListApprovalState extends State<ListApproval> {
                                         return DetailsApprovalKasbon(
                                             id: element.idPengajuanKasbon,
                                             idRoleApproval:
-                                                widget.idRoleApproval);
+                                                widget.idRoleApproval,
+                                            jenisPengajuan: "Kasbon");
                                       }))
                                         ..whenComplete(() => initEvent());
                                     },
@@ -447,76 +457,187 @@ class _ListApprovalState extends State<ListApproval> {
                       })
                     ],
                   ),
+                  Column(
+                    children: [
+                      Container(
+                          padding: EdgeInsets.fromLTRB(15, 7, 15, 7),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(
+                                "Minggu ini",
+                                style: GoogleFonts.montserrat(
+                                    fontWeight: FontWeight.w700,
+                                    fontSize: 18,
+                                    color: Color(0xFF555555)),
+                              ),
+                              TextButton(
+                                  onPressed: () {},
+                                  child: Text("Tandai sudah dibaca",
+                                      style: GoogleFonts.montserrat(
+                                          color: Color(0xFFA8A8A8),
+                                          fontWeight: FontWeight.w600,
+                                          fontSize: 12))),
+                            ],
+                          )),
+                      BlocBuilder<LaporanBloc, BaseState>(builder: (_, state) {
+                        if (state is ListApprovalPengajuanState) {
+                          List<KategoriPengajuan> kategori =
+                              state.listKategoriPengajuan;
+
+                          if (state.listApprovalPengajuan.isNotEmpty) {
+                            List<Widget> list = [];
+                            state.listApprovalPengajuan.forEach((element) {
+                              list.add(Container(
+                                  margin: EdgeInsets.only(bottom: 10),
+                                  padding: EdgeInsets.symmetric(horizontal: 15),
+                                  child: GestureDetector(
+                                    onTap: () {
+                                      Navigator.push(context,
+                                          MaterialPageRoute(builder: (context) {
+                                        return DetailsApprovalKasbon(
+                                            id: element.idPengajuanKasbon,
+                                            idRoleApproval:
+                                                widget.idRoleApproval,
+                                            jenisPengajuan: "Laporan");
+                                      }))
+                                        ..whenComplete(() => initEvent());
+                                    },
+                                    child: CustomCard(
+                                        container: Container(
+                                      child: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            Flexible(
+                                                flex: 2,
+                                                child: Image(
+                                                    image: AssetImage(
+                                                        "images/send-file-download.png"),
+                                                    width: 31,
+                                                    height: 31)),
+                                            Flexible(
+                                              flex: 15,
+                                              child: Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment
+                                                        .spaceBetween,
+                                                children: [
+                                                  Flexible(
+                                                      flex: 10,
+                                                      child: Column(
+                                                        crossAxisAlignment:
+                                                            CrossAxisAlignment
+                                                                .start,
+                                                        children: [
+                                                          Container(
+                                                              margin: EdgeInsets
+                                                                  .only(
+                                                                      bottom:
+                                                                          5),
+                                                              child: Text(
+                                                                element.tujuan,
+                                                                overflow:
+                                                                    TextOverflow
+                                                                        .ellipsis,
+                                                                style: GoogleFonts.roboto(
+                                                                    fontWeight:
+                                                                        FontWeight
+                                                                            .w800,
+                                                                    fontSize:
+                                                                        14),
+                                                              )),
+                                                          Text(
+                                                            kategori
+                                                                .singleWhere((e) =>
+                                                                    e.idKategoriPengajuan ==
+                                                                    element
+                                                                        .idKategoriPengajuan)
+                                                                .namaKategoriPengajuan,
+                                                            overflow:
+                                                                TextOverflow
+                                                                    .ellipsis,
+                                                          )
+                                                        ],
+                                                      )),
+                                                  Flexible(
+                                                      flex: 6,
+                                                      child: Column(
+                                                        crossAxisAlignment:
+                                                            CrossAxisAlignment
+                                                                .end,
+                                                        children: [
+                                                          Container(
+                                                            margin:
+                                                                EdgeInsets.only(
+                                                                    bottom: 5),
+                                                            child: Text(
+                                                              DateFormat.yMMMd()
+                                                                  .format(element
+                                                                      .tglPengajuan),
+                                                              overflow:
+                                                                  TextOverflow
+                                                                      .ellipsis,
+                                                              style: GoogleFonts.montserrat(
+                                                                  fontSize: 12,
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .w600,
+                                                                  color: Color(
+                                                                      0xFF6f96b0)),
+                                                            ),
+                                                          ),
+                                                          Text(
+                                                            "Rp" +
+                                                                NumberFormat.currency(
+                                                                        locale:
+                                                                            "eu",
+                                                                        symbol:
+                                                                            "")
+                                                                    .format(element
+                                                                        .nominalPencairan),
+                                                            overflow:
+                                                                TextOverflow
+                                                                    .ellipsis,
+                                                            style: GoogleFonts
+                                                                .montserrat(
+                                                                    fontSize:
+                                                                        13,
+                                                                    fontWeight:
+                                                                        FontWeight
+                                                                            .w500,
+                                                                    color: Color(
+                                                                        0xFF58b84b)),
+                                                          )
+                                                        ],
+                                                      )),
+                                                ],
+                                              ),
+                                            )
+                                          ]),
+                                    )),
+                                  )));
+                            });
+                            return Expanded(child: ListView(children: list));
+                          } else {
+                            return Container(
+                                padding: EdgeInsets.only(top: 200),
+                                alignment: Alignment.center,
+                                child: Text(
+                                  "Approval yang menunggu disetujui masih Kosong",
+                                  style: GoogleFonts.montserrat(),
+                                ));
+                          }
+                        } else
+                          return Container(
+                              padding: EdgeInsets.only(top: 200),
+                              alignment: Alignment.center,
+                              child: CircularProgressIndicator());
+                      })
+                    ],
+                  ),
                 ]),
           )),
     );
   }
 }
-
-// class NoteDialog extends StatelessWidget {
-//   @override
-//   Widget build(BuildContext context) {
-//     return Dialog(
-//       child: Container(
-//         height: MediaQuery.of(context).size.width * 0.6,
-//         child: Column(
-//           crossAxisAlignment: CrossAxisAlignment.start,
-//           children: [
-//             Padding(
-//                 padding: EdgeInsets.all(10),
-//                 child: Text(
-//                   "Catatan Dari Approval",
-//                   style: TextStyle(
-//                       fontFamily: "Montserrat", fontWeight: FontWeight.w600),
-//                 )),
-//             Container(
-//               padding: EdgeInsets.fromLTRB(20, 0, 20, 10),
-//               child: TextField(
-//                 maxLines: 3,
-//                 decoration: const InputDecoration(
-//                   hintStyle: TextStyle(color: Colors.black45),
-//                   errorStyle: TextStyle(color: Colors.redAccent),
-//                   border: OutlineInputBorder(),
-//                   labelText: 'Catatan',
-//                 ),
-//                 onTap: () {},
-//                 //controller: tanggalSelesai,
-//               ),
-//             ),
-//             Row(
-//               mainAxisAlignment: MainAxisAlignment.spaceAround,
-//               children: [
-//                 RaisedButton(
-//                   shape: RoundedRectangleBorder(
-//                       borderRadius: BorderRadius.circular(15)),
-//                   color: Colors.red,
-//                   onPressed: () {
-//                     Navigator.pop(context);
-//                   },
-//                   child: Text(
-//                     "Batal",
-//                     style: TextStyle(
-//                         fontFamily: "Montserrat",
-//                         fontWeight: FontWeight.w600,
-//                         color: Colors.white),
-//                   ),
-//                 ),
-//                 RaisedButton(
-//                   shape: RoundedRectangleBorder(
-//                       borderRadius: BorderRadius.circular(15)),
-//                   color: Color(0xFF2B4D66),
-//                   onPressed: () {},
-//                   child: Text("Kirim",
-//                       style: TextStyle(
-//                           fontFamily: "Montserrat",
-//                           fontWeight: FontWeight.w600,
-//                           color: Colors.white)),
-//                 )
-//               ],
-//             )
-//           ],
-//         ),
-//       ),
-//     );
-//   }
-// }

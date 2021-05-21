@@ -84,7 +84,7 @@ class _UpdatePengajuanReimburseState extends State<UpdatePengajuanReimburse> {
                   bottomLeft: Radius.circular(15),
                   bottomRight: Radius.circular(15))),
           backgroundColor: _colorTheme,
-          title: Text("Form Pengajuan Reimburse",
+          title: Text("Form Update Reimburse",
               style: GoogleFonts.montserrat(
                   fontSize: 18, fontWeight: FontWeight.w600)),
           actions: [

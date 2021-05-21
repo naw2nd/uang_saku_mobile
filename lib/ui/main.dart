@@ -7,6 +7,7 @@ import 'package:uang_saku/bloc/bloc.dart';
 import 'package:uang_saku/bloc/create_pengajuan_bloc.dart';
 import 'package:uang_saku/bloc/create_rincian_biaya_bloc.dart';
 import 'package:uang_saku/bloc/forgot_password_bloc.dart';
+import 'package:uang_saku/bloc/laporan_bloc.dart';
 import 'package:uang_saku/bloc/reimburse_bloc.dart';
 import 'package:uang_saku/bloc/profile_bloc.dart';
 import 'package:uang_saku/bloc/role_approval_bloc.dart';
@@ -91,7 +92,6 @@ class _MyAppState extends State<MyApp> {
               .textTheme
               .bodyText1
               .copyWith(color: Color(0xff555555)),
-          // textAlign: TextAlign.left
           child: Padding(
             padding: EdgeInsets.fromLTRB(10, 10, 10, 0),
             child: CustomCard(
@@ -185,6 +185,9 @@ class _MyAppState extends State<MyApp> {
           BlocProvider<KasbonBloc>(
               create: (context) =>
                   KasbonBloc(expenseRepository: expenseRepository)),
+          BlocProvider<LaporanBloc>(
+              create: (context) =>
+                  LaporanBloc(expenseRepository: expenseRepository)),
           BlocProvider<ReimburseBloc>(
               create: (context) =>
                   ReimburseBloc(expenseRepository: expenseRepository)),

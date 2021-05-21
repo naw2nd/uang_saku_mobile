@@ -84,7 +84,7 @@ class _UpdatePengajuanKasbonState extends State<UpdatePengajuanKasbon> {
                   bottomLeft: Radius.circular(15),
                   bottomRight: Radius.circular(15))),
           backgroundColor: _colorTheme,
-          title: Text("Form Pengajuan Kasbon",
+          title: Text("Form Update Kasbon",
               style: GoogleFonts.montserrat(
                   fontSize: 18, fontWeight: FontWeight.w600)),
           actions: [

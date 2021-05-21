@@ -99,7 +99,7 @@ class _ListKasbonState extends State<ListKasbon> {
                                   Navigator.push(context,
                                       MaterialPageRoute(builder: (context) {
                                     return DetailsPengajuanKasbon(
-                                        id: element.idPengajuanKasbon);
+                                        id: element.idPengajuanKasbon, jenisPengajuan: "Kasbon");
                                   }))
                                     ..whenComplete(() => initEvent());
                                 },
@@ -210,9 +210,17 @@ class _ListKasbonState extends State<ListKasbon> {
                                 )),
                               )));
                       });
-                      return Column(
-                        children: list,
-                      );
+                      if (list.isNotEmpty)
+                        return Column(
+                          children: list,
+                        );
+                      else
+                        return Container(
+                            alignment: Alignment.center,
+                            child: Text(
+                              "Tidak ada Kasbon yang masih aktif",
+                              style: GoogleFonts.montserrat(),
+                            ));
                     } else {
                       return Container(
                           alignment: Alignment.center,
@@ -251,7 +259,7 @@ class _ListKasbonState extends State<ListKasbon> {
                                   Navigator.push(context,
                                       MaterialPageRoute(builder: (context) {
                                     return DetailsPengajuanKasbon(
-                                        id: element.idPengajuanKasbon);
+                                        id: element.idPengajuanKasbon, jenisPengajuan: "Laporan");
                                   }))
                                     ..whenComplete(() => initEvent());
                                 },

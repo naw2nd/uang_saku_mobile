@@ -45,10 +45,8 @@ class _FormRincianBiayaState extends State<FormRincianBiaya> {
 
     if (widget.jenisPengajuan == "Reimburse")
       _colorTheme = Color(0xFF3AE3CE);
-    else if (widget.jenisPengajuan == "Kasbon")
+    else 
       _colorTheme = Color(0xFF358BFC);
-    else
-      _colorTheme = Color(0xFF2B4D66);
 
     super.initState();
   }
@@ -326,7 +324,7 @@ class _FormRincianBiayaState extends State<FormRincianBiaya> {
                                     image: fileToBase64(element),
                                     action: "new"));
                               });
-                              if (widget.jenisPengajuan == "Reimburse") {
+                              if (widget.jenisPengajuan == "Reimburse" || widget.jenisPengajuan == "Laporan") {
                                 if (_images.isNotEmpty) {
                                   _addRincianRealisasi();
                                   Navigator.pop(context);
@@ -350,7 +348,7 @@ class _FormRincianBiayaState extends State<FormRincianBiaya> {
                                                         EdgeInsets.symmetric(
                                                             vertical: 7),
                                                     child: Text(
-                                                        "Rincian Biaya Reimburse wajib melampirkan foto / gambar",
+                                                        "Rincian Biaya "+widget.jenisPengajuan+" wajib melampirkan foto / gambar",
                                                         textAlign:
                                                             TextAlign.center,
                                                         style: GoogleFonts

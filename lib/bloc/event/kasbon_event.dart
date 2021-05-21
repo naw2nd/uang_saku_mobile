@@ -35,11 +35,3 @@ class UpdateKasbonEvent extends BaseEvent {
   List<Object> get props => [kasbon];
 }
 
-class CreateLaporanEvent extends BaseEvent {
-  final Kasbon kasbon;
-  //final String catatan_realisasi;
-  final int id;
-  CreateLaporanEvent({this.kasbon, this.id});
-  @override
-  List<Object> get props => [this.kasbon, this.id];
-}
