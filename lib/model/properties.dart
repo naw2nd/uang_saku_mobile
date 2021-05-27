@@ -7,7 +7,7 @@ import 'dart:convert';
 Properties propertiesFromJson(String str) => Properties.fromJson(json.decode(str));
 
 String propertiesToJson(Properties data) => json.encode(data.toJson());
-
+//masih belum terpakai
 class Properties {
     Properties({
         this.properties,

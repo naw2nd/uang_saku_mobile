@@ -2,6 +2,7 @@ import 'package:uang_saku/model/models.dart';
 
 import 'base_event.dart';
 class GetFormAttributeReimburse extends BaseEvent {
+  //event untuk mengambil data seperti perusahaan, cabang, dsb untuk create pengajuan
   @override
   List<Object> get props => [];
 }

@@ -10,7 +10,7 @@ import 'event/approval_event.dart';
 import 'event/base_event.dart';
 import 'event/laporan_event.dart';
 import 'state/approval_state.dart';
-
+// untuk file laporan_bloc masih perlu ditinjau ulang, karena beberapa fungsinya masih berasal dari kasbon_bloc
 class LaporanBloc extends Bloc<BaseEvent, BaseState> {
   ExpenseRepository expenseRepository;
 

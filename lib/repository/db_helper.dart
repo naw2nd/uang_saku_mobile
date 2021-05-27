@@ -8,7 +8,7 @@ import 'package:uang_saku/model/notifikasi.dart';
 //pubspec.yml
 
 
-//kelass Dbhelper
+//kelass Dbhelper untuk Database local dengan SQLite
 class DbHelper {
   static DbHelper _dbHelper;
   static Database _database;  

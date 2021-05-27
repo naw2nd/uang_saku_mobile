@@ -1,3 +1,4 @@
+//belum terpakai
 class KategoriPengajuan {
   KategoriPengajuan({
     this.idKategoriPengajuan,

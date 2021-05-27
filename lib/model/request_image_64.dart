@@ -1,3 +1,4 @@
+//untuk menyimpan image yang dalam bentuk base64 dari api
 class RequestImage64 {
   RequestImage64({
     this.idAttachmentRealisasiReimburse,

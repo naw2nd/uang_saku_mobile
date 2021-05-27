@@ -11,11 +11,12 @@ import 'package:uang_saku/model/user.dart';
 import 'package:intl/intl.dart';
 
 class HttpService {
+  //menggunakan package dio (saran dari faiz)
   Dio _dio;
   SharedPreferences sharedPreferences;
   String token = "";
 
-  final baseURL = "http://192.168.1.86:8000/api/v1/";
+  final baseURL = "http://192.168.1.11:8000/api/v1/";
 
   HttpService() {
     _dio = Dio(BaseOptions(baseUrl: baseURL));

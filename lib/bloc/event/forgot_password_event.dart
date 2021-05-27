@@ -7,7 +7,6 @@ class ForgotPasswordEvent extends BaseEvent {
 
 class SendEmailEvent extends ForgotPasswordEvent {
   final String email;
-
   SendEmailEvent({this.email});
   @override
   List<Object> get props => [email];
