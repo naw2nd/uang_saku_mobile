@@ -1,4 +1,4 @@
-
+//user approval dari API GET USER
 class UserApproval {
   UserApproval({
     this.idApproval,

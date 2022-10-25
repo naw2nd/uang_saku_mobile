@@ -9,7 +9,7 @@ BodyPostApproval bodyPostApprovalFromJson(String str) =>
 
 String bodyPostApprovalToJson(BodyPostApproval data) =>
     json.encode(data.toJson());
-
+//body untuk POST Approval ke api
 class BodyPostApproval {
   BodyPostApproval(
       {this.idPengajuanKasbon,

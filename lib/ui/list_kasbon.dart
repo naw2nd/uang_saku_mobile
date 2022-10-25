@@ -4,15 +4,25 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:uang_saku/bloc/bloc.dart';
 import 'package:intl/intl.dart';
 import 'package:uang_saku/model/kategori_pengajuan.dart';
+import 'package:uang_saku/ui/belum%20kepakek/filter_dialog.dart';
 import 'custom_widgets/custom_card.dart';
 import 'details_pengajuan_kasbon.dart';
 
 class ListKasbon extends StatefulWidget {
+  DateTime tglMulaiHolder;
+  DateTime tglSelesaiHolder;
+
+  ListKasbon({this.tglMulaiHolder, this.tglSelesaiHolder});
   @override
-  _ListKasbonState createState() => _ListKasbonState();
+  _ListKasbonState createState() => _ListKasbonState(
+      tglMulaiHolder: tglMulaiHolder, tglSelesaiHolder: tglSelesaiHolder);
 }
 
 class _ListKasbonState extends State<ListKasbon> {
+  DateTime tglMulaiHolder;
+  DateTime tglSelesaiHolder;
+
+  _ListKasbonState({this.tglMulaiHolder, this.tglSelesaiHolder});
   List<String> cardIcon = [
     "images/send-file-decline.png",
     "images/send-file-blue.png",
@@ -58,6 +68,7 @@ class _ListKasbonState extends State<ListKasbon> {
                       //     builder: (BuildContext context) {
                       //       return FilterApproval();
                       //     });
+                      FilterDialog();
                     })
               ],
               bottom: PreferredSize(
@@ -99,7 +110,8 @@ class _ListKasbonState extends State<ListKasbon> {
                                   Navigator.push(context,
                                       MaterialPageRoute(builder: (context) {
                                     return DetailsPengajuanKasbon(
-                                        id: element.idPengajuanKasbon, jenisPengajuan: "Kasbon");
+                                        id: element.idPengajuanKasbon,
+                                        jenisPengajuan: "Kasbon");
                                   }))
                                     ..whenComplete(() => initEvent());
                                 },
@@ -259,7 +271,8 @@ class _ListKasbonState extends State<ListKasbon> {
                                   Navigator.push(context,
                                       MaterialPageRoute(builder: (context) {
                                     return DetailsPengajuanKasbon(
-                                        id: element.idPengajuanKasbon, jenisPengajuan: "Laporan");
+                                        id: element.idPengajuanKasbon,
+                                        jenisPengajuan: "Laporan");
                                   }))
                                     ..whenComplete(() => initEvent());
                                 },

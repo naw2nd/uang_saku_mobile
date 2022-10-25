@@ -8,6 +8,7 @@ BodyGetApproval bodyApprovalFromJson(String str) => BodyGetApproval.fromJson(jso
 
 String bodyApprovalToJson(BodyGetApproval data) => json.encode(data.toJson());
 
+//body untuk filter pada saat GET Approval dari api
 class BodyGetApproval {
     BodyGetApproval({
         this.tipe,

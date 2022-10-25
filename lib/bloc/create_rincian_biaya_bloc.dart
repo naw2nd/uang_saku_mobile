@@ -14,6 +14,7 @@ class CreateRincianBiayaBloc extends Bloc<BaseEvent, BaseState> {
   @override
   Stream<BaseState> mapEventToState(BaseEvent event) async* {
     if (event is InitEvent) {
+      //mengambil data yang dibutuhkan untuk form rincian biaya
       try {
         print("init event rincian");
         final MultiResponse<KategoriBiaya> responseKategoriBiaya =

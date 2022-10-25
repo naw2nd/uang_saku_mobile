@@ -1,3 +1,4 @@
+//approval dari pengajuan
 class Approval {
   Approval({
     this.all,

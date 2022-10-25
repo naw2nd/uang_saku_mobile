@@ -8,7 +8,7 @@ RoleApproval roleApprovalFromJson(String str) =>
     RoleApproval.fromJson(json.decode(str));
 
 String roleApprovalToJson(RoleApproval data) => json.encode(data.toJson());
-
+//role approval dari tiap user dari API GeT Approval
 class RoleApproval {
   RoleApproval({
     this.kasbonCount,

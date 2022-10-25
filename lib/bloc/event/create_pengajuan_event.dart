@@ -4,6 +4,7 @@ import 'package:uang_saku/model/reimburse.dart';
 import 'package:uang_saku/model/rincian_pengajuan.dart';
 
 class CreateReimburseEvent extends BaseEvent {
+  // Event untuk Post reimburse
   final Reimburse reimburse;
   CreateReimburseEvent({this.reimburse});
   @override
@@ -11,6 +12,7 @@ class CreateReimburseEvent extends BaseEvent {
 }
 
 class CreateKasbonEvent extends BaseEvent {
+  // Event untuk Post kasbon
   final Kasbon kasbon;
   CreateKasbonEvent({this.kasbon});
   @override
@@ -18,6 +20,7 @@ class CreateKasbonEvent extends BaseEvent {
 }
 
 class AddRincianBiayaEvent extends BaseEvent {
+  //event untuk menambahkan rincian biaya di UInya
   final rincianBiaya;
   AddRincianBiayaEvent({
     this.rincianBiaya,
@@ -27,6 +30,7 @@ class AddRincianBiayaEvent extends BaseEvent {
 }
 
 class EditRincianBiayaEvent extends BaseEvent {
+  //event untuk mengedit rincian biaya pada update pengajuan
   final rincianBiaya;
   EditRincianBiayaEvent({
     this.rincianBiaya,
@@ -36,6 +40,7 @@ class EditRincianBiayaEvent extends BaseEvent {
 }
 
 class DeleteRincianBiayaEvent extends BaseEvent {
+  //event untuk menghapus rincian biaya di UInya
   final rincianBiaya;
   DeleteRincianBiayaEvent({
     this.rincianBiaya,

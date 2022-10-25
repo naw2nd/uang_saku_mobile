@@ -4,9 +4,10 @@ import 'package:uang_saku/model/models.dart';
 import 'base_event.dart';
 
 class GetApprovalPengajuanEvent extends BaseEvent {
+  //Event untuk mengambil list pengajuan yang menunggu disetujui
   final int idRoleApproval;
   final BodyGetApproval bodyApproval;
-  final String jenisPengajuan;
+  final String jenisPengajuan; //Reimburse atau Kasbon
   GetApprovalPengajuanEvent(
       {this.idRoleApproval, this.bodyApproval, this.jenisPengajuan});
   @override
@@ -15,6 +16,7 @@ class GetApprovalPengajuanEvent extends BaseEvent {
 }
 
 class PostApprovalKasbonEvent extends BaseEvent {
+  // Event untuk Post approval kasbon
   final int idRoleApproval;
   final BodyPostApproval bodyApproval;
   PostApprovalKasbonEvent({this.idRoleApproval, this.bodyApproval});
@@ -23,6 +25,7 @@ class PostApprovalKasbonEvent extends BaseEvent {
 }
 
 class PostApprovalReimburseEvent extends BaseEvent {
+  // Event untuk Post approval reimburse
   final int idRoleApproval;
   final BodyPostApproval bodyApproval;
   PostApprovalReimburseEvent({this.idRoleApproval, this.bodyApproval});

@@ -1,3 +1,4 @@
+//masih belum selesai
 class AdditionalInfo {
   AdditionalInfo({
     this.lokasi,

@@ -3,6 +3,7 @@ import 'package:uang_saku/bloc/event/base_event.dart';
 import 'package:uang_saku/model/kasbon.dart';
 
 class GetFormAttributeKasbon extends BaseEvent {
+  //event untuk mengambil data seperti perusahaan, cabang, dsb untuk create pengajuan
   @override
   List<Object> get props => [];
 }

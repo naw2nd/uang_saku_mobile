@@ -15,7 +15,7 @@ class MultiResponse<T> extends Equatable {
         success: json['success'],
         message: json['message'],
         data: json['data'],
-        properties: json['properties']);
+        properties: json['properties']); //properties masih belum digunakan
   }
 
   @override

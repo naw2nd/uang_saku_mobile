@@ -11,6 +11,7 @@ import 'package:uang_saku/model/user.dart';
 import 'package:intl/intl.dart';
 
 class HttpService {
+  //menggunakan package dio (saran dari faiz)
   Dio _dio;
   SharedPreferences sharedPreferences;
   String token = "";
@@ -352,8 +353,9 @@ class HttpService {
     }
   }
 
-  Future<SingleResponse> postLaporan(Laporan laporan,  int idPengajuanKasbon) async {
-    String endPoint = "kasbon/"+idPengajuanKasbon.toString()+"/laporan";
+  Future<SingleResponse> postLaporan(
+      Laporan laporan, int idPengajuanKasbon) async {
+    String endPoint = "kasbon/" + idPengajuanKasbon.toString() + "/laporan";
     try {
       Response response = await _dio.post(endPoint, data: laporan.toJson());
       return SingleResponse.fromJson(response.data);
@@ -418,7 +420,7 @@ class HttpService {
           response.data["data"].map((x) => Kasbon.fromJson(x)));
       MultiResponse<Kasbon> multiResponse =
           MultiResponse.fromJson(response.data);
-          print(multiResponse.data);
+      print(multiResponse.data);
       return multiResponse;
     } on DioError catch (e) {
       print(e);

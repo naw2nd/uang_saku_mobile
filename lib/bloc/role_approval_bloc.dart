@@ -14,6 +14,7 @@ class RoleApprovalBloc extends Bloc<BaseEvent, BaseState> {
   Stream<BaseState> mapEventToState(BaseEvent event) async* {
     if (event is InitEvent) {
       yield (LoadingState());
+      //mengambil role approval yg dimiliki user untuk ditampilkan di dashboard
       try {
         final MultiResponse<RoleApproval> responseRoleApproval =
             await expenseRepository.getRoleApproval();
